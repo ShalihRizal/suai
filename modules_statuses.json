@@ -29,5 +29,7 @@
     "CooperationCategory": true,
     "Cooperation": true,
     "ProductCategory": true,
-    "Product": true
+    "Product": true,
+    "PartRequest": true,
+    "Part": true
 }

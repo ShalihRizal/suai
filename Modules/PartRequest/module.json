@@ -1,0 +1,11 @@
+{
+    "name": "PartRequest",
+    "alias": "partrequest",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PartRequest\\Providers\\PartRequestServiceProvider"
+    ],
+    "files": []
+}

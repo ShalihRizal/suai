@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
-    <title>Register - Hadid</title>
+    <title>Register - SIM-SUAI</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="{{asset('css')}}/simplebar.css">
     <link rel="shortcut icon" href="{{asset('img/hadid.png')}}">
@@ -27,7 +27,7 @@
       <br><br>
       <div class="row justify-content-center">
           <div class="col-md-5">
-            <a href="/"><img src="{{asset('img')}}/techno.png" class="img-fluid" /></a>
+            <a href="/"><img src="{{asset('img')}}/technos.png" class="img-fluid" /></a>
           </div>
         <div class="col-md-4 m-5">
 
@@ -36,7 +36,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
-                        <p class="h4 mb-3" style="line-height: 2em;"><strong>Selamat Datang di Hadid</strong></p>
+                        <p class="h4 mb-3" style="line-height: 2em;"><strong>Selamat Datang di SIM-SUAI</strong></p>
 
                                 <div class="form-group">
                                     <label class="form-label">Nama <span class="text-danger">*</span></label>

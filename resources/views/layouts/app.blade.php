@@ -9,12 +9,12 @@
         @if(View::hasSection('title'))
         @yield('title') -
         @endif
-        Hadid
+        SIM-SUAI
     </title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="{{asset('css')}}/simplebar.css">
 
-    <link rel="shortcut icon" href="{{asset('img')}}/hadid.png">
+    <link rel="shortcut icon" href="{{asset('img')}}/hadids.png">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
@@ -100,8 +100,8 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-50 mb-4 d-flex">
-            <img class="navbar-brand mx-auto mt-2 flex-fill text-center" src="{{asset('img')}}/hadid.png" width="50"/>
-            {{-- <strong>hadid</strong> --}}
+            <img class="navbar-brand mx-auto mt-2 flex-fill text-center" src="{{asset('img')}}/hadids.png" width="50"/>
+            {{-- <strong>hadids</strong> --}}
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             @include('components.menudash')
