@@ -1,0 +1,11 @@
+{
+    "name": "TransaksiIn",
+    "alias": "transaksiin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TransaksiIn\\Providers\\TransaksiInServiceProvider"
+    ],
+    "files": []
+}

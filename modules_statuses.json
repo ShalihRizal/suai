@@ -31,5 +31,7 @@
     "ProductCategory": true,
     "Product": true,
     "PartRequest": true,
-    "Part": true
+    "Part": true,
+    "TransaksiIn": true,
+    "TransaksiOut": true
 }

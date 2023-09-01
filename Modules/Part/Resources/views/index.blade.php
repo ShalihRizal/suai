@@ -66,7 +66,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="40%">Part No</th>
+                                <th width="40%">Part Name</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -79,7 +79,7 @@
                             @foreach ($parts as $part)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="40%">{{ $part->part_no }}</td>
+                                <td width="40%">{{ $part->part_name }}</td>
                                 <td width="15%">
                                     @if($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -130,7 +130,14 @@
                                 <div class="form-group">
                                     <label class="form-label">Part No<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_no" id="part_no"
-                                        placeholder="Masukan Part No" value="{{ old('part_no') }}">
+                                    placeholder="Masukan Part No" value="{{ old('part_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Part Name<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_name" id="part_name"
+                                        placeholder="Masukan Part Name" value="{{ old('part_name') }}">
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -166,13 +173,6 @@
                                     <label class="form-label">Kode Tooling BC<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="kode_tooling_bc" id="kode_tooling_bc"
                                         placeholder="Masukan Kode Tooling BC" value="{{ old('kode_tooling_bc') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <div class="form-group">
-                                    <label class="form-label">Part Name<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_name" id="part_name"
-                                        placeholder="Masukan Part Name" value="{{ old('part_name') }}">
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">

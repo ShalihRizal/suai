@@ -1,0 +1,11 @@
+{
+    "name": "TransaksiOut",
+    "alias": "transaksiout",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TransaksiOut\\Providers\\TransaksiOutServiceProvider"
+    ],
+    "files": []
+}

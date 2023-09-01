@@ -1,27 +1,27 @@
 <?php
 
-namespace Modules\PartRequest\Http\Controllers;
+namespace Modules\TransaksiOut\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
-use Modules\PartRequest\Repositories\PartRequestRepository;
+use Modules\TransaksiOut\Repositories\TransaksiOutRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
 use Validator;
 
-class PartRequestController extends Controller
+class TransaksiOutController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
 
-        $this->_PartRequestRepository = new PartRequestRepository;
+        $this->_transaksioutRepository = new TransaksiOutRepository;
         $this->_logHelper           = new LogHelper;
-        $this->module               = "PartRequest";
+        $this->module               = "TransaksiOut";
     }
 
     /**
@@ -35,9 +35,9 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        $partrequests = $this->_PartRequestRepository->getAll();
+        $transaksiouts = $this->_transaksioutRepository->getAll();
 
-        return view('partrequest::index', compact('partrequests'));
+        return view('transaksiout::index', compact('transaksiouts'));
     }
 
     /**
@@ -51,7 +51,7 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('partrequest::create');
+        return view('transaksiout::create');
     }
 
     /**
@@ -69,17 +69,17 @@ class PartRequestController extends Controller
         $validator = Validator::make($request->all(), $this->_validationRules(''));
 
         if ($validator->fails()) {
-            return redirect('partrequest')
+            return redirect('transaksiout')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         DB::beginTransaction();
-        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+        $this->_transaksioutRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        $this->_logHelper->store($this->module, $request->invoice_no, 'create');
         DB::commit();
 
-        return redirect('partrequest')->with('message', 'PartRequest berhasil ditambahkan');
+        return redirect('transaksiout')->with('message', 'Transaksi berhasil ditambahkan');
     }
 
     /**
@@ -94,7 +94,7 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('partrequest::show');
+        return view('transaksiout::show');
     }
 
     /**
@@ -109,7 +109,7 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('::edit');
+        return view('transaksiout::edit');
     }
 
     /**
@@ -128,19 +128,19 @@ class PartRequestController extends Controller
         $validator = Validator::make($request->all(), $this->_validationRules($id));
 
         if ($validator->fails()) {
-            return redirect('partrequest')
+            return redirect('transaksiout')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         DB::beginTransaction();
 
-        $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->part_req_number, 'update');
+        $this->_transaksioutRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->invoice_no, 'update');
 
         DB::commit();
 
-        return redirect('partrequest')->with('message', 'PartRequest berhasil diubah');
+        return redirect('transaksiout')->with('message', 'Transaksi berhasil diubah');
     }
 
     /**
@@ -155,20 +155,20 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_PartRequestRepository->getById($id);
+        $detail  = $this->_transaksioutRepository->getById($id);
 
         if (!$detail) {
-            return redirect('partrequest');
+            return redirect('transaksiout');
         }
 
         DB::beginTransaction();
 
-        $this->_PartRequestRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+        $this->_transaksioutRepository->delete($id);
+        $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
 
         DB::commit();
 
-        return redirect('partrequest')->with('message', 'PartRequest berhasil dihapus');
+        return redirect('transaksiout')->with('message', 'Transaksi berhasil dihapus');
     }
 
     /**
@@ -180,7 +180,7 @@ class PartRequestController extends Controller
     {
 
         $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_PartRequestRepository->getById($id);
+        $getDetail  = $this->_transaksioutRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
@@ -194,11 +194,11 @@ class PartRequestController extends Controller
     {
         if ($id == '') {
             return [
-                'part_req_number' => 'required|unique:part_request',
+                'condition' => 'required|unique:transaksi_out_id',
             ];
         } else {
             return [
-                'part_req_number' => 'required|unique:partrequest,part_req_number,' . $id . ',part_req_id',
+                'condition' => 'required|unique:transaksi_out_id,condition,' . $id . ',transaksi_in_id',
             ];
         }
     }
