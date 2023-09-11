@@ -45,7 +45,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="80%">Nama</th>
+                                <th width="80%">Nomor Invoice</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -198,7 +198,18 @@
 @section('script')
 <script type="text/javascript">
     $('.btnAdd').click(function () {
-        $('#module_name').val('');
+        $('#invoice_no').val('');
+        $('#ata_suai').val('');
+        $('#po_no').val('');
+        $('#po_date').val('');
+        $('#no_urut').val('');
+        $('#part_name').val('');
+        $('#molts_no').val('');
+        $('#part_no').val('');
+        $('#qty').val('');
+        $('#loc_hib').val('');
+        $('#loc_ppti').val('');
+        $('#qty_end').val('');
         $('.addModal form').attr('action', "{{ url('transaksiin/store') }}");
         $('.addModal .modal-title').text('Tambah Transaksi');
         $('.addModal').modal('show');
@@ -224,7 +235,18 @@
                 console.log(data);
 
                 if (data.status == 1) {
-
+                    $('#invoice_no').val(data.result.invoice_no);
+                    $('#ata_suai').val(data.result.ata_suai);
+                    $('#po_no').val(data.result.po_no);
+                    $('#po_date').val(data.result.po_date);
+                    $('#no_urut').val(data.result.no_urut);
+                    $('#part_name').val(data.result.part_name);
+                    $('#molts_no').val(data.result.molts_no);
+                    $('#part_no').val(data.result.part_no);
+                    $('#qty').val(data.result.qty);
+                    $('#loc_hib').val(data.result.loc_hib);
+                    $('#loc_ppti').val(data.result.loc_ppti);
+                    $('#qty_end').val(data.result.qty_end);
                     $('#module_name').val(data.result.module_name);
                     $('.addModal .modal-title').text('Ubah Transaksi');
                     $('.addModal').modal('show');
@@ -280,10 +302,32 @@
 
     $("#addForm").validate({
         rules: {
-            module_name: "required",
+            invoice_no: "required",
+            ata_suai: "required",
+            po_no: "required",
+            po_date: "required",
+            no_urut: "required",
+            part_name: "required",
+            molts_no: "required",
+            part_no: "required",
+            qty: "required",
+            loc_hib: "required",
+            loc_ppti: "required",
+            qty_end: "required"
         },
         messages: {
-            module_name: "Transaksi tidak boleh kosong",
+            invoice_no: "Invoice No Tidak Boleh Kosong",
+            ata_suai: "Ata Suai Tidak Boleh Kosong",
+            po_no: "PO No Tidak Boleh Kosong",
+            po_date: "PO Date Tidak Boleh Kosong",
+            no_urut: "No Urut Tidak Boleh Kosong",
+            part_name: "Part Name Tidak Boleh Kosong",
+            molts_no: "Molts No Tidak Boleh Kosong",
+            part_no: "Part No Tidak Boleh Kosong",
+            qty: "Qty Tidak Boleh Kosong",
+            loc_hib: "Loc HIB Tidak Boleh Kosong",
+            loc_ppti: "Loc PPTI Tidak Boleh Kosong",
+            qty_end: "Qty End Tidak Boleh Kosong",
         },
         errorElement: "em",
         errorClass: "invalid-feedback",

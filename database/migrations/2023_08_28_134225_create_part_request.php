@@ -30,9 +30,11 @@ return new class extends Migration
             $table->string('stroke');
             $table->string('pic');
             $table->string('remarks');
-            $table->integer('anvil_qty');
-            $table->integer('insulation_crimper_qty');
-            $table->integer('wire_crimper_qty');
+            $table->integer('part_qty');
+            $table->string('status');
+            $table->string('wtstatus');
+            $table->string('approved_by');
+            $table->string('part_no');
             $table->dateTime('created_at');
             $table->bigInteger('created_by')->unsigned();
             $table->dateTime('updated_at')->nullable();
@@ -52,7 +54,7 @@ return new class extends Migration
                 ->references('user_id')
                 ->on('sys_users')
                 ->onDelete('cascade');
-            
+
             $table->engine = 'InnoDB';
         });
     }

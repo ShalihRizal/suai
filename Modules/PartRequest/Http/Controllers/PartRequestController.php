@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\PartRequest\Repositories\PartRequestRepository;
+use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -19,6 +20,7 @@ class PartRequestController extends Controller
     {
         $this->middleware('auth');
 
+        $this->_partRepository = new PartRepository;
         $this->_PartRequestRepository = new PartRequestRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "PartRequest";
@@ -28,6 +30,7 @@ class PartRequestController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
+
     public function index()
     {
         // Authorize
@@ -36,8 +39,9 @@ class PartRequestController extends Controller
         }
 
         $partrequests = $this->_PartRequestRepository->getAll();
+        $parts = $this->_partRepository->getAll();
 
-        return view('partrequest::index', compact('partrequests'));
+        return view('partrequest::index', compact('partrequests', 'parts'));
     }
 
     /**
@@ -61,6 +65,7 @@ class PartRequestController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -74,10 +79,40 @@ class PartRequestController extends Controller
                 ->withInput();
         }
 
+        $last  = $this->_PartRequestRepository->getLast();
+        if ($last) {
+            $part_req_number = rand(1,9999).$last->part_req_id;
+        }else{
+            $part_req_number = rand(1,9999).'1';
+        }
+
+        $part  = $this->_partRepository->getById($request->part_id);
+        $data = [
+            'part_id' => $request->part_id,
+            'part_req_number' => $part_req_number,
+            'carline' => $request->carline,
+            'car_model' => $request->car_model,
+            'alasan' => $request->alasan,
+            'order' => $request->order,
+            'shift' => $request->shift,
+            'machine_no' => $request->machine_no,
+            'applicator_no' => $request->applicator_no,
+            'wear_and_tear_code' => $request->wear_and_tear_code,
+            'serial_no' => $request->serial_no,
+            'side_no' => $request->side_no,
+            'stroke' => $request->stroke,
+            'pic' => $request->pic,
+            'remarks' => $request->remarks,
+            'part_qty' => $request->part_qty,
+            'status' => $request->status,
+            'approved_by' => $request->approved_by,
+            'part_no' => $part->part_no,
+        ];
         DB::beginTransaction();
-        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
+        // dd($check, $data);
 
         return redirect('partrequest')->with('message', 'PartRequest berhasil ditambahkan');
     }
@@ -109,7 +144,7 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('::edit');
+        return view('partrequest::edit');
     }
 
     /**
@@ -120,6 +155,8 @@ class PartRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // dd($request->all());
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -194,11 +231,11 @@ class PartRequestController extends Controller
     {
         if ($id == '') {
             return [
-                'part_req_number' => 'required|unique:part_request',
+                'part_id' => 'required',
             ];
         } else {
             return [
-                'part_req_number' => 'required|unique:partrequest,part_req_number,' . $id . ',part_req_id',
+                'part_id' => 'required',
             ];
         }
     }

@@ -66,7 +66,9 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="40%">Part Name</th>
+                                <th width="20%">Part Name</th>
+                                <th width="15%">Part Number</th>
+                                <th width="20%">Stock</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -79,7 +81,9 @@
                             @foreach ($parts as $part)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="40%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="15%">{{ $part->part_no }}</td>
+                                <td width="20%">{{ $part->qty_end }}</td>
                                 <td width="15%">
                                     @if($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -350,6 +354,7 @@
                     $('#rec_date').val(data.result.rec_date);
                     $('#loc_ppti').val(data.result.loc_ppti);
                     $('#loc_tapc').val(data.result.loc_tapc);
+                    $('#invoice').val(data.result.invoice);
                     $('#lokasi_hib').val(data.result.lokasi_hib);
                     $('#qty_begin').val(data.result.qty_begin);
                     $('#qty_in').val(data.result.qty_in);

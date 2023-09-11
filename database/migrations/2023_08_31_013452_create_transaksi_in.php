@@ -27,7 +27,22 @@ return new class extends Migration
             $table->string('loc_hib')->nullable();
             $table->string('loc_ppti')->nullable();
             $table->string('qty_end')->nullable();
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->bigInteger('created_by')->unsigned();
+            $table->dateTime('updated_at')->nullable();
+            $table->bigInteger('updated_by')->unsigned()->nullable();
+
+            $table->foreign('created_by')
+                ->references('user_id')
+                ->on('sys_users')
+                ->onDelete('cascade');
+
+            $table->foreign('updated_by')
+                ->references('user_id')
+                ->on('sys_users')
+                ->onDelete('cascade');
+
+            $table->engine = 'InnoDB';
         });
     }
 

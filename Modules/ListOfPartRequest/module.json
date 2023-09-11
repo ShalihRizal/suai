@@ -1,0 +1,11 @@
+{
+    "name": "ListOfPartRequest",
+    "alias": "listofpartrequest",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ListOfPartRequest\\Providers\\ListOfPartRequestServiceProvider"
+    ],
+    "files": []
+}

@@ -45,7 +45,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="80%">Nama</th>
+                                <th width="80%">Part Request Number</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -106,11 +106,18 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_req_number" id="part_req_number"
-                                        placeholder="Masukan Part Req Number" value="{{ old('part_req_number') }}">
+                                    <label class="form-label">Part <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="part_id" id="part_id">
+                                        <option value="">- Pilih Part -</option>
+                                        @if(sizeof($parts) > 0)
+                                        @foreach($parts as $part)
+                                        <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Carline <span class="text-danger">*</span></label>
@@ -204,23 +211,24 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Anvil Quantity <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="anvil_qty" id="anvil_qty"
-                                        placeholder="Masukan Anvil Quantity" value="{{ old('anvil_qty') }}">
+                                    <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_qty" id="part_qty"
+                                        placeholder="Masukan Part Quantity" value="{{ old('part_qty') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+
+                            <div class="col-md-12" hidden>
                                 <div class="form-group">
-                                    <label class="form-label">Insulation Crimper Quantity <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="insulation_crimper_qty" id="insulation_crimper_qty"
-                                        placeholder="Masukan Insulation Crimper Quantity" value="{{ old('insulation_crimper_qty') }}">
+                                    <label class="form-label">Status <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="status" id="status"
+                                        placeholder="Masukan Status" value="0">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" hidden>
                                 <div class="form-group">
-                                    <label class="form-label">Wire Crimper Quantity <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wire_crimper_qty" id="wire_crimper_qty"
-                                        placeholder="Masukan Wire Crimper Quantity" value="{{ old('wire_crimper_qty') }}">
+                                    <label class="form-label">Approved By <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="approved_by" id="approved_by"
+                                        placeholder="Masukan Approved" value="-">
                                 </div>
                             </div>
                         </div>
@@ -240,7 +248,22 @@
 @section('script')
 <script type="text/javascript">
     $('.btnAdd').click(function () {
-        $('#module_name').val('');
+        $('#part_req_number').val('');
+        $('#carline').val('');
+        $('#car_model').val('');
+        $('#alasan').val('');
+        $('#order').val('');
+        $('#shift').val('');
+        $('#machine_no').val('');
+        $('#applicator_no').val('');
+        $('#wear_and_tear_code').val('');
+        $('#serial_no').val('');
+        $('#side_no').val('');
+        $('#stroke').val('');
+        $('#pic').val('');
+        $('#remarks').val('');
+        $('#part_qty').val('');
+        $('#part_no').val('');
         $('.addModal form').attr('action', "{{ url('partrequest/store') }}");
         $('.addModal .modal-title').text('Tambah Modul');
         $('.addModal').modal('show');
@@ -266,9 +289,25 @@
                 console.log(data);
 
                 if (data.status == 1) {
-
-                    $('#module_name').val(data.result.module_name);
-                    $('.addModal .modal-title').text('Ubah Modul');
+                    $('#part_req_number').val(data.result.part_req_number);
+                    $('#carline').val(data.result.carline);
+                    $('#car_model').val(data.result.car_model);
+                    $('#alasan').val(data.result.alasan);
+                    $('#order').val(data.result.order);
+                    $('#shift').val(data.result.shift);
+                    $('#machine_no').val(data.result.machine_no);
+                    $('#applicator_no').val(data.result.applicator_no);
+                    $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
+                    $('#serial_no').val(data.result.serial_no);
+                    $('#side_no').val(data.result.side_no);
+                    $('#stroke').val(data.result.stroke);
+                    $('#pic').val(data.result.pic);
+                    $('#remarks').val(data.result.remarks);
+                    $('#part_qty').val(data.result.part_qty);
+                    $('#status').val(data.result.status);
+                    $('#approved_by').val(data.result.approved_by);
+                    $('#part_no').val(data.result.part_no);
+                    $('.addModal .modal-title').text('Ubah Part Request');
                     $('.addModal').modal('show');
 
                 }

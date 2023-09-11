@@ -33,5 +33,7 @@
     "PartRequest": true,
     "Part": true,
     "TransaksiIn": true,
-    "TransaksiOut": true
+    "TransaksiOut": true,
+    "Notification": true,
+    "ListOfPartRequest": true
 }
