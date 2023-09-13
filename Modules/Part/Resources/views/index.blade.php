@@ -1,3 +1,5 @@
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 @extends('layouts.app')
 @section('title', 'Part')
 
@@ -69,6 +71,7 @@
                                 <th width="20%">Part Name</th>
                                 <th width="15%">Part Number</th>
                                 <th width="20%">Stock</th>
+                                <th width="20%">QR Code</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -84,6 +87,7 @@
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
+                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no);}}</td>
                                 <td width="15%">
                                     @if($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -95,6 +99,11 @@
                                         data-url="{{ url('part/delete/'. $part->part_id) }}" data-toggle="tooltip"
                                         data-placement="top" title="Hapus">
                                         <i data-feather="trash-2" width="16" height="16"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-icon btn-success text-white btnGenerate"
+                                        data-url="{{ url('part/generate/') }}" data-toggle="tooltip"
+                                        data-placement="top" title="QR Code">
+                                        <i data-feather="code" width="16" height="16"></i>
                                     </a>
                                     @endif
                                 </td>
@@ -373,6 +382,34 @@
         });
 
     });
+
+    $('.btnGenerate').click(function () {
+
+var id = $(this).attr('data-id');
+var url = "{{ url('part/getdata') }}";
+
+$('.addModal form').attr('action', "{{ url('part/update') }}" + '/' + id);
+
+$.ajax({
+    type: 'GET',
+    url: url + '/' + id,
+    dataType: 'JSON',
+    success: function (data) {
+        console.log(data);
+
+        if (data.status == 1) {
+            $('#part_no').val(data.result.part_no);
+            $('.addModal .modal-title').text('Ubah Part');
+            $('.addModal').modal('show');
+        }
+
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+        alert('Error : Gagal mengambil data');
+    }
+});
+
+});
 
     $('.btnDelete').click(function () {
         $('.btnDelete').attr('disabled', true)

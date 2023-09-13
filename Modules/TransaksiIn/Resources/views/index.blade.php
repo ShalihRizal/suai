@@ -45,7 +45,8 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="80%">Nomor Invoice</th>
+                                <th width="20%">Nomor Invoice</th>
+                                <th width="20%">Part Number</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -58,7 +59,8 @@
                             @foreach ($transaksiins as $transaksiin)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="80%">{{ $transaksiin->invoice_no }}</td>
+                                <td width="20%">{{ $transaksiin->invoice_no }}</td>
+                                {{-- <td width="20%">{{ $part->part_no }}</td> --}}
                                 <td width="15%">
                                     @if($transaksiin->transaksi_in_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -106,26 +108,32 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Nomor Invoice <span class="text-danger">*</span></label>
+                                    <label class="form-label">Sub Rak <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="invoice_no" id="invoice_no"
-                                        placeholder="Masukan Nomor Invoice" value="{{ old('invoice_no') }}">
+                                        placeholder="Masukan Sub Rak" value="{{ old('invoice_no') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">ATA - SUAI <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="ata_suai" id="ata_suai"
-                                        placeholder="Masukan ATA - SUAI" value="{{ old('ata_suai') }}">
+                                    <label class="form-label">Part <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="part_id" id="part_id">
+                                        <option value="">- Pilih Part -</option>
+                                        @if(sizeof($parts) > 0)
+                                        @foreach($parts as $part)
+                                        <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Nomor PO <span class="text-danger">*</span></label>
+                                    <label class="form-label">Quantity <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="po_no" id="po_no"
-                                        placeholder="Masukan Nomor PO" value="{{ old('po_no') }}">
+                                        placeholder="Masukan Quantity" value="{{ old('po_no') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            {{-- <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Tanggal PO <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="po_date" id="po_date"
@@ -180,7 +188,7 @@
                                     <input type="text" class="form-control" name="qty_end" id="qty_end"
                                         placeholder="Masukan Quantity End" value="{{ old('qty_end') }}">
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

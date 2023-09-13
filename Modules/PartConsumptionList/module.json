@@ -1,0 +1,11 @@
+{
+    "name": "PartConsumptionList",
+    "alias": "partconsumptionlist",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PartConsumptionList\\Providers\\PartConsumptionListServiceProvider"
+    ],
+    "files": []
+}

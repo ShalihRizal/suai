@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
+use Modules\Part\Repositories\PartRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -19,6 +20,7 @@ class TransaksiInController extends Controller
     {
         $this->middleware('auth');
 
+        $this->_partRepository = new PartRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "TransaksiIn";
@@ -36,8 +38,9 @@ class TransaksiInController extends Controller
         }
 
         $transaksiins = $this->_transaksiinRepository->getAll();
+        $parts = $this->_partRepository->getAll();
 
-        return view('transaksiin::index', compact('transaksiins'));
+        return view('transaksiin::index', compact('transaksiins', 'parts'));
     }
 
     /**
@@ -61,6 +64,8 @@ class TransaksiInController extends Controller
      */
     public function store(Request $request)
     {
+
+        // dd($request->all());
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -78,6 +83,7 @@ class TransaksiInController extends Controller
         $this->_transaksiinRepository->insert(DataHelper::_normalizeParams($request->all(), true));
         $this->_logHelper->store($this->module, $request->invoice_no, 'create');
         DB::commit();
+        // dd($request->all(), $check);
 
         return redirect('transaksiin')->with('message', 'Transaksi berhasil ditambahkan');
     }
@@ -194,11 +200,11 @@ class TransaksiInController extends Controller
     {
         if ($id == '') {
             return [
-                'invoice_no' => 'required|unique:transaksi_in',
+                'invoice_no' => 'required',
             ];
         } else {
             return [
-                'invoice_no' => 'required|unique:transaksi_in,invoice_no,' . $id . ',transaksi_in_id',
+                'invoice_no' => 'required',
             ];
         }
     }

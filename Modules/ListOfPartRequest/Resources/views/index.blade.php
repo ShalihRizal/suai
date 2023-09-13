@@ -205,6 +205,13 @@
                                         placeholder="Masukan Part Quantity" value="{{ old('part_qty') }}">
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_qty" id="part_qty"
+                                        placeholder="Masukan Wear and Tear Status" value="{{ old('part_qty') }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

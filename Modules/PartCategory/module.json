@@ -1,0 +1,11 @@
+{
+    "name": "PartCategory",
+    "alias": "partcategory",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PartCategory\\Providers\\PartCategoryServiceProvider"
+    ],
+    "files": []
+}
