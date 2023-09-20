@@ -40,6 +40,21 @@
                 </a>
                 {{-- </div> --}}
 
+
+                {{-- <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">Part <span class="text-danger">*</span> </label>
+                        <select class="form-control" name="part_id" id="part_id">
+                            <option value="">- Pilih Part -</option>
+                            @if(sizeof($parts) > 0)
+                            @foreach($parts as $part)
+                            <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div> --}}
+
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                         <thead>
@@ -111,7 +126,7 @@
                                         <option value="">- Pilih Part -</option>
                                         @if(sizeof($parts) > 0)
                                         @foreach($parts as $part)
-                                        <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
+                                        <option value="{{ $part->part_id }}">{{ $part->part_no }} - {{ $part->part_name }}</option>
                                         @endforeach
                                         @endif
                                     </select>
@@ -146,13 +161,26 @@
                                         placeholder="Masukan Order" value="{{ old('order') }}">
                                 </div>
                             </div>
+
                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Shift <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="shift" id="shift">
+                                        <option value="">- Pilih Shift -</option>
+                                        <option value="1">Shift A</option>
+                                        <option value="2">Shift B</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            {{-- <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Shift <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="shift" id="shift"
                                         placeholder="Masukan Shift" value="{{ old('shift') }}">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Machine Number <span class="text-danger">*</span></label>
@@ -216,7 +244,6 @@
                                         placeholder="Masukan Part Quantity" value="{{ old('part_qty') }}">
                                 </div>
                             </div>
-
                             <div class="col-md-12" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Status <span class="text-danger">*</span></label>
@@ -224,11 +251,39 @@
                                         placeholder="Masukan Status" value="0">
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Anvil <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="anvil" id="anvil"
+                                        placeholder="Masukan Anvil" value="{{ old('anvil') }}">
+                                </div>
+                            </div>
                             <div class="col-md-12" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Approved By <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="approved_by" id="approved_by"
                                         placeholder="Masukan Approved" value="-">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Insulation Crimper <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="insulation_crimper" id="insulation_crimper"
+                                        placeholder="Masukan Insulation Crimper" value="{{ old('insulation_crimper') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Wire Crimper <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="wire_crimper" id="wire_crimper"
+                                        placeholder="Masukan Wire Crimper" value="{{ old('wire_crimper') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Other <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="other" id="other"
+                                        placeholder="Masukan Other" value="{{ old('other') }}">
                                 </div>
                             </div>
                         </div>
@@ -264,6 +319,10 @@
         $('#remarks').val('');
         $('#part_qty').val('');
         $('#part_no').val('');
+        $('#anvil').val('');
+        $('#insulation_crimper').val('');
+        $('#wire_crimper').val('');
+        $('#other').val('');
         $('.addModal form').attr('action', "{{ url('partrequest/store') }}");
         $('.addModal .modal-title').text('Tambah Modul');
         $('.addModal').modal('show');

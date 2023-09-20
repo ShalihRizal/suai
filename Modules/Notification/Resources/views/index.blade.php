@@ -84,8 +84,13 @@
                                     @if($notification->part_req_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
                                         data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah">
+                                        title="Approve">
                                         <i data-feather="check" width="16" height="16"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-icon btnDetail btn-success text-white "
+                                        data-url="{{ url('notification/edit/'. $notification->part_req_id) }}"
+                                        data-toggle="tooltip" data-placement="top" title="Hapus">
+                                        <i data-feather="list" width="16" height="16"></i>
                                     </a>
                                     @endif
                                 </td>
@@ -151,6 +156,38 @@
     @endif
 
     $('.btnEdit').click(function () {
+
+        var id = $(this).attr('data-id');
+        var url = "{{ url('notification/getdata') }}";
+
+        $('.addModal form').attr('action', "{{ url('notification/update') }}" + '/' + id);
+
+        $.ajax({
+            type: 'GET',
+            url: url + '/' + id,
+            dataType: 'JSON',
+            success: function (data) {
+                console.log(data);
+
+                if (data.status == 1) {
+                    $('#part_req_id').val(data.result.part_req_id);
+                    $('#part_req_number').val(data.result.part_req_number);
+                    $('#pic').val(data.result.pic);
+                    $('#part_name').val(data.result.part_name);
+                    $('#part_qty').val(data.result.part_qty);
+                    $('.addModal .modal-title').text('Approve');
+                    $('.addModal').modal('show');
+                }
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : Gagal mengambil data');
+            }
+        });
+
+    });
+
+    $('.btnDetail').click(function () {
 
         var id = $(this).attr('data-id');
         var url = "{{ url('notification/getdata') }}";

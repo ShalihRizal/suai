@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Storage;
 
+use Modules\PartCategory\Repositories\PartCategoryRepository;
+use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -19,6 +21,8 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->_partCategoryRepository = new PartCategoryRepository;
+        $this->_partRepository = new PartRepository;
     }
 
     /**
@@ -28,8 +32,35 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $partcategories = $this->_partCategoryRepository->getAll();
+        $parts = $this->_partRepository->getAll();
 
-        return view('dashboard::index');
+        $labels = [];
+        $data = [];
+
+        foreach ($partcategories as $partcategory) {
+            $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+            $sum = [];
+            foreach ($parts as $part) {
+                if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+                    $sum[] = intval($part->qty_end);
+                }
+            }
+            $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        }
+
+
+        dd($data);
+
+        return view('dashboard::index', compact('partcategories', 'labels', 'data'));
+    }
+
+    function array_multisum(array $arr): float {
+        $sum = array_sum($arr);
+        foreach($arr as $child) {
+            $sum += is_array($child) ? array_multisum($child) : 0;
+        }
+        return $sum;
     }
 
     /**

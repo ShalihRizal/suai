@@ -43,6 +43,7 @@
                                 <th width="20%">PIC</th>
                                 <th width="20%">Part Number</th>
                                 <th width="15%">Part Quantity</th>
+                                <th width="15%">Status</th>
                                 {{-- <th width="15%">Approved By</th> --}}
                             </tr>
                         </thead>
@@ -59,6 +60,7 @@
                                 <td width="20%">{{ $listofpartrequest->pic }}</td>
                                 <td width="20%">{{ $listofpartrequest->part_no }}</td>
                                 <td width="15%">{{ $listofpartrequest->part_qty }}</td>
+                                <td width="15%">{{ $listofpartrequest->status }}</td>
                                 {{-- <td width="15%">{{ $listofpartrequest->approved_by }}</td> --}}
                                 {{-- <td width="15%">
                                     @if($listofpartrequest->part_req_id > 0)

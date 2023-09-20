@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
+use Modules\Part\Repositories\PartRepository;
 use Modules\TransaksiOut\Repositories\TransaksiOutRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -19,6 +20,7 @@ class TransaksiOutController extends Controller
     {
         $this->middleware('auth');
 
+        $this->_partRepository = new PartRepository;
         $this->_transaksioutRepository = new TransaksiOutRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "TransaksiOut";
@@ -36,8 +38,9 @@ class TransaksiOutController extends Controller
         }
 
         $transaksiouts = $this->_transaksioutRepository->getAll();
+        $parts = $this->_partRepository->getAll();
 
-        return view('transaksiout::index', compact('transaksiouts'));
+        return view('transaksiout::index', compact('transaksiouts', 'parts'));
     }
 
     /**

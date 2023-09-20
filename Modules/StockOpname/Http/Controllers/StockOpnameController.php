@@ -1,29 +1,29 @@
 <?php
 
-namespace Modules\Part\Http\Controllers;
+namespace Modules\StockOpname\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
-use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
+use Modules\StockOpname\Repositories\StockOpnameRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
 use Validator;
 
-class PartController extends Controller
+class StockOpnameController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
 
         $this->_partRepository = new PartRepository;
-        $this->_partCategoryRepository = new PartCategoryRepository;
+        $this->_stockopnameRepository = new StockOpnameRepository;
         $this->_logHelper           = new LogHelper;
-        $this->module               = "Part";
+        $this->module               = "StockOpname";
     }
 
     /**
@@ -37,10 +37,15 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
 
-        $parts = $this->_partRepository->getAll();
-        $partcategories = $this->_partCategoryRepository->getAll();
+        $params = [
+            'has_sto' => 'no'
+        ];
 
-        return view('part::index', compact('parts', 'partcategories'));
+        $parts = $this->_partRepository->getAllByParams($params);
+        $stockopnames = $this->_stockopnameRepository->getAll();
+
+
+        return view('stockopname::index', compact('stockopnames', 'parts'));
     }
 
     /**
@@ -54,7 +59,7 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('part::create');
+        return view('stockopname::create');
     }
 
     /**
@@ -72,19 +77,17 @@ class PartController extends Controller
         $validator = Validator::make($request->all(), $this->_validationRules(''));
 
         if ($validator->fails()) {
-            return redirect('part')
+            return redirect('stockopname')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         DB::beginTransaction();
-        $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        // $check = $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->part_no, 'create');
+        $this->_stockopnameRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'create');
         DB::commit();
-        // dd($check);
 
-        return redirect('part')->with('message', 'Part berhasil ditambahkan');
+        return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
     }
 
     /**
@@ -99,7 +102,7 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('part::show');
+        return view('stockopname::show');
     }
 
     /**
@@ -114,7 +117,17 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('part::edit');
+        return view('stockopname::edit');
+    }
+
+    public function scan()
+    {
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+
+        return view('stockopname::scan');
     }
 
     /**
@@ -133,19 +146,19 @@ class PartController extends Controller
         $validator = Validator::make($request->all(), $this->_validationRules($id));
 
         if ($validator->fails()) {
-            return redirect('part')
+            return redirect('stockopname')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         DB::beginTransaction();
 
-        $this->_partRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->part_no, 'update');
+        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();
 
-        return redirect('part')->with('message', 'Part berhasil diubah');
+        return redirect('stockopname')->with('message', 'StockOpname berhasil diubah');
     }
 
     /**
@@ -160,20 +173,20 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_partRepository->getById($id);
+        $detail  = $this->_stockopnameRepository->getById($id);
 
         if (!$detail) {
-            return redirect('part');
+            return redirect('stockopname');
         }
 
         DB::beginTransaction();
 
-        $this->_partRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_no, 'delete');
+        $this->_stockopnameRepository->delete($id);
+        $this->_logHelper->store($this->module, $detail->stockopname_no, 'delete');
 
         DB::commit();
 
-        return redirect('part')->with('message', 'Part berhasil dihapus');
+        return redirect('stockopname')->with('message', 'StockOpname berhasil dihapus');
     }
 
     /**
@@ -185,7 +198,7 @@ class PartController extends Controller
     {
 
         $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_partRepository->getById($id);
+        $getDetail  = $this->_stockopnameRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

@@ -1,4 +1,4 @@
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 @extends('layouts.app')
 @section('title', 'Part')
@@ -70,6 +70,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                                 <th width="5%">No</th>
                                 <th width="20%">Part Name</th>
                                 <th width="15%">Part Number</th>
+                                <th width="15%">Part Category</th>
                                 <th width="20%">Stock</th>
                                 <th width="20%">QR Code</th>
                                 <th width="15%">Aksi</th>
@@ -86,6 +87,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
+                                <td width="15%">{{ $part->part_category_id }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
                                 <td width="20%">{{ QrCode::size(75)->generate($part->part_no);}}</td>
                                 <td width="15%">
@@ -151,6 +153,19 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                                     <label class="form-label">Part Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_name" id="part_name"
                                         placeholder="Masukan Part Name" value="{{ old('part_name') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Category <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="part_category_id" id="part_category_id">
+                                        <option value="">- Pilih Part Category -</option>
+                                        @if(sizeof($partcategories) > 0)
+                                        @foreach($partcategories as $partcategory)
+                                        <option value="{{ $partcategory->part_category_id }}">{{ $partcategory->part_category_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -325,6 +340,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         $('#adjust').val('');
         $('#qty_end').val('');
         $('#remarks').val('');
+        $('#part_category_id').val('');
         $('.addModal form').attr('action', "{{ url('part/store') }}");
         $('.addModal .modal-title').text('Tambah Part');
         $('.addModal').modal('show');
@@ -371,6 +387,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                     $('#adjust').val(data.result.adjust);
                     $('#qty_end').val(data.result.qty_end);
                     $('#remarks').val(data.result.remarks);
+                    $('#part_category_id').val(data.result.part_category_id);
                     $('.addModal .modal-title').text('Ubah Part');
                     $('.addModal').modal('show');
                 }
@@ -382,34 +399,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         });
 
     });
-
-    $('.btnGenerate').click(function () {
-
-var id = $(this).attr('data-id');
-var url = "{{ url('part/getdata') }}";
-
-$('.addModal form').attr('action', "{{ url('part/update') }}" + '/' + id);
-
-$.ajax({
-    type: 'GET',
-    url: url + '/' + id,
-    dataType: 'JSON',
-    success: function (data) {
-        console.log(data);
-
-        if (data.status == 1) {
-            $('#part_no').val(data.result.part_no);
-            $('.addModal .modal-title').text('Ubah Part');
-            $('.addModal').modal('show');
-        }
-
-    },
-    error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Error : Gagal mengambil data');
-    }
-});
-
-});
 
     $('.btnDelete').click(function () {
         $('.btnDelete').attr('disabled', true)
