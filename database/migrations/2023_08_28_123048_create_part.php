@@ -38,6 +38,8 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('last_sto')->nullable();
             $table->string('has_sto')->nullable();
+            $table->string('status')->nullable();
+            $table->string('wear_and_tear_code')->nullable();
             $table->string('part_category_id')->nullable();
             $table->dateTime('created_at');
             $table->bigInteger('created_by')->unsigned();

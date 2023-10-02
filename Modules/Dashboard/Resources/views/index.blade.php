@@ -3,44 +3,105 @@
 
 @section('content')
 <div class="card">
-    <div class="card-body">
-      <h1 class="card-title">Halo, {{ Auth::user()->user_name }}</h1>
-      <a class="btn btn-success text-white mb-3">
-        <i data-feather="calendar" width="17" height="17" class="me-2"> </i> {{ date('Y-m-d') }}
-
-    </a>
+    <div class="card-header w-100">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="card-title">Halo, {{ Auth::user()->user_name }}</h1>
+                {{ date('Y-m-d') }}
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!DOCTYPE html>
-<html>
-<head>
-    <title>Pie Chart Example</title>
-</head>
-<body>
-    <div style="width: 50%;">
-        <canvas id="myPieChart"></canvas>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header w-100">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h3">Recent Activity</h3>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="col-md-12 text-end"></div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="50%">Deskripsi</th>
+                                <th width="50%">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (sizeof($logs) == 0)
+                            <tr>
+                                <td colspan="3" align="center">Data kosong</td>
+                            </tr>
+                            @else
+                            @foreach ($logs as $log)
+                            <tr>
+                                <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="50%">{{ $log->log_description }}</td>
+                                <td width="50%">{{ substr($log->created_at, 0,10) }}</td>
+
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header w-100">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h3">Status Inventory</h3>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="col-md-12 text-end"></div>
+            </div>
+            <div class="card-body">
+                <div class="container-md"> <!-- Wrap in a container that takes half the screen width -->
+                    <div id="piechart" style="width: 700px; height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-  {{-- <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Active</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Link</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link disabled">Disabled</a>
-    </li>
-  </ul> --}}
 
 @endsection
+
 @section('script')
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
+        function drawChart() {
+            var chartData = [['Label', 'Quantity']];
+
+            @foreach ($labels as $partCategoryId => $label)
+                chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
+            @endforeach
+
+            var data = google.visualization.arrayToDataTable(chartData);
+
+            var options = {
+                title: ''
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
 @endsection
+

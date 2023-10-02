@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Part\Repositories\PartRepository;
+use Modules\Rack\Repositories\RackRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -20,6 +21,7 @@ class TransaksiInController extends Controller
     {
         $this->middleware('auth');
 
+        $this->_rackRepository = new RackRepository;
         $this->_partRepository = new PartRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
         $this->_logHelper           = new LogHelper;
@@ -39,8 +41,9 @@ class TransaksiInController extends Controller
 
         $transaksiins = $this->_transaksiinRepository->getAll();
         $parts = $this->_partRepository->getAll();
+        $racks = $this->_rackRepository->getAll();
 
-        return view('transaksiin::index', compact('transaksiins', 'parts'));
+        return view('transaksiin::index', compact('transaksiins', 'parts', 'racks'));
     }
 
     /**

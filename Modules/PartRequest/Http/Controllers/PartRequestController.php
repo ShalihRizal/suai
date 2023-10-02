@@ -8,6 +8,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\PartRequest\Repositories\PartRequestRepository;
+use Modules\Carline\Repositories\CarlineRepository;
+use Modules\Machine\Repositories\MachineRepository;
+use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -22,6 +25,9 @@ class PartRequestController extends Controller
 
         $this->_partRepository = new PartRepository;
         $this->_PartRequestRepository = new PartRequestRepository;
+        $this->_CarlineRepository = new CarlineRepository;
+        $this->_MachineRepository = new MachineRepository;
+        $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "PartRequest";
     }
@@ -40,8 +46,11 @@ class PartRequestController extends Controller
 
         $partrequests = $this->_PartRequestRepository->getAll();
         $parts = $this->_partRepository->getAll();
+        $carlines = $this->_CarlineRepository->getAll();
+        $machines = $this->_MachineRepository->getAll();
+        $carlinecategories = $this->_CarlineCategoryRepository->getAll();
 
-        return view('partrequest::index', compact('partrequests', 'parts'));
+        return view('partrequest::index', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines'));
     }
 
     /**
@@ -80,11 +89,15 @@ class PartRequestController extends Controller
         }
 
         $last  = $this->_PartRequestRepository->getLast();
-        if ($last) {
-            $part_req_number = rand(1,9999).$last->part_req_id;
-        }else{
-            $part_req_number = rand(1,9999).'1';
-        }
+        $currentMonth = date('F'); // Get the current month in full text format
+        $part_req_number = "PR/$currentMonth/SPM/". $last->part_req_id;
+
+
+        // if ($last) {
+        //     $part_req_number = rand(1,9999).$last->part_req_id;
+        // }else{
+        //     $part_req_number = rand(1,9999).'1';
+        // }
 
         $part  = $this->_partRepository->getById($request->part_id);
         $data = [
@@ -110,9 +123,10 @@ class PartRequestController extends Controller
         ];
         DB::beginTransaction();
         $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
+        // $check = $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
-        // dd($check, $data);
+        // dd($check);
 
         return redirect('partrequest')->with('message', 'PartRequest berhasil ditambahkan');
     }

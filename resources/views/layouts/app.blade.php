@@ -67,6 +67,14 @@
 
         <ul class="nav">
           <li class="nav-item">
+            <a class="nav-link text-muted my-2" href="#" id="notifications">
+              {{-- <i class="fe fe-sun fe-16"></i> --}}
+              <i data-feather="bell" width="16" height="16"></i>
+              {{-- <label for="">{{$notifsize}}</label> --}}
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
               {{-- <i class="fe fe-sun fe-16"></i> --}}
               <i data-feather="sun" width="16" height="16"></i>

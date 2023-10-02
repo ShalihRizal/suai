@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Part\Repositories\PartRepository;
+use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\StockOpname\Repositories\StockOpnameRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -21,6 +22,7 @@ class StockOpnameController extends Controller
         $this->middleware('auth');
 
         $this->_partRepository = new PartRepository;
+        $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_stockopnameRepository = new StockOpnameRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "StockOpname";
@@ -32,6 +34,35 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+        $parts = $this->_partRepository->getAll();
+
+        $data = [];
+
+        // foreach ($partcategories as $partcategory) {
+        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+        //     $sum = [];
+        //     foreach ($parts as $part) {
+        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+        //             $sum[] = intval($part->qty_end);
+        //         }
+        //     }
+        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        // }
+
+
+        $labels = [];
+        $qty = [];
+
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -45,7 +76,7 @@ class StockOpnameController extends Controller
         $stockopnames = $this->_stockopnameRepository->getAll();
 
 
-        return view('stockopname::index', compact('stockopnames', 'parts'));
+        return view('stockopname::index', compact('stockopnames', 'parts','partcategories','data','labels','qty'));
     }
 
     /**
@@ -154,6 +185,31 @@ class StockOpnameController extends Controller
         DB::beginTransaction();
 
         $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return redirect('stockopname')->with('message', 'StockOpname berhasil diubah');
+    }
+
+    public function updateAll(Request $request)
+    {
+        // Authorize
+        if (Gate::denies(__FUNCTION__, $this->module)) {
+            return redirect('unauthorize');
+        }
+
+        $validator = Validator::make($request->all(), $this->_validationRules($id));
+
+        if ($validator->fails()) {
+            return redirect('stockopname')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        DB::beginTransaction();
+
+        $this->_stockopnameRepository->updateAll(DataHelper::_normalizeParams($request->all(), false, true));
         $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();

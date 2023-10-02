@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Notification\Repositories\NotificationRepository;
+use Modules\Users\Repositories\UsersRepository;
 use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -22,6 +23,7 @@ class NotificationController extends Controller
 
         $this->_partRepository = new PartRepository;
         $this->_notificationRepository = new NotificationRepository;
+        $this->_userRepository = new UsersRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "Notification";
     }
@@ -42,8 +44,10 @@ class NotificationController extends Controller
         ];
 
         $notifications = $this->_notificationRepository->getAllByParams($params);
+        $parts = $this->_partRepository->getAll();
+        $users = $this->_userRepository->getAll();
 
-        return view('notification::index', compact('notifications'));
+        return view('notification::index', compact('notifications', 'parts', 'users'));
     }
 
     /**
@@ -153,7 +157,7 @@ class NotificationController extends Controller
             }
 
             DB::beginTransaction();
-            $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $id);
+            $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
 
             $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
             $this->_logHelper->store($this->module, $request->notification_id, 'update');

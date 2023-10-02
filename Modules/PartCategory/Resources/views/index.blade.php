@@ -43,6 +43,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Part Category</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 

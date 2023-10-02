@@ -16,4 +16,15 @@ class StockOpnameRepository extends QueryBuilderImplementation
         $this->pk = 'part_id';
     }
 
+    public function updateAll(array $data)
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->update($this->fillableMatch($data));
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

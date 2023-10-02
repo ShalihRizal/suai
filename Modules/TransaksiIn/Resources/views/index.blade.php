@@ -26,6 +26,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Transaksi IN</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 
@@ -44,10 +45,10 @@
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                         <thead>
                             <tr>
-                                <th width="5%">No</th>
+                                <th width="1%">No</th>
                                 <th width="20%">Nomor Invoice</th>
-                                <th width="20%">Part Number</th>
-                                <th width="15%">Aksi</th>
+                                {{-- <th width="20%">Part Number</th> --}}
+                                <th width="5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,10 +59,10 @@
                             @else
                             @foreach ($transaksiins as $transaksiin)
                             <tr>
-                                <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="1%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $transaksiin->invoice_no }}</td>
                                 {{-- <td width="20%">{{ $part->part_no }}</td> --}}
-                                <td width="15%">
+                                <td width="5%">
                                     @if($transaksiin->transaksi_in_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
                                         data-id="{{ $transaksiin->transaksi_in_id }}" data-toggle="tooltip" data-placement="top"
@@ -108,9 +109,22 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Sub Rak <span class="text-danger">*</span></label>
+                                    <label class="form-label">Sub Rak <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="rack_name" id="rack_name">
+                                        <option value="">- Pilih Sub Rak -</option>
+                                        @if(sizeof($racks) > 0)
+                                        @foreach($racks as $rack)
+                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Invoice Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="invoice_no" id="invoice_no"
-                                        placeholder="Masukan Sub Rak" value="{{ old('invoice_no') }}">
+                                        placeholder="Masukan Invoice Number" value="{{ old('invoice_no') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">

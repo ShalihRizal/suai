@@ -1,0 +1,11 @@
+{
+    "name": "SysLog",
+    "alias": "syslog",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SysLog\\Providers\\SysLogServiceProvider"
+    ],
+    "files": []
+}

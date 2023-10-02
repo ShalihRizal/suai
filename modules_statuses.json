@@ -38,5 +38,12 @@
     "ListOfPartRequest": true,
     "PartCategory": true,
     "PartConsumptionList": true,
-    "StockOpname": true
+    "StockOpname": true,
+    "SysLog": true,
+    "Forecast": true,
+    "Carline": true,
+    "CarlineCategory": true,
+    "Racks": true,
+    "Rack": true,
+    "Machine": true
 }

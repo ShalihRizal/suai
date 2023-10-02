@@ -48,6 +48,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Notifikasi</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 
@@ -64,7 +65,7 @@
                                 <th width="20%">PIC</th>
                                 <th width="20%">Part Number</th>
                                 <th width="15%">Part Quantity</th>
-                                <th width="15%">Status</th>
+                                <th width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,18 +79,30 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $notification->part_req_number }}</td>
                                 <td width="20%">{{ $notification->pic }}</td>
-                                <td width="15%">{{ $notification->part_no }}</td>
+                                <td width="20%">{{ $notification->part_no }}</td>
                                 <td width="15%">{{ $notification->part_qty }}</td>
-                                <td width="20%">
+                                <td width="15%">
                                     @if($notification->part_req_id > 0)
+                                    @foreach ($parts as $part)
+                                    @if ($notification->part_id == $part->part_id)
+                                    @if ($notification->part_qty > $part->qty_end)
+                                    <a hidden href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        title="Approve">
+                                        <i data-feather="check" width="16" height="16"></i>
+                                    </a>
+                                    @else
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
                                         data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Approve">
                                         <i data-feather="check" width="16" height="16"></i>
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-icon btnDetail btn-success text-white "
-                                        data-url="{{ url('notification/edit/'. $notification->part_req_id) }}"
-                                        data-toggle="tooltip" data-placement="top" title="Hapus">
+                                    @endif
+                                    @endif
+                                    @endforeach
+                                    <a href="javascript:void(0)" class="btn btn-icon btnDetail btn-success text-white"
+                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        title="Approve">
                                         <i data-feather="list" width="16" height="16"></i>
                                     </a>
                                     @endif
@@ -124,8 +137,24 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Approved By <span class="text-danger">*</span></label>
+                                <select class="form-control" name="car_model" id="car_model">
+                                    <option value="">- Pilih Approved By -</option>
+                                    @if(sizeof($users) > 0)
+                                        @foreach($users as $user)
+                                            @if($user->group_id == 7)
+                                                <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                     <button type="submit" class="text-white btn btn-success">Approve</button>
@@ -135,26 +164,56 @@
     </div>
 </div>
 <!-- Modal Add -->
+
+<!-- Modal Details -->
+<div class="modal detailModal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+                @csrf
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_req_number" id="part_req_number"
+                                        placeholder="Masukan Approved" value="part_req_number">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="pic" id="pic"
+                                        placeholder="Masukan Insulation Crimper" value="{{ old('pic') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Qty <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_qty" id="part_qty"
+                                        placeholder="Masukan Part Qty" value="{{ old('part_qty') }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Details -->
+
 @endsection
 
 @section('script')
 <script type="text/javascript">
-    $('.btnAdd').click(function () {
-        $('#part_req_id').val('');
-        $('#part_req_number').val('');
-        $('#pic').val('');
-        $('#part_name').val('');
-        $('#part_qty').val('');
-        $('.addModal form').attr('action', "{{ url('notification/store') }}");
-        $('.addModal .modal-title').text('Tambah Notifikasi');
-        $('.addModal').modal('show');
-    });
-
-    // check error
-    @if(count($errors))
-    $('.addModal').modal('show');
-    @endif
-
     $('.btnEdit').click(function () {
 
         var id = $(this).attr('data-id');
@@ -192,8 +251,6 @@
         var id = $(this).attr('data-id');
         var url = "{{ url('notification/getdata') }}";
 
-        $('.addModal form').attr('action', "{{ url('notification/update') }}" + '/' + id);
-
         $.ajax({
             type: 'GET',
             url: url + '/' + id,
@@ -202,13 +259,12 @@
                 console.log(data);
 
                 if (data.status == 1) {
-                    $('#part_req_id').val(data.result.part_req_id);
                     $('#part_req_number').val(data.result.part_req_number);
                     $('#pic').val(data.result.pic);
                     $('#part_name').val(data.result.part_name);
                     $('#part_qty').val(data.result.part_qty);
-                    $('.addModal .modal-title').text('Approve');
-                    $('.addModal').modal('show');
+                    $('.detailModal .modal-title').text('Details');
+                    $('.detailModal').modal('show');
                 }
 
             },
@@ -219,85 +275,6 @@
 
     });
 
-    $('.btnDelete').click(function () {
-        $('.btnDelete').attr('disabled', true)
-        var url = $(this).attr('data-url');
-        Swal.fire({
-            title: 'Apakah anda yakin ingin menghapus data?',
-            text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya. Hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: function (data) {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Terhapus!',
-                                'Data Berhasil Dihapus.',
-                                'success'
-                            ).then(() => {
-                                location.reload()
-                            })
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        Swal.fire(
-                            'Gagal!',
-                            'Gagal menghapus data.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        })
-    });
-
-    $("#addForm").validate({
-        rules: {
-            part_req_id: "required",
-            part_req_number: "required",
-            pic: "required",
-            part_name: "required",
-            part_qty: "required"
-
-        },
-        messages: {
-            part_req_id: "Notification ID Tidak Boleh Kosong",
-            part_req_number: "Part Request Number Tidak Boleh Kosong",
-            pic: "PIC Tidak Boleh Kosong",
-            part_name: "Part Name Tidak Boleh Kosong",
-            part_qty: "Part Quantity Tidak Boleh Kosong"
-        },
-        errorElement: "em",
-        errorClass: "invalid-feedback",
-        errorPlacement: function (error, element) {
-            // Add the `help-block` class to the error element
-            $(element).parents('.form-group').append(error);
-        },
-        highlight: function (element, errorClass, validClass) {
-            $(element).addClass("is-invalid").removeClass("is-valid");
-        },
-        unhighlight: function (element, errorClass, validClass) {
-            $(element).addClass("is-valid").removeClass("is-invalid");
-        }
-    });
-    var notyf = new Notyf({
-        duration: 5000,
-        position: {
-            x: 'right',
-            y: 'top'
-        }
-    });
-    var msg = $('#msgId').html()
-    if (msg !== undefined) {
-        notyf.success(msg)
-    }
 
 </script>
 @endsection

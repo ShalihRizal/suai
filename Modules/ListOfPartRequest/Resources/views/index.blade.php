@@ -26,6 +26,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">List Of Part Request</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 
@@ -39,11 +40,23 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="20%">Nomor Part Request</th>
+                                <th width="5%">Date Transaksi</th>
+                                <th width="5%">Receiving</th>
+                                <th width="5%">Status Stok</th>
+                                <th width="5%">Molts No</th>
+                                <th width="5%">Applicator No</th>
+                                <th width="5%">Part Name</th>
+                                <th width="5%">Qty</th>
+                                <th width="5%">Machine</th>
+                                <th width="5%">Serial Number</th>
+                                <th width="5%">Shift</th>
+                                <th width="5%">Stroke</th>
+                                <th width="5%">Carline Maker</th>
+                                <th width="5%">Remarks</th>
                                 <th width="20%">PIC</th>
                                 <th width="20%">Part Number</th>
-                                <th width="15%">Part Quantity</th>
                                 <th width="15%">Status</th>
+                                <th width="15%">Aksi</th>
                                 {{-- <th width="15%">Approved By</th> --}}
                             </tr>
                         </thead>
@@ -56,11 +69,61 @@
                             @foreach ($listofpartrequests as $listofpartrequest)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="20%">{{ $listofpartrequest->part_req_number }}</td>
-                                <td width="20%">{{ $listofpartrequest->pic }}</td>
-                                <td width="20%">{{ $listofpartrequest->part_no }}</td>
+                                <td width="5%">{{ $listofpartrequest->updated_at }}</td>
+                                <td width="5%">{{ $listofpartrequest->part_req_number }}</td>
+                                <td width="5%">OK</td>
+                                <td width="5%">Molts Number</td>
+                                <td width="5%">Applicator Number</td>
+                                <td width="5%">Part Name</td>
+                                {{-- <td width="5%">{{ $part->molts_no }}</td> --}}
+                                {{-- <td width="5%">{{ $part->applicator_no }}</td> --}}
+                                {{-- <td width="5%">{{ $part->part_name }}</td> --}}
                                 <td width="15%">{{ $listofpartrequest->part_qty }}</td>
-                                <td width="15%">{{ $listofpartrequest->status }}</td>
+                                <td width="5%">Machine</td>
+                                <td width="5%">Serial Number</td>
+                                <td width="5%">{{ $listofpartrequest->shift }}</td>
+                                <td width="5%">{{ $listofpartrequest->stroke }}</td>
+                                <td width="5%">{{ $listofpartrequest->carline }}</td>
+                                <td width="5%">{{ $listofpartrequest->remarks }}</td>
+                                <td width="5%">{{ $listofpartrequest->pic }}</td>
+                                <td width="5%">{{ $listofpartrequest->part_no }}</td>
+                                {{-- <td width="15%">{{ $listofpartrequest->machine }}</td> --}}
+                                {{-- <td width="5%">{{ $part->serial_number }}</td>
+                                <td width="5%">{{ $listofpartrequest->shift }}</td>
+                                <td width="5%">{{ $part->stroke }}</td> --}}
+                                {{-- <td width="5%">{{ $listofpartrequest->carline_maker }}</td> --}}
+                                {{-- <td width="5%">{{ $listofpartrequest->remarks }}</td> --}}
+                                {{-- <td width="5%">{{ $listofpartrequest->part_number }}</td> --}}
+                                <td width="5%">
+                                    @if($listofpartrequest->wear_and_tear_status == "Open")
+                                        <a href="javascript:void(0)" class="btn btn-icon btn-success text-white"
+                                            data-id="{{ $listofpartrequest->wear_and_tear_status }}" data-toggle="tooltip" data-placement="top"
+                                            title="Ubah">
+                                            <i data-feather="check" width="16" height="16"></i>
+                                        </a>
+                                    @elseif($listofpartrequest->wear_and_tear_status == "On Progress")
+                                        <a href="javascript:void(0)" class="btn btn-icon btn-warning text-white"
+                                            data-id="{{ $listofpartrequest->wear_and_tear_status }}" data-toggle="tooltip" data-placement="top"
+                                            title="On Progress">
+                                            <i data-feather="clock" width="16" height="16"></i>
+                                        </a>
+                                    @elseif($listofpartrequest->wear_and_tear_status == "Closed")
+                                        <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white"
+                                            data-id="{{ $listofpartrequest->wear_and_tear_status }}" data-toggle="tooltip" data-placement="top"
+                                            title="Closed">
+                                            <i data-feather="close" width="16" height="16"></i>
+                                        </a>
+                                    @endif
+                                </td>
+                                <td width="5%">
+                                    @if($listofpartrequest->part_req_id > 0)
+                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-success text-white"
+                                        data-id="{{ $listofpartrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        title="Details">
+                                        <i data-feather="list" width="16" height="16"></i>
+                                    </a>
+                                    @endif
+                                </td>
                                 {{-- <td width="15%">{{ $listofpartrequest->approved_by }}</td> --}}
                                 {{-- <td width="15%">
                                     @if($listofpartrequest->part_req_id > 0)
@@ -104,122 +167,121 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Part Req Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_req_number" id="part_req_number"
-                                        placeholder="Masukan Part Req Number" value="{{ old('part_req_number') }}">
+                                         value="{{ old('part_req_number') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Carline <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Carline <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="carline" id="carline"
-                                        placeholder="Masukan Carline" value="{{ old('carline') }}">
+                                         value="{{ old('carline') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Car Model <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Car Model <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="car_model" id="car_model"
-                                        placeholder="Masukan Car Model" value="{{ old('car_model') }}">
+                                         value="{{ old('car_model') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Alasan <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Alasan <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="alasan" id="alasan"
-                                        placeholder="Masukan Alasan" value="{{ old('alasan') }}">
+                                         value="{{ old('alasan') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Order <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Order <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="order" id="order"
-                                        placeholder="Masukan Order" value="{{ old('order') }}">
+                                         value="{{ old('order') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Shift <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Shift <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="shift" id="shift"
-                                        placeholder="Masukan Shift" value="{{ old('shift') }}">
+                                         value="{{ old('shift') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Machine Number <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Machine Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="machine_no" id="machine_no"
-                                        placeholder="Masukan Machine Number" value="{{ old('machine_no') }}">
+                                         value="{{ old('machine_no') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Applicator Number <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Applicator Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="applicator_no" id="applicator_no"
-                                        placeholder="Masukan Applicator Number" value="{{ old('applicator_no') }}">
+                                        value="{{ old('applicator_no') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Wear and Tear Code <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Wear and Tear Code <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_code" id="wear_and_tear_code"
-                                        placeholder="Masukan Wear and Tear Code" value="{{ old('wear_and_tear_code') }}">
+                                         value="{{ old('wear_and_tear_code') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Serial Number <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Serial Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="serial_no" id="serial_no"
-                                        placeholder="Masukan Serial Number" value="{{ old('serial_no') }}">
+                                         value="{{ old('serial_no') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Side Number <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Side Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="side_no" id="side_no"
-                                        placeholder="Masukan Side Number" value="{{ old('side_no') }}">
+                                         value="{{ old('side_no') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Stroke <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Stroke <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="stroke" id="stroke"
-                                        placeholder="Masukan Stroke" value="{{ old('stroke') }}">
+                                         value="{{ old('stroke') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Person in Charge <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Person in Charge <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
-                                        placeholder="Masukan Person in Charge" value="{{ old('pic') }}">
+                                         value="{{ old('pic') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Remarks <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Remarks <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="remarks" id="remarks"
-                                        placeholder="Masukan Remarks" value="{{ old('remarks') }}">
+                                         value="{{ old('remarks') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
+                                    <label class="form-label disabled">Part Quantity <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        placeholder="Masukan Part Quantity" value="{{ old('part_qty') }}">
+                                         value="{{ old('part_qty') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        placeholder="Masukan Wear and Tear Status" value="{{ old('part_qty') }}">
+                                    <label class="form-label disabled">Wear and Tear Status <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="wear_and_tear_status" id="wear_and_tear_status"
+                                         value="{{ old('wear_and_tear_status') }}" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="text-white btn btn-success">Simpan</button>
+                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -291,7 +353,7 @@
                     $('#part_qty').val(data.result.part_qty);
                     $('#status').val(data.result.status);
                     $('#approved_by').val(data.result.approved_by);
-                    $('.addModal .modal-title').text('Ubah Modul');
+                    $('.addModal .modal-title').text('Details');
                     $('.addModal').modal('show');
 
                 }
@@ -345,7 +407,7 @@
 
     $("#addForm").validate({
         rules: {
-            module_name: "required",
+
         },
         messages: {
             module_name: "Modul tidak boleh kosong",

@@ -1,0 +1,11 @@
+{
+    "name": "CarlineCategory",
+    "alias": "carlinecategory",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CarlineCategory\\Providers\\CarlineCategoryServiceProvider"
+    ],
+    "files": []
+}

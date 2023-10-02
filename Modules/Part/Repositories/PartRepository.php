@@ -16,4 +16,18 @@ class PartRepository extends QueryBuilderImplementation
         $this->pk = 'part_id';
     }
 
+    //overide
+    public function getAll()
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part_category', 'part.part_category_id', '=', 'part_category.part_category_id')
+                ->orderBy('part_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

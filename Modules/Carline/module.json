@@ -1,0 +1,11 @@
+{
+    "name": "Carline",
+    "alias": "carline",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Carline\\Providers\\CarlineServiceProvider"
+    ],
+    "files": []
+}

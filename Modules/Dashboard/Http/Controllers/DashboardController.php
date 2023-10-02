@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
+use Modules\SysLog\Repositories\SysLogRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -23,6 +24,7 @@ class DashboardController extends Controller
         $this->middleware('auth');
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_partRepository = new PartRepository;
+        $this->_logRepository = new SysLogRepository;
     }
 
     /**
@@ -34,8 +36,8 @@ class DashboardController extends Controller
 
         $partcategories = $this->_partCategoryRepository->getAll();
         $parts = $this->_partRepository->getAll();
+        $logs = $this->_logRepository->getAll();
 
-        $labels = [];
         $data = [];
 
         foreach ($partcategories as $partcategory) {
@@ -50,9 +52,20 @@ class DashboardController extends Controller
         }
 
 
-        dd($data);
+        $labels = [];
+        $qty = [];
 
-        return view('dashboard::index', compact('partcategories', 'labels', 'data'));
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
+        // dd($labels, $qty, $logs);
+
+        return view('dashboard::index', compact('partcategories', 'labels', 'qty', 'logs', 'parts'));
     }
 
     function array_multisum(array $arr): float {

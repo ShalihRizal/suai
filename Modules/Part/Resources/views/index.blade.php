@@ -50,6 +50,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Part</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 
@@ -87,7 +88,7 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
-                                <td width="15%">{{ $part->part_category_id }}</td>
+                                <td width="15%">{{ $part->part_category_name }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
                                 <td width="20%">{{ QrCode::size(75)->generate($part->part_no);}}</td>
                                 <td width="15%">
@@ -101,11 +102,6 @@
                                         data-url="{{ url('part/delete/'. $part->part_id) }}" data-toggle="tooltip"
                                         data-placement="top" title="Hapus">
                                         <i data-feather="trash-2" width="16" height="16"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-icon btn-success text-white btnGenerate"
-                                        data-url="{{ url('part/generate/') }}" data-toggle="tooltip"
-                                        data-placement="top" title="QR Code">
-                                        <i data-feather="code" width="16" height="16"></i>
                                     </a>
                                     @endif
                                 </td>
@@ -168,11 +164,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" hidden>
                                 <div class="form-group">
                                     <label class="form-label">No Urut<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="no_urut" id="no_urut"
-                                        placeholder="Masukan No Urut" value="{{ old('no_urut') }}">
+                                        placeholder="Masukan No Urut" value="{{ old('no_urut') }}" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -220,7 +216,7 @@
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po" id="po"
+                                    <input type="date" class="form-control" name="po" id="po"
                                         placeholder="Masukan PO" value="{{ old('po') }}">
                                 </div>
                             </div>

@@ -50,6 +50,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">STO</h3>
+                        {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
 
@@ -61,7 +62,15 @@
                     <div class="form-group">
                         <label class="form-label">Part No<span class="text-danger">*</span></label>
                         <input type="text" class="form-control part_no" name="part_no" id="part_no" autofocus>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="container-md"> <!-- Wrap in a container that takes half the screen width -->
+                                    <div id="piechart" style="width: 700px; height: 500px;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <a href="javascript:void(0)" class="btn btn-warning btnReset text-white mb-3">
                         <i data-feather="x-square" width="16" height="16" class="me-2"></i>
                         Reset
@@ -113,46 +122,29 @@
 <!-- ============================================================== -->
 <!-- End Container fluid  -->
 
-<!-- Modal Add -->
-<div class="modal fade addModal" tabindex="-1" role="dialog">
+<!-- Reset Modal -->
+<div class="modal fade addReset" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Scan Part QR Code</h5>
+                <h5 class="modal-title">Apakah anda yakin?</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="{{ url('stockopname/store') }}" method="POST" id="addForm">
+            <form action="{{ url('notification/store') }}" method="POST" id="addForm">
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
-                        <div class="row">
-
-                            <div class="col-md-12" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Last STO <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="last_sto" id="last_sto"
-                                        placeholder="Masukan Last STO" value="">
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <div class="form-group">
-                                    <label class="form-label">Part No<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control part_no" name="part_no" id="part_no">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="text-white btn btn-success">Selesai</button>
+                    <button type="submit" class="text-white btn btn-success">Reset</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Modal Add -->
+<!-- Reset Modal -->
 @endsection
 
 @section('script')
@@ -214,31 +206,38 @@
 
 <script type="text/javascript">
 
-    $('.btnEdit').click(function () {
+$('.btnReset').click(function () {
 
-        var id = $(this).attr('data-id');
-        var url = "{{ url('part/getdata') }}";
-
-        $('.addModal form').attr('action', "{{ url('part/update') }}" + '/' + id);
-
-    $.ajax({
-
-        type: 'GET',
-        url: url + '/' + id,
-        dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
-
-            if (data.status == 1) {
-                $('#last_sto').val(data.result.last_sto);
-            }
-
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error : Gagal mengambil data');
-        }
-    });
+$.ajax({
+    $('.addReset .modal-title').text('Reset');
+    $('.addReset').modal('show');
 });
 
+});
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var chartData = [['Label', 'Quantity']];
+
+            @foreach ($labels as $partCategoryId => $label)
+                chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
+            @endforeach
+
+            var data = google.visualization.arrayToDataTable(chartData);
+
+            var options = {
+                title: ''
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
 </script>
 @endsection
