@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-
+<div colspan="4" align="center">ㅤ</div>
 <div class="row">
     <div class="col-md-6">
         <div class="card">
@@ -32,7 +32,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="50%">Deskripsi</th>
-                                <th width="50%">Created At</th>
+                                <th width="5%">Created At</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,7 +45,7 @@
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="50%">{{ $log->log_description }}</td>
-                                <td width="50%">{{ substr($log->created_at, 0,10) }}</td>
+                                <td width="5%">{{ substr($log->created_at, 0,10) }}</td>
 
                             </tr>
                             @endforeach

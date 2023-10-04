@@ -88,9 +88,9 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
-                                <td width="15%">{{ $part->part_category_name }}</td>
+                                <td width="15%">{{ $part->part_category_id }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
-                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no);}}</td>
+                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no)}}</td>
                                 <td width="15%">
                                     @if($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -135,7 +135,6 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
-
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
@@ -201,9 +200,12 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Asal<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="asal" id="asal"
-                                        placeholder="Masukan Asal" value="{{ old('asal') }}">
+                                    <label class="form-label">Asal <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="asal" id="asal">
+                                        <option value="">Pilih Asal</option>
+                                        <option value="Lokal">Lokal</option>
+                                        <option value="Import">Import</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -216,21 +218,21 @@
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="po" id="po"
+                                    <input type="text" class="form-control" name="po" id="po"
                                         placeholder="Masukan PO" value="{{ old('po') }}">
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO Date<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po_date" id="po_date"
+                                    <input type="date" class="form-control" name="po_date" id="po_date"
                                         placeholder="Masukan PO Date" value="{{ old('po_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Rec Date<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="rec_date" id="rec_date"
+                                    <input type="date" class="form-control" name="rec_date" id="rec_date"
                                         placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
                                 </div>
                             </div>

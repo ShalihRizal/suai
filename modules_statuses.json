@@ -45,5 +45,6 @@
     "CarlineCategory": true,
     "Racks": true,
     "Rack": true,
-    "Machine": true
+    "Machine": true,
+    "MonthlyReport": true
 }

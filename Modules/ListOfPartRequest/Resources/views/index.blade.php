@@ -53,10 +53,11 @@
                                 <th width="5%">Stroke</th>
                                 <th width="5%">Carline Maker</th>
                                 <th width="5%">Remarks</th>
-                                <th width="20%">PIC</th>
-                                <th width="20%">Part Number</th>
-                                <th width="15%">Status</th>
-                                <th width="15%">Aksi</th>
+                                <th width="5%">PIC</th>
+                                <th width="5%">Part Number</th>
+                                <th width="5%">Approved By</th>
+                                <th width="5%">Status</th>
+                                <th width="5%">Aksi</th>
                                 {{-- <th width="15%">Approved By</th> --}}
                             </tr>
                         </thead>
@@ -69,24 +70,25 @@
                             @foreach ($listofpartrequests as $listofpartrequest)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="5%">{{ $listofpartrequest->updated_at }}</td>
+                                <td width="5%">{{ substr($listofpartrequest->updated_at, 0,10) }}</td>
                                 <td width="5%">{{ $listofpartrequest->part_req_number }}</td>
-                                <td width="5%">OK</td>
-                                <td width="5%">Molts Number</td>
-                                <td width="5%">Applicator Number</td>
-                                <td width="5%">Part Name</td>
+                                <td width="5%">-</td>
+                                <td width="5%">-</td>
+                                <td width="5%">-</td>
+                                <td width="5%">-</td>
                                 {{-- <td width="5%">{{ $part->molts_no }}</td> --}}
                                 {{-- <td width="5%">{{ $part->applicator_no }}</td> --}}
                                 {{-- <td width="5%">{{ $part->part_name }}</td> --}}
                                 <td width="15%">{{ $listofpartrequest->part_qty }}</td>
-                                <td width="5%">Machine</td>
-                                <td width="5%">Serial Number</td>
+                                <td width="5%">{{ $listofpartrequest->machine_no }}</td>
+                                <td width="5%">-</td>
                                 <td width="5%">{{ $listofpartrequest->shift }}</td>
                                 <td width="5%">{{ $listofpartrequest->stroke }}</td>
                                 <td width="5%">{{ $listofpartrequest->carline }}</td>
                                 <td width="5%">{{ $listofpartrequest->remarks }}</td>
                                 <td width="5%">{{ $listofpartrequest->pic }}</td>
                                 <td width="5%">{{ $listofpartrequest->part_no }}</td>
+                                <td width="5%">{{ $listofpartrequest->approved_by }}</td>
                                 {{-- <td width="15%">{{ $listofpartrequest->machine }}</td> --}}
                                 {{-- <td width="5%">{{ $part->serial_number }}</td>
                                 <td width="5%">{{ $listofpartrequest->shift }}</td>

@@ -54,6 +54,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="80%">Deskripsi</th>
+                                <th width="15%">Waktu</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,6 +67,7 @@
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="80%">{{ $log->log_description }}</td>
+                                <td width="15%">{{ $log->created_at }}</td>
                             </tr>
                             @endforeach
                             @endif

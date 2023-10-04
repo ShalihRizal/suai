@@ -14,7 +14,7 @@
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="{{asset('css')}}/simplebar.css">
 
-    <link rel="shortcut icon" href="{{asset('img')}}/hadids.png">
+    <link rel="shortcut icon" href="{{asset('img')}}/logo.jpg">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
@@ -66,13 +66,11 @@
         </button>
 
         <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link text-muted my-2" href="#" id="notifications">
-              {{-- <i class="fe fe-sun fe-16"></i> --}}
-              <i data-feather="bell" width="16" height="16"></i>
-              {{-- <label for="">{{$notifsize}}</label> --}}
-            </a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link text-muted my-2" href="{{ url('notification/') }}" id="notifications">
+                    <i data-feather="bell" width="16" height="16"></i>
+                </a>
+            </li>
 
           <li class="nav-item">
             <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
@@ -108,7 +106,7 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-50 mb-4 d-flex">
-            <img class="navbar-brand mx-auto mt-2 flex-fill text-center" src="{{asset('img')}}/hadids.png" width="50"/>
+            <img class="navbar-brand mx-auto mt-2 flex-fill text-center" src="{{asset('img')}}/logo.jpg" width="50"/>
             {{-- <strong>hadids</strong> --}}
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">

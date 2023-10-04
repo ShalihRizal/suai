@@ -1,0 +1,11 @@
+{
+    "name": "MonthlyReport",
+    "alias": "monthlyreport",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\MonthlyReport\\Providers\\MonthlyReportServiceProvider"
+    ],
+    "files": []
+}

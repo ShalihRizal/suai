@@ -116,9 +116,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Nama Carline<span class="text-danger" autofocus>*</span></label>
+                                    <label class="form-label">Nama Carline<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="carline_category_name" id="carline_category_name"
-                                        placeholder="Masukan nama carline" value="{{ old('carline_category_name') }}">
+                                        placeholder="Masukan nama carline" value="{{ old('carline_category_name') }}" autofocus>
                                     @if ($errors->has('carline_category_name'))
                                     <span class="text-danger">
                                         <label id="basic-error" class="validation-error-label" for="basic">Nama carline category
@@ -145,6 +145,14 @@
 @endsection
 
 @section('script')
+
+
+<script>
+    $('#addModal').on('shown.bs.modal', function () {
+      $('#carline_category_name').focus();
+    });
+  </script>
+
 <script type="text/javascript">
     $('.btnAdd').click(function () {
         $('#module_name').val('');

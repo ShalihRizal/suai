@@ -35,6 +35,15 @@ class StockOpnameController extends Controller
     public function index()
     {
 
+        // Fetch data from your repository
+        $partschart = $this->_partRepository->getAll();
+
+        // Process the data as needed
+        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+
+        // dd($yesCount, $noCount);
+
         $partcategories = $this->_partCategoryRepository->getAll();
         $parts = $this->_partRepository->getAll();
 
@@ -76,7 +85,7 @@ class StockOpnameController extends Controller
         $stockopnames = $this->_stockopnameRepository->getAll();
 
 
-        return view('stockopname::index', compact('stockopnames', 'parts','partcategories','data','labels','qty'));
+        return view('stockopname::index', compact('stockopnames', 'parts','partcategories','data','labels','qty', 'yesCount', 'noCount'));
     }
 
     /**

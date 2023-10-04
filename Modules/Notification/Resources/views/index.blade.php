@@ -140,7 +140,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Approved By <span class="text-danger">*</span></label>
-                                <select class="form-control" name="car_model" id="car_model">
+                                <select class="form-control" name="approved_by" id="approved_by">
                                     <option value="">- Pilih Approved By -</option>
                                     @if(sizeof($users) > 0)
                                         @foreach($users as $user)
@@ -243,6 +243,13 @@
                 alert('Error : Gagal mengambil data');
             }
         });
+
+    });
+
+    $('.btnAdd').click(function () {
+
+        $('.addModal .modal-title').text('Approve');
+                    $('.addModal').modal('show');
 
     });
 

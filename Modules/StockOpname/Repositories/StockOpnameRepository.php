@@ -27,4 +27,15 @@ class StockOpnameRepository extends QueryBuilderImplementation
         }
     }
 
+    public function updateHasStoToNo()
+    {
+        try {
+            \DB::table('part')->update(['has_sto' => 'no']);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
 }

@@ -41,7 +41,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="text-center">
                                 @if(Auth::user()->user_image == NULL)
-                                <img alt="profile" src="img/avatars/profile.png"
+                                <img alt="profile" src="img/avatars/logo.jpg"
                                     class="rounded-circle img-responsive mt-2" width="200" height="200" />
                                 @else
                                 <img alt="profile"

@@ -158,7 +158,6 @@ class NotificationController extends Controller
 
             DB::beginTransaction();
             $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
-
             $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
             $this->_logHelper->store($this->module, $request->notification_id, 'update');
 

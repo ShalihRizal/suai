@@ -55,7 +55,8 @@
             <div class="card-body">
                 <div class="addData">
                     <div class="btn-group" style="height: 40px;">
-                        <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3" style="height: 100%;">
+                        {{-- Your Blade view content --}}
+                        <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3" style="height: 100%;" data-toggle="modal" data-target="#uploadModal">
                             <i data-feather="plus" width="20" height="13" class="me-2"></i>
                             Upload
                         </a>
@@ -126,6 +127,33 @@
 <!-- </div> -->
 <!-- ============================================================== -->
 <!-- End Container fluid  -->
+
+{{-- Modal --}}
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{-- Your file upload form can go here --}}
+                <form>
+                    <div class="form-group">
+                        <label for="fileInput">Choose a file:</label>
+                        <input type="file" class="form-control-file" id="fileInput">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Add -->
 <div class="modal fade addModal" tabindex="-1" role="dialog">

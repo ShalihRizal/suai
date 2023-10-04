@@ -49,7 +49,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h3 class="h3">STO</h3>
+                        <h3 class="h3">Stock Opname</h3>
                         {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
@@ -62,19 +62,19 @@
                     <div class="form-group">
                         <label class="form-label">Part No<span class="text-danger">*</span></label>
                         <input type="text" class="form-control part_no" name="part_no" id="part_no" autofocus>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="container-md"> <!-- Wrap in a container that takes half the screen width -->
-                                    <div id="piechart" style="width: 700px; height: 500px;"></div>
+                        <div colspan="4" align="center">ㅤ</div>
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col-md-3 offset-md-4 mb-3">
+                                    <canvas id="pieChart" width="100%" height="100%"></canvas>
                                 </div>
                             </div>
                         </div>
+                        <a href="javascript:void(0)" class="btn btn-warning btnReset text-white mb-3" data-toggle="modal" data-target=".addReset">
+                            <i data-feather="x-square" width="16" height="16" class="me-2"></i>
+                            Reset
+                        </a>
                     </div>
-
-                    <a href="javascript:void(0)" class="btn btn-warning btnReset text-white mb-3">
-                        <i data-feather="x-square" width="16" height="16" class="me-2"></i>
-                        Reset
-                    </a>
                 </div>
                 <div class="table-responsive">
                     <table id="table-data" class="table card-table table-vcenter text-nowrap">
@@ -100,7 +100,7 @@
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
-                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no);}}</td>
+                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no)}}</td>
                                 <td width="15%">{{ $part->last_sto }}</td>
                                 {{-- <td width="15%">{{ substr($part->updated_at, 0,10) }}</td> --}}
                             </tr>
@@ -110,7 +110,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -122,7 +121,6 @@
 <!-- ============================================================== -->
 <!-- End Container fluid  -->
 
-<!-- Reset Modal -->
 <div class="modal fade addReset" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -130,26 +128,26 @@
                 <h5 class="modal-title">Apakah anda yakin?</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="{{ url('notification/store') }}" method="POST" id="addForm">
+            {{-- <form action="{{ location.reload() }}" method="GET" id="addForm"> --}}
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
+                        <!-- Add your form fields here if needed -->
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                     <button type="submit" class="text-white btn btn-success">Reset</button>
                 </div>
-            </form>
+            {{-- </form> --}}
         </div>
     </div>
-</div>
-<!-- Reset Modal -->
+</div
 @endsection
 
 @section('script')
 
-<script>
+{{-- <script>
     $(document).ready(function() {
         // Select the input field by its ID
         var inputField = $('#part_no');
@@ -166,7 +164,7 @@
             }, 200);
         });
     });
-</script>
+</script> --}}
 
 {{-- <script>
     $(document).ready(function() {
@@ -215,29 +213,37 @@ $.ajax({
 
 });
 
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var chartData = [['Label', 'Quantity']];
-
-            @foreach ($labels as $partCategoryId => $label)
-                chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
-            @endforeach
-
-            var data = google.visualization.arrayToDataTable(chartData);
-
-            var options = {
-                title: ''
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chart.draw(data, options);
-        }
-    </script>
+<script function reloadPage() {
+    location.reload();
+}
 </script>
+
+<script src="{{ asset('js/chart.min.js') }}"></script>
+<script>
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    var data = {
+        labels: ['Sudah STO', 'Belum STO'],
+        datasets: [{
+            data: [{{ $yesCount }}, {{ $noCount }}],
+            backgroundColor: ['#36A2EB', '#FF6384'],
+        }]
+    };
+    var options = {
+        tooltips: {
+        mode: 'index',
+        intersect: true,
+    },
+        legend: {
+        display: true,
+        position: 'bottom',
+    }
+    };
+
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
+</script>
+
 @endsection
