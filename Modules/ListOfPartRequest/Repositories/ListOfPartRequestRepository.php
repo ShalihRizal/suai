@@ -8,7 +8,39 @@ use Illuminate\Support\Facades\DB;
 class ListOfPartRequestRepository extends QueryBuilderImplementation
 {
 
-    public $fillable = ['part_req_id','part_req_number','carline','car_model','alasan','order','shift','machine_no','applicator_no','wear_and_tear_code','serial_no','side_no','stroke','pic','remarks','part_qty','status','approved_by','wear_and_tear_status','part_no','created_at','created_by','updated_at','updated_by'];
+    public $fillable = [
+        'part_req_id',
+        'part_id',
+        'part_req_number',
+        'carline',
+        'car_model',
+        'alasan',
+        'order',
+        'part_req_pic_filename',
+        'part_req_pic_path',
+        'shift',
+        'machine_no',
+        'applicator_no',
+        'wear_and_tear_code',
+        'serial_no',
+        'side_no',
+        'stroke',
+        'pic',
+        'remarks',
+        'part_qty',
+        'status',
+        'approved_by',
+        'part_no',
+        'wear_and_tear_status',
+        'anvil',
+        'insulation_crimper',
+        'wire_crimper',
+        'other',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by'
+    ];
 
     public function __construct()
     {
@@ -17,18 +49,31 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
     }
 
     //overide
-    public function getAll()
+    // public function getAll()
+    // {
+    //     try {
+    //         return DB::connection($this->db)
+    //             ->table($this->table)
+    //             ->leftJoin('part', 'part.part_id', '=', 'part_request.part_id')
+    //             // ->orderBy('part_req_id')
+    //             ->get();
+    //     } catch (Exception $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
+
+
+    public function getAllByParams(array $params)
     {
         try {
             return DB::connection($this->db)
                 ->table($this->table)
-                ->join('part', 'part_no.part_id', '=', 'part.part_id')
-                ->orderBy('part_no')
+                ->leftJoin('part', 'part_request.part_id', '=', 'part.part_id')
+                ->where($params)
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-
 
 }

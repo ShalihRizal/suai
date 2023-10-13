@@ -62,11 +62,11 @@
                         </a>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <select class="form-control" name="car_model" id="car_model" style="height: 100%; margin-left: 25px;">
-                                    <option value="">- Pilih Part Category -</option>
+                                <select class="form-control" name="car_model" id="tabDropdown" style="height: 100%; margin-left: 25px;">
+                                    <option value="">- Semua Kategori -</option>
                                     @if(sizeof($partcategories) > 0)
                                         @foreach($partcategories as $partcategory)
-                                            <option value="{{ $partcategory->part_category_id }}">{{ $partcategory->part_category_name }}</option>
+                                            <option value="{{ $partcategory->part_category_name }}">{{ $partcategory->part_category_name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -74,6 +74,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="table-responsive">
                     <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
@@ -82,6 +83,52 @@
                                 <th width="5%">No</th>
                                 <th width="15%">Part Number</th>
                                 <th width="20%">Part Name</th>
+                                <th width="20%">Part Kategori</th>
+                                <th width="20%">No Urut</th>
+                                <th width="20%">No Part.No Urut</th>
+                                <th width="20%">L/I</th>
+                                <th width="20%">W & T Code</th>
+                                <th width="20%">Invoice</th>
+                                <th width="20%">PO</th>
+                                <th width="20%">PO Date</th>
+                                <th width="20%">Rec Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="part-table-body"> <!-- Add an id to the tbody -->
+                            @if (sizeof($parts) == 0)
+                                <!-- No data message -->
+                                <tr>
+                                    <td colspan="4" align="center">Data kosong</td>
+                                </tr>
+                            @else
+                                @foreach ($parts as $part)
+                                    <tr class="part-row" data-category="{{ $part->part_category_name }}"> <!-- Add a class and data-category attribute -->
+                                        <td width="5%">{{ $loop->iteration }}</td>
+                                        <td width="15%">{{ $part->part_no }}</td>
+                                        <td width="20%">{{ $part->part_name }}</td>
+                                        <td width="20%">{{ $part->part_category_name }}</td>
+                                        <td width="20%">{{ $part->no_urut }}</td>
+                                        <td width="20%">{{ $part->part_no }}.{{$part->no_urut}}</td>
+                                        <td width="20%">{{ $part->asal }}</td>
+                                        <td width="20%">{{ $part->wear_and_tear_code }}</td>
+                                        <td width="20%">{{ $part->invoice }}</td>
+                                        <td width="20%">{{ $part->po }}</td>
+                                        <td width="20%">{{ $part->po_date }}</td>
+                                        <td width="20%">{{ $part->rec_date }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                {{-- <div class="table-responsive">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="15%">Part Number</th>
+                                <th width="20%">Part Name</th>
+                                <th width="20%">Part Kategori</th>
                                 <th width="20%">No Urut</th>
                                 <th width="20%">No Part.No Urut</th>
                                 <th width="20%">L/I</th>
@@ -103,6 +150,7 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_category_name }}</td>
                                 <td width="20%">{{ $part->no_urut }}</td>
                                 <td width="20%">{{ $part->part_no }}.{{$part->no_urut}}</td>
                                 <td width="20%">{{ $part->asal }}</td>
@@ -116,7 +164,7 @@
                             @endif
                         </tbody>
                     </table>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -550,6 +598,23 @@
             // Hide all rows and then show only the rows with the selected category
             $('.part-row').hide();
             $('.part-row[data-category="' + selectedCategory + '"]').show();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Event listener for dropdown change
+        $('#tabDropdown').change(function () {
+            var selectedCategory = $(this).val(); // Get the selected category
+
+            if (selectedCategory === "") {
+                // Show all rows if "Pilih Part Category" is selected
+                $('.part-row').show();
+            } else {
+                // Hide all rows and then show only the rows with the selected category
+                $('.part-row').hide();
+                $('.part-row[data-category="' + selectedCategory + '"]').show();
+            }
         });
     });
 </script>

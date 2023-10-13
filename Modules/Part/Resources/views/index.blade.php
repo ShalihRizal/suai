@@ -88,9 +88,9 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
-                                <td width="15%">{{ $part->part_category_id }}</td>
+                                <td width="15%">{{ $part->part_category_name }}</td>
                                 <td width="20%">{{ $part->qty_end }}</td>
-                                <td width="20%">{{ QrCode::size(75)->generate($part->part_no)}}</td>
+                                <td width="20%">{{ QrCode::size(75)->generate($part->part_id)}}</td>
                                 <td width="15%">
                                     @if($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -124,8 +124,8 @@
 <!-- End Container fluid  -->
 
 <!-- Modal Add -->
-<div class="modal fade addModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Part</h5>
@@ -136,21 +136,21 @@
                 <div class="modal-body">
                     <div class="form-body">
                         <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Part No<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_no" id="part_no"
                                     placeholder="Masukan Part No" value="{{ old('part_no') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Part Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_name" id="part_name"
                                         placeholder="Masukan Part Name" value="{{ old('part_name') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Part Category <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="part_category_id" id="part_category_id">
@@ -163,42 +163,56 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3" hidden>
+                            <div class="col-md-6 mb-3" hidden>
                                 <div class="form-group">
                                     <label class="form-label">No Urut<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="no_urut" id="no_urut"
                                         placeholder="Masukan No Urut" value="{{ old('no_urut') }}" disabled>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3" hidden>
+                                <div class="form-group">
+                                    <label class="form-label">No Urut<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="has_sto" id="has_sto"
+                                        placeholder="Masukan No Urut" value="no" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">No Applicator<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="applicator_no" id="applicator_no"
                                         placeholder="Masukan No Applicator" value="{{ old('applicator_no') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Tipe Applicator<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="applicator_type" id="applicator_type"
                                         placeholder="Masukan Tipe Applicator" value="{{ old('applicator_type') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Molts Number<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="molts_no" id="molts_no"
+                                        placeholder="Masukan Molts Number" value="{{ old('molts_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Kuantitas Applicator<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="applicator_qty" id="applicator_qty"
                                         placeholder="Masukan Kuantitas Applicator" value="{{ old('applicator_qty') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Kode Tooling BC<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="kode_tooling_bc" id="kode_tooling_bc"
                                         placeholder="Masukan Kode Tooling BC" value="{{ old('kode_tooling_bc') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Asal <span class="text-danger">*</span></label>
                                     <select class="form-control" name="asal" id="asal">
@@ -208,91 +222,132 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Invoice<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="invoice" id="invoice"
                                         placeholder="Masukan Invoice" value="{{ old('invoice') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="po" id="po"
                                         placeholder="Masukan PO" value="{{ old('po') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO Date<span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" name="po_date" id="po_date"
                                         placeholder="Masukan PO Date" value="{{ old('po_date') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Rec Date<span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" name="rec_date" id="rec_date"
                                         placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="loc_tapc" id="loc_tapc">
+                                        <option value="">- Pilih Loc TAPC -</option>
+                                        @if(sizeof($racks) > 0)
+                                        @foreach($racks as $rack)
+                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Loc PPTI <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="loc_ppti" id="loc_ppti">
+                                        <option value="">- Pilih Loc PPTI -</option>
+                                        @if(sizeof($racks) > 0)
+                                        @foreach($racks as $rack)
+                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Loc Hib <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="lokasi_hib" id="lokasi_hib">
+                                        <option value="">- Pilih Loc Hib -</option>
+                                        @if(sizeof($racks) > 0)
+                                        @foreach($racks as $rack)
+                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{-- <div class="col-md-6 mb-3"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc PPTI<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
                                         placeholder="Masukan Loc PPTI" value="{{ old('loc_ppti') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc Tapc<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="loc_tapc" id="loc_tapc"
                                         placeholder="Masukan Loc Tapc" value="{{ old('loc_tapc') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc Hib<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="lokasi_hib" id="lokasi_hib"
                                         placeholder="Masukan Loc Hib" value="{{ old('lokasi_hib') }}">
                                 </div>
-                            </div>
-                            <div class="col-md-12 mb-3">
+                            </div> --}}
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="qty_begin" id="qty_begin"
                                         placeholder="Masukan Qty Begin" value="{{ old('qty_begin') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Qty in<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="qty_in" id="qty_in"
                                         placeholder="Masukan Qty in" value="{{ old('qty_in') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Qty out<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="qty_out" id="qty_out"
                                         placeholder="Masukan Qty out" value="{{ old('qty_out') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Adjust<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="adjust" id="adjust"
                                         placeholder="Masukan Adjust" value="{{ old('adjust') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Qty end<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="qty_end" id="qty_end"
                                         placeholder="Masukan Qty end" value="{{ old('qty_end') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Remarks<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="remarks" id="remarks"
@@ -325,6 +380,7 @@
         $('#applicator_qty').val('');
         $('#kode_tooling_bc').val('');
         $('#part_name').val('');
+        $('#molts_no').val('');
         $('#asal').val('');
         $('#po').val('');
         $('#po_date').val('');
@@ -371,6 +427,7 @@
                     $('#applicator_qty').val(data.result.applicator_qty);
                     $('#kode_tooling_bc').val(data.result.kode_tooling_bc);
                     $('#part_name').val(data.result.part_name);
+                    $('#molts_no').val(data.result.molts_no);
                     $('#asal').val(data.result.asal);
                     $('#po').val(data.result.po);
                     $('#po_date').val(data.result.po_date);

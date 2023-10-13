@@ -16,6 +16,8 @@ class PartRequestRepository extends QueryBuilderImplementation
         'car_model',
         'alasan',
         'order',
+        'part_req_pic_filename',
+        'part_req_pic_path',
         'shift',
         'machine_no',
         'applicator_no',
@@ -44,6 +46,20 @@ class PartRequestRepository extends QueryBuilderImplementation
     {
         $this->table = 'part_request';
         $this->pk = 'part_req_id';
+    }
+
+    //overide
+    public function getAll()
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->orderBy('part_req_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
 

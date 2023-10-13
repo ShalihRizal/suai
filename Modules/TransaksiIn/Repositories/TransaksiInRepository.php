@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\DB;
 class TransaksiInRepository extends QueryBuilderImplementation
 {
 
-    public $fillable = ['transaksi_in_id', 'invoice_no', 'ata_suai', 'po_no', 'po_date', 'no_urut', 'part_name', 'molts_no', 'part_no', 'qty', 'loc_hib', 'loc_ppti', 'qty_end','created_at','created_by','updated_at','updated_by'];
+    public $fillable = ['transaksi_in_id', 'invoice_no', 'ata_suai', 'part_id', 'po_no', 'po_date', 'no_urut', 'part_name', 'molts_no', 'part_no', 'qty', 'loc_hib', 'loc_ppti', 'qty_end','created_at','created_by','updated_at','updated_by'];
 
     public function __construct()
     {
         $this->table = 'transaksi_in';
         $this->pk = 'transaksi_in_id';
+    }
+
+    public function getAll()
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part', 'transaksi_in.part_id', '=', 'part.part_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
 }

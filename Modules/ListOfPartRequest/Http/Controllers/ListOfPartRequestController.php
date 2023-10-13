@@ -32,16 +32,16 @@ class ListOfPartRequestController extends Controller
     {
         // Authorize
 
-
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
         $params = [
-            'status' => 1
+            'part_request.status' => 1
         ];
 
         $listofpartrequests = $this->_ListOfPartRequestRepository->getAllByParams($params);
+        // dd($listofpartrequests);
         return view('listofpartrequest::index', compact('listofpartrequests'));
     }
 

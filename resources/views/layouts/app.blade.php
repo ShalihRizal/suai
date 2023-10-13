@@ -67,8 +67,9 @@
 
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link text-muted my-2" href="{{ url('notification/') }}" id="notifications">
-                    <i data-feather="bell" width="16" height="16"></i>
+                <a class="nav-link text-muted my-2" id="notifications" href="{{ url('notification') }}">
+                    <span style="color: red;">@include('components.notification')</span>
+                    <i data-feather="bell" width="16" height="16" style="color: initial;"></i>
                 </a>
             </li>
 

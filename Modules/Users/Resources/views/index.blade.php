@@ -74,6 +74,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="25%">Nama</th>
+                                <th width="15%">Username</th>
                                 <th width="25%">Email</th>
                                 <th width="15%">Group</th>
                                 <th width="15%">Status</th>
@@ -91,6 +92,7 @@
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="25%">{{ $user->user_name }}</td>
+                                <td width="15%">{{$user->user_username  }}</td>
                                 <td width="25%">{{ $user->user_email }}</td>
                                 <td width="15%">{{$user->group_name  }}</td>
                                 <td width="15%">
@@ -130,8 +132,8 @@
 <!-- End Container fluid  -->
 
 <!-- Modal Add -->
-<div class="modal addModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Pengguna</h5>
@@ -147,12 +149,19 @@
                                 <div class="form-group">
                                     <label class="form-label">Nama <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="user_name" id="user_name"
-                                        placeholder="Masukan nama pengguna" value="{{ old('user_name') }}">
+                                        placeholder="Masukan nama pengguna" value="{{ old('user_name') }}" oninput="updateUsername()">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <label class="form-label">Username <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="user_username" id="user_username"
+                                        placeholder="Masukan username pengguna" value="{{ old('user_username') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Email <span class="text-danger"></span></label>
                                     <input type="email" class="form-control" name="user_email" id="user_email"
                                         placeholder="Masukan email pengguna" value="{{ old('user_email') }}">
                                     @if ($errors->has('user_email'))
@@ -287,6 +296,7 @@
                 if (data.status == 1) {
 
                     $('#user_name').val(data.result.user_name);
+                    $('#user_username').val(data.result.user_username);
                     $('#user_email').val(data.result.user_email);
 
                     $('#user_password_old').val(data.result.user_password);
@@ -422,6 +432,17 @@
                                                         <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                                                         </svg>`;
         }
+    }
+
+    function updateUsername() {
+        var nameInput = document.getElementById('user_name');
+        var usernameInput = document.getElementById('user_username');
+
+        // Get the value from the name input and remove all white spaces
+        var nameValue = nameInput.value.replace(/\s/g, '');
+
+        // Update the username input value with the modified text
+        usernameInput.value = nameValue;
     }
 
 </script>

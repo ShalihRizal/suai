@@ -46,5 +46,6 @@
     "Racks": true,
     "Rack": true,
     "Machine": true,
-    "MonthlyReport": true
+    "MonthlyReport": true,
+    "SubRack": true
 }

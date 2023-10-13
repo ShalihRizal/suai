@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
+use Modules\Rack\Repositories\RackRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -22,6 +23,7 @@ class PartController extends Controller
 
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
+        $this->_rackRepository = new RackRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "Part";
     }
@@ -30,17 +32,25 @@ class PartController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
+        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
+
         $parts = $this->_partRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
+        $racks = $this->_rackRepository->getAll();
 
-        return view('part::index', compact('parts', 'partcategories'));
+        // Filter parts based on the selected category
+        if (!empty($partCategoryFilter)) {
+            $parts = $parts->where('part_category_id', $partCategoryFilter);
+        }
+
+        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
     }
 
     /**
@@ -77,12 +87,52 @@ class PartController extends Controller
                 ->withInput();
         }
 
+        $data = [
+            'part_no' => $request->part_no,
+            'no_urut' => $request->no_urut,
+            'applicator_no' => $request->applicator_no,
+            'applicator_type' => $request->applicator_type,
+            'applicator_qty' => $request->applicator_qty,
+            'kode_tooling_bc' => $request->kode_tooling_bc,
+            'part_name' => $request->part_name,
+            'asal' => $request->asal,
+            'invoice' => $request->invoice,
+            'po' => $request->po,
+            'po_date' => $request->po_date,
+            'rec_date' => $request->rec_date,
+            'loc_ppti' => $request->loc_ppti,
+            'loc_tapc' => $request->loc_tapc,
+            'lokasi_hib' => $request->lokasi_hib,
+            'qty_begin' => $request->qty_begin,
+            'molts_no' => $request->molts_no,
+            'qty_in' => $request->qty_in,
+            'qty_out' => $request->qty_out,
+            'adjust' => $request->adjust,
+            'qty_end' => $request->qty_end,
+            'remarks' => $request->remarks,
+            'last_sto' => $request->last_sto,
+            'has_sto' => $request->has_sto,
+            'part_category_id' => $request->part_category_id,
+            'created_at' => $request->created_at,
+            'created_by' => $request->created_by,
+            'updated_at' => $request->updated_at,
+            'updated_by' => $request->updated_by,
+        ];
+
         DB::beginTransaction();
-        $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        // $check = $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
+        // $check = $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
         $this->_logHelper->store($this->module, $request->part_no, 'create');
         DB::commit();
         // dd($check);
+
+
+        // // DB::beginTransaction();
+        // // $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        // $check = $this->_partRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        // // $this->_logHelper->store($this->module, $request->part_no, 'create');
+        // dd($check);
+        // // DB::commit();
 
         return redirect('part')->with('message', 'Part berhasil ditambahkan');
     }

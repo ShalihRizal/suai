@@ -74,33 +74,32 @@ class PartRequestController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Authorize
+        $part  = $this->_partRepository->getById($request->part_id);
+        $last  = $this->_PartRequestRepository->getLast();
+
+        $file = $request->image_part;
+        $fileName = DataHelper::getFileName($file);
+        $filePath = DataHelper::getFilePath(false, true);
+        $request->file('image_part')->storeAs($filePath, $fileName, 'public');
+
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
-        $validator = Validator::make($request->all(), $this->_validationRules(''));
+        $currentMonth = date('F');
+        $currentYear = date('Y');
 
-        if ($validator->fails()) {
-            return redirect('partrequest')
-                ->withErrors($validator)
-                ->withInput();
+        if ($last != null) {
+            $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
+            $part_req_number = "$padded_part_req_id/TO/SPM/$currentMonth/$currentYear";
+        } else {
+            $part_req_number = "0000/TO/SPM/$currentMonth/$currentYear";
         }
 
-        $last  = $this->_PartRequestRepository->getLast();
-        $currentMonth = date('F'); // Get the current month in full text format
-        $part_req_number = "PR/$currentMonth/SPM/". $last->part_req_id;
 
-
-        // if ($last) {
-        //     $part_req_number = rand(1,9999).$last->part_req_id;
-        // }else{
-        //     $part_req_number = rand(1,9999).'1';
-        // }
-
-        $part  = $this->_partRepository->getById($request->part_id);
-        $data = [
+        $partreq = [
+            'part_req_pic_filename' => $fileName,
+            'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
             'carline' => $request->carline,
@@ -121,9 +120,24 @@ class PartRequestController extends Controller
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
+
+
+
+        // $part_req_number = "PR/$currentMonth/SPM/1";
+        // $part_req_number = "PR/$currentMonth/SPM/". $last->part_req_id;
+        // $part_req_number = "$last->part_req_id/TO/SPM/$currentMonth/$currentYear";
+
+
+
+        // if ($last) {
+        //     $part_req_number = rand(1,9999).$last->part_req_id;
+        // }else{
+        //     $part_req_number = rand(1,9999).'1';
+        // }
+
         DB::beginTransaction();
-        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
-        // $check = $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
+        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
+        // $check = $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
         // dd($check);

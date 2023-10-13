@@ -1,4 +1,6 @@
 <?php
+use Modules\MonthlyReport\Http\Controllers\MonthlyReportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +24,8 @@ Route::prefix('stockopname')->group(function () {
     Route::get('/delete/{id}', 'StockOpnameController@destroy');
     Route::get('/getdata/{id}', 'StockOpnameController@getdata');
     Route::get('/scan', 'StockOpnameController@scan');
+    Route::get('/hassto', 'StockOpnameController@hassto');
+    Route::get('/nosto', 'StockOpnameController@nosto');
+    Route::get('/updateall', 'StockOpnameController@updateall');
 });
 

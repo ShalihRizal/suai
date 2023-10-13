@@ -129,6 +129,27 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label class="form-label">PO Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="po_no" id="po_no"
+                                        placeholder="Masukan PO Number" value="{{ old('po_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">PO Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="po_date" id="po_date"
+                                        placeholder="Masukan PO Date" value="{{ old('po_date') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Receive Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="rec_date" id="rec_date"
+                                        placeholder="Masukan Receive Date" value="{{ old('rec_date') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label class="form-label">Part <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="part_id" id="part_id">
                                         <option value="">- Pilih Part -</option>
@@ -147,6 +168,13 @@
                                         placeholder="Masukan Quantity" value="{{ old('po_no') }}">
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Price | <span class="text-danger" style="font-size: 75%;">USD</span></label>
+                                    <input type="text" class="form-control" name="price" id="price" placeholder="Masukan Price" value="{{ old('price') }}">
+                                </div>
+                            </div>
+
                             {{-- <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Tanggal PO <span class="text-danger">*</span></label>
@@ -224,6 +252,7 @@
         $('#ata_suai').val('');
         $('#po_no').val('');
         $('#po_date').val('');
+        $('#rec_date').val('');
         $('#no_urut').val('');
         $('#part_name').val('');
         $('#molts_no').val('');
@@ -261,6 +290,7 @@
                     $('#ata_suai').val(data.result.ata_suai);
                     $('#po_no').val(data.result.po_no);
                     $('#po_date').val(data.result.po_date);
+                    $('#rec_date').val(data.result.rec_date);
                     $('#no_urut').val(data.result.no_urut);
                     $('#part_name').val(data.result.part_name);
                     $('#molts_no').val(data.result.molts_no);

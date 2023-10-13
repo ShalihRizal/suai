@@ -340,11 +340,11 @@ class UsersController extends Controller
     {
         if ($id == '') {
             return [
-                'user_email' => 'required|unique:sys_users',
+                'user_name' => 'required|unique:sys_users',
             ];
         } else {
             return [
-                'user_email' => 'required|unique:sys_users,user_email,' . $id . ',user_id',
+                'user_name' => 'required|unique:sys_users,user_name,' . $id . ',user_id',
             ];
         }
     }

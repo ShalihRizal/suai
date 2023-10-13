@@ -181,21 +181,42 @@
                                 <div class="form-group">
                                     <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_req_number" id="part_req_number"
-                                        placeholder="Masukan Approved" value="part_req_number">
+                                         value="part_req_number"readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
-                                        placeholder="Masukan Insulation Crimper" value="{{ old('pic') }}">
+                                         value="{{ old('pic') }}"readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_name" id="part_name"
+                                         value="{{ old('part_name') }}"readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="part_no" id="part_no"
+                                         value="{{ old('part_no') }}"readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Qty <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        placeholder="Masukan Part Qty" value="{{ old('part_qty') }}">
+                                         value="{{ old('part_qty') }}"readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Lokasi <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="loc_tapc" id="loc_tapc"
+                                         value="{{ old('loc_tapc') }}"readonly>
                                 </div>
                             </div>
                         </div>
@@ -233,7 +254,9 @@
                     $('#part_req_number').val(data.result.part_req_number);
                     $('#pic').val(data.result.pic);
                     $('#part_name').val(data.result.part_name);
+                    $('#part_no').val(data.result.part_no);
                     $('#part_qty').val(data.result.part_qty);
+                    $('#loc_tapc').val(data.result.loc_tapc);
                     $('.addModal .modal-title').text('Approve');
                     $('.addModal').modal('show');
                 }
@@ -269,6 +292,8 @@
                     $('#part_req_number').val(data.result.part_req_number);
                     $('#pic').val(data.result.pic);
                     $('#part_name').val(data.result.part_name);
+                    $('#part_no').val(data.result.part_no);
+                    $('#loc_tapc').val(data.result.loc_tapc);
                     $('#part_qty').val(data.result.part_qty);
                     $('.detailModal .modal-title').text('Details');
                     $('.detailModal').modal('show');

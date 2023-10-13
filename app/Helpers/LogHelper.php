@@ -1,9 +1,9 @@
-<?php 
-/** 
+<?php
+/**
  * Log Helpers
- * 
  *
- * @author Robby Al Jufri
+ *
+ * @author PT. Digital Robotik Indonesia - ShalihRizal
  *
  */
 namespace App\Helpers;
@@ -26,7 +26,7 @@ class LogHelper{
 	 * - param module  <string>
 	 * - param data <string>
 	 * - param slug <string>
-	 * 
+	 *
 	 * @return string
 	 *
 	 */
@@ -44,8 +44,8 @@ class LogHelper{
         }
         else{
             $key = "Menghapus";
-        }        
-        
+        }
+
         $description = $name .' '. $key .' '. $module .' - '. $data;
 
         try {

@@ -62,6 +62,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="80%">Part Request Number</th>
+                                {{-- <th width="80%">Part Request Image</th> --}}
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -75,6 +76,7 @@
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="80%">{{ $partrequest->part_req_number }}</td>
+                                {{-- <td width="80%"><img src="/storage/{{ $partrequest->part_req_pic_path }}{{ $partrequest->part_req_pic_filename }}" alt="" width="200"></td> --}}
                                 <td width="15%">
                                     @if($partrequest->part_req_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -86,6 +88,11 @@
                                         data-url="{{ url('partrequest/delete/'. $partrequest->part_req_id) }}"
                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                         <i data-feather="trash-2" width="16" height="16"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-icon btn-info text-white btnView"
+                                        data-id="{{ $partrequest->part_req_id }}"
+                                        data-toggle="tooltip" data-placement="top" title="Gambar">
+                                        <i data-feather="eye" width="16" height="16"></i>
                                     </a>
                                     @endif
                                 </td>
@@ -108,19 +115,19 @@
 <!-- End Container fluid  -->
 
 <!-- Modal Add -->
-<div class="modal addModal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="addModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Part Request</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form action="{{ url('partrequest/store') }}" method="POST" id="addForm">
+            <form action="{{ url('partrequest/store') }}" method="POST" id="addForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Carline <span class="text-danger">*</span></label>
                                     <select class="form-control" name="car_model" id="car_model">
@@ -133,7 +140,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Car Model <span class="text-danger">*</span></label>
                                     <select class="form-control" name="carline" id="carline">
@@ -146,7 +153,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            {{-- <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Alasan <span class="text-danger">*</span></label>
                                     <select class="form-control" name="alasan" id="alasan">
@@ -157,22 +164,22 @@
                                         <option value="Option4">Other</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-md-12" id="otherReasonDiv" style="display: none;">
+                            </div> --}}
+                            {{-- <div class="col-md-6" id="otherReasonDiv" style="display: none;">
                                 <div class="form-group">
                                     <label class="form-label">Alasan lainnya</label>
                                     <input type="text" class="form-control" name="other_reason" id="other_reason" placeholder="Masukkan alasan">
                                 </div>
-                            </div>
-                            <div class="col-md-12">
+                            </div> --}}
+                            {{-- <div class="col-md-6">
                                 <div class="form-group" hidden>
                                     <label class="form-label">Order <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="order" id="order"
                                         placeholder="Masukan Order" value="{{ old('order') }}">
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Shift <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="shift" id="shift">
@@ -182,7 +189,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Machine <span class="text-danger">*</span></label>
                                     <select class="form-control" name="machine_id" id="machine_id">
@@ -195,61 +202,61 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Machine Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="machine_name" id="machine_name" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Machine Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="machine_no" id="machine_no"readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            {{-- <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Serial Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="serial_no" id="serial_no"
                                         placeholder="Masukan Serial Number" value="{{ old('serial_no') }}">
                                 </div>
-                            </div>
-                            <div class="col-md-12" hidden>
+                            </div> --}}
+                            {{-- <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Applicator Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="applicator_no" id="applicator_no"
                                         placeholder="Masukan Applicator Number" value="{{ old('applicator_no') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Wear and Tear Code <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_code" id="wear_and_tear_code"
                                         placeholder="Masukan Wear and Tear Code" value="{{ old('wear_and_tear_code') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Side Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="side_no" id="side_no"
                                         placeholder="Masukan Side Number" value="{{ old('side_no') }}">
                                 </div>
-                            </div>
-                            <div class="col-md-12">
+                            </div> --}}
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Stroke <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="stroke" id="stroke"
                                         placeholder="Masukan Stroke" value="{{ old('stroke') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
+                            {{-- <div class="col-md-6">
+                                <div class="form-group" hidden>
                                     <label class="form-label">Order <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="order" id="order"
                                         placeholder="Masukan Order" value="{{ old('order') }}">
                                 </div>
-                            </div>
-                            <div class="col-md-12">
+                            </div> --}}
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Part <span class="text-danger">*</span></label>
                                     <select class="form-control" name="part_id" id="part_id">
@@ -262,88 +269,95 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Part Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_name" id="part_name" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Part Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_no" id="part_no" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            {{-- <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
                                         placeholder="Masukan Part Quantity" value=1>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
+                            </div> --}}
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Person in Charge <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
                                         placeholder="Masukan Person in Charge" value="{{ old('pic') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Remarks <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="remarks" id="remarks"
                                         placeholder="Masukan Remarks" value="{{ old('remarks') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Status <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="status" id="status"
-                                        placeholder="Masukan Status" value="0">
+                                        placeholder="Masukan Status" value="0" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6"hidden>
+                                <div class="form-group">
+                                    <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="wear_and_tear_status" id="wear_and_tear_status"
+                                        placeholder="Masukan Wear and Tear Status" value="Open" readonly>
+                                </div>
+                            </div>
+                            {{-- <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Anvil <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="anvil" id="anvil"
                                         placeholder="Masukan Anvil" value="{{ old('anvil') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Approved By <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="approved_by" id="approved_by"
                                         placeholder="Masukan Approved" value="-">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Insulation Crimper <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="insulation_crimper" id="insulation_crimper"
                                         placeholder="Masukan Insulation Crimper" value="{{ old('insulation_crimper') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12" hidden>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Wire Crimper <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="wire_crimper" id="wire_crimper"
                                         placeholder="Masukan Wire Crimper" value="{{ old('wire_crimper') }}">
                                 </div>
                             </div>
-                            <div class="col-md-12"hidden>
+                            <div class="col-md-6"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Other <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="other" id="other"
                                         placeholder="Masukan Other" value="{{ old('other') }}">
                                 </div>
-                            </div>
-                            <div class="col-md-12"hidden>
+                            </div> --}}
+                            {{-- <div class="col-md-6"hidden>
                                 <div class="form-group">
                                     <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_status" id="wear_and_tear_status"
                                         placeholder="Masukan Wear and Tear Status" value="Open">
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -351,14 +365,46 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control-file" name="png_file" accept=".png" maxFileSize="2097152">
+                        <input type="file" class="form-control" name="image_part">
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                     <button type="submit" class="text-white btn btn-success">Simpan</button>
-                    <input type="file" id="fileInput" style="display: none;" onchange="document.getElementById('submitButton').disabled = false;">
+                    {{-- <input type="file" id="fileInput" style="display: none;" onchange="document.getElementById('submitButton').disabled = false;"> --}}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Add -->
+<div class="modal fade viewModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="viewModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form action="{{ url('partrequest/store') }}" method="POST" id="addForm" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="form-group">
+                        <div id="view_image"></div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -391,8 +437,9 @@
         $('#machine_no').val('');
         $('#applicator_no').val('');
         $('#wear_and_tear_code').val('');
-        $('#wear_and_tear_status').val('');
+        $('#wear_and_tear_status').val('Open');
         $('#serial_no').val('');
+        $('#status').val('0');
         $('#side_no').val('');
         $('#stroke').val('');
         $('#pic').val('');
@@ -400,6 +447,7 @@
         $('#part_no').val('');
         $('#anvil').val('');
         $('#insulation_crimper').val('');
+        $('#has_sto');
         $('#wire_crimper').val('');
         $('#other').val('');
         $('.addModal form').attr('action', "{{ url('partrequest/store') }}");
@@ -463,6 +511,7 @@
                     $('#order').val(data.result.order);
                     $('#shift').val(data.result.shift);
                     $('#machine_no').val(data.result.machine_no);
+                    $('#machine_name').val(data.result.machine_name);
                     $('#applicator_no').val(data.result.applicator_no);
                     $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
                     $('#serial_no').val(data.result.serial_no);
@@ -471,11 +520,42 @@
                     $('#pic').val(data.result.pic);
                     $('#remarks').val(data.result.remarks);
                     $('#part_qty').val(data.result.part_qty);
+                    $('#part_name').val(data.result.part_name);
                     $('#status').val(data.result.status);
                     $('#approved_by').val(data.result.approved_by);
                     $('#part_no').val(data.result.part_no);
                     $('.addModal .modal-title').text('Ubah Part Request');
                     $('.addModal').modal('show');
+
+
+                }
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : Gagal mengambil data');
+            }
+        });
+
+    });
+
+    $('.btnView').click(function () {
+
+        var id = $(this).attr('data-id');
+        var url = "{{ url('partrequest/getdata') }}";
+
+
+        $.ajax({
+            type: 'GET',
+            url: url + '/' + id,
+            dataType: 'JSON',
+            success: function (data) {
+                console.log(data);
+
+                if (data.status == 1) {
+                    $('.viewModal .modal-title').text('Detail Gambar');
+                    $('.viewModal').modal('show');
+
+                    document.getElementById('view_image').innerHTML = `<img src="/storage/${data.result.part_req_pic_path}${data.result.part_req_pic_filename}" alt="" width="200">`
 
                 }
 
@@ -524,6 +604,43 @@
                 });
             }
         })
+    });
+
+    $('#addModal').on('hidden.bs.modal', function (e) {
+        // You can save the form values in localStorage
+        localStorage.setItem('car_model', $('#car_model').val());
+        localStorage.setItem('carline', $('#carline').val());
+        localStorage.setItem('part_id', $('#part_id').val());
+        localStorage.setItem('part_no', $('#part_no').val());
+        localStorage.setItem('shift', $('#shift').val());
+        localStorage.setItem('machine_name', $('#machine_name').val());
+        localStorage.setItem('machine_no', $('#machine_no').val());
+        localStorage.setItem('machine_id', $('#machine_id').val());
+        localStorage.setItem('stroke', $('#stroke').val());
+        localStorage.setItem('pic', $('#pic').val());
+        localStorage.setItem('remarks', $('#remarks').val());
+    });
+
+    // Function to restore form values when modal is shown
+    $('#addModal').on('shown.bs.modal', function (e) {
+        // Retrieve the saved values from localStorage and set them in the form fields
+        $('#car_model').val(localStorage.getItem('car_model'));
+        $('#carline').val(localStorage.getItem('carline'));
+        $('#shift').val(localStorage.getItem('shift'));
+        $('#machine_id').val(localStorage.getItem('machine_id'));
+        $('#stroke').val(localStorage.getItem('stroke'));
+        $('#part_id').val(localStorage.getItem('part_id'));
+        $('#machine_name').val(localStorage.getItem('machine_name'));
+        $('#part_id').val(localStorage.getItem('part_id'));
+        $('#part_no').val(localStorage.getItem('part_no'));
+        $('#machine_no').val(localStorage.getItem('machine_no'));
+        $('#pic').val(localStorage.getItem('pic'));
+        $('#remarks').val(localStorage.getItem('remarks'));
+    });
+
+    // Clear the saved values when the form is submitted
+    $('#addForm').on('submit', function (e) {
+        localStorage.clear();
     });
 
 

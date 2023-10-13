@@ -1,0 +1,11 @@
+{
+    "name": "SubRack",
+    "alias": "subrack",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SubRack\\Providers\\SubRackServiceProvider"
+    ],
+    "files": []
+}

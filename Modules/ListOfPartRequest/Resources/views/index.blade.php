@@ -36,7 +36,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
@@ -75,8 +75,8 @@
                                 <td width="5%">-</td>
                                 <td width="5%">-</td>
                                 <td width="5%">-</td>
-                                <td width="5%">-</td>
-                                {{-- <td width="5%">{{ $part->molts_no }}</td> --}}
+                                {{-- <td width="5%">-</td> --}}
+                                <td width="5%">{{ $listofpartrequest->molts_no }}</td>
                                 {{-- <td width="5%">{{ $part->applicator_no }}</td> --}}
                                 {{-- <td width="5%">{{ $part->part_name }}</td> --}}
                                 <td width="15%">{{ $listofpartrequest->part_qty }}</td>
@@ -294,28 +294,6 @@
 
 @section('script')
 <script type="text/javascript">
-    $('.btnAdd').click(function () {
-        $('#part_req_number').val('');
-        $('#carline').val('');
-        $('#car_model').val('');
-        $('#alasan').val('');
-        $('#order').val('');
-        $('#shift').val('');
-        $('#machine_no').val('');
-        $('#applicator_no').val('');
-        $('#wear_and_tear_code').val('');
-        $('#serial_no').val('');
-        $('#side_no').val('');
-        $('#stroke').val('');
-        $('#pic').val('');
-        $('#remarks').val('');
-        $('#part_qty').val('');
-        $('#status').val('');
-        $('#approved_by').val('');
-        $('.addModal form').attr('action', "{{ url('partrequest/store') }}");
-        $('.addModal .modal-title').text('Tambah Modul');
-        $('.addModal').modal('show');
-    });
 
     // check error
     @if(count($errors))

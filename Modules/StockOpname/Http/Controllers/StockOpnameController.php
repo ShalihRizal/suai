@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Part\Repositories\PartRepository;
+use Modules\Rack\Repositories\RackRepository;
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\StockOpname\Repositories\StockOpnameRepository;
 use App\Helpers\DataHelper;
@@ -21,6 +22,7 @@ class StockOpnameController extends Controller
     {
         $this->middleware('auth');
 
+        $this->_rackRepository = new RackRepository;
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_stockopnameRepository = new StockOpnameRepository;
@@ -45,7 +47,6 @@ class StockOpnameController extends Controller
         // dd($yesCount, $noCount);
 
         $partcategories = $this->_partCategoryRepository->getAll();
-        $parts = $this->_partRepository->getAll();
 
         $data = [];
 
@@ -77,11 +78,7 @@ class StockOpnameController extends Controller
             return redirect('unauthorize');
         }
 
-        $params = [
-            'has_sto' => 'no'
-        ];
-
-        $parts = $this->_partRepository->getAllByParams($params);
+        $parts = $this->_partRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
 
 
@@ -167,7 +164,55 @@ class StockOpnameController extends Controller
         //     return redirect('unauthorize');
         // }
 
-        return view('stockopname::scan');
+        $cdparam = [
+            'has_sto' => 'no',
+            'part_category_id' => '1'
+        ];
+        $crimpingdies = $this->_partRepository->getAllByParams($cdparam);
+
+        $afparam = [
+            'has_sto' => 'no',
+            'part_category_id' => '5'
+        ];
+        $assemblyfixture = $this->_partRepository->getAllByParams($afparam);
+
+        $cfparam = [
+            'has_sto' => 'no',
+            'part_category_id' => '6'
+        ];
+        $checkerfixture = $this->_partRepository->getAllByParams($cfparam);
+
+        $spmparam = [
+            'has_sto' => 'no',
+            'part_category_id' => '4'
+        ];
+        $sparepartmachine = $this->_partRepository->getAllByParams($spmparam);
+
+        $parts = $this->_partRepository->getAll();
+        $partcategories = $this->_partCategoryRepository->getAll();
+        $racks = $this->_rackRepository->getAll();
+
+        return view('stockopname::scan', compact('parts', 'racks', 'partcategories', 'sparepartmachine', 'checkerfixture', 'assemblyfixture', 'crimpingdies'));
+    }
+    public function hassto()
+    {
+        $params = [
+            'has_sto' => 'yes'
+        ];
+
+        $parts = $this->_partRepository->getAllByParams($params);
+
+        return view('stockopname::hassto', compact('parts'));
+    }
+    public function nosto()
+    {
+        $params = [
+            'has_sto' => 'no'
+        ];
+
+        $parts = $this->_partRepository->getAllByParams($params);
+
+        return view('stockopname::nosto', compact('parts'));
     }
 
     /**
@@ -201,24 +246,12 @@ class StockOpnameController extends Controller
         return redirect('stockopname')->with('message', 'StockOpname berhasil diubah');
     }
 
-    public function updateAll(Request $request)
+    public function updateall(Request $request)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
-        $validator = Validator::make($request->all(), $this->_validationRules($id));
-
-        if ($validator->fails()) {
-            return redirect('stockopname')
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         DB::beginTransaction();
 
-        $this->_stockopnameRepository->updateAll(DataHelper::_normalizeParams($request->all(), false, true));
+        $this->_stockopnameRepository->updateHasStoToNo(DataHelper::_normalizeParams($request->all(), false, true));
         $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();
