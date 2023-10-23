@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Part\Repositories\PartRepository;
+use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Rack\Repositories\RackRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use App\Helpers\DataHelper;
@@ -23,6 +24,7 @@ class TransaksiInController extends Controller
 
         $this->_rackRepository = new RackRepository;
         $this->_partRepository = new PartRepository;
+        $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "TransaksiIn";
@@ -39,12 +41,32 @@ class TransaksiInController extends Controller
             return redirect('unauthorize');
         }
 
+        $params = [
+            'part_request.status' => 0
+        ];
+
         $transaksiins = $this->_transaksiinRepository->getAll();
+        $partcategories = $this->_partCategoryRepository->getAll();
         $parts = $this->_partRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
-        return view('transaksiin::index', compact('transaksiins', 'parts', 'racks'));
+        // dd($transaksiins);
+
+        return view('transaksiin::index', compact('transaksiins', 'parts', 'racks', 'partcategories'));
     }
+
+    // public function filterTransactions(Request $request)
+    // {
+    //     $start_date = $request->input('start_date');
+    //     $end_date = $request->input('end_date');
+
+    //     // Use the start_date and end_date to filter your transactions
+    //     $filteredTransactions = DB::whereBetween('created_at', [$start_date, $end_date])->get();
+
+    //     return view('transaksiin::index', ['filteredTransactions' => $filteredTransactions]);
+    // }
+
+
 
     /**
      * Show the form for creating a new resource.

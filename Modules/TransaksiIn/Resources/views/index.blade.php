@@ -34,12 +34,29 @@
                 </div>
             </div>
             <div class="card-body">
-                {{-- <div class="addData"> --}}
                 <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Transaksi IN
                 </a>
-                {{-- </div> --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="start_date">Start Date:</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="end_date">End Date:</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date">
+                        </div>
+                    </div>
+                </div>
+
+                <a href="javascript:void(0)" class="btn btn-success btnFilter text-white mb-3">
+                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
+                    Filter
+                </a>
 
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
@@ -47,37 +64,59 @@
                             <tr>
                                 <th width="1%">No</th>
                                 <th width="20%">Nomor Invoice</th>
-                                {{-- <th width="20%">Part Number</th> --}}
+                                <th width="20%">ATA SUAI</th>
+                                <th width="20%">Po Number</th>
+                                <th width="20%">PO Date</th>
+                                <th width="20%">No. Urut</th>
+                                <th width="20%">Part No Urut</th>
+                                <th width="20%">Part Name</th>
+                                <th width="20%">Molts No</th>
+                                <th width="20%">Part No</th>
+                                <th width="20%">Qty</th>
+                                <th width="20%">Loc Hib</th>
+                                <th width="20%">Loc PPTI</th>
+                                <th width="20%">Created at</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="part-table-body">
                             @if (sizeof($transaksiins) == 0)
                             <tr>
                                 <td colspan="3" align="center">Data kosong</td>
                             </tr>
                             @else
-                            @foreach ($transaksiins as $transaksiin)
-                            <tr>
-                                <td width="1%">{{ $loop->iteration }}</td>
-                                <td width="20%">{{ $transaksiin->invoice_no }}</td>
-                                {{-- <td width="20%">{{ $part->part_no }}</td> --}}
-                                <td width="5%">
-                                    @if($transaksiin->transaksi_in_id > 0)
-                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $transaksiin->transaksi_in_id }}" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah">
-                                        <i data-feather="edit" width="16" height="16"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
-                                        data-url="{{ url('transaksiin/delete/'. $transaksiin->transaksi_in_id) }}"
-                                        data-toggle="tooltip" data-placement="top" title="Hapus">
-                                        <i data-feather="trash-2" width="16" height="16"></i>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
+                                @foreach ($transaksiins as $transaksiin)
+                                    <tr class="part-row" data-category="{{ $transaksiin->part_category_id }}" data-created-at="{{ $transaksiin->created_at }}">
+                                        <td width="1%">{{ $loop->iteration }}</td>
+                                        <td width="20%">{{ $transaksiin->invoice_no }}</td>
+                                        <td width="20%">{{ $transaksiin->ata_suai }}</td>
+                                        <td width="20%">{{ $transaksiin->po_no }}</td>
+                                        <td width="20%">{{ $transaksiin->po_date }}</td>
+                                        <td width="20%">{{ $transaksiin->no_urut }}</td>
+                                        <td width="20%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
+                                        <td width="20%">{{ $transaksiin->part_name }}</td>
+                                        <td width="20%">{{ $transaksiin->molts_no }}</td>
+                                        <td width="20%">{{ $transaksiin->part_no }}</td>
+                                        <td width="20%">{{ $transaksiin->qty_end }}</td>
+                                        <td width="20%">{{ $transaksiin->lokasi_hib }}</td>
+                                        <td width="20%">{{ $transaksiin->loc_ppti }}</td>
+                                        <td width="20%">{{ $transaksiin->created_at }}</td>
+                                        <td width="5%">
+                                            @if($transaksiin->transaksi_in_id > 0)
+                                                <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                                    data-id="{{ $transaksiin->transaksi_in_id }}" data-toggle="tooltip" data-placement="top"
+                                                    title="Ubah">
+                                                    <i data-feather="edit" width="16" height="16"></i>
+                                                </a>
+                                                <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
+                                                    data-url="{{ url('transaksiin/delete/'. $transaksiin->transaksi_in_id) }}"
+                                                    data-toggle="tooltip" data-placement="top" title="Hapus">
+                                                    <i data-feather="trash-2" width="16" height="16"></i>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endif
                         </tbody>
                     </table>
@@ -137,35 +176,50 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">PO Date <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po_date" id="po_date"
+                                    <input type="date" class="form-control" name="po_date" id="po_date"
                                         placeholder="Masukan PO Date" value="{{ old('po_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Receive Date <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="rec_date" id="rec_date"
+                                    <input type="date" class="form-control" name="rec_date" id="rec_date"
                                         placeholder="Masukan Receive Date" value="{{ old('rec_date') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="part_id" id="part_id">
-                                        <option value="">- Pilih Part -</option>
-                                        @if(sizeof($parts) > 0)
-                                        @foreach($parts as $part)
-                                        <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
-                                        @endforeach
-                                        @endif
-                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Quantity <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="po_no" id="po_no"
-                                        placeholder="Masukan Quantity" value="{{ old('po_no') }}">
+                                        placehold*er="Masukan Quantity" value="{{ old('po_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part <span class="text-danger">*</span></label>
+                                    <div class="addData">
+                                        <div class="btn-group" style="height: 40px;">
+                                            {{-- Your Blade view content --}}
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                        <select class="form-control" name="part_id" id="part_id">
+                                                            <option value="">- Pilih Part -</option>
+                                                                @if(sizeof($parts) > 0)
+                                                                    @foreach($parts as $part)
+                                                                        <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a href="{{ url('part') }}" style="height: 85%;" class="btn btn-success btnAdd text-white mb-3">
+                                                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
+                                                    Part Baru
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -299,7 +353,6 @@
                     $('#loc_hib').val(data.result.loc_hib);
                     $('#loc_ppti').val(data.result.loc_ppti);
                     $('#qty_end').val(data.result.qty_end);
-                    $('#module_name').val(data.result.module_name);
                     $('.addModal .modal-title').text('Ubah Transaksi');
                     $('.addModal').modal('show');
 
@@ -406,6 +459,26 @@
     if (msg !== undefined) {
         notyf.success(msg)
     }
+
+    document.querySelector('.btnFilter').addEventListener('click', function () {
+        const startDate = new Date(document.getElementById('start_date').value);
+        const endDate = new Date(document.getElementById('end_date').value);
+        const rows = document.querySelectorAll('.part-row');
+
+        rows.forEach(function (row) {
+            const createdAt = new Date(row.getAttribute('data-created-at'));
+
+            if (
+                (!startDate || createdAt >= startDate) &&
+                (!endDate || createdAt <= endDate)
+            ) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
 
 </script>
 @endsection

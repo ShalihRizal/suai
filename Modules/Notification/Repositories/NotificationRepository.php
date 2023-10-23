@@ -16,18 +16,16 @@ class NotificationRepository extends QueryBuilderImplementation
         $this->pk = 'part_req_id';
     }
 
-    //overide
-    public function getAll()
+    public function getAllByParams(array $params)
     {
         try {
             return DB::connection($this->db)
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
-                ->orderBy('part_req_id')
+                ->where($params)
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-
 }

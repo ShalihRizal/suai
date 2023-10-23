@@ -29,13 +29,6 @@
 @endsection
 
 @section('content')
-<!-- Container fluid  -->
-<!-- ============================================================== -->
-<!-- <div class="container-fluid"> -->
-<!-- ============================================================== -->
-<!-- Start Page Content -->
-<!-- ============================================================== -->
-
 
 <div class="row">
     <div class="col-12">
@@ -58,7 +51,7 @@
                     <div colspan="4" align="center">ㅤ</div>
                 </div>
             </div>
-            <div class="col-md-3 mb-3">
+            {{-- <div class="col-md-3 mb-3">
                 <div class="form-group">
                     <select class="form-control" name="part_category" id="part_category" style="height: 100%;">
                         <option value="">- Semua Part Category -</option>
@@ -69,7 +62,7 @@
                         @endif
                     </select>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-md-3 mb-3">
                 <div class="form-group">
                     <div class="form-group">
@@ -89,7 +82,6 @@
     </div>
 </div>
 
-<!-- Add a new div for each table based on dropdown selection -->
 <div class="row" id="table-cd" style="display: none;">
     <div class="col-12">
         <div class="card">
@@ -129,7 +121,7 @@
                                 <td width="20%">{{ $part->qty_end }}</td>
                                 <td width="10%">{{ $part->loc_tapc }}</td>
                                 <td width="15%">{{ $part->last_sto }}</td>
-                                <td width="20%">{{ QrCode::size(150)->generate($part->part_id)}}</td>
+                                <td width="20%">{{ QrCode::size(150)->generate($part->part_no)}}</td>
                             </tr>
                             @endforeach
                             @endif
@@ -142,7 +134,7 @@
 </div>
 
 
-
+{{--
 <div class="row" id="table-spm" style="display: none;">
     <div class="col-12">
         <div class="card">
@@ -184,7 +176,6 @@
                                 <td width="10%">{{ $part->loc_tapc }}</td>
                                 <td width="15%">{{ $part->last_sto }}</td>
                                 <td width="20%">{{ QrCode::size(150)->generate($part->part_id)}}</td>
-                                {{-- <td width="15%">{{ substr($part->updated_at, 0,10) }}</td> --}}
                             </tr>
                             @endforeach
                             @endif
@@ -194,8 +185,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row" id="table-af" style="display: none;">
+</div> --}}
+{{-- <div class="row" id="table-af" style="display: none;">
     <div class="col-12">
         <div class="card">
             <div class="card-header w-100">
@@ -236,7 +227,6 @@
                                 <td width="10%">{{ $part->loc_tapc }}</td>
                                 <td width="15%">{{ $part->last_sto }}</td>
                                 <td width="20%">{{ QrCode::size(150)->generate($part->part_id)}}</td>
-                                {{-- <td width="15%">{{ substr($part->updated_at, 0,10) }}</td> --}}
                             </tr>
                             @endforeach
                             @endif
@@ -246,8 +236,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row" id="table-cf" style="display: none;">
+</div> --}}
+{{-- <div class="row" id="table-cf" style="display: none;">
     <div class="col-12">
         <div class="card">
             <div class="card-header w-100">
@@ -288,7 +278,6 @@
                                 <td width="10%">{{ $part->loc_tapc }}</td>
                                 <td width="15%">{{ $part->last_sto }}</td>
                                 <td width="20%">{{ QrCode::size(150)->generate($part->part_id)}}</td>
-                                {{-- <td width="15%">{{ substr($part->updated_at, 0,10) }}</td> --}}
                             </tr>
                             @endforeach
                             @endif
@@ -298,14 +287,7 @@
             </div>
         </div>
     </div>
-</div>
-
-<!-- ============================================================== -->
-<!-- End PAge Content -->
-<!-- ============================================================== -->
-<!-- </div> -->
-<!-- ============================================================== -->
-<!-- End Container fluid  -->
+</div> --}}
 
 <div class="modal fade addReset" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -322,13 +304,17 @@
                             <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
                             <div colspan="4" align="center">ㅤ</div>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">QTY<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" disabled>
+                            <div colspan="4" align="center">ㅤ</div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                     <button type="submit" class="text-white btn btn-success" onclick="reloadPage()">STO</button>
                 </div>
-            {{-- </form> --}}
         </div>
     </div>
 </div
@@ -432,7 +418,7 @@
     // Function to show/hide tables based on dropdown selection
     function showTable(selectedValue) {
         // Hide all tables
-        $('#table-cd').hide();
+        $('#table-cd').show();
         $('#table-af').hide();
         $('#table-spm').hide();
         $('#table-cf').hide();

@@ -29,11 +29,11 @@ class NotificationHelper
         $data = [
             'status' => '0'
         ];
-        $notificationscount = $_notificationRepository->getAllByParams($data);
+        $notificationscount = $_notificationRepository->countByParams($data);
 
-        $countSize = count($notificationscount);
+        // $countSize = count($notificationscount);
 
-        return $countSize;
+        return $notificationscount;
 
     }
 

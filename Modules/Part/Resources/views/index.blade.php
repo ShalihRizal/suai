@@ -42,9 +42,7 @@
         <div class="card">
             <div class="card-header w-100">
                 @if (session('message'))
-
                 <strong id="msgId" hidden>{{ session('message') }}</strong>
-
                 @endif
 
                 <div class="row">
@@ -52,9 +50,7 @@
                         <h3 class="h3">Part</h3>
                         {{ date('Y-m-d') }}
                     </div>
-                    <div class="col-md-6">
-
-                    </div>
+                    <div class="col-md-6"></div>
                 </div>
             </div>
             <div class="card-body">
@@ -69,12 +65,26 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="20%">Part Name</th>
-                                <th width="15%">Part Number</th>
-                                <th width="15%">Part Category</th>
-                                <th width="20%">Stock</th>
-                                <th width="20%">QR Code</th>
-                                <th width="15%">Aksi</th>
+                                <th width="5%">Part No</th>
+                                <th width="5%">Part Name</th>
+                                <th width="5%">Loc PPTI</th>
+                                <th width="5%">Loc Tapc</th>
+                                <th width="5%">Loc Hib</th>
+                                <th width="5%">Begin</th>
+                                <th width="5%">Qty In</th>
+                                <th width="5%">Qty Out</th>
+                                <th width="5%">Adjust</th>
+                                <th width="5%">Qty End Inventory</th>
+                                <th width="5%">Qty End Replacement</th>
+                                <th width="5%">Lokasi Replacement</th>
+                                <th width="5%">Qty Kedatangan Barang + Qty Inventory</th>
+                                <th width="5%">Qty Kedatangan Barang</th>
+                                <th width="5%">Qty in Order (Total)</th>
+                                <th width="5%">Status Part</th>
+                                <th width="5%">Safety Stock</th>
+                                <th width="5%">ROP</th>
+                                <th width="5%">Qty Order Forecast</th>
+                                <th width="5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,16 +96,38 @@
                             @foreach ($parts as $part)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="20%">{{ $part->part_no }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->loc_ppti }}</td>
+                                <td width="20%">{{ $part->loc_tapc }}</td>
+                                <td width="20%">{{ $part->lokasi_hib }}</td>
+                                <td width="20%">{{ $part->begin }}</td>
+                                <td width="20%">{{ $part->qty_in }}</td>
+                                <td width="20%">{{ $part->qty_out }}</td>
+                                <td width="20%">{{ $part->adjust }}</td>
+                                <td width="20%">{{ $part->qty_end_inventory }}</td>
+                                <td width="20%">{{ $part->qty_end_replacement }}</td>
+                                <td width="20%">{{ $part->lokasi_replacement }}</td>
+                                <td width="20%">{{ $part->qty_kedatangan_barang }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
+                                <td width="20%">{{ $part->part_name }}</td>
                                 <td width="20%">{{ $part->part_name }}</td>
                                 <td width="15%">{{ $part->part_no }}</td>
                                 <td width="15%">{{ $part->part_category_name }}</td>
-                                <td width="20%">{{ $part->qty_end }}</td>
-                                <td width="20%">{{ QrCode::size(75)->generate($part->part_id)}}</td>
+                                <td width="20%">{{ QrCode::size(75)->generate($part->part_id) }}</td>
                                 <td width="15%">
-                                    @if($part->part_id > 0)
+                                    @if ($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $part->part_id }}" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah">
+                                        data-id="{{ $part->part_id }}" data-toggle="tooltip" data-placement="top" title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>
                                     </a>
                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
@@ -112,10 +144,10 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
 <!-- ============================================================== -->
 <!-- End PAge Content -->
 <!-- ============================================================== -->

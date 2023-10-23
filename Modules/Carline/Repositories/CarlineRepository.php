@@ -30,4 +30,12 @@ class CarlineRepository extends QueryBuilderImplementation
         }
     }
 
+    public function updateMonthlyField()
+    {
+        // Your update logic here
+        // Use DB queries or any other methods you prefer
+
+        echo('Berhasil');
+    }
+
 }

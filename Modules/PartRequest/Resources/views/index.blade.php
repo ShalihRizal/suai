@@ -34,35 +34,36 @@
                 </div>
             </div>
             <div class="card-body">
-                {{-- <div class="addData"> --}}
                 <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Part Request
                 </a>
-                {{-- </div> --}}
-
-
-                {{-- <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-label">Part <span class="text-danger">*</span> </label>
-                        <select class="form-control" name="part_id" id="part_id">
-                            <option value="">- Pilih Part -</option>
-                            @if(sizeof($parts) > 0)
-                            @foreach($parts as $part)
-                            <option value="{{ $part->part_id }}">{{ $part->part_name }} - {{ $part->part_no }}</option>
-                            @endforeach
-                            @endif
-                        </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="start_date">Start Date:</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date">
+                        </div>
                     </div>
-                </div> --}}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="end_date">End Date:</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date">
+                        </div>
+                    </div>
+                </div>
 
+                <a href="javascript:void(0)" class="btn btn-success btnFilter text-white mb-3">
+                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
+                    Filter
+                </a>
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="80%">Part Request Number</th>
-                                {{-- <th width="80%">Part Request Image</th> --}}
+                                <th width="80%">Created At</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -73,10 +74,10 @@
                             </tr>
                             @else
                             @foreach ($partrequests as $partrequest)
-                            <tr>
+                            <tr class="part-row" data-category="{{ $partrequest->part_req_number }}" data-created-at="{{ $partrequest->created_at }}">
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="80%">{{ $partrequest->part_req_number }}</td>
-                                {{-- <td width="80%"><img src="/storage/{{ $partrequest->part_req_pic_path }}{{ $partrequest->part_req_pic_filename }}" alt="" width="200"></td> --}}
+                                <td width="80%">{{ $partrequest->created_at }}</td>
                                 <td width="15%">
                                     @if($partrequest->part_req_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
@@ -735,6 +736,26 @@
         document.getElementById('machine_name').value = machineName;
         document.getElementById('machine_no').value = machineNumber;
     });
+
+    document.querySelector('.btnFilter').addEventListener('click', function () {
+        const startDate = new Date(document.getElementById('start_date').value);
+        const endDate = new Date(document.getElementById('end_date').value);
+        const rows = document.querySelectorAll('.part-row');
+
+        rows.forEach(function (row) {
+            const createdAt = new Date(row.getAttribute('data-created-at'));
+
+            if (
+                (!startDate || createdAt >= startDate) &&
+                (!endDate || createdAt <= endDate)
+            ) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
 </script>
 
 {{-- <script>

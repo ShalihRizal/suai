@@ -15,7 +15,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('update:monthly-field')->everySecond();
+
+        $schedule->command('update:monthly-field')
+         ->monthly()
+         ->when(function () {
+             return now()->endOfMonth()->isToday();
+         });
+
     }
 
     /**

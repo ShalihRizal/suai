@@ -36,7 +36,7 @@ class PartConsumptionListController extends Controller
             return redirect('unauthorize');
         }
 
-        $partconsumptionlists = $this->_PartRequestRepository->getAll();
+        $partconsumptionlists = $this->_PartConsumptionListRepository->getAll();
 
         return view('partconsumptionlist::index', compact('partconsumptionlists'));
     }

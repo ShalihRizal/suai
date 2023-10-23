@@ -87,13 +87,13 @@
                                     @if ($notification->part_id == $part->part_id)
                                     @if ($notification->part_qty > $part->qty_end)
                                     <a hidden href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        data-id="{{ $notification->part_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Approve">
                                         <i data-feather="check" width="16" height="16"></i>
                                     </a>
                                     @else
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        data-id="{{ $notification->part_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Approve">
                                         <i data-feather="check" width="16" height="16"></i>
                                     </a>
@@ -101,7 +101,7 @@
                                     @endif
                                     @endforeach
                                     <a href="javascript:void(0)" class="btn btn-icon btnDetail btn-success text-white"
-                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        data-id="{{ $notification->part_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Approve">
                                         <i data-feather="list" width="16" height="16"></i>
                                     </a>

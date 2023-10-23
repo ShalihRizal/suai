@@ -1,6 +1,7 @@
 <?php
 
 namespace Modules\MonthlyReport\Http\Controllers;
+use Modules\PartCategory\Repositories\PartCategoryRepository;
 
 use App\Exports\partexport;
 use Illuminate\Contracts\Support\Renderable;
@@ -8,15 +9,30 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Helpers\LogHelper;
+
 class MonthlyReportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->_partCategoryRepository = new PartCategoryRepository;
+        $this->_logHelper           = new LogHelper;
+        $this->module               = "MonthlyReport";
+    }
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('monthlyreport::index');
+
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+        return view('monthlyreport::index', compact('partcategories'));
     }
 
     /**

@@ -77,7 +77,7 @@
 
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="table-responsive">
-                    <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
@@ -86,6 +86,10 @@
                                 <th width="20%">Part Kategori</th>
                                 <th width="20%">No Urut</th>
                                 <th width="20%">No Part.No Urut</th>
+                                <th width="20%">Safety Stock</th>
+                                <th width="20%">ROP</th>
+                                <th width="20%">Forecast</th>
+                                <th width="20%">Max Inv</th>
                                 <th width="20%">L/I</th>
                                 <th width="20%">W & T Code</th>
                                 <th width="20%">Invoice</th>
@@ -109,6 +113,10 @@
                                         <td width="20%">{{ $part->part_category_name }}</td>
                                         <td width="20%">{{ $part->no_urut }}</td>
                                         <td width="20%">{{ $part->part_no }}.{{$part->no_urut}}</td>
+                                        <td width="20%">-</td>
+                                        <td width="20%">-</td>
+                                        <td width="20%">-</td>
+                                        <td width="20%">-</td>
                                         <td width="20%">{{ $part->asal }}</td>
                                         <td width="20%">{{ $part->wear_and_tear_code }}</td>
                                         <td width="20%">{{ $part->invoice }}</td>

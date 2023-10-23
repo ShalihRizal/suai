@@ -40,12 +40,14 @@ class NotificationController extends Controller
         }
 
         $params = [
-            'status' => 0
+            'part_request.status' => 0
         ];
 
         $notifications = $this->_notificationRepository->getAllByParams($params);
         $parts = $this->_partRepository->getAll();
         $users = $this->_userRepository->getAll();
+
+        // dd($notifications);
 
         return view('notification::index', compact('notifications', 'parts', 'users'));
     }
