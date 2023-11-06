@@ -11,6 +11,14 @@
 |
 */
 
-Route::prefix('partconsumptionlist')->group(function() {
+
+Route::prefix('partconsumptionlist')->group(function () {
     Route::get('/', 'PartConsumptionListController@index');
+    Route::get('/create', 'PartConsumptionListController@create');
+    Route::get('/show/{id}', 'PartConsumptionListController@show');
+    Route::get('/edit/{id}', 'PartConsumptionListController@edit');
+    Route::post('/store', 'PartConsumptionListController@store');
+    Route::post('/update/{id}', 'PartConsumptionListController@update');
+    Route::get('/delete/{id}', 'PartConsumptionListController@destroy');
+    Route::get('/getdata/{id}', 'PartConsumptionListController@getdata');
 });

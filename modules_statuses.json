@@ -47,5 +47,6 @@
     "Rack": true,
     "Machine": true,
     "MonthlyReport": true,
-    "SubRack": true
+    "SubRack": true,
+    "SupervisorNotification": true
 }

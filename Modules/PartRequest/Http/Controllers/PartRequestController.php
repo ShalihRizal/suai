@@ -28,8 +28,8 @@ class PartRequestController extends Controller
         $this->_CarlineRepository = new CarlineRepository;
         $this->_MachineRepository = new MachineRepository;
         $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "PartRequest";
+        $this->_logHelper = new LogHelper;
+        $this->module = "PartRequest";
     }
 
     /**
@@ -74,8 +74,8 @@ class PartRequestController extends Controller
      */
     public function store(Request $request)
     {
-        $part  = $this->_partRepository->getById($request->part_id);
-        $last  = $this->_PartRequestRepository->getLast();
+        $part = $this->_partRepository->getById($request->part_id);
+        $last = $this->_PartRequestRepository->getLast();
 
         $file = $request->image_part;
         $fileName = DataHelper::getFileName($file);
@@ -121,6 +121,8 @@ class PartRequestController extends Controller
             'part_no' => $part->part_no,
         ];
 
+        dd($partreq);
+
 
 
         // $part_req_number = "PR/$currentMonth/SPM/1";
@@ -156,6 +158,47 @@ class PartRequestController extends Controller
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
+
+        return view('partrequest::show');
+    }
+
+    public function sendWA()
+    {
+        // Authorize
+        if (Gate::denies(__FUNCTION__, $this->module)) {
+            return redirect('unauthorize');
+        }
+
+        $token = 'w#xDUKWBboS97ME_gR8p';
+        $target = '62895620310202';
+
+        $curl = curl_init();
+
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_URL => 'https://api.fonnte.com/send',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array(
+                    'target' => $target,
+                    'message' => 'apal, ngetes weh',
+
+                ),
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: $token"
+                ),
+            )
+        );
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
 
         return view('partrequest::show');
     }
@@ -220,7 +263,7 @@ class PartRequestController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_PartRequestRepository->getById($id);
+        $detail = $this->_PartRequestRepository->getById($id);
 
         if (!$detail) {
             return redirect('partrequest');
@@ -244,8 +287,8 @@ class PartRequestController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_PartRequestRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_PartRequestRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

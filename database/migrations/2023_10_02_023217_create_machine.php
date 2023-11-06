@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,6 +15,8 @@ return new class extends Migration
         Schema::create('machine', function (Blueprint $table) {
             $table->bigIncrements('machine_id');
             $table->string('machine_name')->nullable();
+            $table->string('machine_no')->nullable();
+            $table->string('carline_id')->nullable();
 
             $table->engine = 'InnoDB';
         });

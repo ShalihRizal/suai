@@ -8,12 +8,39 @@ use Illuminate\Support\Facades\DB;
 class PartConsumptionListRepository extends QueryBuilderImplementation
 {
 
-    public $fillable = ['part_consumption_list_id','created_at','created_by','updated_at','updated_by'];
+    public $fillable = [
+        'pcl_id',
+        'part_id',
+        'pcl_category',
+        'family',
+        'pattern',
+        'pic_prepared',
+        'status',
+        'fase',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by'
+    ];
 
     public function __construct()
     {
         $this->table = 'part_consumption_list';
-        $this->pk = 'part_consumption_list_id';
+        $this->pk = 'pcl_id';
+    }
+
+    //overide
+    public function getAll()
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part', 'part_consumption_list.part_id', '=', 'part.part_id')
+                ->orderBy('pcl_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
 

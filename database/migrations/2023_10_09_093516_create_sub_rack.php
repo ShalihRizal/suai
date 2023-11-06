@@ -16,6 +16,7 @@ class CreateSubRack extends Migration
         Schema::create('sub_rack', function (Blueprint $table) {
             $table->bigIncrements('sub_rack_id');
             $table->string('sub_rack_name', 100)->unique();
+            $table->string('rack_id')->nullable();
 
             $table->engine = 'InnoDB';
         });
@@ -30,4 +31,5 @@ class CreateSubRack extends Migration
     {
         Schema::dropIfExists('sub_rack');
     }
-};
+}
+;

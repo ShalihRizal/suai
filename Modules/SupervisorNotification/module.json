@@ -1,0 +1,11 @@
+{
+    "name": "SupervisorNotification",
+    "alias": "supervisornotification",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SupervisorNotification\\Providers\\SupervisorNotificationServiceProvider"
+    ],
+    "files": []
+}

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\Rack\Repositories\RackRepository;
+use Modules\Carline\Repositories\CarlineRepository;
 use Modules\SubRack\Repositories\SubRackRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -21,9 +22,10 @@ class SubRackController extends Controller
         $this->middleware('auth');
 
         $this->_subrackRepository = new SubRackRepository;
+        $this->_carlineRepository = new CarlineRepository;
         $this->_rackRepository = new RackRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "SubRack";
+        $this->_logHelper = new LogHelper;
+        $this->module = "SubRack";
     }
 
     /**
@@ -32,15 +34,19 @@ class SubRackController extends Controller
      */
     public function index()
     {
+
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
         $subracks = $this->_subrackRepository->getAll();
+        $carlines = $this->_carlineRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
-        return view('subrack::index', compact('subracks', 'racks'));
+        // dd($subracks);
+
+        return view('subrack::index', compact('subracks', 'racks', 'carlines'));
     }
 
     /**
@@ -74,8 +80,8 @@ class SubRackController extends Controller
 
         if ($validator->fails()) {
             return redirect('subrack')
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         DB::beginTransaction();
@@ -161,7 +167,7 @@ class SubRackController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_subrackRepository->getById($id);
+        $detail = $this->_subrackRepository->getById($id);
 
         if (!$detail) {
             return redirect('subrack');
@@ -185,8 +191,8 @@ class SubRackController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_subrackRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_subrackRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

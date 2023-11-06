@@ -8,6 +8,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\PartConsumptionList\Repositories\PartConsumptionListRepository;
+use Modules\Carline\Repositories\CarlineRepository;
+use Modules\Machine\Repositories\MachineRepository;
+use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -19,9 +22,14 @@ class PartConsumptionListController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->_partRepository = new PartRepository;
         $this->_PartConsumptionListRepository = new PartConsumptionListRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "PartConsumptionList";
+        $this->_CarlineRepository = new CarlineRepository;
+        $this->_MachineRepository = new MachineRepository;
+        $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
+        $this->_logHelper = new LogHelper;
+        $this->module = "PartConsumptionList";
     }
 
     /**
@@ -37,8 +45,12 @@ class PartConsumptionListController extends Controller
         }
 
         $partconsumptionlists = $this->_PartConsumptionListRepository->getAll();
+        $parts = $this->_partRepository->getAll();
+        $carlines = $this->_CarlineRepository->getAll();
+        $machines = $this->_MachineRepository->getAll();
+        $carlinecategories = $this->_CarlineCategoryRepository->getAll();
 
-        return view('partconsumptionlist::index', compact('partconsumptionlists'));
+        return view('partconsumptionlist::index', compact('partconsumptionlists', 'parts', 'carlines', 'carlinecategories', 'machines'));
     }
 
     /**
@@ -62,56 +74,19 @@ class PartConsumptionListController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Authorize
+
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
-        $validator = Validator::make($request->all(), $this->_validationRules(''));
-
-        if ($validator->fails()) {
-            return redirect('partconsumptionlist')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $last  = $this->_PartRequestRepository->getLast();
-        if ($last) {
-            $part_req_number = rand(1,9999).$last->part_req_id;
-        }else{
-            $part_req_number = rand(1,9999).'1';
-        }
-
-        $part  = $this->_partRepository->getById($request->part_id);
-        $data = [
-            'part_id' => $request->part_id,
-            'part_req_number' => $part_req_number,
-            'carline' => $request->carline,
-            'car_model' => $request->car_model,
-            'alasan' => $request->alasan,
-            'order' => $request->order,
-            'shift' => $request->shift,
-            'machine_no' => $request->machine_no,
-            'applicator_no' => $request->applicator_no,
-            'wear_and_tear_code' => $request->wear_and_tear_code,
-            'serial_no' => $request->serial_no,
-            'side_no' => $request->side_no,
-            'stroke' => $request->stroke,
-            'pic' => $request->pic,
-            'remarks' => $request->remarks,
-            'part_qty' => $request->part_qty,
-            'status' => $request->status,
-            'approved_by' => $request->approved_by,
-            'part_no' => $part->part_no,
-        ];
         DB::beginTransaction();
-        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($data, true));
-        $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+        $this->_PartConsumptionListRepository->insert(DataHelper::_normalizeParams($request->all()));
+        // $check = $this->_PartConsumptionListRepository->insert(DataHelper::_normalizeParams($partreq, true));
+        $this->_logHelper->store($this->module, $request->pcl_id, 'create');
         DB::commit();
-        // dd($check, $data);
+        // dd($check);
 
-        return redirect('partconsumptionlist')->with('message', 'PartRequest berhasil ditambahkan');
+        return redirect('partconsumptionlist')->with('message', 'PartConsumptionList berhasil ditambahkan');
     }
 
     /**
@@ -125,6 +100,47 @@ class PartConsumptionListController extends Controller
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
+
+        return view('partconsumptionlist::show');
+    }
+
+    public function sendWA()
+    {
+        // Authorize
+        if (Gate::denies(__FUNCTION__, $this->module)) {
+            return redirect('unauthorize');
+        }
+
+        $token = 'w#xDUKWBboS97ME_gR8p';
+        $target = '62895620310202';
+
+        $curl = curl_init();
+
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_URL => 'https://api.fonnte.com/send',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array(
+                    'target' => $target,
+                    'message' => 'apal, ngetes weh',
+
+                ),
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: $token"
+                ),
+            )
+        );
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
 
         return view('partconsumptionlist::show');
     }
@@ -169,12 +185,12 @@ class PartConsumptionListController extends Controller
 
         DB::beginTransaction();
 
-        $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_PartConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         $this->_logHelper->store($this->module, $request->part_req_number, 'update');
 
         DB::commit();
 
-        return redirect('partconsumptionlist')->with('message', 'PartRequest berhasil diubah');
+        return redirect('partconsumptionlist')->with('message', 'PartConsumptionList berhasil diubah');
     }
 
     /**
@@ -189,7 +205,7 @@ class PartConsumptionListController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_PartRequestRepository->getById($id);
+        $detail = $this->_PartConsumptionListRepository->getById($id);
 
         if (!$detail) {
             return redirect('partconsumptionlist');
@@ -197,12 +213,12 @@ class PartConsumptionListController extends Controller
 
         DB::beginTransaction();
 
-        $this->_PartRequestRepository->delete($id);
+        $this->_PartConsumptionListRepository->delete($id);
         $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
 
         DB::commit();
 
-        return redirect('partconsumptionlist')->with('message', 'PartRequest berhasil dihapus');
+        return redirect('partconsumptionlist')->with('message', 'PartConsumptionList berhasil dihapus');
     }
 
     /**
@@ -213,8 +229,8 @@ class PartConsumptionListController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_PartRequestRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_PartConsumptionListRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

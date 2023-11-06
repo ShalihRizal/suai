@@ -21,6 +21,7 @@ class TransaksiInRepository extends QueryBuilderImplementation
         try {
             return DB::connection($this->db)
                 ->table($this->table)
+                ->select("transaksi_in.created_at as transaksi_created_at", "part.created_at as part_created_at", "transaksi_in.*", "part.*")
                 ->join('part', 'transaksi_in.part_id', '=', 'part.part_id')
                 ->get();
         } catch (Exception $e) {

@@ -1,7 +1,9 @@
 <?php
 
 namespace Modules\MonthlyReport\Http\Controllers;
+
 use Modules\PartCategory\Repositories\PartCategoryRepository;
+use Modules\Part\Repositories\PartRepository;
 
 use App\Exports\partexport;
 use Illuminate\Contracts\Support\Renderable;
@@ -19,8 +21,9 @@ class MonthlyReportController extends Controller
         $this->middleware('auth');
 
         $this->_partCategoryRepository = new PartCategoryRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "MonthlyReport";
+        $this->_partRepository = new PartRepository;
+        $this->_logHelper = new LogHelper;
+        $this->module = "MonthlyReport";
     }
 
     /**
@@ -32,7 +35,8 @@ class MonthlyReportController extends Controller
 
 
         $partcategories = $this->_partCategoryRepository->getAll();
-        return view('monthlyreport::index', compact('partcategories'));
+        $parts = $this->_partRepository->getAll();
+        return view('monthlyreport::index', compact('partcategories', 'parts'));
     }
 
     /**

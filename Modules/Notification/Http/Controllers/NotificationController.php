@@ -24,8 +24,8 @@ class NotificationController extends Controller
         $this->_partRepository = new PartRepository;
         $this->_notificationRepository = new NotificationRepository;
         $this->_userRepository = new UsersRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "Notification";
+        $this->_logHelper = new LogHelper;
+        $this->module = "Notification";
     }
 
     /**
@@ -91,6 +91,8 @@ class NotificationController extends Controller
         $this->_logHelper->store($this->module, $request->notification_id, 'create');
         DB::commit();
 
+
+
         return redirect('notification')->with('message', 'notification berhasil ditambahkan');
     }
 
@@ -137,19 +139,19 @@ class NotificationController extends Controller
             return redirect('unauthorize');
         }
 
-        $detail  = $this->_notificationRepository->getById($id);
-        $part  = $this->_partRepository->getById($detail->part_id);
+        $detail = $this->_notificationRepository->getById($id);
+        $part = $this->_partRepository->getById($detail->part_id);
         // dd($part, $detail);
         if ($part) {
             $stock = intval($part->qty_end) - intval($detail->part_qty);
-            if(intval($detail->status) == 0){
+            if (intval($detail->status) == 0) {
                 $updateStatus = [
                     'status' => 1
                 ];
                 $updatePart = [
                     'qty_end' => $stock
                 ];
-            }else{
+            } else {
                 $updateStatus = [
                     'status' => 0
                 ];
@@ -182,7 +184,7 @@ class NotificationController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_notificationRepository->getById($id);
+        $detail = $this->_notificationRepository->getById($id);
 
         if (!$detail) {
             return redirect('notification');
@@ -206,8 +208,8 @@ class NotificationController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_notificationRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_notificationRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

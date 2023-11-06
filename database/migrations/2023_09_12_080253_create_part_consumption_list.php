@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -14,8 +13,30 @@ return new class extends Migration
     public function up()
     {
         Schema::create('part_consumption_list', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigIncrements('pcl_id');
+            $table->string('pcl_category')->nullable();
+            $table->string('family')->nullable();
+            $table->integer('part_id')->nullable();
+            $table->string('pattern')->nullable();
+            $table->string('pic_prepared')->nullable();
+            $table->string('status')->nullable();
+            $table->string('fase')->nullable();
+            $table->dateTime('created_at');
+            $table->bigInteger('created_by')->unsigned();
+            $table->dateTime('updated_at')->nullable();
+            $table->bigInteger('updated_by')->unsigned()->nullable();
+
+            $table->foreign('created_by')
+                ->references('user_id')
+                ->on('sys_users')
+                ->onDelete('cascade');
+
+            $table->foreign('updated_by')
+                ->references('user_id')
+                ->on('sys_users')
+                ->onDelete('cascade');
+
+            $table->engine = 'InnoDB';
         });
     }
 
