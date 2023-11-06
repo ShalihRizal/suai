@@ -240,7 +240,7 @@ class PartRequestController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        dd($request);
         DB::beginTransaction();
 
         $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
