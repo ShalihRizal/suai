@@ -26,8 +26,8 @@ class TransaksiInController extends Controller
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "TransaksiIn";
+        $this->_logHelper = new LogHelper;
+        $this->module = "TransaksiIn";
     }
 
     /**
@@ -90,7 +90,6 @@ class TransaksiInController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -103,6 +102,7 @@ class TransaksiInController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        // dd($request->all());
 
         DB::beginTransaction();
         $this->_transaksiinRepository->insert(DataHelper::_normalizeParams($request->all(), true));
@@ -186,7 +186,7 @@ class TransaksiInController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_transaksiinRepository->getById($id);
+        $detail = $this->_transaksiinRepository->getById($id);
 
         if (!$detail) {
             return redirect('transaksiin');
@@ -210,8 +210,8 @@ class TransaksiInController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_transaksiinRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_transaksiinRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

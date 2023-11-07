@@ -27,16 +27,16 @@ class MenuHelper
     {
         $_sysmenuRepository = new SysMenuRepository;
 
-        $getMenus   = $_sysmenuRepository->getAllOrderByParams(['menu_is_sub' => 0]);
-        $menus      = "";
+        $getMenus = $_sysmenuRepository->getAllOrderByParams(['menu_is_sub' => 0]);
+        $menus = "";
 
         if (sizeof($getMenus) > 0) {
 
             foreach ($getMenus as $menu) {
 
-                $getSubs    = $_sysmenuRepository->getAllOrderByParams(['menu_parent_id' => $menu->menu_id]);
-                $subs       = "";
-                $subLinks   = array();
+                $getSubs = $_sysmenuRepository->getAllOrderByParams(['menu_parent_id' => $menu->menu_id]);
+                $subs = "";
+                $subLinks = array();
 
                 if (sizeof($getSubs) > 0) {
 
@@ -64,19 +64,20 @@ class MenuHelper
                         $areSubs = true;
                     }
 
-                    if (!$areSubs) continue;
+                    if (!$areSubs)
+                        continue;
 
-                    $active   = '';
-                    $show     = '';
+                    $active = '';
+                    $show = '';
 
                     if (in_array(Request::segment(1), $subLinks)) {
-                        $active   = 'active';
-                        $show     = 'show';
+                        $active = 'active';
+                        $show = 'show';
                     }
 
                     $id_class_replace = str_replace(" ", "", $menu->menu_name);
                     $id_class = substr($id_class_replace, 0, 5);
-                    $menus     .= "<li class='sidebar-item " . $active . "'>
+                    $menus .= "<li class='sidebar-item " . $active . "'>
                                     <a href='#" . $id_class . "' data-toggle='collapse' class='sidebar-link collapsed'>
                                         <i class='align-middle' data-feather='" . $menu->menu_icon . "'></i> <span class='align-middle'>" . $menu->menu_name . "</span>
                                     </a>
@@ -99,7 +100,7 @@ class MenuHelper
                         $active = 'active';
                     }
 
-                    $menus     .= "
+                    $menus .= "
                         <li class='sidebar-item " . $active . "'>
                             <a class='sidebar-link' href='" . url($menu->menu_url) . "'>
                             <i class='align-middle' data-feather='" . $menu->menu_icon . "'></i> <span class='align-middle'>" . $menu->menu_name . "</span>

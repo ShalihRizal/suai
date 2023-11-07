@@ -60,13 +60,14 @@
                                 <tr>
                                     <th width="1%">No</th>
                                     <th width="20%">Nomor Invoice</th>
-                                    <th width="20%">ATA SUAI</th>
+                                    {{-- <th width="20%">ATA SUAI</th> --}}
                                     <th width="20%">Po Number</th>
                                     <th width="20%">PO Date</th>
-                                    <th width="20%">No. Urut</th>
+                                    {{-- <th width="20%">No. Urut</th> --}}
                                     <th width="20%">Part No Urut</th>
                                     <th width="20%">Part Name</th>
                                     <th width="20%">Molts No</th>
+                                    <th width="20%">Price</th>
                                     <th width="20%">Part No</th>
                                     <th width="20%">Qty</th>
                                     <th width="20%">Loc Hib</th>
@@ -85,13 +86,14 @@
                                             data-created-at="{{ $transaksiin->transaksi_created_at }}">
                                             <td width="1%">{{ $loop->iteration }}</td>
                                             <td width="20%">{{ $transaksiin->invoice_no }}</td>
-                                            <td width="20%">{{ $transaksiin->ata_suai }}</td>
+                                            {{-- <td width="20%">{{ $transaksiin->ata_suai }}</td> --}}
                                             <td width="20%">{{ $transaksiin->po_no }}</td>
                                             <td width="20%">{{ $transaksiin->po_date }}</td>
-                                            <td width="20%">{{ $transaksiin->no_urut }}</td>
+                                            {{-- <td width="20%">{{ $transaksiin->no_urut }}</td> --}}
                                             <td width="20%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
                                             <td width="20%">{{ $transaksiin->part_name }}</td>
                                             <td width="20%">{{ $transaksiin->molts_no }}</td>
+                                            <td width="20%">{{ $transaksiin->price }}</td>
                                             <td width="20%">{{ $transaksiin->part_no }}</td>
                                             <td width="20%">{{ $transaksiin->qty_end }}</td>
                                             <td width="20%">{{ $transaksiin->lokasi_hib }}</td>
@@ -321,6 +323,7 @@
             $('#part_name').val('');
             $('#molts_no').val('');
             $('#part_no').val('');
+            $('#price').val('');
             $('#qty').val('');
             $('#loc_hib').val('');
             $('#loc_ppti').val('');
@@ -359,6 +362,7 @@
                         $('#part_name').val(data.result.part_name);
                         $('#molts_no').val(data.result.molts_no);
                         $('#part_no').val(data.result.part_no);
+                        $('#price').val(data.result.price);
                         $('#qty').val(data.result.qty);
                         $('#loc_hib').val(data.result.loc_hib);
                         $('#loc_ppti').val(data.result.loc_ppti);

@@ -150,32 +150,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Alasan <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="alasan" id="alasan">
-                                        <option value="">Pilih Alasan</option>
-                                        <option value="Option1">Cacat</option>
-                                        <option value="Option2">Caulking</option>
-                                        <option value="Option3">Scratch</option>
-                                        <option value="Option4">Other</option>
-                                    </select>
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6" id="otherReasonDiv" style="display: none;">
-                                <div class="form-group">
-                                    <label class="form-label">Alasan lainnya</label>
-                                    <input type="text" class="form-control" name="other_reason" id="other_reason" placeholder="Masukkan alasan">
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6">
-                                <div class="form-group" hidden>
-                                    <label class="form-label">Order <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="order" id="order"
-                                        placeholder="Masukan Order" value="{{ old('order') }}">
-                                </div>
-                            </div> --}}
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Shift <span class="text-danger">*</span> </label>
@@ -217,34 +191,6 @@
                                             id="machine_no"readonly>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Serial Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="serial_no" id="serial_no"
-                                        placeholder="Masukan Serial Number" value="{{ old('serial_no') }}">
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Applicator Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicator_no" id="applicator_no"
-                                        placeholder="Masukan Applicator Number" value="{{ old('applicator_no') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wear and Tear Code <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wear_and_tear_code" id="wear_and_tear_code"
-                                        placeholder="Masukan Wear and Tear Code" value="{{ old('wear_and_tear_code') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Side Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="side_no" id="side_no"
-                                        placeholder="Masukan Side Number" value="{{ old('side_no') }}">
-                                </div>
-                            </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Stroke <span class="text-danger">*</span></label>
@@ -252,13 +198,6 @@
                                             placeholder="Masukan Stroke" value="{{ old('stroke') }}">
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6">
-                                <div class="form-group" hidden>
-                                    <label class="form-label">Order <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="order" id="order"
-                                        placeholder="Masukan Order" value="{{ old('order') }}">
-                                </div>
-                            </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Part <span class="text-danger">*</span></label>
@@ -327,48 +266,185 @@
                                             value="Open" readonly>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Anvil <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="anvil" id="anvil"
-                                        placeholder="Masukan Anvil" value="{{ old('anvil') }}">
-                                </div>
                             </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Approved By <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="approved_by" id="approved_by"
-                                        placeholder="Masukan Approved" value="-">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" name="image_part">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="text-white btn btn-success">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Detail Modal --}}
+    <div class="modal fade detailModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="detailModal">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Part Request</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="{{ url('partrequest/store') }}" method="POST" id="addForm"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Carline <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="car_model" id="car_model">
+                                            <option value="">- Pilih Carline -</option>
+                                            @if (sizeof($carlinecategories) > 0)
+                                                @foreach ($carlinecategories as $carlinecategory)
+                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                        {{ $carlinecategory->carline_category_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Insulation Crimper <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="insulation_crimper" id="insulation_crimper"
-                                        placeholder="Masukan Insulation Crimper" value="{{ old('insulation_crimper') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Car Model <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="carline" id="carline">
+                                            <option value="">- Pilih Car Model -</option>
+                                            @if (sizeof($carlines) > 0)
+                                                @foreach ($carlines as $carline)
+                                                    <option value="{{ $carline->carline_id }}"
+                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        {{ $carline->carline_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wire Crimper <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wire_crimper" id="wire_crimper"
-                                        placeholder="Masukan Wire Crimper" value="{{ old('wire_crimper') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Shift <span class="text-danger">*</span> </label>
+                                        <select class="form-control" name="shift" id="shift">
+                                            <option value="">- Pilih Shift -</option>
+                                            <option value="A">Shift A</option>
+                                            <option value="B">Shift B</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6"hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Other <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="other" id="other"
-                                        placeholder="Masukan Other" value="{{ old('other') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="machine_id" id="machine_id">
+                                            <option value="">- Pilih Machine -</option>
+                                            @if (sizeof($machines) > 0)
+                                                @foreach ($machines as $machine)
+                                                    <option value="{{ $machine->machine_id }}"
+                                                        data-machine-name="{{ $machine->machine_name }}"
+                                                        data-machine-number="{{ $machine->machine_no }}">
+                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6"hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wear_and_tear_status" id="wear_and_tear_status"
-                                        placeholder="Masukan Wear and Tear Status" value="Open">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="machine_name" id="machine_name"
+                                            readonly>
+                                    </div>
                                 </div>
-                            </div> --}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine Number <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="machine_no"
+                                            id="machine_no"readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Stroke <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="stroke" id="stroke"
+                                            placeholder="Masukan Stroke" value="{{ old('stroke') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="part_id" id="part_id">
+                                            <option value="">- Pilih Part -</option>
+                                            @if (sizeof($parts) > 0)
+                                                @foreach ($parts as $part)
+                                                    <option value="{{ $part->part_id }}"
+                                                        data-part-name="{{ $part->part_name }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_name" id="part_name"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_no" id="part_no"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_qty" id="part_qty"
+                                            placeholder="Masukan Part Quantity" value="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Person in Charge <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="pic" id="pic"
+                                            placeholder="Masukan Person in Charge" value="{{ old('pic') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Remarks <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="remarks" id="remarks"
+                                            placeholder="Masukan Remarks" value="{{ old('remarks') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6"hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="status" id="status"
+                                            placeholder="Masukan Status" value="0" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Wear and Tear Status <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="wear_and_tear_status"
+                                            id="wear_and_tear_status" placeholder="Masukan Wear and Tear Status"
+                                            value="Open" readonly>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -426,17 +502,6 @@
 @endsection
 
 @section('script')
-
-    <script>
-        document.getElementById('alasan').addEventListener('change', function() {
-            var otherReasonDiv = document.getElementById('otherReasonDiv');
-            if (this.value === 'Option4') {
-                otherReasonDiv.style.display = 'block';
-            } else {
-                otherReasonDiv.style.display = 'none';
-            }
-        });
-    </script>
 
     <script type="text/javascript">
         $('.btnAdd').click(function() {
@@ -512,8 +577,6 @@
                         $('#part_no').val(data.result.part_no);
                         $('.addModal .modal-title').text('Ubah Part Request');
                         $('.addModal').modal('show');
-
-
                     }
 
                 },
@@ -593,7 +656,7 @@
             })
         });
 
-        $('#addModal').on('hidden.bs.modal', function(e) {
+        $('#detailModal').on('hidden.bs.modal', function(e) {
             // You can save the form values in localStorage
             localStorage.setItem('car_model', $('#car_model').val());
             localStorage.setItem('carline', $('#carline').val());
@@ -609,7 +672,7 @@
         });
 
         // Function to restore form values when modal is shown
-        $('#addModal').on('shown.bs.modal', function(e) {
+        $('#detailModal').on('shown.bs.modal', function(e) {
             // Retrieve the saved values from localStorage and set them in the form fields
             $('#car_model').val(localStorage.getItem('car_model'));
             $('#carline').val(localStorage.getItem('carline'));
@@ -741,29 +804,4 @@
             });
         });
     </script>
-
-    {{-- <script>
-    // JavaScript code to populate Machine Name and Machine Number based on the selected Machine
-    document.getElementById("machine_id").addEventListener("change", function () {
-        var selectedOption = this.options[this.selectedIndex];
-        var machineNameInput = document.getElementById("machine_name");
-        var machineNoInput = document.getElementById("machine_no");
-
-        // Check if a valid option is selected
-        if (selectedOption.value !== "") {
-            // Get the data attributes from the selected option
-            var machineName = selectedOption.getAttribute("data-machine-name");
-            var machineNumber = selectedOption.getAttribute("data-machine-number");
-
-            // Set the values in the input fields
-            machineNameInput.value = machineName;
-            machineNoInput.value = machineNumber;
-        } else {
-            // Clear the input fields if no option is selected
-            machineNameInput.value = "";
-            machineNoInput.value = "";
-        }
-    });
-</script> --}}
-
 @endsection

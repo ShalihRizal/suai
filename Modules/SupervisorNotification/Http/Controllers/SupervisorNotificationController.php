@@ -22,7 +22,7 @@ class SupervisorNotificationController extends Controller
         $this->middleware('auth');
 
         $this->_partRepository = new PartRepository;
-        $this->_notificationRepository = new SupervisorNotificationRepository;
+        $this->_supervisornotificationRepository = new SupervisorNotificationRepository;
         $this->_userRepository = new UsersRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "SupervisorNotification";
@@ -43,13 +43,13 @@ class SupervisorNotificationController extends Controller
             'part_request.status' => 1
         ];
 
-        $notifications = $this->_notificationRepository->getAllByParams($params);
+        $supervisornotifications = $this->_supervisornotificationRepository->getAllByParams($params);
         $parts = $this->_partRepository->getAll();
         $users = $this->_userRepository->getAll();
 
-        // dd($notifications);
+        // dd($supervisornotifications);
 
-        return view('notification::index', compact('notifications', 'parts', 'users'));
+        return view('supervisornotification::index', compact('supervisornotifications', 'parts', 'users'));
     }
 
     /**
@@ -63,7 +63,7 @@ class SupervisorNotificationController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('notification::create');
+        return view('supervisornotification::create');
     }
 
     /**
@@ -81,17 +81,17 @@ class SupervisorNotificationController extends Controller
         $validator = Validator::make($request->all(), $this->_validationRules(''));
 
         if ($validator->fails()) {
-            return redirect('notification')
+            return redirect('supervisornotification')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         DB::beginTransaction();
-        $this->_notificationRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->notification_id, 'create');
+        $this->_supervisornotificationRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        $this->_logHelper->store($this->module, $request->supervisornotification_id, 'create');
         DB::commit();
 
-        return redirect('notification')->with('message', 'notification berhasil ditambahkan');
+        return redirect('supervisornotification')->with('message', 'supervisornotification berhasil ditambahkan');
     }
 
     /**
@@ -106,7 +106,7 @@ class SupervisorNotificationController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('notification::show');
+        return view('supervisornotification::show');
     }
 
     /**
@@ -121,7 +121,7 @@ class SupervisorNotificationController extends Controller
             return redirect('unauthorize');
         }
 
-        return view('notification::edit');
+        return view('supervisornotification::edit');
     }
 
     /**
@@ -137,7 +137,7 @@ class SupervisorNotificationController extends Controller
             return redirect('unauthorize');
         }
 
-        $detail = $this->_notificationRepository->getById($id);
+        $detail = $this->_supervisornotificationRepository->getById($id);
         $part = $this->_partRepository->getById($detail->part_id);
         // dd($part, $detail);
         if ($part) {
@@ -160,14 +160,14 @@ class SupervisorNotificationController extends Controller
 
             DB::beginTransaction();
             $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
-            $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
-            $this->_logHelper->store($this->module, $request->notification_id, 'update');
+            $this->_supervisornotificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
+            $this->_logHelper->store($this->module, $request->supervisornotification_id, 'update');
 
             DB::commit();
         }
 
 
-        return redirect('notification')->with('message', 'notification berhasil diubah');
+        return redirect('supervisornotification')->with('message', 'supervisornotification berhasil diubah');
     }
 
     /**
@@ -182,20 +182,20 @@ class SupervisorNotificationController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail = $this->_notificationRepository->getById($id);
+        $detail = $this->_supervisornotificationRepository->getById($id);
 
         if (!$detail) {
-            return redirect('notification');
+            return redirect('supervisornotification');
         }
 
         DB::beginTransaction();
 
-        $this->_notificationRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->notification_id, 'delete');
+        $this->_supervisornotificationRepository->delete($id);
+        $this->_logHelper->store($this->module, $detail->supervisornotification_id, 'delete');
 
         DB::commit();
 
-        return redirect('notification')->with('message', 'notification berhasil dihapus');
+        return redirect('supervisornotification')->with('message', 'supervisornotification berhasil dihapus');
     }
 
     /**
@@ -207,7 +207,7 @@ class SupervisorNotificationController extends Controller
     {
 
         $response = array('status' => 0, 'result' => array());
-        $getDetail = $this->_notificationRepository->getById($id);
+        $getDetail = $this->_supervisornotificationRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
@@ -221,11 +221,11 @@ class SupervisorNotificationController extends Controller
     {
         if ($id == '') {
             return [
-                'notification_id' => 'required',
+                'supervisornotification_id' => 'required',
             ];
         } else {
             return [
-                'notification_id' => 'required',
+                'supervisornotification_id' => 'required',
             ];
         }
     }

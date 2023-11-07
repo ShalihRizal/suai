@@ -21,8 +21,8 @@ class partexport implements FromCollection, ShouldAutoSize
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         // Fetch data from the PartRepository
@@ -31,8 +31,9 @@ class partexport implements FromCollection, ShouldAutoSize
         // Format the data as required for export
         $formattedData = [['Name', 'Part Number']];
 
+
         foreach ($data as $item) {
-            $formattedData[] = [$item->part_name, $item->part_no]; // Adjust the columns as per your needs
+            $formattedData[] = ["=2+2", $item->part_no]; // Adjust the columns as per your needs
         }
 
         return collect($formattedData);

@@ -67,12 +67,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (sizeof($notifications) == 0)
+                                @if (sizeof($supervisornotifications) == 0)
                                     <tr>
                                         <td colspan="4" align="center">Data kosong</td>
                                     </tr>
                                 @else
-                                    @foreach ($notifications as $notification)
+                                    @foreach ($supervisornotifications as $notification)
                                         <tr>
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="20%">{{ $notification->part_req_number }}</td>
@@ -81,34 +81,11 @@
                                             <td width="15%">{{ $notification->part_qty }}</td>
                                             <td width="15%">
                                                 @if ($notification->part_req_id > 0)
-                                                    @foreach ($parts as $part)
-                                                        @if ($notification->part_id == $part->part_id)
-                                                            @if ($notification->part_qty > $part->qty_end)
-                                                                <a hidden href="javascript:void(0)"
-                                                                    class="btn btn-icon btnEdit btn-warning text-white"
-                                                                    data-id="{{ $notification->part_id }}"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Approve">
-                                                                    <i data-feather="check" width="16"
-                                                                        height="16"></i>
-                                                                </a>
-                                                            @else
-                                                                <a href="javascript:void(0)"
-                                                                    class="btn btn-icon btnEdit btn-warning text-white"
-                                                                    data-id="{{ $notification->part_id }}"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Approve">
-                                                                    <i data-feather="check" width="16"
-                                                                        height="16"></i>
-                                                                </a>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btnDetail btn-success text-white"
-                                                        data-id="{{ $notification->part_id }}" data-toggle="tooltip"
+                                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip"
                                                         data-placement="top" title="Approve">
-                                                        <i data-feather="list" width="16" height="16"></i>
+                                                        <i data-feather="camera" width="16" height="16"></i>
                                                     </a>
                                                 @endif
                                             </td>
@@ -138,7 +115,7 @@
                     <h5 class="modal-title">Approve?</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="{{ url('notification/store') }}" method="POST" id="addForm">
+                <form action="{{ url('supervisornotifications/store') }}" method="POST" id="addForm">
                     @csrf
                     <div class="modal-body">
                         <div class="form-body">
@@ -189,41 +166,6 @@
                                         id="part_req_number" value="part_req_number"readonly>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="pic" id="pic"
-                                        value="{{ old('pic') }}"readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_name" id="part_name"
-                                        value="{{ old('part_name') }}"readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_no" id="part_no"
-                                        value="{{ old('part_no') }}"readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part Qty <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        value="{{ old('part_qty') }}"readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Lokasi <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="loc_tapc" id="loc_tapc"
-                                        value="{{ old('loc_tapc') }}"readonly>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,6 +178,8 @@
     </div>
     <!-- Modal Details -->
 
+
+
 @endsection
 
 @section('script')
@@ -243,9 +187,9 @@
         $('.btnEdit').click(function() {
 
             var id = $(this).attr('data-id');
-            var url = "{{ url('notification/getdata') }}";
+            var url = "{{ url('supervisornotifications/getdata') }}";
 
-            $('.addModal form').attr('action', "{{ url('notification/update') }}" + '/' + id);
+            $('.addModal form').attr('action', "{{ url('supervisornotifications/update') }}" + '/' + id);
 
             $.ajax({
                 type: 'GET',
@@ -284,7 +228,7 @@
         $('.btnDetail').click(function() {
 
             var id = $(this).attr('data-id');
-            var url = "{{ url('notification/getdata') }}";
+            var url = "{{ url('supervisornotifications/getdata') }}";
 
             $.ajax({
                 type: 'GET',
