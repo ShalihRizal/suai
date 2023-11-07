@@ -70,15 +70,9 @@ class MonthlyReportController extends Controller
         $sheet->mergeCells('C12:E13');
         $sheet->mergeCells('A36:A37');
         $sheet->mergeCells('A38:A39');
-        $sheet->mergeCells('A49:G49');
+        $sheet->mergeCells('A55:E55');
         $sheet->mergeCells('A40:A41');
         $sheet->mergeCells('B12:B14');
-        $sheet->mergeCells('B45:C45');
-        $sheet->mergeCells('D45:E45');
-        $sheet->mergeCells('F45:G45');
-        $sheet->mergeCells('H45:I45');
-        $sheet->mergeCells('J45:K45');
-        $sheet->mergeCells('L45:M45');
         $sheet->mergeCells('B36:B37');
         $sheet->mergeCells('C36:E36');
         $sheet->mergeCells('F36:H36');
@@ -109,9 +103,35 @@ class MonthlyReportController extends Controller
         $sheet->mergeCells('AD27:AF28');
         $sheet->mergeCells('AG27:AI28');
         $sheet->mergeCells('A34:B34');
+        $sheet->mergeCells('C45:D45');
+        $sheet->mergeCells('E45:F45');
+        $sheet->mergeCells('G45:H45');
+        $sheet->mergeCells('I45:J45');
+        $sheet->mergeCells('K45:L45');
+        $sheet->mergeCells('M45:N45');
+        $sheet->mergeCells('C47:D47');
+        $sheet->mergeCells('E47:F47');
+        $sheet->mergeCells('G47:H47');
+        $sheet->mergeCells('I47:J47');
+        $sheet->mergeCells('K47:L47');
+        $sheet->mergeCells('M47:N47');
+        $sheet->mergeCells('A43:E43');
+        $sheet->mergeCells('A30:A31');
+        $sheet->mergeCells('A32:A33');
+        $sheet->mergeCells('A56:A57');
+        $sheet->mergeCells('B56:K56');
+        $sheet->mergeCells('L56:U56');
+        $sheet->mergeCells('Q57:U57');
+        $sheet->mergeCells('B57:F57');
+        $sheet->mergeCells('G57:K57');
+        $sheet->mergeCells('L57:P57');
+        $sheet->mergeCells('Q57:U57');
+        $sheet->mergeCells('A66:A67');
+        $sheet->mergeCells('B66:C66');
+        $sheet->mergeCells('D66:E66');
 
         //Dimensions
-        $sheet->getColumnDimension('A')->setWidth(30); // Mengatur lebar kolom A menjadi 15
+        $sheet->getColumnDimension('A')->setWidth(40); // Mengatur lebar kolom A menjadi 15
         $sheet->getColumnDimension('B')->setWidth(30); // Mengatur lebar kolom A menjadi 15
         $sheet->getColumnDimension('F')->setWidth(15); // Mengatur lebar kolom A menjadi 15
         $sheet->getColumnDimension('G')->setWidth(15); // Mengatur lebar kolom A menjadi 15
@@ -149,9 +169,11 @@ class MonthlyReportController extends Controller
         }
 
         //Style
-        $sheet->getStyle('A1:AZ100')->getAlignment()->setHorizontal('center'); // Mengatur teks rata tengah
-        $sheet->getStyle('A1:AZ100')->getAlignment()->setVertical('center'); // Mengatur teks rata tengah
-        $sheet->getStyle('C23:W23')->getAlignment()->setHorizontal('right'); // Mengatur teks rata tengah
+        $sheet->getStyle('A1:AZ100')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:AZ100')->getAlignment()->setVertical('center');
+        $sheet->getStyle('C23:W23')->getAlignment()->setHorizontal('right');
+        $sheet->getStyle('A43')->getAlignment()->setHorizontal('left');
+        $sheet->getStyle('A55')->getAlignment()->setHorizontal('left');
 
         //Single Cells/Manual Labor
         for ($column = 'C'; $column <= 'W'; $column++) {
@@ -220,7 +242,7 @@ class MonthlyReportController extends Controller
             'Q37' => '108',
             'R37' => 'USD',
             'S37' => 'IDR',
-            'A49' => 'Recalculation Aging Inventory Wear and Tear (DEADSTOCK > 2 YEAR)',
+            'A55' => 'Recalculation Aging Inventory Wear and Tear (DEADSTOCK > 2 YEAR)',
             'A43' => 'Recalculation Aging Inventory Wear and Tear',
             'A45' => 'Kategori',
             'A46' => 'TOTAL AGING INVENTORY AF & CF',
@@ -312,14 +334,78 @@ class MonthlyReportController extends Controller
             'X29' => 'QTY',
             'Y29' => 'AMOUNT(USD)',
             'Z29' => 'AMOUNT(IDR)',
+            'C45' => 'Last Month (USD)',
+            'E45' => 'This Month (USD)',
+            'G45' => 'Last Month (IDR)',
+            'I45' => 'This Month (IDR)',
+            'K45' => 'Difference (USD)',
+            'M45' => 'Difference (IDR)',
+            'C47' => '=+SUM(B46:C46)',
+            'E47' => '=+SUM(D46:E46)',
+            'G47' => '=+SUM(F46:G46)',
+            'I47' => '=+SUM(H46:I46)',
+            'K47' => '=+SUM(J46:K46)',
+            'M47' => '=+SUM(L46:M46)',
+            'A30' => 'CIP ASSEMBLY FICTURE',
+            'A32' => 'CIP CHECKER FICTURE',
+            'B30' => 'IMPORT',
+            'B31' => 'LOKAL',
+            'B32' => 'IMPORT',
+            'B33' => 'LOKAL',
+            'A56' => 'KATEGORI',
+            'B56' => 'SUPPLIER (USD)',
+            'L56' => 'SUPPLIER (IDR)',
+            'B57' => 'LOKAL',
+            'G57' => 'IMPORT',
+            'L57' => 'LOKAL',
+            'Q57' => 'IMPORT',
+            'B58' => '101',
+            'C58' => '102',
+            'D58' => '105',
+            'E58' => '106',
+            'F58' => '108',
+            'G58' => '101',
+            'H58' => '102',
+            'I58' => '105',
+            'J58' => '106',
+            'K58' => '108',
+            'L58' => '101',
+            'M58' => '102',
+            'N58' => '105',
+            'O58' => '106',
+            'P58' => '108',
+            'Q58' => '101',
+            'R58' => '102',
+            'S58' => '105',
+            'T58' => '106',
+            'U58' => '108',
+            'A59' => 'ASSEMBLY FIXTURE (CIP)',
+            'A60' => 'CHECKER FIXTURE (CIP)',
+            'A61' => 'CRIMPING DIES',
+            'A62' => 'SPAREPART MACHINE',
+            'A66' => 'INVENTORY',
+            'B66' => 'JUL-23',
+            'D66' => 'AUG-23',
+            'A68' => 'CLIMPING DIES',
+            'A69' => 'SPAREPART MACHINE',
+            'A70' => 'ASSEMBLY FIXTURE(INVENTORY)+CIP',
+            'A71' => 'CHECKER FIXTURE(INVENTORY)+CIP',
+            'B67' => 'QTY IN',
+            'C67' => 'AMOUNT',
+            'D67' => 'QTY IN',
+            'E67' => 'AMOUNT',
+            'A72' => 'TOTAL',
+            'B72' => '=+SUM(B68:B71)',
+            'C72' => '=+SUM(C68:C71)',
+            'D72' => '=+SUM(D68:D71)',
+            'E72' => '=+SUM(E68:E71)',
         ];
+
+
 
         foreach ($cellValues as $cell => $value) {
             $sheet->setCellValue($cell, $value);
         }
-
-
-
 
         //Dynamics/Loops
         if (sizeof($partcategories) > 0) {
