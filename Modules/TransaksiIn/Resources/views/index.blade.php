@@ -494,26 +494,57 @@
         });
     </script>
 
+    
     <script>
-        document.getElementById("printButton").addEventListener("click", function() {
-            // Get a reference to the table
-            var table = document.getElementById("part-table-body");
+    document.getElementById("printButton").addEventListener("click", function() {
+        // Buka jendela baru untuk mencetak
+        var newWindow = window.open("", "", "width=800,height=600");
+        newWindow.document.write("<html><head><title>Print</title></head><body>");
 
-            // Check if the table exists
-            if (table) {
-                // Open a new window for printing
-                var newWindow = window.open("", "", "width=600,height=600");
-                newWindow.document.write("<html><head><title>Print</title></head><body>");
+        // Tabel header
+        newWindow.document.write("<table border='1' style='width:100%;'><thead><tr>");
+        newWindow.document.write("<th>No</th>");
+        newWindow.document.write("<th width='20%'>Nomor Invoice</th>");
+        <!-- <th width='20%'>ATA SUAI</th> -->
+        newWindow.document.write("<th width='20%'>Po Number</th>");
+        newWindow.document.write("<th width='20%'>PO Date</th>");
+        <!-- <th width='20%'>No. Urut</th> -->
+        newWindow.document.write("<th width='20%'>Part No Urut</th>");
+        newWindow.document.write("<th width='20%'>Part Name</th>");
+        newWindow.document.write("<th width='20%'>Molts No</th>");
+        newWindow.document.write("<th width='20%'>Price</th>");
+        newWindow.document.write("<th width='20%'>Part No</th>");
+        newWindow.document.write("<th width='20%'>Qty</th>");
+        newWindow.document.write("<th width='20%'>Loc Hib</th>");
+        newWindow.document.write("<th width='20%'>Loc PPTI</th>");
+        newWindow.document.write("</tr></thead><tbody>");
 
-                // Append the table content to the new window
-                newWindow.document.write(table.outerHTML);
+        // Masukkan data dari Blade template ke dalam tabel
+        @foreach ($transaksiins as $transaksiin)
+            newWindow.document.write("<tr>");
+            newWindow.document.write("<td>{{ $loop->iteration }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->invoice_no }}</td>");
+            <!-- <td>{{ $transaksiin->ata_suai }}</td> -->
+            newWindow.document.write("<td>{{ $transaksiin->po_no }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->po_date }}</td>");
+            <!-- <td>{{ $transaksiin->no_urut }}</td> -->
+            newWindow.document.write("<td>{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->part_name }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->molts_no }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->price }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->part_no }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->qty_end }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->lokasi_hib }}</td>");
+            newWindow.document.write("<td>{{ $transaksiin->loc_ppti }}</td>");
+            newWindow.document.write("</tr>");
+        @endforeach
 
-                newWindow.document.write("</body></html>");
-                newWindow.print();
-                newWindow.close();
-            } else {
-                alert("Table not found!");
-            }
-        });
-    </script>
+        newWindow.document.write("</tbody></table>");
+        newWindow.document.write("</body></html>");
+        newWindow.print();
+        newWindow.close();
+    });
+</script>
+
+
 @endsection
