@@ -26,8 +26,8 @@ class StockOpnameController extends Controller
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_stockopnameRepository = new StockOpnameRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "StockOpname";
+        $this->_logHelper = new LogHelper;
+        $this->module = "StockOpname";
     }
 
     /**
@@ -82,7 +82,7 @@ class StockOpnameController extends Controller
         $stockopnames = $this->_stockopnameRepository->getAll();
 
 
-        return view('stockopname::index', compact('stockopnames', 'parts','partcategories','data','labels','qty', 'yesCount', 'noCount'));
+        return view('stockopname::index', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount'));
     }
 
     /**
@@ -271,7 +271,7 @@ class StockOpnameController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_stockopnameRepository->getById($id);
+        $detail = $this->_stockopnameRepository->getById($id);
 
         if (!$detail) {
             return redirect('stockopname');
@@ -295,8 +295,8 @@ class StockOpnameController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_stockopnameRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_stockopnameRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
