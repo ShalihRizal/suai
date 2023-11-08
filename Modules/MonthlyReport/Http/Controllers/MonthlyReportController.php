@@ -65,104 +65,46 @@ class MonthlyReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         //Merge
-        $sheet->mergeCells('A12:A14');
-        $sheet->mergeCells('A25:B25');
-        $sheet->mergeCells('C12:E13');
-        $sheet->mergeCells('A36:A37');
-        $sheet->mergeCells('A38:A39');
-        $sheet->mergeCells('A55:E55');
-        $sheet->mergeCells('A40:A41');
-        $sheet->mergeCells('B12:B14');
-        $sheet->mergeCells('B36:B37');
-        $sheet->mergeCells('C36:E36');
-        $sheet->mergeCells('F36:H36');
-        $sheet->mergeCells('I36:K36');
-        $sheet->mergeCells('L36:N36');
-        $sheet->mergeCells('O36:Q36');
-        $sheet->mergeCells('R36:S36');
-        $sheet->mergeCells('F12:H13');
-        $sheet->mergeCells('I12:K13');
-        $sheet->mergeCells('L12:Q12');
-        $sheet->mergeCells('L13:N13');
-        $sheet->mergeCells('O13:Q13');
-        $sheet->mergeCells('R12:T13');
-        $sheet->mergeCells('U12:W13');
-        $sheet->mergeCells('A27:A29');
-        $sheet->mergeCells('B27:B29');
-        $sheet->mergeCells('C27:E28');
-        $sheet->mergeCells('F27:Q27');
-        $sheet->mergeCells('F28:H28');
-        $sheet->mergeCells('I28:K28');
-        $sheet->mergeCells('L28:N28');
-        $sheet->mergeCells('O28:Q28');
-        $sheet->mergeCells('R27:AC27');
-        $sheet->mergeCells('R28:T28');
-        $sheet->mergeCells('U28:W28');
-        $sheet->mergeCells('X28:Z28');
-        $sheet->mergeCells('AA28:AC28');
-        $sheet->mergeCells('AD27:AF28');
-        $sheet->mergeCells('AG27:AI28');
-        $sheet->mergeCells('A34:B34');
-        $sheet->mergeCells('C45:D45');
-        $sheet->mergeCells('E45:F45');
-        $sheet->mergeCells('G45:H45');
-        $sheet->mergeCells('I45:J45');
-        $sheet->mergeCells('K45:L45');
-        $sheet->mergeCells('M45:N45');
-        $sheet->mergeCells('C47:D47');
-        $sheet->mergeCells('E47:F47');
-        $sheet->mergeCells('G47:H47');
-        $sheet->mergeCells('I47:J47');
-        $sheet->mergeCells('K47:L47');
-        $sheet->mergeCells('M47:N47');
-        $sheet->mergeCells('A43:E43');
-        $sheet->mergeCells('A30:A31');
-        $sheet->mergeCells('A32:A33');
-        $sheet->mergeCells('A56:A57');
-        $sheet->mergeCells('B56:K56');
-        $sheet->mergeCells('L56:U56');
-        $sheet->mergeCells('Q57:U57');
-        $sheet->mergeCells('B57:F57');
-        $sheet->mergeCells('G57:K57');
-        $sheet->mergeCells('L57:P57');
-        $sheet->mergeCells('Q57:U57');
-        $sheet->mergeCells('A66:A67');
-        $sheet->mergeCells('B66:C66');
-        $sheet->mergeCells('D66:E66');
+        $mergeCells = [
+            'A12:A14',
+            'A25:B25',
+            'C12:E13',
+            'A36:A41',
+            'B12:B14',
+            'B36:B37',
+            'C36:E36',
+            'F12:H13',
+            'I12:K13',
+            'L12:Q13',
+            'A27:B29',
+            'C27:E28',
+            'F27:Q28',
+            'R27:AC28',
+            'A30:A34',
+            'A43:E43',
+            'A45:L45',
+            'M45:N47',
+            'Q57:U57',
+            'A56:U56',
+            'A66:A67',
+            'B66:E66',
+            'AD27:AF28',
+            'AG27:AI28',
+            'R12:T13',
+            'U12:W13',
+        ];
+
+        foreach ($mergeCells as $mergeCell) {
+            $sheet->mergeCells($mergeCell);
+        }
+
 
         //Dimensions
-        $sheet->getColumnDimension('A')->setWidth(40); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('B')->setWidth(30); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('F')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('G')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('H')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('I')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('J')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('K')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('L')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('M')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('N')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('O')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('P')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('Q')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('R')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('S')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('T')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('U')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('V')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('W')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('X')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('Y')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('Z')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AA')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AB')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AC')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AD')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AE')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AF')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AG')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AH')->setWidth(15); // Mengatur lebar kolom A menjadi 15
-        $sheet->getColumnDimension('AI')->setWidth(15); // Mengatur lebar kolom A menjadi 15
+        $columns = ['A' => 40, 'B' => 30, 'F' => 30, 'G' => 15, 'H' => 15, 'I' => 15, 'J' => 15, 'K' => 15, 'L' => 15, 'M' => 15, 'N' => 15, 'O' => 15, 'P' => 15, 'Q' => 15, 'R' => 15, 'S' => 15, 'T' => 15, 'U' => 15, 'V' => 15, 'W' => 15, 'X' => 15, 'Y' => 15, 'Z' => 15, 'AA' => 15, 'AB' => 15, 'AC' => 15, 'AD' => 15, 'AE' => 15, 'AF' => 15, 'AG' => 15, 'AH' => 15, 'AI' => 15];
+
+        foreach ($columns as $column => $width) {
+            $sheet->getColumnDimension($column)->setWidth($width);
+        }
 
         for ($column = 'C'; $column <= 'W'; $column++) {
             $sheet->getColumnDimension($column)->setWidth(15);
