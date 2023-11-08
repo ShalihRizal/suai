@@ -499,7 +499,8 @@
     document.getElementById("printButton").addEventListener("click", function() {
         // Buka jendela baru untuk mencetak
         var newWindow = window.open("", "", "width=800,height=600");
-        newWindow.document.write("<html><head><title>Print</title></head><body>");
+        newWindow.document.write("<html><head><title>Transaksi In</title></head><body>");
+            newWindow.document.write("<style>@page { size: landscape; }</style>");
 
         // Tabel header
         newWindow.document.write("<table border='1' style='width:100%;'><thead><tr>");
