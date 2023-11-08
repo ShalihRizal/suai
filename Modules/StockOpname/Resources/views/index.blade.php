@@ -1,6 +1,7 @@
 
 
 @extends('layouts.app')
+
 @section('title', 'Stock Opname')
 
 @section('nav')
@@ -37,6 +38,8 @@
 <!-- ============================================================== -->
 
 
+
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -59,7 +62,7 @@
             </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-body">
+                        <div class="card-body" style="margin-left: 100px">
                             {{-- <div class="addData">
                                 <a href="/carlinecategory" class="btn btn-success btnAdd text-white mb-3">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
@@ -73,13 +76,13 @@
                                 </a>
                             </div> --}}
                             <div class="addData">
-                                <a href="/stockopname/scan" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/scan" class="btn btn-success btnAdd text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Monthly Report
                                 </a>
@@ -87,34 +90,34 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-body">
+                        <div class="card-body" style="margin-left : -100px">
                             <div class="addData">
-                                <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Sudah STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Belum STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3">
+                                <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="x" width="16" height="16" class="me-2"></i>
                                     Reset
                                 </a>
                             </div>
                             <div class="addData"hidden>
-                                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3" style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Konversi
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9 col-lg-4">
+                    {{-- <div class="col-md-9 col-lg-4">
                         <div class="card-body">
                             <div class="addData">
                                 <div class="form-group" hidden>
@@ -133,24 +136,25 @@
                                     </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <div class="container text-center">
-                        <div class="row">
-                            <div class="col-md-3 offset-md-4 mb-3">
-                                <canvas id="pieChart" width="100%" height="100%"></canvas>
+                    </div> --}}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card-body" style="margin-left: -430px">
+                            <div class="row">
+                                <div class="col-md-5 offset-md-5 mb-3">
+                                    <canvas id="pieChart" width="150%" height="150%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 mb-3" hidden>
+                            <div class="form-group">
+                                <label class="form-label">Part No<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control part_no" name="part_no" id="part_no" autofocus>
+                                <div colspan="4" align="center">ㅤ</div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 mb-3" hidden>
-                        <div class="form-group">
-                            <label class="form-label">Part No<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control part_no" name="part_no" id="part_no" autofocus>
-                            <div colspan="4" align="center">ㅤ</div>
-                        </div>
-                    </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -306,33 +310,48 @@ $('.btnReset').click(function () {
     });
 </script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ asset('js/chart.min.js') }}"></script>
 <script>
     var ctx = document.getElementById('pieChart').getContext('2d');
-    var data = {
-        labels: ['Sudah STO', 'Belum STO'],
-        datasets: [{
-            data: [{{ $yesCount }}, {{ $noCount }}],
-            backgroundColor: ['#36A2EB', '#FF6384'],
-        }]
-    };
-    var options = {
-        tooltips: {
+    
+var sudahSTOCount = {{ $yesCount }};
+var belumSTOCount = {{ $noCount }};
+var totalData = sudahSTOCount + belumSTOCount;
+
+// Hitung persentase Sudah STO dan Belum STO
+var persentaseSudahSTO = ((sudahSTOCount / totalData) * 100).toFixed(2);
+var persentaseBelumSTO = ((belumSTOCount / totalData) * 100).toFixed(2);
+
+var data = {
+    labels: [
+        'Sudah STO-' + sudahSTOCount + '  (' + persentaseSudahSTO + '%)',
+        'Belum STO-' + belumSTOCount + '  (' + persentaseBelumSTO + '%)'
+    ],
+    datasets: [{
+        data: [sudahSTOCount, belumSTOCount],
+        backgroundColor: ['#36A2EB', '#FF6384'],
+    }]
+};
+
+var options = {
+    tooltips: {
         mode: 'index',
         intersect: true,
     },
-        legend: {
+    legend: {
         display: true,
         position: 'bottom',
     }
-    };
+};
 
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: data,
-        options: options
-    });
+var myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: data,
+    options: options
+});
+
+
 </script>
 
 
