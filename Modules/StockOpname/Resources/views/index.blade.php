@@ -138,9 +138,9 @@
                         </div>
                     </div> --}}
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-body" style="margin-left: -430px">
+                        <div class="card-body" style="margin-left: -280px">
                             <div class="row">
-                                <div class="col-md-5 offset-md-5 mb-3">
+                                <div class="col-md-5 offset-md-3 mb-5">
                                     <canvas id="pieChart" width="150%" height="150%"></canvas>
                                 </div>
                             </div>
