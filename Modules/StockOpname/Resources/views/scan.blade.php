@@ -123,6 +123,8 @@
     <!-- Modal -->
     <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel"
         aria-hidden="true">
+    <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="{{ url('stockopname/update/') }}" method="POST">
@@ -161,11 +163,62 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        // $('.part_no').on('keyup', function(event) {
-        //     if (event.key === "Enter") {
-        //         var id = $(this).attr('data-id');
-        //         var url = "{{ url('stockopname/getdata') }}";
+<script>
+        $('.part_no').on('keyup', function(event) {
+            if (event.key === "Enter") {
+                var id = $(this).attr('data-id');
+                var url = "{{ url('stockopname/getdata') }}";
+
+                $('.partModal form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
+
+                $.ajax({
+                    type: 'GET',
+                    url: url + '/' + id,
+                    dataType: 'JSON',
+                    success: function(data) {
+                        console.log(data);
+
+                        if (data.status == 1) {
+                            $('#part_no').val(data.result.part_no);
+                            $('#qty_end').val(data.result.qty_end);
+                            $('#has_sto').val('yes');
+                            $('.partModal .modal-title').text('Approve');
+                            $('.partModal').modal('show');
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error: Gagal mengambil data');
+                    }
+                });
+
+                // Handle form submission
+                // $('.partModal form').submit(function(event) {
+                //     event.preventDefault();
+                //     $.ajax({
+                //         type: 'POST',
+                //         url: $('.partModal form').attr('action'),
+                //         data: $('.partModal form').serialize(),
+                //         dataType: 'JSON',
+                //         success: function(data) {
+                //             console.log(data);
+                //             // Handle success response, e.g., close the modal
+                //             if (data.status == 1) {
+                //                 $('.partModal').modal('hide');
+                //             }
+                //         },
+                //         error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //             alert('Error: Gagal menyimpan data');
+                //         }
+                //     });
+                // });
+            }
+        });
+    </script>
+    <!-- <script type="text/javascript">
+        $('.part_no').on('keyup', function(event) {
+            if (event.key === "Enter") {
+                var id = $(this).attr('data-id');
+                var url = "{{ url('stockopname/getdata') }}";
 
         //         $('.addReset form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
 
@@ -176,13 +229,13 @@
         //             success: function(data) {
         //                 console.log(data);
 
-        //                 if (data.status == 1) {
-        //                     $('#part_no_hidden').val(data.result.part_no);
-        //                     $('#qty_no_hidden').val(data.result.qty_end);
-        //                     $('#Status').val('yes');
-        //                     $('.addReset .modal-title').text('Approve');
-        //                     $('.addReset').modal('show');
-        //                 }
+                        if (data.status == 1) {
+                            $('#part_no').val(data.result.part_no);
+                            $('#qty_end').val(data.result.qty_end);
+                            $('#Status').val('yes');
+                            $('.addReset .modal-title').text('Approve');
+                            $('.addReset').modal('show');
+                        }
 
         //             },
         //             error: function(XMLHttpRequest, textStatus, errorThrown) {

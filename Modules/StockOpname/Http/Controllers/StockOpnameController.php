@@ -242,6 +242,12 @@ class StockOpnameController extends Controller
         // }
 
         // dd($request->all());
+        // if ($validator->fails()) {
+        //     return redirect('stockopname')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        dd($request);
 
         DB::beginTransaction();
 
