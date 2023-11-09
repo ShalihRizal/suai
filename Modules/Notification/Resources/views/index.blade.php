@@ -186,21 +186,22 @@
                                 <div class="form-group">
                                     <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_req_number"
-                                        id="part_req_number" placeholder="Masukan Approved" value="part_req_number">
+                                        id="part_req_number" placeholder="Masukan Approved" value="part_req_number"
+                                        disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
-                                        placeholder="Masukan Insulation Crimper" value="{{ old('pic') }}">
+                                        placeholder="Masukan Insulation Crimper" value="{{ old('pic') }}" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Qty <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        placeholder="Masukan Part Qty" value="{{ old('part_qty') }}">
+                                        placeholder="Masukan Part Qty" value="{{ old('part_qty') }}" disabled>
                                 </div>
                             </div>
                         </div>
