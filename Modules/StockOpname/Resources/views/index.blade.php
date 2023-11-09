@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title', 'Stock Opname')
 
 @section('nav')
@@ -35,6 +36,10 @@
     <!-- ============================================================== -->
 
 
+
+
+
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -55,7 +60,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-body">
+                        <div class="card-body" style="margin-left: 100px">
                             {{-- <div class="addData">
                                 <a href="/carlinecategory" class="btn btn-success btnAdd text-white mb-3">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
@@ -69,13 +74,15 @@
                                 </a>
                             </div> --}}
                             <div class="addData">
-                                <a href="/stockopname/scan" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/scan" class="btn btn-success btnAdd text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Monthly Report
                                 </a>
@@ -83,34 +90,38 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="card-body">
+                        <div class="card-body" style="margin-left : -100px">
                             <div class="addData">
-                                <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Sudah STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Belum STO
                                 </a>
                             </div>
                             <div class="addData">
-                                <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3">
+                                <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="x" width="16" height="16" class="me-2"></i>
                                     Reset
                                 </a>
                             </div>
                             <div class="addData"hidden>
-                                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3"
+                                    style="width: 160px; height: 35px;">
                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                                     Konversi
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9 col-lg-4">
+                    {{-- <div class="col-md-9 col-lg-4">
                         <div class="card-body">
                             <div class="addData">
                                 <div class="form-group" hidden>
@@ -129,19 +140,18 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <div class="container text-center">
+                    </div> --}}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card-body" style="margin-left: -280px">
                             <div class="row">
-                                <div class="col-md-3 offset-md-4 mb-3">
-                                    <canvas id="pieChart" width="100%" height="100%"></canvas>
+                                <div class="col-md-5 offset-md-3 mb-5">
+                                    <canvas id="pieChart" width="150%" height="150%"></canvas>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 mb-3" hidden>
+                        <div class="col-md-10 mb-3" hidden>
                             <div class="form-group">
                                 <label class="form-label">Part No<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control part_no" name="part_no" id="part_no" autofocus>
@@ -150,8 +160,10 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
 
 
