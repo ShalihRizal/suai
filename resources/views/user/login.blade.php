@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{asset('css')}}/app-dark.css" id="darkTheme" disabled>
     {{-- {!! ReCaptcha::htmlScriptTagJsApi() !!} --}}
   </head>
-  <body class="light ">
+  <body class="light" style="background-image: url('{{ asset('img/background_login.jpg') }}'); background-size: cover;">
     <div class="mt-10">
       <br>
       <br><br>
