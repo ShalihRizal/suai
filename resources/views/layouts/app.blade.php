@@ -110,9 +110,14 @@
             <img class="navbar-brand mx-auto mt-2 flex-fill text-center" src="{{asset('img')}}/logo.jpg" width="50"/>
             {{-- <strong>hadids</strong> --}}
           </div>
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            @include('components.menudash')
-          </ul>
+          <!-- ... (bagian lain dari file) ... -->
+
+<ul class="navbar-nav flex-fill w-100 mb-2">
+  @include('components.menudash', ['activeMenu' => Request::segment(1)])
+</ul>
+
+<!-- ... (bagian lain dari file) ... -->
+
 
         </nav>
       </aside>

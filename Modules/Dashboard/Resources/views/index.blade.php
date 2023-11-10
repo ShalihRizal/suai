@@ -67,10 +67,10 @@
                 </div>
                 <div class="col-md-12 text-end"></div>
             </div>
-            <div class="card-body ">
-                <div class="container-md"> <!-- Wrap in a container that takes half the screen width -->
-                    <div id="piechart" style="width: 100%; height: 500px;"></div>
-                </div>
+            <div class="card-body">
+                {{-- <div class="container-md"> --}}
+                    <div id="piechart" style="width: 400px; height: 500px;"></div>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -83,34 +83,37 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
-    var chartData = [['Label', 'Quantity']];
+        function drawChart() {
+            var chartData = [['Label', 'Quantity']];
 
-    @foreach ($labels as $partCategoryId => $label)
-        chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
-    @endforeach
+            @foreach ($labels as $partCategoryId => $label)
+                chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
+            @endforeach
 
-    var data = google.visualization.arrayToDataTable(chartData);
+            var data = google.visualization.arrayToDataTable(chartData);
 
-    var options = {
-    title: '',
-    pie: 'Pie', // Mengubah tipe grafik menjadi 'Pie'
-    legend: {
-        position: 'bottom' // Menetapkan posisi legenda ke 'bottom'
-    },
-    chartArea: {
-        backgroundColor: 'transparent' // Atur latar belakang grafik menjadi transparan
-    }
-};
+            var options = {
+                title: '',
+                pie: 'Pie', // Mengubah tipe grafik menjadi 'Pie'
+                legend: {
+                    position: 'bottom' // Menetapkan posisi legenda ke 'bottom'
+                },
+                backgroundColor: 'transparent', // Atur latar belakang grafik menjadi transparan
+                pieSliceBorderColor: 'transparent', // Atur border slice pie menjadi transparan
+                pieSliceTextStyle: {
+                    color: 'transparent' // Atur teks slice pie menjadi transparan
+                },
+                pieSliceText: 'label', // Menampilkan label pada potongan pie
+                sliceVisibilityThreshold: 0
+            };
 
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-    chart.draw(data, options);
-}
-
+            chart.draw(data, options);
+        }
     </script>
 @endsection
+
 

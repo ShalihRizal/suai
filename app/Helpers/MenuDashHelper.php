@@ -23,39 +23,49 @@ class MenuDashHelper
      *
      * @return \Illuminate\View\View|string
      */
-    public static function render()
+    // Tambahkan parameter $activeMenu pada fungsi render
+    // ...
+
+    public static function render($activeMenu = '')
     {
         $_sysmenuRepository = new SysMenuRepository;
 
-        $getMenus   = $_sysmenuRepository->getAllOrderByParams(['menu_is_sub' => 0]);
-        $menus      = "";
+        $getMenus = $_sysmenuRepository->getAllOrderByParams(['menu_is_sub' => 0]);
+        $menus = "";
 
         if (sizeof($getMenus) > 0) {
-
             foreach ($getMenus as $menu) {
+                $getSubs = $_sysmenuRepository->getAllOrderByParams(['menu_parent_id' => $menu->menu_id]);
+                $subs = "";
+                $subLinks = array();
 
-                $getSubs    = $_sysmenuRepository->getAllOrderByParams(['menu_parent_id' => $menu->menu_id]);
-                $subs       = "";
-                $subLinks   = array();
+                // Check Role for the main menu
+                $getRole = $_sysmenuRepository->getRole($menu->module_id, Auth::user()->group_id);
+
+                if (!$getRole) {
+                    continue;
+                }
+
+                // Check if it's the active main menu
+                $isActiveMain = self::isActiveMenu($menu->menu_url, $activeMenu);
+
+                $activeMain = $isActiveMain ? 'active' : '';
+                $showMain = $isActiveMain ? 'show' : '';
 
                 if (sizeof($getSubs) > 0) {
-
                     $areSubs = false;
 
                     foreach ($getSubs as $sub) {
-
-                        // Check Role
+                        // Check Role for the submenu
                         $getRole = $_sysmenuRepository->getRole($sub->module_id, Auth::user()->group_id);
 
                         if (!$getRole) {
                             continue;
                         }
 
-                        $active = '';
+                        $isActiveSub = self::isActiveMenu($sub->menu_url, $activeMenu);
 
-                        if (Request::segment(1) == $sub->menu_url) {
-                            $active = 'active';
-                        }
+                        $active = $isActiveSub ? 'active' : '';
 
                         $subLinks[] = $sub->menu_url;
 
@@ -64,52 +74,39 @@ class MenuDashHelper
                         $areSubs = true;
                     }
 
-                    if (!$areSubs) continue;
-
-                    $active   = '';
-                    $show     = '';
-
-                    if (in_array(Request::segment(1), $subLinks)) {
-                        $active   = 'active';
-                        $show     = 'show';
+                    if (!$areSubs) {
+                        continue;
                     }
 
                     $id_class_replace = str_replace(" ", "", $menu->menu_name);
                     $id_class = substr($id_class_replace, 0, 5);
-                    $menus     .= "<li class='nav-item dropdown" . $active . "'>
-                                    <a href='#" . $id_class . " 'data-toggle='collapse' aria-expanded='false' class='dropdown-toggle nav-link'>
+
+                    $menus .= "<li class='nav-item dropdown " . $activeMain . "'>
+                                    <a href='#" . $id_class . "' data-toggle='collapse' aria-expanded='false' class='dropdown-toggle nav-link'>
                                         <i data-feather='" . $menu->menu_icon . "'></i> <span class='ml-3 item-text'>" . $menu->menu_name . "</span>
                                     </a>
-                                    <ul id='" . $id_class . "' class='collapse list-unstyled pl-4 w-100" . $show . "' >
+                                    <ul id='" . $id_class . "' class='collapse list-unstyled pl-4 w-100 " . $showMain . "' >
                                         " . $subs . "
                                     </ul>
                                 </li>";
                 } else {
+                    $id_class_replace = str_replace(" ", "", $menu->menu_name);
+                    $id_class = substr($id_class_replace, 0, 5);
 
-                    // Check Role
-                    $getRole = $_sysmenuRepository->getRole($menu->module_id, Auth::user()->group_id);
-
-                    if (!$getRole) {
-                        continue;
-                    }
-
-                    $active = '';
-
-                    if (Request::segment(1) == $menu->menu_url) {
-                        $active = 'active';
-                    }
-
-                    $menus     .= "
-                        <li class='nav-item w-100" . $active . "'>
-                            <a class='nav-link' href='" . url($menu->menu_url) . "' aria-expanded='false'>
-                            <i data-feather='" . $menu->menu_icon . "' ></i><span class='ml-3 item-text'>" . $menu->menu_name . "</span>
-                            </a>
-                        </li>
-                    ";
+                    $menus .= "<li class='nav-item w-100 " . $activeMain . "'>
+                                    <a class='nav-link' href='" . url($menu->menu_url) . "' aria-expanded='false'>
+                                        <i data-feather='" . $menu->menu_icon . "' ></i><span class='ml-3 item-text'>" . $menu->menu_name . "</span>
+                                    </a>
+                                </li>";
                 }
             }
         }
 
         return $menus;
+    }
+
+    public static function isActiveMenu($menuUrl, $activeMenu)
+    {
+        return $activeMenu == $menuUrl || Request::segment(1) == $menuUrl;
     }
 }
