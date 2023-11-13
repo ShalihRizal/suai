@@ -121,7 +121,7 @@ class PartRequestController extends Controller
             'part_no' => $part->part_no,
         ];
 
-        // dd($partreq);
+        dd($partreq);
 
 
 

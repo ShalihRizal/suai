@@ -45,8 +45,8 @@
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
                         <label class="form-label">Part No<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control part_no" name="part_no" data-id="" id="part_no"
-                            autofocus>
+                        <input type="text" class="form-control part_no" name="part_no" data-id="{{ 190 }}"
+                            id="part_no" autofocus>
                         <div colspan="4" align="center">ㅤ</div>
                     </div>
                 </div>
@@ -95,12 +95,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (sizeof($parts) == 0)
+                                @if (sizeof($crimpingdies) == 0)
                                     <tr>
                                         <td colspan="4" align="center">Data kosong</td>
                                     </tr>
                                 @else
-                                    @foreach ($parts as $part)
+                                    @foreach ($crimpingdies as $part)
                                         <tr style="margin-bottom: 50px;">
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="20%">{{ $part->part_name }}</td>
@@ -120,56 +120,52 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel"
-        aria-hidden="true">
-    <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel"
-        aria-hidden="true">
+    <div class="modal fade addReset" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ url('stockopname/update/') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-body">
-                            <div class="form-group">
-                                <label class="form-label">Part No<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden"
-                                    value="{{ $part->part_no }}" disabled>
-                                <div colspan="4" align="center">ㅤ</div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">QTY<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden"
-                                    value="{{ $part->qty_end }}" disabled>
-                                <div colspan="4" align="center">ㅤ</div>
-                            </div>
-                            <div class="form-group" hidden>
-                                <label class="form-label">Status<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="has_sto" name="has_sto"
-                                    value="yes">
-                                <div colspan="4" align="center">ㅤ</div>
-                            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                @csrf
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="form-label">Part No<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden"
+                                value="{{ $part->part_no }}" disabled>
+                            <div colspan="4" align="center">ㅤ</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">QTY<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value
+                                {{ $part->qty_end }} disabled>
+                            <div colspan="4" align="center">ㅤ</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="Status" name="Status" value="yes">
+                            <div colspan="4" align="center">ㅤ</div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="text-white btn btn-success">STO</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="text-white btn btn-success">STO</button>
+                </div>
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
-<script>
+    <script type="text/javascript">
         $('.part_no').on('keyup', function(event) {
             if (event.key === "Enter") {
                 var id = $(this).attr('data-id');
                 var url = "{{ url('stockopname/getdata') }}";
 
-                $('.partModal form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
+                $('.addReset form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
 
                 $.ajax({
                     type: 'GET',
@@ -179,71 +175,20 @@
                         console.log(data);
 
                         if (data.status == 1) {
-                            $('#part_no').val(data.result.part_no);
-                            $('#qty_end').val(data.result.qty_end);
-                            $('#has_sto').val('yes');
-                            $('.partModal .modal-title').text('Approve');
-                            $('.partModal').modal('show');
-                        }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert('Error: Gagal mengambil data');
-                    }
-                });
-
-                // Handle form submission
-                // $('.partModal form').submit(function(event) {
-                //     event.preventDefault();
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: $('.partModal form').attr('action'),
-                //         data: $('.partModal form').serialize(),
-                //         dataType: 'JSON',
-                //         success: function(data) {
-                //             console.log(data);
-                //             // Handle success response, e.g., close the modal
-                //             if (data.status == 1) {
-                //                 $('.partModal').modal('hide');
-                //             }
-                //         },
-                //         error: function(XMLHttpRequest, textStatus, errorThrown) {
-                //             alert('Error: Gagal menyimpan data');
-                //         }
-                //     });
-                // });
-            }
-        });
-    </script>
-    <!-- <script type="text/javascript">
-        $('.part_no').on('keyup', function(event) {
-            if (event.key === "Enter") {
-                var id = $(this).attr('data-id');
-                var url = "{{ url('stockopname/getdata') }}";
-
-        //         $('.addReset form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
-
-        //         $.ajax({
-        //             type: 'GET',
-        //             url: url + '/' + id,
-        //             dataType: 'JSON',
-        //             success: function(data) {
-        //                 console.log(data);
-
-                        if (data.status == 1) {
-                            $('#part_no').val(data.result.part_no);
-                            $('#qty_end').val(data.result.qty_end);
+                            $('#part_no_hidden').val(data.result.part_no);
+                            $('#qty_no_hidden').val(data.result.qty_end);
                             $('#Status').val('yes');
                             $('.addReset .modal-title').text('Approve');
                             $('.addReset').modal('show');
                         }
 
-        //             },
-        //             error: function(XMLHttpRequest, textStatus, errorThrown) {
-        //                 alert('Error : Gagal mengambil data');
-        //             }
-        //         });
-        //     }
-        // });
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error : Gagal mengambil data');
+                    }
+                });
+            }
+        });
     </script>
 
     <script type="text/javascript">
@@ -307,58 +252,6 @@
                 // Set the data-id attribute based on the input value
                 partNoInput.setAttribute("data-id", inputValue);
             });
-        });
-    </script>
-
-    <script>
-        $('.part_no').on('keyup', function(event) {
-            if (event.key === "Enter") {
-                var id = $(this).attr('data-id');
-                var url = "{{ url('stockopname/getdata') }}";
-
-                $('.partModal form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
-
-                $.ajax({
-                    type: 'GET',
-                    url: url + '/' + id,
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log(data);
-
-                        if (data.status == 1) {
-                            $('#part_no_hidden').val(data.result.part_no);
-                            $('#qty_no_hidden').val(data.result.qty_end);
-                            $('#has_sto').val('yes');
-                            $('.partModal .modal-title').text('Approve');
-                            $('.partModal').modal('show');
-                        }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert('Error: Gagal mengambil data');
-                    }
-                });
-
-                // Handle form submission
-                // $('.partModal form').submit(function(event) {
-                //     event.preventDefault();
-                //     $.ajax({
-                //         type: 'POST',
-                //         url: $('.partModal form').attr('action'),
-                //         data: $('.partModal form').serialize(),
-                //         dataType: 'JSON',
-                //         success: function(data) {
-                //             console.log(data);
-                //             // Handle success response, e.g., close the modal
-                //             if (data.status == 1) {
-                //                 $('.partModal').modal('hide');
-                //             }
-                //         },
-                //         error: function(XMLHttpRequest, textStatus, errorThrown) {
-                //             alert('Error: Gagal menyimpan data');
-                //         }
-                //     });
-                // });
-            }
         });
     </script>
 

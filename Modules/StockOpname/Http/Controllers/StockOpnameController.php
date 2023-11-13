@@ -121,7 +121,7 @@ class StockOpnameController extends Controller
 
         DB::beginTransaction();
         $this->_stockopnameRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->part_no, 'create');
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'create');
         DB::commit();
 
         return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
@@ -188,12 +188,7 @@ class StockOpnameController extends Controller
         ];
         $sparepartmachine = $this->_partRepository->getAllByParams($spmparam);
 
-        $param = [
-            'has_sto' => 'no',
-        ];
-        $parts = $this->_partRepository->getAllByParams($param);
-
-        // $parts = $this->_partRepository->getAll();
+        $parts = $this->_partRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
@@ -233,30 +228,22 @@ class StockOpnameController extends Controller
             return redirect('unauthorize');
         }
 
-        // $validator = Validator::make($request->all(), $this->_validationRules($id));
+        $validator = Validator::make($request->all(), $this->_validationRules($id));
 
-        // if ($validator->fails()) {
-        //     return redirect('stockopname')
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-
-        // dd($request->all());
-        // if ($validator->fails()) {
-        //     return redirect('stockopname')
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-        dd($request);
+        if ($validator->fails()) {
+            return redirect('stockopname')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         DB::beginTransaction();
 
-        $cek = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->part_no, 'update');
-        // dd($cek, $request->all(), $id);
+        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
         DB::commit();
 
-        return redirect('stockopname/scan')->with('message', 'StockOpname berhasil diubah');
+        return redirect('stockopname')->with('message', 'StockOpname berhasil diubah');
     }
 
     public function updateall(Request $request)
@@ -265,7 +252,7 @@ class StockOpnameController extends Controller
         DB::beginTransaction();
 
         $this->_stockopnameRepository->updateHasStoToNo(DataHelper::_normalizeParams($request->all(), false, true));
-        $this->_logHelper->store($this->module, $request->part_no, 'update');
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();
 
@@ -293,7 +280,7 @@ class StockOpnameController extends Controller
         DB::beginTransaction();
 
         $this->_stockopnameRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_no, 'delete');
+        $this->_logHelper->store($this->module, $detail->stockopname_no, 'delete');
 
         DB::commit();
 
