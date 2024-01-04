@@ -14,6 +14,10 @@
 
 Route::prefix('part')->group(function () {
     Route::get('/', 'PartController@index');
+    Route::get('/af', 'PartController@afindex');
+    Route::get('/cd', 'PartController@cdindex');
+    Route::get('/cf', 'PartController@cfindex');
+    Route::get('/sp', 'PartController@spindex');
     Route::get('/create', 'PartController@create');
     Route::get('/show/{id}', 'PartController@show');
     Route::get('/edit/{id}', 'PartController@edit');

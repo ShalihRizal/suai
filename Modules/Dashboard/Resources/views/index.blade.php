@@ -67,53 +67,119 @@
                 </div>
                 <div class="col-md-12 text-end"></div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="height: 550px; width:700px;">
                 {{-- <div class="container-md"> --}}
-                    <div id="piechart" style="width: 400px; height: 500px;"></div>
+                    <div id="piechart" style="width: 100%; height: 100%;"></div>
                 {{-- </div> --}}
             </div>
         </div>
     </div>
 </div>
-
-
+<div colspan="4" align="center">ㅤ</div>
+{{-- row 2 --}}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header w-100">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h3">Quantity</h3>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="col-md-12 text-end"></div>
+            </div>
+            <div class="card-body" >
+                <div class="container-md">
+                    <div id="columnchart" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header w-100">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="h3">Amount (KUSD)</h3>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="col-md-12 text-end"></div>
+            </div>
+            <div class="card-body">
+                <div class="container-md">
+                    <div id="barchart" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
 @endsection
+
 
 @section('script')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawCharts);
 
-        function drawChart() {
-            var chartData = [['Label', 'Quantity']];
+        function drawCharts() {
+            var pieChartData = [['Label', 'Quantity']];
+            var barChartData = [['Label', 'Last Month', { role: 'annotation' }, 'This Month', { role: 'annotation' }]];
+            var columnChartData = [['Label', 'Last Month', { role: 'annotation' }, 'This Month', { role: 'annotation' }]];
 
             @foreach ($labels as $partCategoryId => $label)
-                chartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
+                pieChartData.push(['{{ $label }}', {{ $thsqty[$partCategoryId] }}]);
+                barChartData.push([
+                    '{{ $label }}',
+                    {{ $lstamounts[$partCategoryId] }},
+                    '{{ $lstamounts[$partCategoryId] }}',
+                    {{ $thsamounts[$partCategoryId] }},
+                    '{{ $thsamounts[$partCategoryId] }}'
+                ]);
+                columnChartData.push([
+                    '{{ $label }}',
+                    {{ $lstqty[$partCategoryId] }},
+                    '{{ $lstqty[$partCategoryId] }}',
+                    {{ $thsqty[$partCategoryId] }},
+                    '{{ $thsqty[$partCategoryId] }}'
+                ]);
             @endforeach
 
-            var data = google.visualization.arrayToDataTable(chartData);
+            var pieData = google.visualization.arrayToDataTable(pieChartData);
+            var barData = google.visualization.arrayToDataTable(barChartData);
+            var columnData = google.visualization.arrayToDataTable(columnChartData);
 
-            var options = {
+            var pieOptions = {
                 title: '',
-                pie: 'Pie', // Mengubah tipe grafik menjadi 'Pie'
-                legend: {
-                    position: 'bottom' // Menetapkan posisi legenda ke 'bottom'
-                },
-                backgroundColor: 'transparent', // Atur latar belakang grafik menjadi transparan
-                pieSliceBorderColor: 'transparent', // Atur border slice pie menjadi transparan
-                pieSliceTextStyle: {
-                    color: 'transparent' // Atur teks slice pie menjadi transparan
-                },
-                pieSliceText: 'label', // Menampilkan label pada potongan pie
+                legend: { position: 'right' },
+                backgroundColor: 'transparent',
+                pieSliceTextStyle: { color: 'transparent' },
+                pieSliceText: 'label',
                 sliceVisibilityThreshold: 0
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            const columnOptions = {
+                title: '',
+                legend: { position: 'right' },
+                bar: { groupWidth: '95%' },
+                backgroundColor: 'transparent',
+                annotations: {
+                    textStyle: {
+                        fontSize: 12,
+                        color: 'black',
+                    },
+                },
+            };
 
-            chart.draw(data, options);
+            var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
+            var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+            var columnChart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
+
+            pieChart.draw(pieData, pieOptions);
+            barChart.draw(barData, columnOptions);
+            columnChart.draw(columnData, columnOptions);
         }
     </script>
 @endsection
-
-

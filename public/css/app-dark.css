@@ -68,12 +68,36 @@ body {
   line-height: 1.5;
   color: #1e1b22;
   text-align: left;
-  background: radial-gradient(
-    100% 100% at 50% 50%,
-    rgba(255, 255, 255, 1) 12%, /* Warna awan */
-    rgba(135, 206, 250, 1) 84% /* Warna langit */
-);
-border: 0px solid rgba(0, 0, 0, 1);
+  border: 0px solid rgba(100, 100, 100, 1);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      73% 101% at 95.54% 95.05%,
+      rgba(255, 204, 102, 0.78) 0%, /* Brighter orange */
+      rgba(255, 217, 125, 0) 100%
+    ),
+    linear-gradient(
+      197deg,
+      rgba(255, 255, 204, 1) 0%, /* Brighter yellow */
+      rgba(255, 255, 204, 0) 100%
+    ),
+    radial-gradient(
+      59% 74% at 10% -10%,
+      rgba(102, 178, 255, 0.8) 0%, /* Brighter blue */
+      rgba(107, 131, 255, 0.21) 52%,
+      rgba(110, 255, 255, 0) 100%
+    ),
+    linear-gradient(
+      143deg,
+      rgba(110, 191, 255, 1) 0%, /* Brighter blue */
+      rgba(255, 112, 202, 0.33) 30%,
+      rgba(255, 110, 149, 0) 56%
+    ),
+    linear-gradient(
+      288deg,
+      rgba(230, 191, 255, 1) 33%, /* Brighter purple */
+      rgba(230, 213, 242, 0) 97%
+    );
 border-radius: 4px;
 background-blend-mode: normal;
  }
@@ -1222,7 +1246,7 @@ pre {
   border: 0; }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #495057; }
+  background-color: #ffffff; }
 
 .table-hover tbody tr:hover {
   color: #ced4da;
@@ -1439,6 +1463,7 @@ pre {
 .table-responsive {
   display: block;
   width: 100%;
+  max-height: 500px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch; }
   .table-responsive > .table-bordered {
@@ -3238,7 +3263,7 @@ input[type="button"].btn-block {
 .navbar-light .navbar-nav .active > .nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
-  color: #ffffff;
+  color: #d6b53e;
   /* border: 0px none rgba(100, 100, 100, 0);
   border-radius: 60px;
   background: linear-gradient(
@@ -3295,25 +3320,26 @@ input[type="button"].btn-block {
     .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
       color: #ffffff; }
 
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  border: 0px none rgba(100, 100, 100, 0);
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  box-shadow:
-    inset 0px -3px 10px 0px rgba(255, 255, 255, 0.15),
-    inset 0px -5px 18px 0px rgba(255, 255, 255, 0.15),
-    inset 0px 6px 12px 0px rgba(255, 255, 255, 0.15),
-    inset 0px 3px 3px 0px rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(100px);
-  -webkit-backdrop-filter: blur(100px);
-  background-clip: border-box;
-  border: 1px solid transparent;
- }
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        border: 0px none rgba(100, 100, 100, 0);
+        border-radius: 12px;
+        background-color: rgba(255, 229, 217, 0.2); /* Adjusted color */
+        box-shadow:
+          inset 0px -3px 10px 0px rgba(255, 255, 255, 0.15),
+          inset 0px -5px 18px 0px rgba(255, 255, 255, 0.15),
+          inset 0px 6px 12px 0px rgba(255, 255, 255, 0.15),
+          inset 0px 3px 3px 0px rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(100px);
+        -webkit-backdrop-filter: blur(100px);
+        background-clip: border-box;
+        border: 1px solid transparent;
+      }
+      
   .card > hr {
     margin-right: 0;
     margin-left: 0; }
@@ -3350,8 +3376,8 @@ input[type="button"].btn-block {
   margin-bottom: 0;
   background: conic-gradient(
     from 45deg at 74% 102%,
-    rgba(15, 83, 110, 1) 12deg,
-    rgba(30, 189, 183, 1) 84deg
+    rgba(255, 229, 217, 1) 12deg,
+    rgba(230, 249, 255, 1) 84deg
 );
 backdrop-filter: blur(100px);
   -webkit-backdrop-filter: blur(100px);
@@ -4196,7 +4222,7 @@ a.close.disabled {
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #495057;
+  background-color: #ffffff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
@@ -9334,11 +9360,12 @@ h1, h2, h3, h4, h5, h6, strong {
 
 /* force bg-white on dark mode */
 .bg-white {
-    background: conic-gradient(
-        from 45deg at 74% 102%,
-        rgba(15, 83, 110, 1) 12deg,
-        rgba(30, 189, 183, 1) 84deg
-    );
+  background: conic-gradient(
+    from 45deg at 74% 102%,
+    rgba(255, 229, 217, 1) 12deg,
+    rgba(230, 249, 255, 1) 84deg
+);
+
     border: 0;
     border-radius: 0;
 

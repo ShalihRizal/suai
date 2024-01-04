@@ -192,6 +192,8 @@ class StockOpnameController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        // dd($parts);
+
         return view('stockopname::scan', compact('parts', 'racks', 'partcategories', 'sparepartmachine', 'checkerfixture', 'assemblyfixture', 'crimpingdies'));
     }
     public function hassto()
@@ -230,11 +232,19 @@ class StockOpnameController extends Controller
 
         $validator = Validator::make($request->all(), $this->_validationRules($id));
 
-        if ($validator->fails()) {
-            return redirect('stockopname')
-                ->withErrors($validator)
-                ->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect('stockopname')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
+        // dd($request->all());
+        // if ($validator->fails()) {
+        //     return redirect('stockopname')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        // dd($request);
 
         DB::beginTransaction();
 
@@ -248,6 +258,9 @@ class StockOpnameController extends Controller
 
     public function updateall(Request $request)
     {
+
+
+
 
         DB::beginTransaction();
 

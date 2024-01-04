@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 use Modules\PartConsumptionList\Repositories\PartConsumptionListRepository;
 use Modules\Carline\Repositories\CarlineRepository;
+use Modules\Carname\Repositories\CarnameRepository;
 use Modules\Machine\Repositories\MachineRepository;
 use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
@@ -27,6 +29,7 @@ class PartConsumptionListController extends Controller
         $this->_PartConsumptionListRepository = new PartConsumptionListRepository;
         $this->_CarlineRepository = new CarlineRepository;
         $this->_MachineRepository = new MachineRepository;
+        $this->_carnameRepository = new CarnameRepository;
         $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "PartConsumptionList";
@@ -48,9 +51,10 @@ class PartConsumptionListController extends Controller
         $parts = $this->_partRepository->getAll();
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
+        $carnames = $this->_carnameRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
 
-        return view('partconsumptionlist::index', compact('partconsumptionlists', 'parts', 'carlines', 'carlinecategories', 'machines'));
+        return view('partconsumptionlist::index', compact('partconsumptionlists', 'parts', 'carlines', 'carlinecategories', 'carnames', 'machines'));
     }
 
     /**
@@ -78,6 +82,27 @@ class PartConsumptionListController extends Controller
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
+        $currentDate = Carbon::now();
+        $dataNaon = [
+            'pcl_id' => $request->pcl_id,
+            'part_id' => $request->part_id,
+            'pcl_category' => $request->pcl_category,
+            'family' => $request->family,
+            'pattern' => $request->pattern,
+            'pic_prepared' => $request->pic_prepared,
+            'reason' => $request->reason,
+            'pic_req' => $request->pic_req,
+            'carline' => $request->carline,
+            'carname' => $request->carname,
+            'status' => $request->status,
+            'fase' => $request->fase,
+            'created_at' => $currentDate,
+            'created_by',
+            'updated_at',
+            'updated_by'
+        ];
+
+        // dd($request);
 
         DB::beginTransaction();
         $this->_PartConsumptionListRepository->insert(DataHelper::_normalizeParams($request->all()));
@@ -175,20 +200,23 @@ class PartConsumptionListController extends Controller
             return redirect('unauthorize');
         }
 
-        $validator = Validator::make($request->all(), $this->_validationRules($id));
+        // $validator = Validator::make($request->all(), $this->_validationRules($id));
 
-        if ($validator->fails()) {
-            return redirect('partconsumptionlist')
-                ->withErrors($validator)
-                ->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect('partconsumptionlist')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
 
+        // dd($request);
         DB::beginTransaction();
-
+        
+        // $check = $this->_PartConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         $this->_PartConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         $this->_logHelper->store($this->module, $request->part_req_number, 'update');
-
+        
         DB::commit();
+        // dd($, $request);
 
         return redirect('partconsumptionlist')->with('message', 'PartConsumptionList berhasil diubah');
     }
@@ -237,6 +265,8 @@ class PartConsumptionListController extends Controller
             $response['result'] = $getDetail;
         }
 
+        // dd($getDetail);
+
         return $response;
     }
 
@@ -244,11 +274,11 @@ class PartConsumptionListController extends Controller
     {
         if ($id == '') {
             return [
-                'part_id' => 'required',
+                'pcl_id' => 'required',
             ];
         } else {
             return [
-                'part_id' => 'required',
+                'pcl_id' => 'required',
             ];
         }
     }

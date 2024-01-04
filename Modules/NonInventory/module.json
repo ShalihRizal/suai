@@ -1,0 +1,11 @@
+{
+    "name": "NonInventory",
+    "alias": "noninventory",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\NonInventory\\Providers\\NonInventoryServiceProvider"
+    ],
+    "files": []
+}

@@ -72,14 +72,21 @@
                                                 @if ($partconsumptionlist->pcl_id > 0)
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btnEdit btn-warning text-white"
-                                                        data-id="{{ $partrequest->pcl_id }}" data-toggle="tooltip"
+                                                        data-id="{{ $partconsumptionlist->pcl_id }}" data-toggle="tooltip"
                                                         data-placement="top" title="Ubah">
                                                         <i data-feather="edit" width="16" height="16"></i>
                                                     </a>
                                                 @endif
                                             </td>
-                                            <td width="5%">{{ $partconsumptionlist->pcl_carline }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->carline }}</td>
+                                            <td width="5%">carline</td>
                                             <td width="5%">{{ $partconsumptionlist->pcl_category }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->family }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->pattern }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->pic_prepared }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->status }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->fase }}</td>
+                                            <td width="5%">{{ $partconsumptionlist->updated_at }}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -96,11 +103,6 @@
                         id="printButton">
                         <i data-feather="printer" class="me-2"></i>
                         Print/Save
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-success text-white mb-3" style="width: 175px"
-                        id="printButton">
-                        <i data-feather="printer" class="me-2"></i>
-                        Print/Download
                     </a>
                 </div>
             </div>
@@ -130,13 +132,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label">Reason <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reasson" id="reasson">
+                                        <input type="text" class="form-control" name="reason" id="reason">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Carline <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="machine_id" id="machine_id">
+                                        <select class="form-control" name="carline" id="carline">
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($machines) > 0)
                                                 @foreach ($machines as $machine)
@@ -152,23 +154,23 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Car Name <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="machine_id" id="machine_id">
+                                        <select class="form-control" name="carname" id="carname">
                                             <option value="">- Pilih Car Name -</option>
-                                            {{-- @if (sizeof($machines) > 0)
-                                                @foreach ($machines as $machine)
-                                                    <option value="{{ $machine->machine_id }}"
-                                                        data-machine-name="{{ $machine->machine_name }}"
-                                                        data-machine-number="{{ $machine->machine_no }}">
-                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
+                                            @if (sizeof($carnames) > 0)
+                                                @foreach ($carnames as $carname)
+                                                    <option value="{{ $carname->carname_id }}"
+                                                        data-carname-name="{{ $carname->carname_name }}"
+                                                        data-carname-number="{{ $carname->carname_id }}">
+                                                        {{ $carname->carname_id }} - {{ $carname->carname_name }}</option>
                                                 @endforeach
-                                            @endif --}}
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">PCL Category <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="machine_id" id="machine_id">
+                                        <select class="form-control" name="pcl_category" id="pcl_category">
                                             <option value="">- Pilih PCL Category -</option>
                                             <option value="Jig Board"> Jig Board</option>
                                             <option value="Checker Board"> Checker Board</option>
@@ -178,33 +180,28 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Family <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="machine_id" id="machine_id">
-                                            <option value="">- Pilih Family -</option>
-                                            {{-- @if (sizeof($machines) > 0)
-                                                @foreach ($machines as $machine)
-                                                    <option value="{{ $machine->machine_id }}"
-                                                        data-machine-name="{{ $machine->machine_name }}"
-                                                        data-machine-number="{{ $machine->machine_no }}">
-                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
-                                                @endforeach
-                                            @endif --}}
-                                        </select>
+                                        <input type="text" class="form-control" name="family" id="family">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Pattern <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="machine_id" id="machine_id">
-                                            <option value="">- Pilih Pattern -</option>
-                                            {{-- @if (sizeof($machines) > 0)
-                                                @foreach ($machines as $machine)
-                                                    <option value="{{ $machine->machine_id }}"
-                                                        data-machine-name="{{ $machine->machine_name }}"
-                                                        data-machine-number="{{ $machine->machine_no }}">
-                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
-                                                @endforeach
-                                            @endif --}}
-                                        </select>
+                                        <input type="text" class="form-control" name="pattern" id="pattern">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Assy No <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="assy_no" id="assy_no">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" hidden>Created At<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="created_at" id="created_at"
+                                            hidden value="{{ date('Y-m-d:H-i-s') }}">
+
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +232,6 @@
 
     <script type="text/javascript">
         $('.btnAdd').click(function() {
-            $('#pcl_id').val('');
             $('#part_id').val('');
             $('#pcl_category').val('');
             $('#family').val('');
@@ -271,14 +267,14 @@
                     console.log(data);
 
                     if (data.status == 1) {
-                        $('#pcl_id').val(data.result.pcl_id);
-                        $('#part_id').val(data.result.part_id);
+                        $('#pic_req').val(data.result.pic_req);
+                        $('#reason').val(data.result.reason);
+                        $('#carline').val(data.result.carline);
+                        $('#carname').val(data.result.carname);
                         $('#pcl_category').val(data.result.pcl_category);
                         $('#family').val(data.result.family);
                         $('#pattern').val(data.result.pattern);
-                        $('#pic_prepared').val(data.result.pic_prepared);
-                        $('#status').val(data.result.status);
-                        $('#fase').val(data.result.fase);
+                        $('#assy_no').val(data.result.assy_no);
                         $('.addModal .modal-title').text('Ubah Part Consumption List');
                         $('.addModal').modal('show');
                     }

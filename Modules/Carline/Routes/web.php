@@ -21,5 +21,6 @@ Route::prefix('carline')->group(function () {
     Route::post('/update/{id}', 'CarlineController@update');
     Route::get('/delete/{id}', 'CarlineController@destroy');
     Route::get('/getdata/{id}', 'CarlineController@getdata');
-});
+    Route::post('/bulk-delete', 'CarlineController@bulkDelete')->name('carline.bulkDelete');
 
+});

@@ -12,7 +12,7 @@ class PartRequestRepository extends QueryBuilderImplementation
         'part_req_id',
         'part_id',
         'part_req_number',
-        'carline',
+        'carname',
         'car_model',
         'alasan',
         'order',
@@ -55,7 +55,37 @@ class PartRequestRepository extends QueryBuilderImplementation
             return DB::connection($this->db)
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->select("part_request.*", "part.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at")
                 ->orderBy('part_req_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }   
+
+    public function getById($id)
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+                ->where($this->pk, '=', $id)
+                ->first();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
+    public function getAllByParams(array $params)
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+                ->select("part_request.*", "part.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at")
+                ->where($params)
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();

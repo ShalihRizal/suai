@@ -5,8 +5,7 @@ use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-
+use GuzzleHttp\Client;
 use App\Exports\partexport;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -50,7 +49,7 @@ class MonthlyReportController extends Controller
         return view('monthlyreport::create');
     }
 
-    public function exportExcel()
+    public function exportExcel(Request $request )
     {
 
         // Inisialisasi Spreadsheet
@@ -60,6 +59,8 @@ class MonthlyReportController extends Controller
         $parts = $this->_partRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
+        $dateBegin = $request->input('date_begin');
+        $dateEnd = $request->input('date_end');
 
         // Buat objek worksheet
         $sheet = $spreadsheet->getActiveSheet();
@@ -69,21 +70,44 @@ class MonthlyReportController extends Controller
             'A12:A14',
             'A25:B25',
             'C12:E13',
-            'A36:A41',
+            'A36:A37',
+            'A38:A39',
+            'A40:A41',
             'B12:B14',
             'B36:B37',
             'C36:E36',
             'F12:H13',
             'I12:K13',
-            'L12:Q13',
+            'L12:Q12',
+            'L13:N13',
+            'O13:Q13',
             'A27:B29',
             'C27:E28',
             'F27:Q28',
             'R27:AC28',
-            'A30:A34',
+            'A34:B34',
+            'A32:A33',
+            'A32:A33',
             'A43:E43',
-            'A45:L45',
-            'M45:N47',
+            'B45:C45',
+            'D45:E45',
+            'F45:G45',
+            'H45:I45',
+            'J45:K45',
+            'L45:M45',
+            'B46:C46',
+            'D46:E46',
+            'F46:G46',
+            'H46:I46',
+            'J46:K46',
+            'L46:M46',
+            'B47:C47',
+            'D47:E47',
+            'F47:G47',
+            'H47:I47',
+            'J47:K47',
+            'L47:M47',
+            // 'M45:N47',
             'Q57:U57',
             'A56:U56',
             'A66:A67',
@@ -94,9 +118,15 @@ class MonthlyReportController extends Controller
             'U12:W13',
         ];
 
+
         foreach ($mergeCells as $mergeCell) {
             $sheet->mergeCells($mergeCell);
         }
+
+        $range = 'C15:W25';
+        $style = $sheet->getStyle($range);
+        $font = $style->getFont();
+        $font->setSize(8);
 
 
         //Dimensions
@@ -110,12 +140,48 @@ class MonthlyReportController extends Controller
             $sheet->getColumnDimension($column)->setWidth(15);
         }
 
+
+        // //values qty
+        // $calculatedValue = $this->calculateQtyBegin('1','Import');
+        // $sheet->setCellValue('C15', $calculatedValue);
+        // $calculatedValue = $this->calculateQtyBegin('1','Lokal');
+        // $sheet->setCellValue('C16', $calculatedValue);
+
+
         //Style
         $sheet->getStyle('A1:AZ100')->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A1:AZ100')->getAlignment()->setVertical('center');
-        $sheet->getStyle('C23:W23')->getAlignment()->setHorizontal('right');
+        $sheet->getStyle('C15:W25')->getAlignment()->setHorizontal('right');
         $sheet->getStyle('A43')->getAlignment()->setHorizontal('left');
         $sheet->getStyle('A55')->getAlignment()->setHorizontal('left');
+        $range = 'C15:W25';
+        $style = $sheet->getStyle($range);
+        $font = $style->getFont();
+        $font->setSize(8);
+        $range = 'A12:W14';
+        $style = $sheet->getStyle($range);
+        $font = $style->getFont();
+        $font->setBold(true);
+        $range = 'A25:W25';
+        $style = $sheet->getStyle($range);
+        $font = $style->getFont();
+        $font->setBold(true);
+        $range = 'A12:W25';
+        $style = $sheet->getStyle($range);
+        $style->getAlignment()->setWrapText(true);
+        $style->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $range = 'A27:AI34';
+        $style = $sheet->getStyle($range);
+        $style->getAlignment()->setWrapText(true);
+        $style->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $range = 'A36:S41';
+        $style = $sheet->getStyle($range);
+        $style->getAlignment()->setWrapText(true);
+        $style->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $range = 'A45:M47';
+        $style = $sheet->getStyle($range);
+        $style->getAlignment()->setWrapText(true);
+        $style->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         //Single Cells/Manual Labor
         for ($column = 'C'; $column <= 'W'; $column++) {
@@ -184,7 +250,7 @@ class MonthlyReportController extends Controller
             'Q37' => '108',
             'R37' => 'USD',
             'S37' => 'IDR',
-            'A55' => 'Recalculation Aging Inventory Wear and Tear (DEADSTOCK > 2 YEAR)',
+            'A49' => 'Recalculation Aging Inventory Wear and Tear (DEADSTOCK > 2 YEAR)',
             'A43' => 'Recalculation Aging Inventory Wear and Tear',
             'A45' => 'Kategori',
             'A46' => 'TOTAL AGING INVENTORY AF & CF',
@@ -235,10 +301,10 @@ class MonthlyReportController extends Controller
             'AG34' => '=+SUM(AG30:AG33)',
             'AH34' => '=+SUM(AH30:AH33)',
             'AI34' => '=+SUM(AI30:AI33)',
-            'A12' => 'Inventory',
+            'A12' => 'INVENTORY',
             'A24' => 'TOTAL',
-            'B12' => 'Import/Lokal',
-            'C12' => 'Begin August-23',
+            'B12' => 'IMPORT/LOKAL',
+            'C12' => 'BEGIN AUGUST-23',
             'C14' => 'QTY',
             'A27' => 'CIP TOTAL (CIP INLINE+CIP)',
             'B27' => 'IMPORT LOKAL',
@@ -276,12 +342,12 @@ class MonthlyReportController extends Controller
             'X29' => 'QTY',
             'Y29' => 'AMOUNT(USD)',
             'Z29' => 'AMOUNT(IDR)',
-            'C45' => 'Last Month (USD)',
-            'E45' => 'This Month (USD)',
-            'G45' => 'Last Month (IDR)',
-            'I45' => 'This Month (IDR)',
-            'K45' => 'Difference (USD)',
-            'M45' => 'Difference (IDR)',
+            'B45' => 'Last Month (USD)',
+            'D45' => 'This Month (USD)',
+            'F45' => 'Last Month (IDR)',
+            'H45' => 'This Month (IDR)',
+            'J45' => 'Difference (USD)',
+            'L45' => 'Difference (IDR)',
             'C47' => '=+SUM(B46:C46)',
             'E47' => '=+SUM(D46:E46)',
             'G47' => '=+SUM(F46:G46)',
@@ -366,16 +432,110 @@ class MonthlyReportController extends Controller
             }
         }
 
+        $aaa = 1; // Move the initialization outside the loop
+        $bbb = 1; // Move the initialization outside the loop
+
         for ($i = 15; $i < 15 + (sizeof($partcategories) * 2); $i++) {
             $cellStart = 'B' . $i;
+            $cellstartC = 'C' . $i;
+            $cellStartD = 'D' . $i;
+            $cellStartE = 'E' . $i;
+            $cellstartF = 'F' . $i;
+            $cellStartG = 'G' . $i;
+            $cellStartH = 'H' . $i;
+            $cellstartL = 'L' . $i;
+            $cellStartM = 'M' . $i;
+            $cellStartN = 'N' . $i;
+            $cellstartR = 'R' . $i;
+            $cellStartS = 'S' . $i;
+            $cellStartT = 'T' . $i;
+            $cellstartU = 'U' . $i;
+            $cellStartV = 'V' . $i;
+            $cellStartW = 'W' . $i;
 
             if ($i % 2 == 0) {
                 $sheet->setCellValue($cellStart, "Lokal");
+                // qty begin
+                $calculatedValueQtyBegin = $this->getQty($aaa, 'Lokal', 'qty_begin', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
+                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_begin');
+                $sheet->setCellValue($cellStartD, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartE, $amountidrin);
+                // qty in
+                $calculatedValueQtyIn = $this->getQty($aaa, 'Lokal', 'qty_in', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
+                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_in');
+                $sheet->setCellValue($cellStartG, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartH, $amountidrin);
+
+                // qty out
+                $calculatedValueQtyOut = $this->getQty($aaa, 'Lokal', 'qty_out', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
+                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_out');
+                $sheet->setCellValue($cellStartM, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartN, $amountidrin);
+                // adjust
+                $calculatedValueAdjust = $this->getQty($aaa, 'Lokal', 'adjust', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
+                $amountusdin = $this->getPrice($aaa, 'Lokal', 'adjust');
+                $sheet->setCellValue($cellStartS, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartT, $amountidrin);
+                //qty end
+                $calculatedValueQtyEnd = $this->getQty($aaa, 'Lokal', 'qty_end', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
+                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_end');
+                $sheet->setCellValue($cellStartV, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartW, $amountidrin);
+                //qty
+                $aaa++;
             } else {
                 $sheet->setCellValue($cellStart, "Import");
+                // qty begin
+                $calculatedValueQtyBegin = $this->getQty($bbb, 'Import', 'qty_begin', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
+                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_begin');
+                $sheet->setCellValue($cellStartD, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartE, $amountidrin);
+                // qty in
+                $calculatedValueQtyIn = $this->getQty($bbb, 'Import', 'qty_in', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
+                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_in');
+                $sheet->setCellValue($cellStartG, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartH, $amountidrin);
+                // qty out
+                $calculatedValueQtyOut = $this->getQty($bbb, 'Import', 'qty_out', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
+                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_out');
+                $sheet->setCellValue($cellStartM, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartN, $amountidrin);
+                // adjust
+                $calculatedValueAdjust = $this->getQty($bbb, 'Import', 'adjust', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
+                $amountusdin = $this->getPrice($bbb, 'Import', 'adjust');
+                $sheet->setCellValue($cellStartS, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartT, $amountidrin);
+                // qty end
+                $calculatedValueQtyEnd = $this->getQty($bbb, 'Import', 'qty_end', $dateBegin, $dateEnd);
+                $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
+                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_end');
+                $sheet->setCellValue($cellStartV, $amountusdin);
+                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
+                $sheet->setCellValue($cellStartW, $amountidrin);
+                // qty
+                $bbb++;
             }
-
         }
+
+
 
         $currentMonth = date('F');
         // Buat file Excel
@@ -388,6 +548,110 @@ class MonthlyReportController extends Controller
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
+
+
+
+
+    public function getQty($part_id, $asal, $qty_type, $dateBegin, $dateEnd)
+{
+    if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+        return "Invalid date format or empty date provided.";
+    }
+    $allParts = $this->_partRepository->getAll();
+
+    // Define your conditions here
+    $conditions = [
+        'part_category_id' => $part_id,
+        'asal' => $asal,
+    ];
+    $qtyEndParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+        foreach ($conditions as $key => $value) {
+            if ($part->{$key} != $value) {
+                return false;
+            }
+        }
+        // Filter by used_date within the specified range
+        return ($this->isDateInRange($part->used_date, $dateBegin, $dateEnd));
+    })->pluck($qty_type);
+
+    // Perform any operations with the qty_end values obtained
+    // For example, calculating the total qty_end
+    $totalQtyEnd = $qtyEndParts->sum();
+
+    return $totalQtyEnd;
+}
+
+private function isValidDate($date)
+{
+    return (bool) strtotime($date);
+}
+
+private function isDateInRange($date, $startDate, $endDate)
+{
+    return (strtotime($date) >= strtotime($startDate) && strtotime($date) <= strtotime($endDate));
+}
+
+public function getPrice($part_id, $asal, $qty_type)
+{
+    $allParts = $this->_partRepository->getAll();
+
+    // Define your conditions here
+    $conditions = [
+        'part_category_id' => $part_id,
+        'asal' => $asal,
+    ];
+
+    // Filter parts based on conditions and retrieve qty_end within the date range
+    $qtyEndParts = $allParts->filter(function ($part) use ($conditions) {
+        foreach ($conditions as $key => $value) {
+            if ($part->{$key} != $value) {
+                return false;
+            }
+        }
+        // Filter by used_date within the specified range ('2023-07-05' to '2023-07-28')
+        return ($part->used_date >= '2023-07-05' && $part->used_date <= '2023-07-28');
+    });
+
+    // Calculate the total value of (qty_end * price) within the date range
+    $price_all = $qtyEndParts->reduce(function ($carry, $part) use ($qty_type) {
+        return $carry + ($part->$qty_type * $part->price);
+    }, 0);
+
+    return $price_all;
+}
+
+
+    protected function calculatePriceSum($partCategoryId, $asal)
+    {
+        // Specify the columns and aggregation methods
+        $aggregations = [
+            'price' => 'sum',
+        ];
+
+        // Fetch the results for the specified columns and methods
+        $results = $this->_partRepository->getByParams([
+            'part_category_id' => $partCategoryId,
+            'asal' => $asal,
+        ], $aggregations);
+
+        // Extract the value from the result
+        $priceSum = isset($results->price) ? $results->price : 0;
+
+        return $priceSum;
+    }
+
+
+    public function convertAndDisplayAmount($usdAmount)
+    {
+        $conversionRate = 14000;
+
+        $idrAmount = $usdAmount * $conversionRate;
+
+        return $idrAmount;
+    }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -437,6 +701,5 @@ class MonthlyReportController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }

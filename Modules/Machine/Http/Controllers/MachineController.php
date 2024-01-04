@@ -38,9 +38,9 @@ class MachineController extends Controller
         }
 
         $machines = $this->_machineRepository->getAll();
-        $carlines = $this->_carlineRepository->getAll();
+        $carnames = $this->_carlineRepository->getAll();
 
-        return view('machine::index', compact('machines', 'carlines'));
+        return view('machine::index', compact('machines', 'carnames'));
     }
 
     /**

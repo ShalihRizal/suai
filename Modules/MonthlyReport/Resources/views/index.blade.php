@@ -48,6 +48,7 @@
                             <th width="20%">PO</th>
                             <th width="20%">PO Date</th>
                             <th width="20%">Rec Date</th>
+                            <th width="20%">Status</th>
                         </tr>
                     </thead>
                     <tbody id="part-table-body"> <!-- Add an id to the tbody -->
@@ -66,16 +67,31 @@
                                     <td width="20%">{{ $part->part_category_name }}</td>
                                     <td width="20%">{{ $part->no_urut }}</td>
                                     <td width="20%">{{ $part->part_no }}.{{ $part->no_urut }}</td>
-                                    <td width="20%">-</td>
-                                    <td width="20%">-</td>
-                                    <td width="20%">-</td>
-                                    <td width="20%">-</td>
+                                    <td width="20%">{{ $part->qty_end }}</td>
+                                    <td width="20%">{{ $part->rop }}</td>
+                                    <td width="20%">{{ $part->forecast }}</td>
+                                    <td width="20%">{{ $part->max }}</td>
                                     <td width="20%">{{ $part->asal }}</td>
                                     <td width="20%">{{ $part->wear_and_tear_code }}</td>
                                     <td width="20%">{{ $part->invoice }}</td>
                                     <td width="20%">{{ $part->po }}</td>
                                     <td width="20%">{{ $part->po_date }}</td>
                                     <td width="20%">{{ $part->rec_date }}</td>
+                                    <td width="20%">
+                                        @php
+                                            $currentDate = now();
+                                            $partDate = \Carbon\Carbon::parse($part->created_at);
+                                            $ageInMonths = $currentDate->diffInMonths($partDate);
+
+                                            if ($ageInMonths > 24) {
+                                                echo 'Dead Stock';
+                                            } elseif ($ageInMonths >= 6 && $ageInMonths <= 24) {
+                                                echo 'Slow Moving';
+                                            } else {
+                                                echo 'Active';
+                                            }
+                                        @endphp
+                                    </td>
                                 </tr>
                             @endforeach
                         @endif
@@ -86,11 +102,24 @@
         <div class="card-header w-100">
             <div class="row">
                 <div class="col-md-6">
+                    <form action="{{ route('exportExcel') }}" method="GET" id="export">
+                        <div class="form-group">
+                            <label class="form-label">Date Begin<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" name="date_begin" id="date_begin">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date End<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" name="date_end" id="date_end">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="text-white btn btn-success">Export Excel</button>
+                        </div>
+                    </form>
                     <div class="addData">
-                        <a href="{{ route('exportExcel') }}" class="btn btn-success btnAdd text-white mb-3">
+                        {{-- <a href="{{ route() }}" class="btn btn-success btnAdd text-white mb-3">
                             <i data-feather="download" width="16" height="16" class="me-2"></i>
                             Download Monthly Report - {{ date('F') }}
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -120,6 +149,7 @@
         });
     });
 </script>
+
 
 <script>
     $(document).ready(function() {

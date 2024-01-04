@@ -179,6 +179,7 @@ class UsersController extends Controller
                 $dataUser = [
                     'user_name' => $request->user_name,
                     'user_email' => $request->user_email,
+                    'no_hp' => $request->no_hp,
                     'user_image'    => $fileName,
                 ];
             } else {
@@ -189,6 +190,7 @@ class UsersController extends Controller
                 $dataUser = [
                     'user_name'     => $request->user_name,
                     'user_email'    => $request->user_email,
+                    'no_hp'    => $request->no_hp,
                     'user_image'    => $fileName,
                     'user_password' => Hash::make($request->user_password),
                 ];
@@ -199,6 +201,7 @@ class UsersController extends Controller
                 $dataUser = [
                     'user_name' => $request->user_name,
                     'user_email' => $request->user_email,
+                    'no_hp' => $request->no_hp,
                 ];
             } else {
 
@@ -209,6 +212,7 @@ class UsersController extends Controller
                 $dataUser = [
                     'user_name' => $request->user_name,
                     'user_email' => $request->user_email,
+                    'no_hp' => $request->no_hp,
                     'user_password' => Hash::make($request->user_password),
                 ];
             }
@@ -341,10 +345,12 @@ class UsersController extends Controller
         if ($id == '') {
             return [
                 'user_name' => 'required|unique:sys_users',
+                'no_hp' => 'required|unique:sys_users',
             ];
         } else {
             return [
                 'user_name' => 'required|unique:sys_users,user_name,' . $id . ',user_id',
+                'no_hp' => 'required|unique:sys_users,no_hp,' . $id . ',user_id',
             ];
         }
     }

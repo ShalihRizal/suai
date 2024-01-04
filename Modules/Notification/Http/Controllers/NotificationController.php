@@ -44,12 +44,12 @@ class NotificationController extends Controller
         ];
 
         $notifications = $this->_notificationRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
+        // $parts = $this->_partRepository->getAll(15);
         $users = $this->_userRepository->getAll();
 
         // dd($notifications);
 
-        return view('notification::index', compact('notifications', 'parts', 'users'));
+        return view('notification::index', compact('notifications', 'users'));
     }
 
     /**
@@ -146,26 +146,34 @@ class NotificationController extends Controller
             $stock = intval($part->qty_end) - intval($detail->part_qty);
             if (intval($detail->status) == 0) {
                 $updateStatus = [
-                    'status' => 1
+                    'status' => 1,
+                    'wear_and_tear_status' => "On Progress",
+                    'status' => "1",
+                    'approved_by' => $request->approved_by
                 ];
                 $updatePart = [
                     'qty_end' => $stock
                 ];
             } else {
                 $updateStatus = [
-                    'status' => 0
+                    'status' => 0,
+                    'wear_and_tear_status' => "On Progress",
+                    'status' => "1",
+                    'approved_by' => $request->approved_by
+
                 ];
                 $updatePart = [
                     'qty_end' => $stock
                 ];
             }
-
+            // dd($updateStatus);
             DB::beginTransaction();
             $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
-            $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
+            $check = $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
             $this->_logHelper->store($this->module, $request->notification_id, 'update');
-
+            // dd($request, $check);
             DB::commit();
+            // dd($check);
         }
 
 

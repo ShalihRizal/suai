@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,4 +24,6 @@ Route::prefix('supervisornotification')->group(function () {
     Route::get('/delete/{id}', 'SupervisorNotificationController@destroy');
     Route::get('/getdata/{id}', 'SupervisorNotificationController@getdata');
 });
-
+// Route::prefix('partrequest')->group(function () {
+//     Route::get('/getdata/{id}', 'PartRequestController@getdata');
+// });

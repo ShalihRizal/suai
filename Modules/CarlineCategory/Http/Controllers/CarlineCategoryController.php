@@ -36,6 +36,7 @@ class CarlineCategoryController extends Controller
         }
 
         $carlinecategories = $this->_carlinecategoryRepository->getAll();
+        // dd($carlinecategories);
 
         return view('carlinecategory::index', compact('carlinecategories'));
     }

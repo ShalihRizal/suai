@@ -36,6 +36,15 @@
                         {{-- <a href="/"><img src="{{asset('img')}}/logo.jpg" width="200" class="img-fluid" /></a> --}}
                       </div>
                     @csrf
+                    @if(session('error'))
+												<div class="alert alert-danger">
+														{{ session('error') }}
+												</div>
+										@elseif(session('success'))
+										<div class="alert alert-danger">
+												{{ session('success') }}
+										</div>
+										@endif
                                       <div class="form-group">
                                           <label>Username</label>
                                           <input class="form-control form-control-lg" type="text" name="user_username" id="user_username" placeholder="Masukan Username" />

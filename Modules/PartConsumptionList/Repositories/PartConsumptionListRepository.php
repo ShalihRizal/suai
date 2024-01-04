@@ -15,6 +15,10 @@ class PartConsumptionListRepository extends QueryBuilderImplementation
         'family',
         'pattern',
         'pic_prepared',
+        'reason',
+        'pic_req',
+        'carline',
+        'carname',
         'status',
         'fase',
         'created_at',
@@ -30,18 +34,18 @@ class PartConsumptionListRepository extends QueryBuilderImplementation
     }
 
     //overide
-    public function getAll()
-    {
-        try {
-            return DB::connection($this->db)
-                ->table($this->table)
-                ->join('part', 'part_consumption_list.part_id', '=', 'part.part_id')
-                ->orderBy('pcl_id')
-                ->get();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
+    // public function getAll()
+    // {
+    //     try {
+    //         return DB::connection($this->db)
+    //             ->table($this->table)
+    //             ->join('part', 'part_consumption_list.part_id', '=', 'part.part_id')
+    //             ->orderBy('pcl_id')
+    //             ->get();
+    //     } catch (Exception $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
 
 
 }

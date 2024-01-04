@@ -23,6 +23,7 @@ class TransaksiInRepository extends QueryBuilderImplementation
                 ->table($this->table)
                 ->select("transaksi_in.created_at as transaksi_created_at", "part.created_at as part_created_at", "transaksi_in.*", "part.*")
                 ->join('part', 'transaksi_in.part_id', '=', 'part.part_id')
+                // ->join('part_category', 'transaksi_in.part_category_id', '=', 'part_category.part_category_id')
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();

@@ -48,5 +48,8 @@
     "Machine": true,
     "MonthlyReport": true,
     "SubRack": true,
-    "SupervisorNotification": true
+    "SupervisorNotification": true,
+    "NonInventory": true,
+    "CIP": true,
+    "Carname": true
 }

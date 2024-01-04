@@ -17,4 +17,5 @@ use App\Events\MessageCreated;
 
 Route::prefix('beranda')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/tv', [DashboardController::class, 'tv']);
 });

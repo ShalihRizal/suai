@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -32,13 +31,11 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->integer('part_qty')->nullable();
             $table->string('status')->nullable();
-            $table->string('wear_and_tear_status')->nullable();
             $table->string('approved_by')->nullable();
             $table->string('part_no')->nullable();
-            $table->string('anvil')->nullable();
-            $table->string('insulation_crimper')->nullable();
-            $table->string('wire_crimper')->nullable();
-            $table->string('other')->nullable();
+            $table->string('part_rec_pic_path')->nullable();
+            $table->string('part_rec_pic_filename')->nullable();
+            $table->string('wear_and_tear_status')->nullable();
             $table->dateTime('created_at');
             $table->bigInteger('created_by')->unsigned();
             $table->dateTime('updated_at')->nullable();

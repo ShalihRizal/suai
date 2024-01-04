@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class UsersRepository extends QueryBuilderImplementation
 {
 
-    public $fillable = ['user_image','user_name', 'user_username', 'user_email', 'user_password', 'user_status', 'group_id', 'created_at', 'updated_at'];
+    public $fillable = ['user_image','user_name', 'user_username', 'no_hp', 'user_email', 'user_password', 'user_status', 'group_id', 'created_at', 'updated_at'];
 
     public function __construct()
     {

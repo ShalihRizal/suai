@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
+use Modules\Carname\Repositories\CarnameRepository;
 use Modules\Carline\Repositories\CarlineRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -22,8 +23,9 @@ class CarlineController extends Controller
 
         $this->_carlineRepository = new CarlineRepository;
         $this->_carlineCategoryRepository = new CarlineCategoryRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "Carline";
+        $this->_carnameRepository = new CarnameRepository;
+        $this->_logHelper = new LogHelper;
+        $this->module = "Carline";
     }
 
     /**
@@ -32,15 +34,13 @@ class CarlineController extends Controller
      */
     public function index()
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
+        
 
         $carlines = $this->_carlineRepository->getAll();
         $carlinecategories = $this->_carlineCategoryRepository->getAll();
+        $carnames = $this->_carnameRepository->getAll();
 
-        return view('carline::index', compact('carlines', 'carlinecategories'));
+        return view('carline::index', compact('carlines', 'carlinecategories','carnames'));
     }
 
     /**
@@ -50,7 +50,7 @@ class CarlineController extends Controller
     public function create()
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -62,26 +62,56 @@ class CarlineController extends Controller
      * @param Request $request
      * @return Response
      */
+
+    public function bulkDelete(Request $request)
+    {
+        // Authorize
+        if (Gate::denies('destroy', $this->module)) {
+            return response()->json(['status' => 0, 'message' => 'Unauthorized action']);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'ids' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 0, 'message' => 'Invalid request']);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($request->input('ids') as $id) {
+                $this->_carlineRepository->delete($id);
+                $this->_logHelper->store($this->module, $id, 'delete');
+            }
+
+            DB::commit();
+
+            return response()->json(['status' => 1, 'message' => 'Bulk deletion successful']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 0, 'message' => 'Error occurred during bulk deletion']);
+        }
+    }
     public function store(Request $request)
     {
         // dd($request->all());
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
+       
         // dd($request->all());
         $validator = Validator::make($request->all(), $this->_validationRules(''));
 
         if ($validator->fails()) {
             return redirect('carline')
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
-
-        DB::beginTransaction();
-        $this->_carlineRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+        // dd($request->all());
+        // DB::beginTransaction();
+        $cek = $this->_carlineRepository->insert(DataHelper::_normalizeParams($request->all(), true));
         // $check = $this->_carlineRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->carline_id, 'create');
+        $cek1 = $this->_logHelper->store($this->module, $request->carline_id, 'create');
+        // dd($cek, $cek1);
         DB::commit();
         // dd($check);
 
@@ -95,11 +125,7 @@ class CarlineController extends Controller
      */
     public function show($id)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
+       
         return view('carline::show');
     }
 
@@ -110,11 +136,7 @@ class CarlineController extends Controller
      */
     public function edit($id)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
+       
         return view('carline::edit');
     }
 
@@ -126,11 +148,7 @@ class CarlineController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
+       
         $validator = Validator::make($request->all(), $this->_validationRules($id));
 
         if ($validator->fails()) {
@@ -156,12 +174,9 @@ class CarlineController extends Controller
      */
     public function destroy($id)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
+       
         // Check detail to db
-        $detail  = $this->_carlineRepository->getById($id);
+        $detail = $this->_carlineRepository->getById($id);
 
         if (!$detail) {
             return redirect('carline');
@@ -185,8 +200,8 @@ class CarlineController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_carlineRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_carlineRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;

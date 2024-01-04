@@ -50,7 +50,7 @@ class TransaksiInController extends Controller
         $parts = $this->_partRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
-        // dd($transaksiins);
+        // dd($transaksiins, $partcategories);
 
         return view('transaksiin::index', compact('transaksiins', 'parts', 'racks', 'partcategories'));
     }

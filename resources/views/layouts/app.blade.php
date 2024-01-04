@@ -69,14 +69,14 @@
             <li class="nav-item">
                 <a class="nav-link text-muted my-2" id="notifications" href="{{ url('notification') }}">
                     <span style="color: red;">@include('components.notification')</span>
-                    <i data-feather="bell" width="16" height="16" style="color: initial;"></i>
+                    <i data-feather="bell" width="20" height="20" style="color: initial;"></i>
                 </a>
             </li>
 
           <li class="nav-item">
             <a class="nav-link text-muted my-2" href="#" id="modeSwitcher" data-mode="light">
               {{-- <i class="fe fe-sun fe-16"></i> --}}
-              <i data-feather="sun" width="16" height="16"></i>
+              <i data-feather="sun" width="20" height="20"></i>
             </a>
           </li>
 

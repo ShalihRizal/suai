@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\SupervisorNotification\Repositories\SupervisorNotificationRepository;
+use Modules\PartRequest\Repositories\PartRequestRepository;
 use Modules\Users\Repositories\UsersRepository;
 use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
@@ -23,6 +24,7 @@ class SupervisorNotificationController extends Controller
 
         $this->_partRepository = new PartRepository;
         $this->_supervisornotificationRepository = new SupervisorNotificationRepository;
+        $this->_partRequestRepository = new PartRequestRepository;
         $this->_userRepository = new UsersRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "SupervisorNotification";
@@ -144,23 +146,41 @@ class SupervisorNotificationController extends Controller
             $stock = intval($part->qty_end) - intval($detail->part_qty);
             if (intval($detail->status) == 0) {
                 $updateStatus = [
-                    'status' => 1
+                    // 'status' => 1,
                 ];
                 $updatePart = [
-                    'qty_end' => $stock
+                    // 'status' => 1,
+                    'qty_end' => $stock,
+                    // 'part_no' => $request->part_no,
+                    'kategori_inventory' => $request->kategori_inventory,
+                ];
+                $updateStatus2 = [
+                    'wear_and_tear_status' => 'closed',
+                    'status' => 2,
                 ];
             } else {
                 $updateStatus = [
-                    'status' => 0
+                    // 'status' => 0,
                 ];
                 $updatePart = [
-                    'qty_end' => $stock
+                    // 'status' => 1,
+                    'qty_end' => $stock,
+                    // 'part_no' => $request->part_no,
+                    'kategori_inventory' => $request->kategori_inventory
+                ];
+                $updateStatus2 = [
+                    'wear_and_tear_status' => 'Closed',
+                    'status' => 2,
                 ];
             }
+            // dd($request->all());
+            // dd($updatePart);
 
-            DB::beginTransaction();
-            $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
+            // DB::beginTransaction();
+            $cek = $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
             $this->_supervisornotificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
+            $this->_partRequestRepository->update(DataHelper::_normalizeParams($updateStatus2, false, true), $id);
+            // dd($cek, $updatePart);
             $this->_logHelper->store($this->module, $request->supervisornotification_id, 'update');
 
             DB::commit();
@@ -208,11 +228,19 @@ class SupervisorNotificationController extends Controller
 
         $response = array('status' => 0, 'result' => array());
         $getDetail = $this->_supervisornotificationRepository->getById($id);
+        $test = $this->_partRequestRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
             $response['result'] = $getDetail;
+            $response['result'] = $test;
         }
+        if ($test) {
+            $response['status'] = 1;
+            $response['result'] = $test;
+        }
+
+        // // dd($test);
 
         return $response;
     }

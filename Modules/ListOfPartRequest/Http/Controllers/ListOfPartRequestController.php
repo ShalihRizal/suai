@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 
 use Modules\ListOfPartRequest\Repositories\ListOfPartRequestRepository;
+use Modules\PartRequest\Repositories\PartRequestRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -20,6 +21,7 @@ class ListOfPartRequestController extends Controller
         $this->middleware('auth');
 
         $this->_ListOfPartRequestRepository = new ListOfPartRequestRepository;
+        $this->_PartRequestRepository = new PartRequestRepository;
         $this->_logHelper           = new LogHelper;
         $this->module               = "PartRequest";
     }
@@ -36,13 +38,14 @@ class ListOfPartRequestController extends Controller
             return redirect('unauthorize');
         }
 
-        $params = [
-            'part_request.status' => 1
-        ];
+        // $params = [
+        //     'part_request.status' => 2
+        // ];
 
-        $listofpartrequests = $this->_ListOfPartRequestRepository->getAllByParams($params);
+        $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
+        $partrequests = $this->_PartRequestRepository->getAll();
         // dd($listofpartrequests);
-        return view('listofpartrequest::index', compact('listofpartrequests'));
+        return view('listofpartrequest::index', compact('listofpartrequests','partrequests'));
     }
 
     /**

@@ -5,18 +5,19 @@
  *
  * Updated 31 Agustus 2021, 09:40
  *
- * @author PT. Digital Robotik Indonesia - ShalihRizal
+ * @author Robby Al Jufri
  *
  */
 
 namespace App\Helpers;
 
+use Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Modules\SysMenu\Repositories\SysMenuRepository;
 
 class MenuHelper
 {
+
     /**
      * Get the view / contents that represent the component.
      *
@@ -30,15 +31,19 @@ class MenuHelper
         $menus = "";
 
         if (sizeof($getMenus) > 0) {
+
             foreach ($getMenus as $menu) {
+
                 $getSubs = $_sysmenuRepository->getAllOrderByParams(['menu_parent_id' => $menu->menu_id]);
                 $subs = "";
                 $subLinks = array();
 
                 if (sizeof($getSubs) > 0) {
+
                     $areSubs = false;
 
                     foreach ($getSubs as $sub) {
+
                         // Check Role
                         $getRole = $_sysmenuRepository->getRole($sub->module_id, Auth::user()->group_id);
 
@@ -46,29 +51,26 @@ class MenuHelper
                             continue;
                         }
 
-                        $subActive = '';
+                        $active = '';
 
-                        // Check if the current route name matches the menu URL
-                        if (Route::currentRouteName() == $sub->menu_url) {
-                            $subActive = 'active';
+                        if (Request::segment(1) == $sub->menu_url) {
+                            $active = 'active';
                         }
 
                         $subLinks[] = $sub->menu_url;
 
-                        $subs .= "<li class='sidebar-item " . $subActive . "'><a class='sidebar-link' href='" . url($sub->menu_url) . "'>" . $sub->menu_name . "</a></li>";
+                        $subs .= "<li class='sidebar-item " . $active . "'><a class='sidebar-link' href='" . url($sub->menu_url) . "'>" . $sub->menu_name . "</a></li>";
 
                         $areSubs = true;
                     }
 
-                    if (!$areSubs) {
+                    if (!$areSubs)
                         continue;
-                    }
 
                     $active = '';
                     $show = '';
 
-                    // Check if the current route name matches the menu URL
-                    if (Route::currentRouteName() == $menu->menu_url || in_array(Route::currentRouteName(), $subLinks)) {
+                    if (in_array(Request::segment(1), $subLinks)) {
                         $active = 'active';
                         $show = 'show';
                     }
@@ -84,6 +86,7 @@ class MenuHelper
                                     </ul>
                                 </li>";
                 } else {
+
                     // Check Role
                     $getRole = $_sysmenuRepository->getRole($menu->module_id, Auth::user()->group_id);
 
@@ -93,8 +96,7 @@ class MenuHelper
 
                     $active = '';
 
-                    // Check if the current route name matches the menu URL
-                    if (Route::currentRouteName() == $menu->menu_url) {
+                    if (Request::segment(1) == $menu->menu_url) {
                         $active = 'active';
                     }
 

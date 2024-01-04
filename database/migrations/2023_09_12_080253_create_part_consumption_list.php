@@ -18,7 +18,10 @@ return new class extends Migration {
             $table->string('family')->nullable();
             $table->integer('part_id')->nullable();
             $table->string('pattern')->nullable();
-            $table->string('pic_prepared')->nullable();
+            $table->string('reason')->nullable();
+            $table->string('pic_rec')->nullable();
+            $table->string('carname')->nullable();
+            $table->string('carline')->nullable();
             $table->string('status')->nullable();
             $table->string('fase')->nullable();
             $table->dateTime('created_at');

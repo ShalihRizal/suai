@@ -12,7 +12,7 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
         'part_req_id',
         'part_id',
         'part_req_number',
-        'carline',
+        'carname',
         'car_model',
         'alasan',
         'order',
@@ -61,19 +61,49 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
     //         return $e->getMessage();
     //     }
     // }
-
-
-    public function getAllByParams(array $params)
-    {
-        try {
-            return DB::connection($this->db)
+    
+    public function getAll()
+        {
+            try {
+                return DB::connection($this->db)
                 ->table($this->table)
-                ->leftJoin('part', 'part_request.part_id', '=', 'part.part_id')
-                ->where($params)
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+                ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
+                ->select("part_request.*","part.*","carname.*","sys_users.*","part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
+                ->orderBy('part_req_id')
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
+
+
+    // public function getAllByParams(array $params)
+    // {
+    //     try {
+    //         return DB::connection($this->db)
+    //             ->table($this->table)
+    //             ->leftJoin('part', 'part_request.part_id', '=', 'part.part_id')
+    //             ->where($params)
+    //             ->get();
+    //         } catch (Exception $e) {
+    //             return $e->getMessage();
+    //         }
+    //     }
+        
+    //     public function getAll()
+    //     {
+    //         try {
+    //             return DB::connection($this->db)
+    //             ->table($this->table)
+    //             ->join('part', 'part_request.part_id', '=', 'part.part_id')
+    //             ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+    //             ->orderBy('part_req_id')
+    //             ->get();
+    //     } catch (Exception $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
 
 }

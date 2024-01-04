@@ -1,0 +1,11 @@
+{
+    "name": "Carname",
+    "alias": "carname",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Carname\\Providers\\CarnameServiceProvider"
+    ],
+    "files": []
+}

@@ -61,8 +61,11 @@
                                     <th width="5%">No</th>
                                     <th width="20%">Nomor Part Request</th>
                                     <th width="20%">PIC</th>
+                                    <th width="20%">Approved By</th>
                                     <th width="20%">Part Number</th>
                                     <th width="15%">Part Quantity</th>
+                                    <th width="15%">Lokasi</th>
+                                    <th width="15%">Status</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -77,8 +80,11 @@
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="20%">{{ $notification->part_req_number }}</td>
                                             <td width="20%">{{ $notification->pic }}</td>
+                                            <td width="20%">{{ $notification->user_name }}</td>
                                             <td width="20%">{{ $notification->part_no }}</td>
                                             <td width="15%">{{ $notification->part_qty }}</td>
+                                            <td width="15%">{{ $notification->loc_ppti }}</td>
+                                            <td width="15%">{{ $notification->wear_and_tear_status }}</td>
                                             <td width="15%">
                                                 @if ($notification->part_req_id > 0)
                                                     <a href="javascript:void(0)"
@@ -107,45 +113,6 @@
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
 
-    <!-- Modal Add -->
-    <div class="modal fade addModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Approve?</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="{{ url('supervisornotifications/store') }}" method="POST" id="addForm">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-body">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Approved By <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="approved_by" id="approved_by">
-                                        <option value="">- Pilih Approved By -</option>
-                                        @if (sizeof($users) > 0)
-                                            @foreach ($users as $user)
-                                                @if ($user->group_id == 7)
-                                                    <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="text-white btn btn-success">Approve</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Add -->
 
     <!-- Modal Details -->
     <div class="modal detailModal fade" tabindex="-1" role="dialog">
@@ -155,27 +122,58 @@
                     <h5 class="modal-title">Details</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                @csrf
-                <div class="modal-body">
-                    <div class="form-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_req_number"
-                                        id="part_req_number" value="part_req_number"readonly>
+                <form id="detailForm" method="POST" action="{{ url('supervisornotification/update') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_req_number"
+                                            id="part_req_number" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Lokasi <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="loc_ppti" id="loc_ppti" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Out To <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="kategori_inventory" id="tabDropdown">
+                                            <option value=""disabled selected>- Out To -</option>
+                                            <option value="Expense">Expense</option>
+                                            <option value="CIP">CIP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Part No <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_no" id="part_no">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label"> ID <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="id" id="id">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="text-white btn btn-success">Simpan</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
     <!-- Modal Details -->
 
 
@@ -183,52 +181,66 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        $('.btnEdit').click(function() {
 
-            var id = $(this).attr('data-id');
-            var url = "{{ url('supervisornotifications/getdata') }}";
+    <script>
+     $(document).ready(function() {
+    $('#part_no').keypress(function(event) {
+        if (event.which === 13) {
+            event.preventDefault(); 
+            yourCustomFunction();
+        }
+    });
+});
 
-            $('.addModal form').attr('action', "{{ url('supervisornotifications/update') }}" + '/' + id);
+function yourCustomFunction() {
+    var url = "{{ url('partrequest/getdata') }}";
+    var id = $('#id').val();
 
-            $.ajax({
-                type: 'GET',
-                url: url + '/' + id,
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
+    $.ajax({
+        type: 'GET',
+        url: url + '/' + id,
+        dataType: 'JSON',
+        success: function(data) {
+            console.log(data);
 
-                    if (data.status == 1) {
-                        $('#part_req_id').val(data.result.part_req_id);
-                        $('#part_req_number').val(data.result.part_req_number);
-                        $('#pic').val(data.result.pic);
-                        $('#part_name').val(data.result.part_name);
-                        $('#part_no').val(data.result.part_no);
-                        $('#part_qty').val(data.result.part_qty);
-                        $('#loc_tapc').val(data.result.loc_tapc);
-                        $('.addModal .modal-title').text('Approve');
-                        $('.addModal').modal('show');
-                    }
+            if (data.status == 1) {
+                var inputValue = $('#part_no').val();
+                var expectedValue = data.result.part_no;
 
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error : Gagal mengambil data');
+                if (inputValue === expectedValue) {
+                    $('#kategori_inventory').val(data.result.kategori_inventory);
+                    $('#status').val('Closed');
+                    $('#part_req_number').val(data.result.part_req_number);
+                    $('#pic').val(data.result.pic);
+                    $('#part_name').val(data.result.part_name);
+                    $('#part_no').val(data.result.part_no);
+                    $('#loc_tapc').val(data.result.loc_tapc);
+                    $('#part_qty').val(data.result.part_qty);
+                    $('.detailModal form').attr('action', "{{ url('supervisornotification/update') }}" + '/' +id);
+                    alert('Berhasil');
+                } else {
+                    $('#part_no').val(data.result.part_no);
+                    alert('Part Tidak Sesuai dengan yang di-Request');
                 }
-            });
+            } else {
+                alert('Gagal mendapatkan data atau data tidak ditemukan');
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error: Gagal mengambil data atau terjadi kesalahan server');
+        }
+    });
+}
+    </script>
 
-        });
 
-        $('.btnAdd').click(function() {
-
-            $('.addModal .modal-title').text('Approve');
-            $('.addModal').modal('show');
-
-        });
-
+    <script type="text/javascript">
         $('.btnDetail').click(function() {
 
             var id = $(this).attr('data-id');
-            var url = "{{ url('supervisornotifications/getdata') }}";
+            var url = "{{ url('partrequest/getdata') }}";
+
+            $('.detailModal form').attr('action', "{{ url('supervisornotification/update') }}" + '/' + id);
 
             $.ajax({
                 type: 'GET',
@@ -241,9 +253,11 @@
                         $('#part_req_number').val(data.result.part_req_number);
                         $('#pic').val(data.result.pic);
                         $('#part_name').val(data.result.part_name);
-                        $('#part_no').val(data.result.part_no);
-                        $('#loc_tapc').val(data.result.loc_tapc);
+                        $('#part_no').val('');
+                        $('#id').val(data.result.part_req_id);
+                        $('#loc_ppti').val(data.result.loc_ppti);
                         $('#part_qty').val(data.result.part_qty);
+                        $('#kategori_inventory').val(data.result.kategori_inventory);
                         $('.detailModal .modal-title').text('Details');
                         $('.detailModal').modal('show');
                     }

@@ -22,7 +22,7 @@ class CarlineRepository extends QueryBuilderImplementation
         try {
             return DB::connection($this->db)
                 ->table($this->table)
-                ->join('carline_category', 'carline.carline_category_id', '=', 'carline_category.carline_category_id')
+                ->join('carname', 'carname.carname_id', '=', 'carline.carline_category_id')
                 ->orderBy('carline_id')
                 ->get();
         } catch (Exception $e) {
