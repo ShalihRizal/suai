@@ -237,13 +237,9 @@
                                     <div class="form-group">
                                         <label class="form-label">Alasan <span class="text-danger">*</span></label>
                                         <select class="form-control" name="alasan" id="alasan">
-                                            <option value="">- Pilih Alasan -</option>
-                                            @if (sizeof($machines) > 0)
-                                                @foreach ($machines as $machine)
-                                                    <option value="replacement"> Replacement </option>
-                                                    <option value="new_project"> New Project </option>
-                                                @endforeach
-                                            @endif
+                                            <option value="" disabled selected>- Pilih Alasan -</option>
+                                            <option value="Replacement">- Replacement -</option>
+                                            <option value="New Project">- New Project -</option>
                                         </select>
                                     </div>
                                 </div>

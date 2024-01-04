@@ -135,7 +135,7 @@
                                         <label class="form-label">Car Model <span class="text-danger">*</span></label>
                                         <select class="form-control" name="car_model" id="car_model">
                                             <option value=""disabled selected>- Pilih Car Model -</option>
-                                           @if (sizeof($carlines) > 0)
+                                            @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
                                                         data-carline-category="{{ $carline->carline_category_id }}">
@@ -228,8 +228,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                
-                                  <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Status <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="status" id="status"
@@ -255,8 +255,8 @@
                                             placeholder="Masukan Remarks" value="{{ old('remarks') }}">
                                     </div>
                                 </div>
-                                
-                                 <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Wear and Tear Status <span
                                                 class="text-danger">*</span></label>
@@ -265,17 +265,16 @@
                                             value="Open" readonly>
                                     </div>
                                 </div>
-                                
-                                 <div class="col-md-6">
+
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">PIC <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">PIC <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="pic" id="pic"
                                             placeholder="Masukan Person in Charge" value="{{ old('pic') }}">
                                     </div>
                                 </div>
-                                
-                                 <div class="col-md-6" hidden>
+
+                                <div class="col-md-6" hidden>
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="part_qty" id="part_qty"
@@ -591,19 +590,19 @@
 @endsection
 
 @section('script')
- <script>
-    $(document).ready(function() {
-        $('#part_id').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
+    <script>
+        $(document).ready(function() {
+            $('#part_id').select2({
+                placeholder: "- Pilih Part -",
+                allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+            });
 
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#part_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            // Fungsi pencarian saat pengguna mengetik di input
+            $('#part_id').on('select2:open', function(e) {
+                $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            });
         });
-    });
-</script>
+    </script>
     <script>
         var video;
         var captureInterval;

@@ -217,15 +217,15 @@
                                             id="machine_no"readonly>
                                     </div>
                                 </div>
-                                
-                                  <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Status <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="status" id="status"
                                             placeholder="Masukan Status" value="0" readonly>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">PIC <span class="text-danger">*</span></label>
@@ -238,9 +238,9 @@
                                     <div class="form-group">
                                         <label class="form-label">Alasan <span class="text-danger">*</span></label>
                                         <select class="form-control" name="alasan" id="alasan">
-                                            <option value=""disabled selected>- Pilih Alasan -</option>
-                                            <option value="New Project">- New Project -</option>
+                                            <option value="" disabled selected>- Pilih Alasan -</option>
                                             <option value="Replacement">- Replacement -</option>
+                                            <option value="New Project">- New Project -</option>
                                         </select>
                                     </div>
                                 </div>
@@ -255,7 +255,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Wear and Tear Status <span
@@ -265,7 +265,7 @@
                                             value="Open" readonly>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6" hidden>
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
@@ -631,19 +631,19 @@
 @endsection
 
 @section('script')
- <script>
-    $(document).ready(function() {
-        $('#part_id').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
+    <script>
+        $(document).ready(function() {
+            $('#part_id').select2({
+                placeholder: "- Pilih Part -",
+                allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+            });
 
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#part_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            // Fungsi pencarian saat pengguna mengetik di input
+            $('#part_id').on('select2:open', function(e) {
+                $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            });
         });
-    });
-</script>
+    </script>
     <script>
         var video;
         var captureInterval;
