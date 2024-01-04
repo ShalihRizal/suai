@@ -85,12 +85,12 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
-                                    <th width="20%">Part Name</th>
-                                    <th width="15%">Part Number</th>
-                                    <th width="20%">Stock</th>
+                                    <th width="5%">Part Name</th>
+                                    <th width="5%">Part Number</th>
+                                    <th width="5%">Stock</th>
                                     <th width="10%">Lokasi</th>
-                                    <th width="15%">Last STO</th>
-                                    <th width="20%">QR Code</th>
+                                    <th width="5%">Last STO</th>
+                                    <th width="5%">QR Code</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,12 +102,12 @@
                                     @foreach ($crimpingdies as $part)
                                         <tr style="margin-bottom: 50px;">
                                             <td width="5%">{{ $loop->iteration }}</td>
-                                            <td width="20%">{{ $part->part_name }}</td>
-                                            <td width="15%">{{ $part->part_no }}</td>
-                                            <td width="20%">{{ $part->qty_end }}</td>
-                                            <td width="10%">{{ $part->loc_tapc }}</td>
-                                            <td width="15%">{{ $part->last_sto }}</td>
-                                            <td width="20%">{{ QrCode::size(75)->generate($part->part_id) }}</td>
+                                            <td width="5%">{{ $part->part_name }}</td>
+                                            <td width="5%">{{ $part->part_no }}</td>
+                                            <td width="5%">{{ $part->qty_end }}</td>
+                                            <td width="10%">{{ $part->loc_ppti }}</td>
+                                            <td width="5%">{{ $part->last_sto }}</td>
+                                            <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td>
                                         </tr>
                                     @endforeach
                                 @endif
