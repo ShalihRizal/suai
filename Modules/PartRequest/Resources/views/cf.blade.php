@@ -193,10 +193,11 @@
                                             <option value="">- Pilih Part -</option>
                                             @if (sizeof($parts) > 0)
                                                 @foreach ($parts as $part)
-                                                    <option value="{{ $part->part_id }}"
-                                                        data-part-name="{{ $part->part_name }}"
-                                                        data-part-number="{{ $part->part_no }}">
-                                                        {{ $part->part_no }} - {{ $part->part_name }}</option>
+                                                    <option
+                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                        data-part-asal="{{ $part->asal }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -247,12 +248,9 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Order <span class="text-danger">*</span> </label>
-                                        <select class="form-control" name="order" id="order">
-                                            <option value="">- Pilih Order -</option>
-                                            <option value="Lokal"> Lokal </option>
-                                            <option value="Import"> Import </option>
-                                        </select>
+                                        <label class="form-label">Order <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="order" id="order"
+                                            value="" disabled>
                                     </div>
                                 </div>
 
@@ -1040,6 +1038,19 @@
                 } else {
                     row.style.display = 'none';
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Add change event listener to the dropdown
+            $('#part_id').change(function() {
+                // Get the selected part number from the data attribute
+                var selectedPartNumber = $(this).find(':selected').data('part-asal');
+
+                // Update the value of the order input field
+                $('#order').val(selectedPartNumber);
             });
         });
     </script>

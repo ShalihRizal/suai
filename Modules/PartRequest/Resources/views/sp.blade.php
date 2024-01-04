@@ -193,10 +193,11 @@
                                             <option value="">- Pilih Part -</option>
                                             @if (sizeof($parts) > 0)
                                                 @foreach ($parts as $part)
-                                                    <option value="{{ $part->part_id }}"
-                                                        data-part-name="{{ $part->part_name }}"
-                                                        data-part-number="{{ $part->part_no }}">
-                                                        {{ $part->part_no }} - {{ $part->part_name }}</option>
+                                                    <option
+                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                        data-part-asal="{{ $part->asal }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -342,32 +343,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Alasan <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="alasan" id="alasan">
-                                        <option value="">Pilih Alasan</option>
-                                        <option value="Option1">Cacat</option>
-                                        <option value="Option2">Caulking</option>
-                                        <option value="Option3">Scratch</option>
-                                        <option value="Option4">Other</option>
-                                    </select>
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6" id="otherReasonDiv" style="display: none;">
-                                <div class="form-group">
-                                    <label class="form-label">Alasan lainnya</label>
-                                    <input type="text" class="form-control" name="other_reason" id="other_reason" placeholder="Masukkan alasan">
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6">
-                                <div class="form-group" hidden>
-                                    <label class="form-label">Order <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="order" id="order"
-                                        placeholder="Masukan Order" value="{{ old('order') }}">
-                                </div>
-                            </div> --}}
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Shift <span class="text-danger">*</span> </label>
@@ -409,34 +384,6 @@
                                             id="machine_no"readonly>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Serial Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="serial_no" id="serial_no"
-                                        placeholder="Masukan Serial Number" value="{{ old('serial_no') }}">
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Applicator Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicator_no" id="applicator_no"
-                                        placeholder="Masukan Applicator Number" value="{{ old('applicator_no') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wear and Tear Code <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wear_and_tear_code" id="wear_and_tear_code"
-                                        placeholder="Masukan Wear and Tear Code" value="{{ old('wear_and_tear_code') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Side Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="side_no" id="side_no"
-                                        placeholder="Masukan Side Number" value="{{ old('side_no') }}">
-                                </div>
-                            </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Stroke <span class="text-danger">*</span></label>
@@ -444,13 +391,6 @@
                                             placeholder="Masukan Stroke" value="{{ old('stroke') }}">
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6">
-                                <div class="form-group" hidden>
-                                    <label class="form-label">Order <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="order" id="order"
-                                        placeholder="Masukan Order" value="{{ old('order') }}">
-                                </div>
-                            </div> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Part <span class="text-danger">*</span></label>
@@ -526,48 +466,6 @@
                                             value="Open" readonly>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Anvil <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="anvil" id="anvil"
-                                        placeholder="Masukan Anvil" value="{{ old('anvil') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Approved By <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="approved_by" id="approved_by"
-                                        placeholder="Masukan Approved" value="-">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Insulation Crimper <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="insulation_crimper" id="insulation_crimper"
-                                        placeholder="Masukan Insulation Crimper" value="{{ old('insulation_crimper') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wire Crimper <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wire_crimper" id="wire_crimper"
-                                        placeholder="Masukan Wire Crimper" value="{{ old('wire_crimper') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6"hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Other <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="other" id="other"
-                                        placeholder="Masukan Other" value="{{ old('other') }}">
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-md-6"hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Wear and Tear Status <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="wear_and_tear_status" id="wear_and_tear_status"
-                                        placeholder="Masukan Wear and Tear Status" value="Open">
-                                </div>
-                            </div> --}}
                             </div>
                         </div>
                     </div>
@@ -633,7 +531,7 @@
                 allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
             });
 
-            // Fungsi pencarian saat pengguna mengetik di input
+
             $('#part_id').on('select2:open', function(e) {
                 $('.select2-search__field').attr('placeholder', 'Cari Part...');
             });
@@ -644,23 +542,23 @@
         var captureInterval;
 
         function startCamera() {
-            // Access the user's camera
+
             navigator.mediaDevices.getUserMedia({
                     video: true
                 })
                 .then(function(stream) {
-                    // Create a video element to display the camera stream
+
                     video = document.createElement('video');
                     video.srcObject = stream;
                     document.body.appendChild(video);
 
-                    // Play the video
+
                     video.play();
 
-                    // Display the camera preview
+
                     document.getElementById('cameraPreview').style.display = 'block';
 
-                    // Create an interval to continuously update frames
+
                     captureInterval = setInterval(updatePreview, 100);
                 })
                 .catch(function(err) {
@@ -669,51 +567,51 @@
         }
 
         function captureImage() {
-            // Stop the interval and capture a single frame
+
             clearInterval(captureInterval);
 
-            // Create a canvas element to capture the image
+
             var canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             var ctx = canvas.getContext('2d');
 
-            // Draw the current frame of the video onto the canvas
+
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Convert the canvas content to data URL (base64 encoded image)
+
             var imageDataUrl = canvas.toDataURL('image/png');
 
-            // Set the captured image in the input field
+
             document.getElementById('capturedImage').value = imageDataUrl;
 
-            // Display the captured image in the captured preview
+
             document.getElementById('capturedPreviewImage').src = imageDataUrl;
 
-            // Display the captured image in the live preview as well (optional)
+
             document.getElementById('livePreviewImage').src = imageDataUrl;
 
-            // Stop the video stream
+
             var stream = video.srcObject;
             stream.getTracks().forEach(function(track) {
                 track.stop();
             });
 
-            // Remove the video element from the DOM
+
             document.body.removeChild(video);
 
-            // Hide the camera preview
+
             document.getElementById('cameraPreview').style.display = 'none';
         }
 
         function updatePreview() {
-            // Create a canvas element to capture the image
+
             var canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             var ctx = canvas.getContext('2d');
 
-            // Draw the current frame of the video onto the canvas
+
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             // Display the live preview
@@ -721,16 +619,16 @@
         }
     </script>
 
-    <!-- <script type="text/javascript">
-        document.getElementById('alasan').addEventListener('change', function() {
-            var otherReasonDiv = document.getElementById('otherReasonDiv');
-            if (this.value === 'Option4') {
-                otherReasonDiv.style.display = 'block';
-            } else {
-                otherReasonDiv.style.display = 'none';
-            }
-        });
-    </script> -->
+
+
+
+
+
+
+
+
+
+
 
     <script type="text/javascript">
         $('.btnAdd').click(function() {
@@ -764,7 +662,7 @@
 
 
 
-        // check error
+
         @if (count($errors))
             $('.addModal').modal('show');
         @endif
@@ -887,7 +785,7 @@
         });
 
         $('#detailModal').on('hidden.bs.modal', function(e) {
-            // You can save the form values in localStorage
+
             localStorage.setItem('car_model', $('#car_model').val());
             localStorage.setItem('carname', $('#carname').val());
             localStorage.setItem('part_id', $('#part_id').val());
@@ -901,9 +799,9 @@
             localStorage.setItem('remarks', $('#remarks').val());
         });
 
-        // Function tospestore form values when modal is shown
+
         $('#detailModal').on('shown.bs.modal', function(e) {
-            // Retrieve the saved values from localStorage and set them in the form fields
+
             $('#car_model').val(localStorage.getItem('car_model'));
             $('#carname').val(localStorage.getItem('carname'));
             $('#shift').val(localStorage.getItem('shift'));
@@ -918,7 +816,7 @@
             $('#remarks').val(localStorage.getItem('remarks'));
         });
 
-        // Clear the saved values when the form is submitted
+
         $('#addForm').on('submit', function(e) {
             localStorage.clear();
         });
@@ -934,7 +832,7 @@
             errorElement: "em",
             errorClass: "invalid-feedback",
             errorPlacement: function(error, element) {
-                // Add the `help-block` class to the error element
+
                 $(element).parents('.form-group').append(error);
             },
             highlight: function(element, errorClass, validClass) {
@@ -959,7 +857,6 @@
     </script>
 
     <script>
-        // JavaScript code to update the "Car Model" dropdown based on the selected "Carline"
         document.getElementById("carname").addEventListener("change", function() {
             var selectedCarlineCategory = this.value;
             var carlineDropdown = document.getElementById("car_model");
@@ -967,7 +864,7 @@
             // Reset the "Car Model" dropdown
             carlineDropdown.innerHTML = '<option value="">- Pilih Car Model -</option>';
 
-            // Filter and add options based on the selected "Carline Category"
+
             @foreach ($carlines as $carline)
                 if ({{ $carline->carline_category_id }} == selectedCarlineCategory) {
                     var option = document.createElement("option");
@@ -980,23 +877,22 @@
     </script>
 
     <script>
-        // JavaScript code to populate Part Name and Part Number based on the selected Part
         document.getElementById("part_id").addEventListener("change", function() {
             var selectedOption = this.options[this.selectedIndex];
             var partNameInput = document.getElementById("part_name");
             var partNoInput = document.getElementById("part_no");
 
-            // Check if a valid option is selected
+
             if (selectedOption.value !== "") {
-                // Get the data attributes from the selected option
+
                 var partName = selectedOption.getAttribute("data-part-name");
                 var partNumber = selectedOption.getAttribute("data-part-number");
 
-                // Set the values in the input fields
+
                 partNameInput.value = partName;
                 partNoInput.value = partNumber;
             } else {
-                // Clear the input fields if no option is selected
+
                 partNameInput.value = "";
                 partNoInput.value = "";
             }
@@ -1031,6 +927,19 @@
                 } else {
                     row.style.display = 'none';
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Add change event listener to the dropdown
+            $('#part_id').change(function() {
+                // Get the selected part number from the data attribute
+                var selectedPartNumber = $(this).find(':selected').data('part-asal');
+
+                // Update the value of the order input field
+                $('#order').val(selectedPartNumber);
             });
         });
     </script>
