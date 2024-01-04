@@ -148,14 +148,14 @@
                                             <select class="form-control" name="carname[]" id="carname">
                                                 <option value="">- Pilih Carline -</option>
                                                 @if (sizeof($carnames) > 0)
-                                                @foreach ($carnames as $carname)
-                                                    <option value="{{ $carname->carname_id }}">
-                                                        {{ $carname->carname_name }}</option>
-                                                @endforeach
-                                            @endif
+                                                    @foreach ($carnames as $carname)
+                                                        <option value="{{ $carname->carname_id }}">
+                                                            {{ $carname->carname_name }}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </td>
-                                        
+
                                         <td>
                                             <select class="form-control" name="car_model[]" id="car_model">
                                                 <option value="">- Pilih Car Model -</option>
@@ -168,7 +168,7 @@
                                                 @endif
                                             </select>
                                         </td>
-                                        
+
                                         <td>
                                             <select class="form-control" name="shift[]" id="shift">
                                                 <option value="">- Pilih Shift -</option>
@@ -195,18 +195,18 @@
                                             </select>
                                         </td>
                                         <td>
-                                                    <select class="form-control" name="alasan[]" id="alasan">
-                                                        <option value=""disabled selected>- Pilih Alasan -</option>
-                                                        <option value="New Project">- New Project -</option>
-                                                        <option value="Replacement">- Replacement -</option>
-                                                    </select>
+                                            <select class="form-control" name="alasan[]" id="alasan">
+                                                <option value=""disabled selected>- Pilih Alasan -</option>
+                                                <option value="New Project">- New Project -</option>
+                                                <option value="Replacement">- Replacement -</option>
+                                            </select>
                                         </td>
                                         <td>
-                                                    <select class="form-control" name="order[]" id="order">
-                                                        <option value=""disabled selected>- Pilih Order -</option>
-                                                        <option value="Lokal"> Lokal </option>
-                                                        <option value="Import"> Import </option>
-                                                    </select>
+                                            <select class="form-control" name="order[]" id="order">
+                                                <option value=""disabled selected>- Pilih Order -</option>
+                                                <option value="Lokal"> Lokal </option>
+                                                <option value="Import"> Import </option>
+                                            </select>
                                         </td>
                                         <td><input type="text" name="part_no[]" placeholder="part no"
                                                 class="form-control" value="{{ old('part_no') }}"></td>
@@ -216,8 +216,8 @@
                                                 value="{{ old('pic') }}"></td>
                                         <td><input type="text" name="remarks[]" placeholder="remarks"
                                                 class="form-control" value="{{ old('remarks') }}"></td>
-                                        <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status"
-                                                class="form-control" value="Open"></td>
+                                        <td><input type="text" hidden name="wear_and_tear_status[]"
+                                                placeholder="wt status" class="form-control" value="Open"></td>
                                         <td><input type="file" name="image_part[]" placeholder="wt status"
                                                 class="form-control" value="{{ old('image_part') }}"></td>
                                         <td><a href="#" class="btn btn-danger remove">-</a></td>
@@ -1093,19 +1093,19 @@
 @endsection
 
 @section('script')
- <script>
-    $(document).ready(function() {
-        $('#part_id').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
+    <script>
+        $(document).ready(function() {
+            $('#part_id').select2({
+                placeholder: "- Pilih Part -",
+                allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+            });
 
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#part_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            // Fungsi pencarian saat pengguna mengetik di input
+            $('#part_id').on('select2:open', function(e) {
+                $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            });
         });
-    });
-</script>
+    </script>
     <script type="text/javascript">
         $('.btnAdd').click(function() {
             $('#part_req_number').val('');
@@ -1343,29 +1343,29 @@
         function addRow() {
             var tr = '<tr>' +
                 '<tr>' +
-                 '<td>'+
-                '<select class="form-control" name="carname[]" id="carname">'+
-                '<option value="">- Pilih Carline -</option>'+
-                '@if (sizeof($carnames) > 0)'+
-                '@foreach ($carnames as $carname)'+
-                '<option value="{{ $carname->carname_id }}">'+
-                '{{ $carname->carname_name }}</option>'+
-                '@endforeach'+
-                '@endif'+
-                '</select>'+
-                '</td>'+
-                '<td>'+
-                '<select class="form-control" name="car_model[]" id="car_model">'+
-                '<option value="">- Pilih Car Model -</option>'+
-                '@if (sizeof($carlines) > 0)'+
-                '@foreach ($carlines as $carline)'+
-                '<option value="{{ $carline->carline_id }}"'+
-                'data-carline-category="{{ $carline->carline_category_id }}">'+
-                '{{ $carline->carline_name }}</option>'+
-                '@endforeach'+
-                '@endif'+
-                '</select>'+
-                '</td>'+
+                '<td>' +
+                '<select class="form-control" name="carname[]" id="carname">' +
+                '<option value="">- Pilih Carline -</option>' +
+                '@if (sizeof($carnames) > 0)' +
+                '@foreach ($carnames as $carname)' +
+                '<option value="{{ $carname->carname_id }}">' +
+                '{{ $carname->carname_name }}</option>' +
+                '@endforeach' +
+                '@endif' +
+                '</select>' +
+                '</td>' +
+                '<td>' +
+                '<select class="form-control" name="car_model[]" id="car_model">' +
+                '<option value="">- Pilih Car Model -</option>' +
+                '@if (sizeof($carlines) > 0)' +
+                '@foreach ($carlines as $carline)' +
+                '<option value="{{ $carline->carline_id }}"' +
+                'data-carline-category="{{ $carline->carline_category_id }}">' +
+                '{{ $carline->carline_name }}</option>' +
+                '@endforeach' +
+                '@endif' +
+                '</select>' +
+                '</td>' +
                 '<td>' +
                 '<select class="form-control" name="shift[]" id="shift">' +
                 '<option value="">- Pilih Shift -</option>' +
@@ -1388,20 +1388,20 @@
                 '@endif' +
                 '</select>' +
                 '</td>' +
-                '<td>'+
-                                                    '<select class="form-control" name="alasan[]" id="alasan">'+
-                                                        '<option value=""disabled selected>- Pilih Alasan -</option>'+
-                                                        '<option value="New Project">- New Project -</option>'+
-                                                        '<option value="Replacement">- Replacement -</option>'+
-                                                    '</select>'+
-                                        '</td>'+
-                                        '<td>'+
-                                                    '<select class="form-control" name="order[]" id="order">'+
-                                                        '<option value=""disabled selected>- Pilih Order -</option>'+
-                                                        '<option value="Lokal"> Lokal </option>'+
-                                                        '<option value="Import"> Import </option>'+
-                                                    '</select>'+
-                                        '</td>'+
+                '<td>' +
+                '<select class="form-control" name="alasan[]" id="alasan">' +
+                '<option value=""disabled selected>- Pilih Alasan -</option>' +
+                '<option value="New Project">- New Project -</option>' +
+                '<option value="Replacement">- Replacement -</option>' +
+                '</select>' +
+                '</td>' +
+                '<td>' +
+                '<select class="form-control" name="order[]" id="order">' +
+                '<option value=""disabled selected>- Pilih Order -</option>' +
+                '<option value="Lokal"> Lokal </option>' +
+                '<option value="Import"> Import </option>' +
+                '</select>' +
+                '</td>' +
                 '<td><input type="text" name="part_no[]" placeholder="part no" class="form-control" value="{{ old('part_no') }}"></td>' +
                 '<td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="{{ old('part_qty') }}"></td>' +
                 '<td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="{{ old('pic') }}"></td>' +

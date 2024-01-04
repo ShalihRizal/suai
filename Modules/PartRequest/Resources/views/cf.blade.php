@@ -193,10 +193,11 @@
                                             <option value="">- Pilih Part -</option>
                                             @if (sizeof($parts) > 0)
                                                 @foreach ($parts as $part)
-                                                    <option value="{{ $part->part_id }}"
-                                                        data-part-name="{{ $part->part_name }}"
-                                                        data-part-number="{{ $part->part_no }}">
-                                                        {{ $part->part_no }} - {{ $part->part_name }}</option>
+                                                    <option
+                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                        data-part-asal="{{ $part->asal }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -217,15 +218,15 @@
                                             id="machine_no"readonly>
                                     </div>
                                 </div>
-                                
-                                  <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Status <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="status" id="status"
                                             placeholder="Masukan Status" value="0" readonly>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">PIC <span class="text-danger">*</span></label>
@@ -238,24 +239,21 @@
                                     <div class="form-group">
                                         <label class="form-label">Alasan <span class="text-danger">*</span></label>
                                         <select class="form-control" name="alasan" id="alasan">
-                                            <option value=""disabled selected>- Pilih Alasan -</option>
-                                            <option value="New Project">- New Project -</option>
+                                            <option value="" disabled selected>- Pilih Alasan -</option>
                                             <option value="Replacement">- Replacement -</option>
+                                            <option value="New Project">- New Project -</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Order <span class="text-danger">*</span> </label>
-                                        <select class="form-control" name="order" id="order">
-                                            <option value="">- Pilih Order -</option>
-                                            <option value="Lokal"> Lokal </option>
-                                            <option value="Import"> Import </option>
-                                        </select>
+                                        <label class="form-label">Order <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="order" id="order"
+                                            value="" disabled>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Wear and Tear Status <span
@@ -265,7 +263,7 @@
                                             value="Open" readonly>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6" hidden>
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
@@ -631,19 +629,19 @@
 @endsection
 
 @section('script')
- <script>
-    $(document).ready(function() {
-        $('#part_id').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
+    <script>
+        $(document).ready(function() {
+            $('#part_id').select2({
+                placeholder: "- Pilih Part -",
+                allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+            });
 
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#part_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            // Fungsi pencarian saat pengguna mengetik di input
+            $('#part_id').on('select2:open', function(e) {
+                $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            });
         });
-    });
-</script>
+    </script>
     <script>
         var video;
         var captureInterval;
@@ -1040,6 +1038,19 @@
                 } else {
                     row.style.display = 'none';
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Add change event listener to the dropdown
+            $('#part_id').change(function() {
+                // Get the selected part number from the data attribute
+                var selectedPartNumber = $(this).find(':selected').data('part-asal');
+
+                // Update the value of the order input field
+                $('#order').val(selectedPartNumber);
             });
         });
     </script>
