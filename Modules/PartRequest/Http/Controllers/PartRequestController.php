@@ -547,10 +547,10 @@ dd($cek);
             return redirect('partrequest/cd');
         }
 
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
         $cek = $this->_PartRequestRepository->delete($id);
-        dd($cek);
+        // dd($cek);
         $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
 
         DB::commit();
