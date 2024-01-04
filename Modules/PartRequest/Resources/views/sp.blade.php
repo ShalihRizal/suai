@@ -150,7 +150,7 @@
                                         <label class="form-label">Carline <span class="text-danger">*</span></label>
                                         <select class="form-control" name="carname" id="carname">
                                             <option value="">- Pilih Carline -</option>
-                                           @if (sizeof($carnames) > 0)
+                                            @if (sizeof($carnames) > 0)
                                                 @foreach ($carnames as $carname)
                                                     <option value="{{ $carname->carname_id }}">
                                                         {{ $carname->carname_name }}</option>
@@ -219,14 +219,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">PIC<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Nama" name="pic"
-                                            id="pic">
+                                        <label class="form-label">PIC<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Masukkan Nama"
+                                            name="pic" id="pic">
                                     </div>
                                 </div>
-                                
-                                  <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Status <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="status" id="status"
@@ -251,15 +250,13 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Order <span class="text-danger">*</span> </label>
-                                        <select class="form-control" name="order" id="order">
-                                            <option value="">- Pilih Order -</option>
-                                            <option value="Lokal"> Lokal </option>
-                                            <option value="Import"> Import </option>
-                                        </select>
+                                        <label class="form-label">Order <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="order" id="order"
+                                            value="" disabled>
                                     </div>
                                 </div>
-                                 <div class="col-md-6" hidden>
+
+                                <div class="col-md-6" hidden>
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="part_qty" id="part_qty"
@@ -274,8 +271,8 @@
                                             placeholder="Masukan Remarks" value="{{ old('remarks') }}">
                                     </div>
                                 </div>
-                                
-                                 <div class="col-md-6"hidden>
+
+                                <div class="col-md-6"hidden>
                                     <div class="form-group">
                                         <label class="form-label">Wear and Tear Status <span
                                                 class="text-danger">*</span></label>
@@ -510,12 +507,11 @@
                                             placeholder="Masukan Remarks" value="{{ old('remarks') }}">
                                     </div>
                                 </div>
-                                 <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">PIC<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Masukkan Nama" name="pic"
-                                            id="pic">
+                                        <label class="form-label">PIC<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Masukkan Nama"
+                                            name="pic" id="pic">
                                     </div>
                                 </div>
                                 <div class="col-md-6"hidden>
@@ -634,19 +630,19 @@
 @endsection
 
 @section('script')
- <script>
-    $(document).ready(function() {
-        $('#part_id').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
+    <script>
+        $(document).ready(function() {
+            $('#part_id').select2({
+                placeholder: "- Pilih Part -",
+                allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+            });
 
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#part_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            // Fungsi pencarian saat pengguna mengetik di input
+            $('#part_id').on('select2:open', function(e) {
+                $('.select2-search__field').attr('placeholder', 'Cari Part...');
+            });
         });
-    });
-</script>
+    </script>
     <script>
         var video;
         var captureInterval;
@@ -825,7 +821,7 @@
 
         });
 
-      $('.btnView').click(function() {
+        $('.btnView').click(function() {
 
             var id = $(this).attr('data-id');
             var url = "{{ url('partrequest/sp/getdata') }}";
