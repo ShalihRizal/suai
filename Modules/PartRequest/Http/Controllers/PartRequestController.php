@@ -46,17 +46,17 @@ class PartRequestController extends Controller
         $userparams = [
             'group_id' => 22
         ];
-        
-        
+
+
 
         $partrequests = $this->_PartRequestRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
+        $parts = $this->_partRepository->getAllByParams($params);
         $users = $this->_userRepository->getAllByParams($userparams);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
-        
+
         // dd($users);
 
         return view('partrequest::sp', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
@@ -69,7 +69,7 @@ class PartRequestController extends Controller
     public function spcreate()
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -127,7 +127,7 @@ class PartRequestController extends Controller
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
-        
+
         // dd($partreq);
 
         DB::beginTransaction();
@@ -147,7 +147,7 @@ class PartRequestController extends Controller
 
         return redirect('partrequest/sp')->with('message', 'PartRequest berhasil ditambahkan');
     }
-    
+
     public function SendWA() {
     $userparams = [
         'group_id' => 7
@@ -186,7 +186,7 @@ class PartRequestController extends Controller
     public function spshow($id)
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -201,7 +201,7 @@ class PartRequestController extends Controller
     public function spedit($id)
     {
 
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -219,7 +219,7 @@ class PartRequestController extends Controller
 
 
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -249,7 +249,7 @@ class PartRequestController extends Controller
     public function spdestroy($id)
     {
 
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        // if (Gate::denies(_FUNCTION_, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -303,12 +303,12 @@ class PartRequestController extends Controller
         ];
 
         $partrequests = $this->_PartRequestRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
+        $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
-        
+
         // dd($partrequests);
 
         return view('partrequest::cd', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
@@ -321,7 +321,7 @@ class PartRequestController extends Controller
     public function cdcreate()
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -355,7 +355,7 @@ class PartRequestController extends Controller
         // $filePath = DataHelper::getFilePath(false, true);
         // $request->file('image_part')->storeAs($filePath, $fileName, 'public');
 
-        // if (Gate::denies(_FUNCTION_, $this->module)) {
+        // if (Gate::denies(FUNCTION, $this->module)) {
         //     return redirect('unauthorize');
         // }
         // dd($file_images, $file_paths);
@@ -365,9 +365,9 @@ class PartRequestController extends Controller
 
         if ($last != null) {
             $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "$padded_part_req_id/TO/CD/$currentMonth/$currentYear";
         } else {
-            $part_req_number = "0000/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "0000/TO/CD/$currentMonth/$currentYear";
         }
         // $part_req_pic_filenames = $request->input('part_req_pic_filename');
         // $part_req_pic_paths = $request->input('part_req_pic_path');
@@ -446,7 +446,7 @@ class PartRequestController extends Controller
     public function cdshow($id)
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -461,7 +461,7 @@ class PartRequestController extends Controller
     public function cdedit($id)
     {
 
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -479,7 +479,7 @@ class PartRequestController extends Controller
 
 
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -507,7 +507,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -537,7 +537,7 @@ dd($cek);
     public function cddestroy($id)
     {
 
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        // if (Gate::denies(_FUNCTION_, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -590,7 +590,7 @@ dd($cek);
         ];
 
         $partrequests = $this->_PartRequestRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
+        $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
@@ -606,7 +606,7 @@ dd($cek);
     public function afcreate()
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -634,9 +634,9 @@ dd($cek);
 
         if ($last != null) {
             $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "$padded_part_req_id/TO/AF/$currentMonth/$currentYear";
         } else {
-            $part_req_number = "0000/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "0000/TO/AF/$currentMonth/$currentYear";
         }
 
 
@@ -664,9 +664,9 @@ dd($cek);
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
-        
+
         // dd($partreq);
-       
+
         DB::beginTransaction();
         $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
 
@@ -691,7 +691,7 @@ dd($cek);
     public function afshow($id)
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -706,7 +706,7 @@ dd($cek);
     public function afedit($id)
     {
 
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -724,7 +724,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -754,7 +754,7 @@ dd($cek);
     public function afdestroy($id)
     {
 
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        // if (Gate::denies(_FUNCTION_, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -805,7 +805,7 @@ dd($cek);
         ];
 
         $partrequests = $this->_PartRequestRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
+        $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
@@ -821,7 +821,7 @@ dd($cek);
     public function cfcreate()
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -849,9 +849,9 @@ dd($cek);
 
         if ($last != null) {
             $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
         } else {
-            $part_req_number = "0000/TO/SPM/$currentMonth/$currentYear";
+            $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
         }
 
 
@@ -879,7 +879,7 @@ dd($cek);
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
-        
+
         // dd($partreq);
 
         DB::beginTransaction();
@@ -905,7 +905,7 @@ dd($cek);
     public function cfshow($id)
     {
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -920,7 +920,7 @@ dd($cek);
     public function cfedit($id)
     {
 
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -938,7 +938,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
+        if (Gate::denies(_FUNCTION_, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -969,7 +969,7 @@ dd($cek);
     public function cfdestroy($id)
     {
 
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        // if (Gate::denies(_FUNCTION_, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -1007,7 +1007,7 @@ dd($cek);
 
         return $response;
     }
-    
+
     public function getdata($id)
     {
 
@@ -1021,8 +1021,8 @@ dd($cek);
 
         return $response;
     }
-    
-    
+
+
 
     private function _validationRules($id = '')
     {
