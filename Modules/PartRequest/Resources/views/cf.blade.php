@@ -89,10 +89,9 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                                         <i data-feather="trash-2" width="16" height="16"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)"
-                                                        class="btn btn-icon btn-info text-white btnView"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
-                                                        data-placement="top" title="Gambar">
+                                                    <a href="gambar/{{$partrequest->part_req_id}}" class="btn btn-icon btn-info text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                                        title="Ubah">
                                                         <i data-feather="eye" width="16" height="16"></i>
                                                     </a>
                                                 @endif

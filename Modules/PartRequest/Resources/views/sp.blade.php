@@ -21,7 +21,7 @@
                     @endif
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="h3">Part Request - Crimping Dies</h3>
+                            <h3 class="h3">Part Request - Sparepart Machine</h3>
                             {{ date('Y-m-d') }}
                         </div>
                         <div class="col-md-6">
@@ -88,10 +88,9 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                                         <i data-feather="trash-2" width="16" height="16"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)"
-                                                        class="btn btn-icon btn-info text-white btnView"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
-                                                        data-placement="top" title="Gambar">
+                                                    <a href="gambar/{{$partrequest->part_req_id}}" class="btn btn-icon btn-info text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                                        title="Ubah">
                                                         <i data-feather="eye" width="16" height="16"></i>
                                                     </a>
                                                 @endif
@@ -110,8 +109,8 @@
 
     <!-- Modal Add -->
     <div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="addModal">
-        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content" style="width: 100%;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Part Request</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -120,117 +119,181 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <div class="table-responsive">
-                            <table id="table-data"
-                                class="table table-stripped card-table table-vcenter text-nowrap table-data">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Car Model</th>
-                                        <th>Nama Carline</th>
-                                        <th>Shift Bagian</th>
-                                        <th>Machine Number</th>
-                                        <th>Nama Stroke</th>
-                                        <th>ㅤㅤPartㅤㅤ</th>
-                                        <th>ㅤㅤAlasanㅤㅤ</th>
-                                        <th>ㅤㅤOrderㅤㅤ</th>
-                                        <th>Part Number</th>
-                                        <th>Part Quantity</th>
-                                        <th>Person in Charge</th>
-                                        <th>Remarks</th>
-                                        <th></th>
-                                        <th>Upload PNG File (Max 2MB)</th>
-                                        <th><a href="#" class="btn btn-success addRow" id="addRow">+</a></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-body1">
-                                    <tr>
-                                        <td>
-                                            <select class="form-control" name="carname[]" id="carname">
-                                                <option value="">- Pilih Carline -</option>
-                                                @if (sizeof($carnames) > 0)
-                                                    @foreach ($carnames as $carname)
-                                                        <option value="{{ $carname->carname_id }}">
-                                                            {{ $carname->carname_name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </td>
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Date <span class="text-danger"></span></label>
+                                        <input type="date" class="form-control" value={{ date('Y-m-d') }}
+                                            name="date" id="date" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Car Model <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="car_model" id="car_model">
+                                            <option value="">- Pilih Car Model -</option>
+                                            @if (sizeof($carlines) > 0)
+                                                @foreach ($carlines as $carline)
+                                                    <option value="{{ $carline->carline_id }}"
+                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        {{ $carline->carline_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Carline <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="carname" id="carname">
+                                            <option value="">- Pilih Carline -</option>
+                                            @if (sizeof($carnames) > 0)
+                                                @foreach ($carnames as $carname)
+                                                    <option value="{{ $carname->carname_id }}">
+                                                        {{ $carname->carname_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
 
-                                        <td>
-                                            <select class="form-control" name="car_model[]" id="car_model">
-                                                <option value="">- Pilih Car Model -</option>
-                                                @if (sizeof($carlines) > 0)
-                                                    @foreach ($carlines as $carline)
-                                                        <option value="{{ $carline->carline_id }}"
-                                                            data-carline-category="{{ $carline->carline_category_id }}">
-                                                            {{ $carline->carline_name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </td>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Shift <span class="text-danger">*</span> </label>
+                                        <select class="form-control" name="shift" id="shift">
+                                            <option value="">- Pilih Shift -</option>
+                                            <option value="A">Shift A</option>
+                                            <option value="B">Shift B</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="machine_id" id="machine_id">
+                                            <option value="">- Pilih Machine -</option>
+                                            @if (sizeof($machines) > 0)
+                                                @foreach ($machines as $machine)
+                                                    <option value="{{ $machine->machine_id }}"
+                                                        data-machine-name="{{ $machine->machine_name }}"
+                                                        data-machine-number="{{ $machine->machine_no }}">
+                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="part_id" id="part_id">
+                                            <option value="">- Pilih Part -</option>
+                                            @if (sizeof($parts) > 0)
+                                                @foreach ($parts as $part)
+                                                    <option
+                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                        data-part-asal="{{ $part->asal }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="machine_name" id="machine_name"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Machine Number <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="machine_no"
+                                            id="machine_no"readonly>
+                                    </div>
+                                </div>
 
-                                        <td>
-                                            <select class="form-control" name="shift[]" id="shift">
-                                                <option value="">- Pilih Shift -</option>
-                                                <option value="A">Shift A</option>
-                                                <option value="B">Shift B</option>
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="machine_no[]" placeholder="machine no"
-                                                class="form-control" value="{{ old('machine_no') }}"></td>
-                                        <td><input type="text" name="stroke[]" placeholder="stroke"
-                                                class="form-control" value="{{ old('stroke') }}"></td>
-                                        <td>
-                                            <select class="form-control" name="part_id[]" id="part_id">
-                                                <option value="">- Pilih Part -</option>
-                                                @if (sizeof($parts) > 0)
-                                                    @foreach ($parts as $part)
-                                                        <option value="{{ $part->part_id }}"
-                                                            data-part-name="{{ $part->part_name }}"
-                                                            data-part-number="{{ $part->part_no }}">{{ $part->part_no }}
-                                                            -
-                                                            {{ $part->part_name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-control" name="alasan[]" id="alasan">
-                                                <option value=""disabled selected>- Pilih Alasan -</option>
-                                                <option value="New Project">- New Project -</option>
-                                                <option value="Replacement">- Replacement -</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-control" name="order[]" id="order">
-                                                <option value=""disabled selected>- Pilih Order -</option>
-                                                <option value="Lokal"> Lokal </option>
-                                                <option value="Import"> Import </option>
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="part_no[]" placeholder="part no"
-                                                class="form-control" value="{{ old('part_no') }}"></td>
-                                        <td><input type="number" name="part_qty[]" placeholder="Jumlah"
-                                                class="form-control" value="{{ old('part_qty') }}"></td>
-                                        <td><input type="text" name="pic[]" placeholder="pic" class="form-control"
-                                                value="{{ old('pic') }}"></td>
-                                        <td><input type="text" name="remarks[]" placeholder="remarks"
-                                                class="form-control" value="{{ old('remarks') }}"></td>
-                                        <td><input type="text" hidden name="wear_and_tear_status[]"
-                                                placeholder="wt status" class="form-control" value="Open"></td>
-                                        <td><input type="file" name="image_part[]" placeholder="wt status"
-                                                class="form-control" value="{{ old('image_part') }}"></td>
-                                        <td><a href="#" class="btn btn-danger remove">-</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <div class="col-md-6"hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="status" id="status"
+                                            placeholder="Masukan Status" value="0" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">PIC <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="pic" id="pic"
+                                            placeholder="Masukan Nama">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Alasan <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="alasan" id="alasan">
+                                            <option value="" disabled selected>- Pilih Alasan -</option>
+                                            <option value="Replacement">- Replacement -</option>
+                                            <option value="New Project">- New Project -</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Order <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="order" id="order"
+                                            value="" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6"hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Wear and Tear Status <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="wear_and_tear_status"
+                                            id="wear_and_tear_status" placeholder="Masukan Wear and Tear Status"
+                                            value="Open" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" hidden>
+                                    <div class="form-group">
+                                        <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="part_qty" id="part_qty"
+                                            placeholder="Masukan Part Quantity" value="1">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Remarks <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="remarks" id="remarks"
+                                            placeholder="Masukan Remarks" value="{{ old('remarks') }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Upload PNG File (Max 2MB) <span
+                                                class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" name="image_part">
+                                    </div>
+                                </div>
+
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="text-white btn btn-success">Simpan</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="text-white btn btn-success">Simpan</button>
+                        </div>
                 </form>
             </div>
         </div>
@@ -1136,7 +1199,7 @@
             $('#wire_crimper').val('');
             $('#other').val('');
             $('.addModal form').attr('action', "{{ url('partrequest/sp/store') }}");
-            $('.addModal .modal-title').text('Tambah Part Request - Crimping Dies');
+            $('.addModal .modal-title').text('Tambah Part Request - Sparepart Machine');
             $('.addModal').modal('show');
         })
         // check error
