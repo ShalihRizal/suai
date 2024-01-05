@@ -13,8 +13,13 @@ use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Forecast\Repositories\ForecastRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
-use DB;
+// use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Validator;
+use App\Services\ForecastService;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ForecastController extends Controller
 {
@@ -70,28 +75,64 @@ class ForecastController extends Controller
      */
     public function store(Request $request)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
+        try {
+            // Authorize
+            if (Gate::denies(__FUNCTION__, $this->module)) {
+                return redirect('unauthorize');
+            }
+    
+            if (!$request->hasFile('file')) {
+                return response()->json(['message' => 'No file uploaded'], 400);
+            }
+    
+            // Start a database transaction
+            DB::beginTransaction();
+    
+            $file = $request->file('file');
+            $filePath = $file->getRealPath();
+            $csvData = array_map('str_getcsv', file($filePath));
+            $header = array_shift($csvData);
+    
+            foreach ($csvData as $row) {
+                $data = array_combine($header, $row);
+    
+                $existingData = DB::table('part')
+                    ->where('part_id', $data['part_id'])
+                    ->first();
+    
+                if ($existingData) {
+                    // Update the record
+                    DB::table('part')
+                        ->where('part_id', $data['part_id'])
+                        ->update($data);
+                } else {
+                    // Insert a new record
+                    DB::table('part')->insert($data);
+                }
+            }
+    
+            // Commit the transaction if all operations succeeded
+            DB::commit();
+    
+            // Log your action or any relevant information
+            Log::info('File uploaded successfully');
+    
+            return redirect('forecast');
+        } catch (\Exception $e) {
+        // Rollback the transaction if an exception occurs
+        DB::rollback();
 
-        $validator = Validator::make($request->all(), $this->_validationRules(''));
+        // Log the exception with more details for debugging
+        Log::error('Failed to upload file: ' . $e->getMessage() . ' at ' . $e->getFile() . ' line ' . $e->getLine());
 
-        if ($validator->fails()) {
-            return redirect('forecast')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        DB::beginTransaction();
-        $this->_forecastRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        // $check = $this->_forecastRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->forecast_no, 'create');
-        DB::commit();
-        // dd($check);
-
-        return redirect('forecast')->with('message', 'Forecast berhasil ditambahkan');
+        return response()->json(['message' => 'Failed to upload file. ' . $e->getMessage()], 500);
     }
+
+    return response()->json(['message' => 'File upload failed'], 400);
+}
+
+
+
 
     /**
      * Show the specified resource.

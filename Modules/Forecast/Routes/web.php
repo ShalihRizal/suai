@@ -11,13 +11,14 @@
 |
 */
 
+use Modules\Forecast\Http\Controllers\ForecastController;
 
 Route::prefix('forecast')->group(function () {
     Route::get('/', 'ForecastController@index');
     Route::get('/create', 'ForecastController@create');
     Route::get('/show/{id}', 'ForecastController@show');
     Route::get('/edit/{id}', 'ForecastController@edit');
-    Route::post('/store', 'ForecastController@store');
+    Route::post('/store', [ForecastController::class, 'store'])->name('store');
     Route::post('/update/{id}', 'ForecastController@update');
     Route::get('/delete/{id}', 'ForecastController@destroy');
     Route::get('/getdata/{id}', 'ForecastController@getdata');
