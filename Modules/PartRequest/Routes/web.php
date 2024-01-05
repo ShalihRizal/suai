@@ -22,6 +22,7 @@ Route::prefix('partrequest')->group(function () {
     Route::get('/delete/{id}', 'PartRequestController@destroy');
     Route::get('/getdata/{id}', 'PartRequestController@getdata');
     Route::post('/sendwa', 'PartRequestController@SendWA');
+    Route::get('/gambar/{id}', 'PartRequestController@gambar');
 
     Route::get('/sp', 'PartRequestController@spindex');
     Route::get('/sp/create', 'PartRequestController@spcreate');
