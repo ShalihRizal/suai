@@ -44,6 +44,14 @@
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
+                         <a href="/stockopname" class="btn btn-success btnAdd text-white mb-3">
+                                <i data-feather="arrow-left" width="16" height="16" class="me-2"></i> Kembali
+                            </a>
+                        <div colspan="4" align="center">ㅤ</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="form-group">
                         <label class="form-label">Part No<span class="text-danger">*</span></label>
                         <input type="text" class="form-control part_no" name="part_no" data-id="{{ 190 }}"
                             id="part_no" autofocus>
