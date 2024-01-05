@@ -54,24 +54,35 @@
                         Filter
                     </a>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="part_category_filter">Filter by Part Category:</label>
+                            <select class="form-control" id="part_category_filter" name="part_category_filter">
+                                <option value="">All</option>
+                                @foreach ($partcategories as $partCategory)
+                                    <option value="{{ $partCategory->part_category_name }}">
+                                        {{ $partCategory->part_category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                             <thead>
                                 <tr>
                                     <th width="1%">No</th>
-                                    <th width="20%">Nomor Invoice</th>
-                                    {{-- <th width="20%">ATA SUAI</th> --}}
-                                    <th width="20%">Po Number</th>
-                                    <th width="20%">PO Date</th>
-                                    {{-- <th width="20%">No. Urut</th> --}}
-                                    <th width="20%">Part No Urut</th>
-                                    <th width="20%">Part Name</th>
-                                    <th width="20%">Molts No</th>
-                                    <th width="20%">Price</th>
-                                    <th width="20%">Part No</th>
-                                    <th width="20%">Qty</th>
-                                    <th width="20%">Loc Hib</th>
-                                    <th width="20%">Loc PPTI</th>
+                                    <th width="5%">Nomor Invoice</th>
+                                    <th width="5%">Po Number</th>
+                                    <th width="5%">PO Date</th>
+                                    <th width="5%">Part No Urut</th>
+                                    <th width="5%">Part Name</th>
+                                    <th hidden width="5%">Part Category</th>
+                                    <th width="5%">Molts No</th>
+                                    <th width="5%">Price</th>
+                                    <th width="5%">Part No</th>
+                                    <th width="5%">Qty</th>
+                                    <th width="5%">Loc PPTI</th>
                                     <th width="5%">Aksi</th>
                                 </tr>
                             </thead>
@@ -82,23 +93,21 @@
                                     </tr>
                                 @else
                                     @foreach ($transaksiins as $transaksiin)
-                                        <tr class="part-row" data-category="{{ $transaksiin->part_category_id }}"
+                                        <tr class="part-row" data-category="{{ $transaksiin->part_category_name }}"
                                             data-created-at="{{ $transaksiin->transaksi_created_at }}">
                                             <td width="1%">{{ $loop->iteration }}</td>
-                                            <td width="20%">{{ $transaksiin->invoice_no }}</td>
-                                            {{-- <td width="20%">{{ $transaksiin->ata_suai }}</td> --}}
-                                            <td width="20%">{{ $transaksiin->po_no }}</td>
-                                            <td width="20%">{{ $transaksiin->po_date }}</td>
-                                            {{-- <td width="20%">{{ $transaksiin->no_urut }}</td> --}}
-                                            <td width="20%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
-                                            <td width="20%">{{ $transaksiin->part_name }}</td>
-                                            <td width="20%">{{ $transaksiin->molts_no }}</td>
-                                            <td width="20%">{{ $transaksiin->price }}</td>
-                                            <td width="20%">{{ $transaksiin->part_no }}</td>
-                                            <td width="20%">{{ $transaksiin->qty_end }}</td>
-                                            <td width="20%">{{ $transaksiin->lokasi_hib }}</td>
-                                            <td width="20%">{{ $transaksiin->loc_ppti }}</td>
-                                            <td hidden width="20%">{{ $transaksiin->transaksi_created_at }}</td>
+                                            <td width="5%">{{ $transaksiin->invoice_no }}</td>
+                                            <td width="5%">{{ $transaksiin->po_no }}</td>
+                                            <td width="5%">{{ $transaksiin->po_date }}</td>
+                                            <td width="5%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
+                                            <td width="5%">{{ $transaksiin->part_name }}</td>
+                                            <td hidden width="5%">{{ $transaksiin->part_category_name }}</td>
+                                            <td width="5%">{{ $transaksiin->molts_no }}</td>
+                                            <td width="5%">${{ $transaksiin->price }}</td>
+                                            <td width="5%">{{ $transaksiin->part_no }}</td>
+                                            <td width="5%">{{ $transaksiin->qty_end }}</td>
+                                            <td width="5%">{{ $transaksiin->loc_ppti }}</td>
+                                            <td hidden width="5%">{{ $transaksiin->transaksi_created_at }}</td>
                                             <td width="5%">
                                                 @if ($transaksiin->transaksi_in_id > 0)
                                                     <a href="javascript:void(0)"
@@ -240,63 +249,6 @@
                                             placeholder="Masukan Price" value="{{ old('price') }}">
                                     </div>
                                 </div>
-
-                                {{-- <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Tanggal PO <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po_date" id="po_date"
-                                        placeholder="Masukan Tanggal PO" value="{{ old('po_date') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Nomor Urut <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="no_urut" id="no_urut"
-                                        placeholder="Masukan Nomor Urut" value="{{ old('no_urut') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_name" id="part_name"
-                                        placeholder="Masukan Part Name" value="{{ old('part_name') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Part No <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_no" id="part_no"
-                                        placeholder="Masukan Part No" value="{{ old('part_no') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Quantity <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="qty" id="qty"
-                                        placeholder="Masukan Quantity" value="{{ old('qty') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Loc Hib <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="loc_hib" id="loc_hib"
-                                        placeholder="Masukan Loc Hib" value="{{ old('loc_hib') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Loc PPTI <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
-                                        placeholder="Masukan Loc PPTI" value="{{ old('loc_ppti') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Quantity End <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="qty_end" id="qty_end"
-                                        placeholder="Masukan Quantity End" value="{{ old('qty_end') }}">
-                                </div>
-                            </div> --}}
                             </div>
                         </div>
                     </div>
@@ -494,58 +446,81 @@
         });
     </script>
 
-    
+
     <script>
-    document.getElementById("printButton").addEventListener("click", function() {
-        // Buka jendela baru untuk mencetak
-        var newWindow = window.open("", "", "width=800,height=600");
-        newWindow.document.write("<html><head><title>Transaksi In</title></head><body>");
+        document.getElementById("printButton").addEventListener("click", function() {
+            // Buka jendela baru untuk mencetak
+            var newWindow = window.open("", "", "width=800,height=600");
+            newWindow.document.write("<html><head><title>Transaksi In</title></head><body>");
             newWindow.document.write("<style>@page { size: landscape; }</style>");
 
-        // Tabel header
-        newWindow.document.write("<table border='1' style='width:100%;'><thead><tr>");
-        newWindow.document.write("<th>No</th>");
-        newWindow.document.write("<th width='20%'>Nomor Invoice</th>");
-        <!-- <th width='20%'>ATA SUAI</th> -->
-        newWindow.document.write("<th width='20%'>Po Number</th>");
-        newWindow.document.write("<th width='20%'>PO Date</th>");
-        <!-- <th width='20%'>No. Urut</th> -->
-        newWindow.document.write("<th width='20%'>Part No Urut</th>");
-        newWindow.document.write("<th width='20%'>Part Name</th>");
-        newWindow.document.write("<th width='20%'>Molts No</th>");
-        newWindow.document.write("<th width='20%'>Price</th>");
-        newWindow.document.write("<th width='20%'>Part No</th>");
-        newWindow.document.write("<th width='20%'>Qty</th>");
-        newWindow.document.write("<th width='20%'>Loc Hib</th>");
-        newWindow.document.write("<th width='20%'>Loc PPTI</th>");
-        newWindow.document.write("</tr></thead><tbody>");
+            // Tabel header
+            newWindow.document.write("<table border='1' style='width:100%;'><thead><tr>");
+            newWindow.document.write("<th>No</th>");
+            newWindow.document.write("<th width='20%'>Nomor Invoice</th>"); <
+            !-- < th width = '20%' > ATA SUAI < /th> -->
+            newWindow.document.write("<th width='20%'>Po Number</th>");
+            newWindow.document.write("<th width='20%'>PO Date</th>"); <
+            !-- < th width = '20%' > No.Urut < /th> -->
+            newWindow.document.write("<th width='20%'>Part No Urut</th>");
+            newWindow.document.write("<th width='20%'>Part Name</th>");
+            newWindow.document.write("<th width='20%'>Molts No</th>");
+            newWindow.document.write("<th width='20%'>Price</th>");
+            newWindow.document.write("<th width='20%'>Part No</th>");
+            newWindow.document.write("<th width='20%'>Qty</th>");
+            newWindow.document.write("<th width='20%'>Loc Hib</th>");
+            newWindow.document.write("<th width='20%'>Loc PPTI</th>");
+            newWindow.document.write("</tr></thead><tbody>");
 
-        // Masukkan data dari Blade template ke dalam tabel
-        @foreach ($transaksiins as $transaksiin)
-            newWindow.document.write("<tr>");
-            newWindow.document.write("<td>{{ $loop->iteration }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->invoice_no }}</td>");
-            <!-- <td>{{ $transaksiin->ata_suai }}</td> -->
-            newWindow.document.write("<td>{{ $transaksiin->po_no }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->po_date }}</td>");
-            <!-- <td>{{ $transaksiin->no_urut }}</td> -->
-            newWindow.document.write("<td>{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->part_name }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->molts_no }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->price }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->part_no }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->qty_end }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->lokasi_hib }}</td>");
-            newWindow.document.write("<td>{{ $transaksiin->loc_ppti }}</td>");
-            newWindow.document.write("</tr>");
-        @endforeach
+            // Masukkan data dari Blade template ke dalam tabel
+            @foreach ($transaksiins as $transaksiin)
+                newWindow.document.write("<tr>");
+                newWindow.document.write("<td>{{ $loop->iteration }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->invoice_no }}</td>"); <
+                !-- < td > {{ $transaksiin->ata_suai }} < /td> -->
+                newWindow.document.write("<td>{{ $transaksiin->po_no }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->po_date }}</td>"); <
+                !-- < td > {{ $transaksiin->no_urut }} < /td> -->
+                newWindow.document.write("<td>{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->part_name }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->molts_no }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->price }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->part_no }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->qty_end }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->lokasi_hib }}</td>");
+                newWindow.document.write("<td>{{ $transaksiin->loc_ppti }}</td>");
+                newWindow.document.write("</tr>");
+            @endforeach
 
-        newWindow.document.write("</tbody></table>");
-        newWindow.document.write("</body></html>");
-        newWindow.print();
-        newWindow.close();
-    });
-</script>
+            newWindow.document.write("</tbody></table>");
+            newWindow.document.write("</body></html>");
+            newWindow.print();
+            newWindow.close();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to filter table rows based on selected category
+            function filterTableByCategory(category) {
+                // Show all rows initially
+                $(".part-row").show()
+
+                // Hide rows that don't match the selected category
+                if (category !== "") {
+                    $(".part-row").not("[data-category='" + category + "']").hide();
+                }
+            }
+
+            // Event handler for dropdown change
+            $("#part_category_filter").on("change", function() {
+                var selectedCategory = $(this).val();
+                filterTableByCategory(selectedCategory);
+            });
+        });
+    </script>
+
+
 
 
 @endsection
