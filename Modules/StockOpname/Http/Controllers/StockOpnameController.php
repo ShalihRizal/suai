@@ -84,6 +84,226 @@ class StockOpnameController extends Controller
 
         return view('stockopname::index', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount'));
     }
+    public function afindex()
+    {
+        $params = [
+            'part_category_id' => 3
+        ];
+
+        // Fetch data from your repository
+        $partschart = $this->_partRepository->getAll();
+
+        // Process the data as needed
+        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+
+        // dd($yesCount, $noCount);
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+
+        $data = [];
+
+        // foreach ($partcategories as $partcategory) {
+        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+        //     $sum = [];
+        //     foreach ($parts as $part) {
+        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+        //             $sum[] = intval($part->qty_end);
+        //         }
+        //     }
+        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        // }
+
+
+        $labels = [];
+        $qty = [];
+
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+
+        $parts = $this->_partRepository->getAllByParams($params);
+        $racks = $this->_rackRepository->getAll();
+        $stockopnames = $this->_stockopnameRepository->getAll();
+        $crimpingdies = $this->_partRepository->getAllByParams($params);
+
+
+        return view('stockopname::afindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','racks','crimpingdies'));
+    }
+    public function cfindex()
+    {
+        $params = [
+            'part_category_id' => 4
+        ];
+
+        // Fetch data from your repository
+        $partschart = $this->_partRepository->getAll();
+
+        // Process the data as needed
+        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+
+        // dd($yesCount, $noCount);
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+
+        $data = [];
+
+        // foreach ($partcategories as $partcategory) {
+        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+        //     $sum = [];
+        //     foreach ($parts as $part) {
+        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+        //             $sum[] = intval($part->qty_end);
+        //         }
+        //     }
+        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        // }
+
+
+        $labels = [];
+        $qty = [];
+
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+
+        $parts = $this->_partRepository->getAllByParams($params);
+        $racks = $this->_rackRepository->getAll();
+        $stockopnames = $this->_stockopnameRepository->getAll();
+        $crimpingdies = $this->_partRepository->getAllByParams($params);
+
+
+        return view('stockopname::cfindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','racks','crimpingdies'));
+    }
+    public function spindex()
+    {
+        $params = [
+            'part_category_id' => 2
+        ];
+
+        // Fetch data from your repository
+        $partschart = $this->_partRepository->getAll();
+
+        // Process the data as needed
+        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+
+        // dd($yesCount, $noCount);
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+
+        $data = [];
+
+        // foreach ($partcategories as $partcategory) {
+        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+        //     $sum = [];
+        //     foreach ($parts as $part) {
+        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+        //             $sum[] = intval($part->qty_end);
+        //         }
+        //     }
+        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        // }
+
+
+        $labels = [];
+        $qty = [];
+
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+        $parts = $this->_partRepository->getAllByParams($params);
+        $racks = $this->_rackRepository->getAll();
+        $stockopnames = $this->_stockopnameRepository->getAll();
+        $crimpingdies = $this->_partRepository->getAllByParams($params);
+
+
+        return view('stockopname::spindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','crimpingdies','racks'));
+    }
+    public function cdindex()
+    {
+        $params = [
+            'part_category_id' => 1
+        ];
+
+        // Fetch data from your repository
+        $partschart = $this->_partRepository->getAll();
+
+        // Process the data as needed
+        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+
+        // dd($yesCount, $noCount);
+
+        $partcategories = $this->_partCategoryRepository->getAll();
+
+        $data = [];
+
+        // foreach ($partcategories as $partcategory) {
+        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
+        //     $sum = [];
+        //     foreach ($parts as $part) {
+        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
+        //             $sum[] = intval($part->qty_end);
+        //         }
+        //     }
+        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
+        // }
+
+
+        $labels = [];
+        $qty = [];
+
+        foreach ($data as $partCategoryId => $partCategoryData) {
+            $label = $partCategoryData['label'];
+            $quantity = $partCategoryData['qty'];
+
+            $labels[$partCategoryId] = $label;
+            $qty[$partCategoryId] = $quantity;
+        }
+
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+
+        
+        $parts = $this->_partRepository->getAllByParams($params);
+        $racks = $this->_rackRepository->getAll();
+        $stockopnames = $this->_stockopnameRepository->getAll();
+        $crimpingdies = $this->_partRepository->getAllByParams($params);
+
+
+        return view('stockopname::cdindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','crimpingdies','racks'));
+    }
 
     /**
      * Show the form for creating a new resource.
