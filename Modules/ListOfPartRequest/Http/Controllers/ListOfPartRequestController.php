@@ -42,10 +42,10 @@ class ListOfPartRequestController extends Controller
         //     'part_request.status' => 2
         // ];
 
-        $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
+        // $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
         $partrequests = $this->_PartRequestRepository->getAll();
         // dd($listofpartrequests);
-        return view('listofpartrequest::index', compact('listofpartrequests','partrequests'));
+        return view('listofpartrequest::index', compact('partrequests'));
     }
 
     /**

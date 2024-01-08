@@ -59,55 +59,51 @@
                                     <th width="5%">Serial Number</th>
                                     <th width="5%">Shift</th>
                                     <th width="5%">Stroke</th>
-                                    <th width="5%">Carline Maker</th>
+                                    <!-- <th width="5%">Carline Maker</th>
                                     <th width="5%">Remarks</th>
                                     <th width="5%">PIC</th>
-                                    <th width="5%">Part Number</th>
-                                    <th width="5%">Approved By</th>
+                                    <th width="5%">Part Number</th> -->
+                                    <!-- <th width="5%">Approved By</th> -->
                                     <th width="5%">Status</th>
                                     <th width="5%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (sizeof($listofpartrequests) == 0)
+                                @if (sizeof($partrequests) == 0)
                                     <tr>
                                         <td colspan="3" align="center">Data kosong</td>
                                     </tr>
                                 @else
-                                    @foreach ($listofpartrequests as $listofpartrequest)
+                                    @foreach ($partrequests as $partrequests)
                                         <tr>
                                             <td width="5%">{{ $loop->iteration }}</td>
-                                            <td width="5%">{{ substr($listofpartrequest->updated_at, 0, 10) }}</td>
-                                            <td width="5%">{{ $listofpartrequest->part_req_number }}</td>
-                                            <td width="5%">{{ $listofpartrequest->status }}</td>
-                                            <td width="5%">{{ $listofpartrequest->molts_no }}</td>
-                                            <td width="5%">{{ $listofpartrequest->applicator_no }}</td>
-                                            <td width="5%">{{ $listofpartrequest->part_name }}</td>
-                                            <td width="5%">{{ $listofpartrequest->part_qty }}</td>
-                                            <td width="5%">{{ $listofpartrequest->machine_no }}</td>
-                                            <td width="5%">{{ $listofpartrequest->serial_no }}</td>
-                                            <td width="5%">{{ $listofpartrequest->shift }}</td>
-                                            <td width="5%">{{ $listofpartrequest->stroke }}</td>
-                                            <td width="5%">{{ $listofpartrequest->carname_name }}</td>
-                                            <td width="5%">{{ $listofpartrequest->part_request_remarks }}</td>
-                                            <td width="5%">{{ $listofpartrequest->pic }}</td>
-                                            <td width="5%">{{ $listofpartrequest->part_no }}</td>
-                                            <td width="5%">{{ $listofpartrequest->user_name }}</td>
+                                            <td width="5%">{{ substr($partrequests->updated_at, 0, 10) }}</td>
+                                            <td width="5%">{{ $partrequests->part_req_number }}</td>
+                                            <td width="5%">{{ $partrequests->status }}</td>
+                                            <td width="5%">{{ $partrequests->molts_no }}</td>
+                                            <td width="5%">{{ $partrequests->applicator_no }}</td>
+                                            <td width="5%">{{ $partrequests->part_name }}</td>
+                                            <td width="5%">{{ $partrequests->part_qty }}</td>
+                                            <td width="5%">{{ $partrequests->machine_no }}</td>
+                                            <td width="5%">{{ $partrequests->serial_no }}</td>
+                                            <td width="5%">{{ $partrequests->shift }}</td>
+                                            <td width="5%">{{ $partrequests->stroke }}</td>
+                                            
                                             <td width="5%">
-                                                @if ($listofpartrequest->wear_and_tear_status == 'Open')
-                                                    <a data-id="{{ $listofpartrequest->wear_and_tear_status }}"
+                                                @if ($partrequests->wear_and_tear_status == 'Open')
+                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="Ubah">
                                                         <i data-feather="check" width="16" height="16"
                                                             class="open-text">Open</i>
                                                     </a>
-                                                @elseif($listofpartrequest->wear_and_tear_status == 'On Progress')
-                                                    <a data-id="{{ $listofpartrequest->wear_and_tear_status }}"
+                                                @elseif($partrequests->wear_and_tear_status == 'On Progress')
+                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="On Progress">
                                                         <i data-feather="clock" width="16" height="16"
                                                             class="open-text2">On Progress</i>
                                                     </a>
-                                                @elseif($listofpartrequest->wear_and_tear_status == 'Closed')
-                                                    <a data-id="{{ $listofpartrequest->wear_and_tear_status }}"
+                                                @elseif($partrequests->wear_and_tear_status == 'Closed')
+                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="Closed">
                                                         <i data-feather="close" width="16" height="16"
                                                             class="open-text3">Closed</i>
@@ -115,15 +111,15 @@
                                                 @endif
                                             </td>
                                             <td width="5%">
-                                                @if ($listofpartrequest->part_req_id > 0)
+                                                @if ($partrequests->part_req_id > 0)
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btnEdit btn-success text-white"
-                                                        data-id="{{ $listofpartrequest->part_req_id }}"
+                                                        data-id="{{ $partrequests->part_req_id }}"
                                                         data-toggle="tooltip" data-placement="top" title="Details">
                                                         <i data-feather="list" width="16" height="16">Details</i>
                                                     </a>
                                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $listofpartrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>
                                     </a>
