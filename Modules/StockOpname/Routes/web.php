@@ -16,6 +16,10 @@ use Modules\MonthlyReport\Http\Controllers\MonthlyReportController;
 
 Route::prefix('stockopname')->group(function () {
     Route::get('/', 'StockOpnameController@index');
+    Route::get('/af', 'StockOpnameController@afindex');
+    Route::get('/cf', 'StockOpnameController@cfindex');
+    Route::get('/cd', 'StockOpnameController@cdindex');
+    Route::get('/sp', 'StockOpnameController@spindex');
     Route::get('/create', 'StockOpnameController@create');
     Route::get('/show/{id}', 'StockOpnameController@show');
     Route::get('/edit/{id}', 'StockOpnameController@edit');

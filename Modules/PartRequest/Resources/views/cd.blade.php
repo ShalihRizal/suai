@@ -175,8 +175,19 @@
                                                 <option value="B">Shift B</option>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="machine_no[]" placeholder="machine no"
-                                                class="form-control" value="{{ old('machine_no') }}"></td>
+                                        <td>
+                                        <select class="form-control" name="machine_id" id="machine_id">
+                                            <option value=""disabled selected>- Pilih Machine -</option>
+                                            @if (sizeof($machines) > 0)
+                                                @foreach ($machines as $machine)
+                                                    <option value="{{ $machine->machine_id }}"
+                                                        data-machine-name="{{ $machine->machine_name }}"
+                                                        data-machine-number="{{ $machine->machine_no }}">
+                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        </td>
                                         <td><input type="text" name="stroke[]" placeholder="stroke"
                                                 class="form-control" value="{{ old('stroke') }}"></td>
                                         <td>
@@ -1372,7 +1383,19 @@
                 '<option value="B">Shift B</option>' +
                 '</select>' +
                 '</td>' +
-                '<td><input type="text" name="machine_no[]" placeholder="machine no" class="form-control" value="{{ old('machine_no') }}"></td>' +
+                '<td>'+
+                '<select class="form-control" name="machine_id" id="machine_id">'+
+                                            '<option value=""disabled selected>- Pilih Machine -</option>'+
+                                            '@if (sizeof($machines) > 0)'+
+                                                '@foreach ($machines as $machine)'+
+                                                    '<option value="{{ $machine->machine_id }}"'+
+                                                        'data-machine-name="{{ $machine->machine_name }}"'+
+                                                        'data-machine-number="{{ $machine->machine_no }}">'+
+                                                        '{{ $machine->machine_no }} - {{ $machine->machine_name }}</option>'+
+                                                '@endforeach'+
+                                            '@endif'+
+                                        '</select>'+
+                '</td>' +
                 '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}"></td>' +
                 '<td>' +
                 '<select class="form-control" name="part_id[]" id="part_id">' +
