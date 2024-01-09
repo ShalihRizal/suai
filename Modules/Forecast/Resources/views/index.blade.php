@@ -61,7 +61,7 @@
                             </a>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <select class="form-control" name="car_model" id="tabDropdown"
+                                    <select class="form-control" name="car_model" id="custom-filter"
                                         style="height: 100%; margin-left: 25px;">
                                         <option value="">- Semua Kategori -</option>
                                         @if (sizeof($partcategories) > 0)
@@ -78,7 +78,7 @@
 
                     <div colspan="4" align="center">ㅤ</div>
                     <div class="table-responsive">
-                        <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
+                        <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -397,34 +397,28 @@
 
     </script> --}}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <script>
         $(document).ready(function() {
-            // Event listener for dropdown change
-            $('#tabDropdown').change(function() {
-                var selectedCategory = $(this).val(); // Get the selected category
+    var table = $('#table-data').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
+    });
 
-                // Hide all rows and then show only the rows with the selected category
-                $('.part-row').hide();
-                $('.part-row[data-category="' + selectedCategory + '"]').show();
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Event listener for dropdown change
-            $('#tabDropdown').change(function() {
-                var selectedCategory = $(this).val(); // Get the selected category
+    // Create a custom dropdown filter for Part Kategori
+    $('#custom-filter').on('change', function() {
+        var val = $.fn.dataTable.util.escapeRegex(
+            $(this).val()
+        );
 
-                if (selectedCategory === "") {
-                    // Show all rows if "Pilih Part Category" is selected
-                    $('.part-row').show();
-                } else {
-                    // Hide all rows and then show only the rows with the selected category
-                    $('.part-row').hide();
-                    $('.part-row[data-category="' + selectedCategory + '"]').show();
-                }
-            });
-        });
+        table.column(3) // Assuming Part Kategori is the 4th column (index 3)
+            .search(val ? '^' + val + '$' : '', true, false) // Perform exact match search
+            .draw();
+    });
+});
     </script>
 @endsection
