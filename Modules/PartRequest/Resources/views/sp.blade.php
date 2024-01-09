@@ -65,7 +65,7 @@
                             </thead>
                             <tbody>
                                 @if (sizeof($partrequests) == 0)
-                                    <tr>
+                                    <tr class="part-row">
                                         <td colspan="3" align="center">Data kosong</td>
                                     </tr>
                                 @else
@@ -1540,22 +1540,22 @@
         });
 
         document.querySelector('.btnFilter').addEventListener('click', function() {
-            const startDate = new Date(document.getElementById('start_date').value);
-            const endDate = new Date(document.getElementById('end_date').value);
-            const rows = document.querySelectorAll('.part-row');
+        const startDate = new Date(document.getElementById('start_date').value);
+        const endDate = new Date(document.getElementById('end_date').value);
+        const rows = document.querySelectorAll('.part-row');
 
-            rows.forEach(function(row) {
-                const createdAt = new Date(row.getAttribute('data-created-at'));
+        rows.forEach(function(row) {
+            const created_at = new Date(row.getAttribute('data-created-at'));
 
-                if (
-                    (!startDate || createdAt >= startDate) &&
-                    (!endDate || createdAt <= endDate)
-                ) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            if (
+                (!startDate || created_at >= startDate) &&
+                (!endDate || created_at <= endDate)
+            ) {
+                row.style.display = ''; // Menampilkan baris yang sesuai dengan rentang tanggal
+            } else {
+                row.style.display = 'none'; // Menyembunyikan baris yang tidak sesuai
+            }
         });
+    });
     </script>
 @endsection

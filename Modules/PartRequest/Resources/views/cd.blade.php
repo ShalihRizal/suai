@@ -177,7 +177,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                        <select class="form-control" name="machine_id" id="machine_id">
+                                        <select class="form-control" name="machine_no[]" id="machine_no[]">
                                             <option value=""disabled selected>- Pilih Machine -</option>
                                             @if (sizeof($machines) > 0)
                                                 @foreach ($machines as $machine)
@@ -1385,7 +1385,7 @@
                 '</select>' +
                 '</td>' +
                 '<td>'+
-                '<select class="form-control" name="machine_id" id="machine_id">'+
+                '<select class="form-control" name="machine_no[]" id="machine_no">'+
                                             '<option value=""disabled selected>- Pilih Machine -</option>'+
                                             '@if (sizeof($machines) > 0)'+
                                                 '@foreach ($machines as $machine)'+
