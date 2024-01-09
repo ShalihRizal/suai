@@ -43,35 +43,51 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card-body">
-                        <div class="addData">
-                            <a href="/stockopname/scan" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="plus" width="16" height="16" class="me-2"></i> STO
-                            </a>
-                        </div>
-                        <div class="addData">
-                            <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="plus" width="16" height="16" class="me-2"></i> Monthly Report
-                            </a>
-                        </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-body">
+                    <div class="arrow-right">
+                        <a href="/stockopname/af" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                            <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Assembly Fixture
+                        </a>
+                    </div>
+                    <div class="arrow-right">
+                        <a href="/stockopname/cf" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                            <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Checker Fixture
+                        </a>
+                    </div>
+                    <div class="arrow-right">
+                        <a href="/stockopname/cd" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                            <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Crimping Dies
+                        </a>
+                    </div>
+                    <div class="arrow-right">
+                        <a href="/stockopname/sp" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                            <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Sparepart Machine
+                        </a>
                     </div>
                 </div>
+            </div>
+
                 <div class="col-md-6 col-lg-4">
                     <div class="card-body">
                         <div class="addData">
-                            <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="plus" width="16" height="16" class="me-2"></i> Sudah STO
+                            <a href="/stockopname/hassto" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                                <i data-feather="file-text" width="16" height="16" class="me-2"></i> Sudah STO
                             </a>
                         </div>
                         <div class="addData">
-                            <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="plus" width="16" height="16" class="me-2"></i> Belum STO
+                            <a href="/stockopname/nosto" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                                <i data-feather="file-text" width="16" height="16" class="me-2"></i> Belum STO
                             </a>
                         </div>
                         <div class="addData">
-                            <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3">
+                            <a href="/stockopname/updateall" class="btn btn-success btnReset text-white mb-3 d-block w-60">
                                 <i data-feather="x" width="16" height="16" class="me-2"></i> Reset
+                            </a>
+                        </div>
+                        <div class="addData">
+                            <a href="/monthlyreport" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                                <i data-feather="file-text" width="16" height="16" class="me-2"></i> Monthly Report
                             </a>
                         </div>
                     </div>
