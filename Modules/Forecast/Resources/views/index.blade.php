@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Part')
+@section('title', 'Forecast')
 
 @section('nav')
     <div class="row align-items-center">
@@ -136,16 +136,24 @@
                 </div>
                 <div class="modal-body">
                     {{-- Your file upload form can go here --}}
-                    <form>
-                        <div class="form-group">
-                            <label for="fileInput">Choose a file:</label>
-                            <input type="file" class="form-control-file" id="fileInput">
+                    <form action="{{ url('forecast/store') }}" method="POST" id="uploadForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="fileinput">Choose a file:</label>
+                                        <input type="file" class="form-control-file" id="fileinput" name="file">
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="text-white btn btn-success btnUpload">Upload</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
                 </div>
             </div>
         </div>
@@ -154,7 +162,33 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
+{{-- <script>
+    $(document).ready(function() {
+        $('#uploadForm').submit(function(e) {
+            e.preventDefault();
+            
+            let formData = new FormData(this);
+            
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('forecast/store') }}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script> --}}
+
+    {{-- <script type="text/javascript">
         $('.btnAdd').click(function() {
             $('#part_no').val('');
             $('#no_urut').val('');
@@ -347,7 +381,21 @@
         if (msg !== undefined) {
             notyf.success(msg)
         }
-    </script>
+
+        $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+// $('#addForm').submit(function(e) {
+//     e.preventDefault(); // Prevent default form submission
+//     // Your AJAX upload logic here
+// });
+
+        
+
+    </script> --}}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
