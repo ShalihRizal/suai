@@ -55,7 +55,7 @@
                             <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Checker Fixture
                         </a>
                     </div>
-                    <div class="arrow-right">
+                    <div class="">
                         <a href="/stockopname/cd" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
                             <i data-feather="arrow-right" width="16" height="16" class="me-2"></i> Crimping Dies
                         </a>
