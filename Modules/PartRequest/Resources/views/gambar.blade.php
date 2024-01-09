@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="text-white btn btn-success" onclick="window.history.back()">Back</button>
+                        <button type="button"  class="text-white btn btn-success" onclick="window.history.back()">Kembali</button>
 
                         </div>
                 </div>
