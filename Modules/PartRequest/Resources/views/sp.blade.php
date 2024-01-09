@@ -59,12 +59,13 @@
                                 <tr>
                                     <th width="5%">No</th>
                                     <th width="80%">Part Request Number</th>
+                                    <th width="80%">Date</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if (sizeof($partrequests) == 0)
-                                    <tr>
+                                    <tr class="part-row">
                                         <td colspan="3" align="center">Data kosong</td>
                                     </tr>
                                 @else
@@ -73,7 +74,7 @@
                                             data-created-at="{{ $partrequest->created_at }}">
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="80%">{{ $partrequest->part_req_number }}</td>
-                                            <td hidden width="80%">{{ $partrequest->created_at }}</td>
+                                            <td width="80%">{{ $partrequest->part_request_created_at }}</td>
                                             <td width="15%">
                                                 @if ($partrequest->part_req_id > 0)
                                                     <a href="javascript:void(0)"
@@ -1539,22 +1540,22 @@
         });
 
         document.querySelector('.btnFilter').addEventListener('click', function() {
-            const startDate = new Date(document.getElementById('start_date').value);
-            const endDate = new Date(document.getElementById('end_date').value);
-            const rows = document.querySelectorAll('.part-row');
+        const startDate = new Date(document.getElementById('start_date').value);
+        const endDate = new Date(document.getElementById('end_date').value);
+        const rows = document.querySelectorAll('.part-row');
 
-            rows.forEach(function(row) {
-                const createdAt = new Date(row.getAttribute('data-created-at'));
+        rows.forEach(function(row) {
+            const created_at = new Date(row.getAttribute('data-created-at'));
 
-                if (
-                    (!startDate || createdAt >= startDate) &&
-                    (!endDate || createdAt <= endDate)
-                ) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            if (
+                (!startDate || created_at >= startDate) &&
+                (!endDate || created_at <= endDate)
+            ) {
+                row.style.display = ''; // Menampilkan baris yang sesuai dengan rentang tanggal
+            } else {
+                row.style.display = 'none'; // Menyembunyikan baris yang tidak sesuai
+            }
         });
+    });
     </script>
 @endsection

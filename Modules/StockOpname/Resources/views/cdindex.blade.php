@@ -9,7 +9,7 @@
                 Stock Opname
             </div>
             <h2 class="page-title">
-                Stock Opname
+                Stock Opname Crimping Dies
             </h2>
         </div>
         <!-- Page title actions -->
@@ -34,7 +34,7 @@
                 <div class="card-header w-100">
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="h3">Stock Opname</h3>
+                            <h3 class="h3">Stock Opname Crimping Dies</h3>
                             {{ date('Y-m-d') }}
                         </div>
                         <div class="col-md-6">
