@@ -44,9 +44,9 @@
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
-                         <a href="/stockopname" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="arrow-left" width="16" height="16" class="me-2"></i> Kembali
-                            </a>
+                        <a href="/stockopname" class="btn btn-success btnAdd text-white mb-3">
+                            <i data-feather="arrow-left" width="16" height="16" class="me-2"></i> Kembali
+                        </a>
                         <div colspan="4" align="center">ㅤ</div>
                     </div>
                 </div>
@@ -58,19 +58,26 @@
                         <div colspan="4" align="center">ㅤ</div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <div class="form-group">
-                            <label class="form-label">Lokasi <span class="text-danger">*</span> </label>
-                            <select class="form-control" name="filter-select" id="filter-select">
-                                <option value="">- Semua Lokasi -</option>
-                                @if (sizeof($racks) > 0)
-                                    @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
+                        <label class="form-label">Rak <span class="text-danger">*</span></label>
+                        <select class="form-control" name="rak" id="rak">
+                            <option value="">- Pilih Rak -</option>
+                            @if (sizeof($racks) > 0)
+                                @foreach ($racks as $rack)
+                                    <option value="{{ $rack->rack_id }}">
+                                        {{ $rack->rack_name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Sub Rak <span class="text-danger">*</span></label>
+                        <select class="form-control" name="subrak" id="subrak">
+                            <option value="" disabled selected>- Pilih Sub Rak -</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -327,6 +334,27 @@
                 //     });
                 // });
             }
+        });
+    </script>
+
+    <script>
+        // JavaScript code to update the "Car Model" dropdown based on the selected "Carline"
+        document.getElementById("rak").addEventListener("change", function() {
+            var selectedCarlineCategory = this.value;
+            var carlineDropdown = document.getElementById("subrak");
+
+            // Reset the "Car Model" dropdown
+            carlineDropdown.innerHTML = '<option value="">- Semua Sub Rak -</option>';
+
+            // Filter and add options based on the selected "Carline Category"
+            @foreach ($subracks as $subrack)
+                if ({{ $subrack->rack_id }} == selectedCarlineCategory) {
+                    var option = document.createElement("option");
+                    option.value = {{ $subrack->sub_rack_id }};
+                    option.textContent = "{{ $subrack->sub_rack_name }}";
+                    carlineDropdown.appendChild(option);
+                }
+            @endforeach
         });
     </script>
 
