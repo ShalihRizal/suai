@@ -11,9 +11,12 @@
 |
 */
 
+use Modules\TransaksiIn\Http\Controllers\TransaksiInController;
+
 Route::prefix('transaksiin')->group(function () {
     Route::get('/', 'TransaksiInController@index');
-    Route::get('/create', 'TransaksiInController@create');
+    // Route::get('/create', 'TransaksiInController@create');
+    Route::post('/create', [TransaksiInController::class, 'create'])->name('create');
     Route::get('/show/{id}', 'TransaksiInController@show');
     Route::get('/edit/{id}', 'TransaksiInController@edit');
     Route::post('/store', 'TransaksiInController@store');

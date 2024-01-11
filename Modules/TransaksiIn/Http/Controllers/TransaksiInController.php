@@ -13,8 +13,10 @@ use Modules\Rack\Repositories\RackRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Validator;
+
 
 class TransaksiInController extends Controller
 {
@@ -70,16 +72,65 @@ class TransaksiInController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * @param Request $request
      * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
+        try {
+            // Authorize
+            if (Gate::denies(__FUNCTION__, $this->module)) {
+                return redirect('unauthorize');
+            }
+    
+            if (!$request->hasFile('file')) {
+                return response()->json(['message' => 'No file uploaded'], 400);
+            }
+    
+            // Start a database transaction
+            DB::beginTransaction();
+    
+            $file = $request->file('file');
+            $filePath = $file->getRealPath();
+            $csvData = array_map('str_getcsv', file($filePath));
+            $header = array_shift($csvData);
+    
+            foreach ($csvData as $row) {
+                $data = array_combine($header, $row);
+    
+                $existingData = DB::table('transaksi_in')
+                    ->where('transaksi_in_id', $data['transaksi_in_id'])
+                    ->first();
+    
+                if ($existingData) {
+                    // Update the record
+                    DB::table('transaksi_in')
+                        ->where('transaksi_in_id', $data['transaksi_in_id'])
+                        ->update($data);
+                } else {
+                    // Insert a new record
+                    DB::table('transaksi_in')->insert($data);
+                }
+            }
+    
+            // Commit the transaction if all operations succeeded
+            DB::commit();
+    
+            // Log your action or any relevant information
+            Log::info('File uploaded successfully');
+    
+            return redirect('transaksiin');
+        } catch (\Exception $e) {
+        // Rollback the transaction if an exception occurs
+        DB::rollback();
 
-        return view('transaksiin::create');
+        // Log the exception with more details for debugging
+        Log::error('Failed to upload file: ' . $e->getMessage() . ' at ' . $e->getFile() . ' line ' . $e->getLine());
+
+        return response()->json(['message' => 'Failed to upload file. ' . $e->getMessage()], 500);
+    }
+
+    return response()->json(['message' => 'File upload failed'], 400);
     }
 
     /**

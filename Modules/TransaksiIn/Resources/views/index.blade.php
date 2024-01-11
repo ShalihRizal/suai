@@ -34,6 +34,11 @@
                         <i data-feather="plus" width="16" height="16" class="me-2"></i>
                         Tambah Transaksi IN
                     </a>
+                    <a href="javascript:void(0)" class="btn btn-success btnUpload text-white mb-3"
+                                style="height: 100%;" data-toggle="modal" data-target="#uploadModal">
+                                <i data-feather="plus" width="20" height="13" class="me-2"></i>
+                                Upload
+                            </a>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -261,6 +266,44 @@
         </div>
     </div>
     <!-- Modal Add -->
+
+
+    <!-- Modal Upload -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{-- Your file upload form can go here --}}
+                    <form action="{{ url('transaksiin/create') }}" method="POST" id="uploadForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="fileinput">Choose a file:</label>
+                                        <input type="file" class="form-control-file" id="fileinput" name="file">
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="text-white btn btn-success btnUpload">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Upload -->
 @endsection
 
 @section('script')
