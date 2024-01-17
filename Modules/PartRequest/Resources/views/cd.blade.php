@@ -122,21 +122,24 @@
                     <div class="modal-body">
                         <div class="table-responsive">
                             <table id="table-data"
-                                class="table table-stripped card-table table-vcenter text-nowrap table-data">
+                                class="table table-stripped card-table table-vcenter text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>Nama Car Model</th>
                                         <th>Nama Carline</th>
                                         <th>Shift Bagian</th>
-                                        <th>Machine Number</th>
-                                        <th>Nama Stroke</th>
+                                        <th>Machine</th>
+                                        <!-- <th>Nama Stroke</th> -->
                                         <th>ㅤㅤPartㅤㅤ</th>
                                         <th>ㅤㅤAlasanㅤㅤ</th>
                                         <th>ㅤㅤOrderㅤㅤ</th>
-                                        <th>Part Number</th>
+                                        <!-- <th>Machine Name</th> -->
                                         <th>Part Quantity</th>
+                                        <!-- <th>Machine Number</th> -->
                                         <th>Person in Charge</th>
                                         <th>Remarks</th>
+                                        <!-- <th>Part Name</th>
+                                        <th>Part Number</th> -->
                                         <th></th>
                                         <th>Upload PNG File (Max 2MB)</th>
                                         <th><a href="#" class="btn btn-success addRow" id="addRow">+</a></th>
@@ -189,21 +192,21 @@
                                             @endif
                                         </select>
                                         </td>
-                                        <td><input type="text" name="stroke[]" placeholder="stroke"
-                                                class="form-control" value="{{ old('stroke') }}"></td>
+                                        <!-- <td><input type="text" name="stroke[]" placeholder="stroke"
+                                                class="form-control" value="{{ old('stroke') }}"></td> -->
                                         <td>
-                                            <select class="form-control" name="part_id[]" id="part_id">
-                                                <option value="">- Pilih Part -</option>
-                                                @if (sizeof($parts) > 0)
-                                                    @foreach ($parts as $part)
-                                                        <option value="{{ $part->part_id }}"
-                                                            data-part-name="{{ $part->part_name }}"
-                                                            data-part-number="{{ $part->part_no }}">{{ $part->part_no }}
-                                                            -
-                                                            {{ $part->part_name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
+                                        <select class="form-control" name="part_id[]" id="part_id">
+                                            <option value="">- Pilih Part -</option>
+                                            @if (sizeof($parts) > 0)
+                                                @foreach ($parts as $part)
+                                                    <option
+                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                        data-part-asal="{{ $part->asal }}"
+                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
+                                                        {{ $part->part_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
                                         </td>
                                         <td>
                                             <select class="form-control" name="alasan[]" id="alasan">
@@ -213,20 +216,24 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control" name="order[]" id="order">
+                                            <select class="form-control" readonly name="order[]" id="order">
                                                 <option value=""disabled selected>- Pilih Order -</option>
                                                 <option value="Lokal"> Lokal </option>
                                                 <option value="Import"> Import </option>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="part_no[]" placeholder="part no"
-                                                class="form-control" value="{{ old('part_no') }}"></td>
+                                        <!-- <td><input type="text" name="part_no[]" placeholder="part no"
+                                                class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="number" name="part_qty[]" placeholder="Jumlah"
                                                 class="form-control" value="{{ old('part_qty') }}"></td>
                                         <td><input type="text" name="pic[]" placeholder="pic" class="form-control"
                                                 value="{{ old('pic') }}"></td>
                                         <td><input type="text" name="remarks[]" placeholder="remarks"
                                                 class="form-control" value="{{ old('remarks') }}"></td>
+                                        <!-- <td><input type="text" name="part_name[]" placeholder="part_name"
+                                                class="form-control" value="{{ old('part_name') }}"></td>
+                                        <td><input type="text" name="part_no[]" placeholder="part_no"
+                                                class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="text" hidden name="wear_and_tear_status[]"
                                                 placeholder="wt status" class="form-control" value="Open"></td>
                                         <td><input type="file" name="image_part[]" placeholder="wt status"
@@ -1397,19 +1404,20 @@
                                             '@endif'+
                                         '</select>'+
                 '</td>' +
-                '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}"></td>' +
+                // '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}"></td>' +
                 '<td>' +
-                '<select class="form-control" name="part_id[]" id="part_id">' +
-                '<option value="">- Pilih Part -</option>' +
-                '@if (sizeof($parts) > 0)' +
-                '@foreach ($parts as $part)' +
-                '<option value="{{ $part->part_id }}"' +
-                'data-part-name="{{ $part->part_name }}"' +
-                'data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -' +
-                '{{ $part->part_name }}</option>' +
-                '@endforeach' +
-                '@endif' +
-                '</select>' +
+                '<select class="form-control" name="part_id[]" id="part_id">'+
+                                            '<option value="">- Pilih Part -</option>'+
+                                            '@if (sizeof($parts) > 0)'+
+                                                '@foreach ($parts as $part)'+
+                                                    '<option'+
+                                                        'value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"'+
+                                                        'data-part-asal="{{ $part->asal }}"'+
+                                                        'data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -'+
+                                                        '{{ $part->part_name }}</option>'+
+                                                '@endforeach'+
+                                            '@endif'+
+                                        '</select>'+
                 '</td>' +
                 '<td>' +
                 '<select class="form-control" name="alasan[]" id="alasan">' +
@@ -1419,18 +1427,22 @@
                 '</select>' +
                 '</td>' +
                 '<td>' +
-                '<select class="form-control" name="order[]" id="order">' +
+                '<select class="form-control" readonly name="order[]" id="order">' +
                 '<option value=""disabled selected>- Pilih Order -</option>' +
                 '<option value="Lokal"> Lokal </option>' +
                 '<option value="Import"> Import </option>' +
                 '</select>' +
                 '</td>' +
-                '<td><input type="text" name="part_no[]" placeholder="part no" class="form-control" value="{{ old('part_no') }}"></td>' +
-                '<td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="{{ old('part_qty') }}"></td>' +
-                '<td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="{{ old('pic') }}"></td>' +
-                '<td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}"></td>' +
+                // '<td><input type="text" name="part_no[]" placeholder="part no" class="form-control" ></td>' +
+                '<td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" ></td>' +
+                '<td><input type="text" name="pic[]" placeholder="pic" class="form-control" ></td>' +
+                '<td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" ></td>' +
+                // '<td><input type="text" name="part_name[]" placeholder="part_name"'+
+                //                                 'class="form-control" ></td>'+
+                //                         '<td><input type="text" name="part_no[]" placeholder="part_no"'+
+                //                                 'class="form-control" ></td>'+
                 '<td><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open"></td>' +
-                '<td><input type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}"></td>' +
+                '<td><input type="file" name="image_part[]" placeholder="wt status" class="form-control" ></td>' +
                 '<td><a href="#" class="btn btn-danger remove">-</a></td>' +
                 '</tr>';
             $('.table-body1').append(tr);
@@ -1529,4 +1541,53 @@
         }
     });
     </script>
+     <script>
+        // JavaScript code to populate Part Name and Part Number based on the selected Part
+        document.getElementById("part_id").addEventListener("change", function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var partNameInput = document.getElementById("part_name");
+            var partNoInput = document.getElementById("part_no");
+
+            // Check if a valid option is selected
+            if (selectedOption.value !== "") {
+                // Get the data attributes from the selected option
+                var partName = selectedOption.getAttribute("data-part-name");
+                var partNumber = selectedOption.getAttribute("data-part-number");
+
+                // Set the values in the input fields
+                partNameInput.value = partName;
+                partNoInput.value = partNumber;
+            } else {
+                // Clear the input fields if no option is selected
+                partNameInput.value = "";
+                partNoInput.value = "";
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Add change event listener to the dropdown
+            $('#part_id').change(function() {
+                // Get the selected part number from the data attribute
+                var selectedPartNumber = $(this).find(':selected').data('part-asal');
+
+                // Update the value of the order input field
+                $('#order').val(selectedPartNumber);
+            });
+        });
+    </script>
+
+    <script>
+      $(document).ready(function() {
+        var table = $('#table-data').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": false,
+            "autoWidth": false
+        });
+    });
+    </script>
+   
 @endsection
