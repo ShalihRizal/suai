@@ -38,7 +38,12 @@
                                 style="height: 100%;" data-toggle="modal" data-target="#uploadModal">
                                 <i data-feather="plus" width="20" height="13" class="me-2"></i>
                                 Upload
-                            </a>
+                    </a>
+                    <a href="javascript:void(0)" class="btn btn-info btnTemplate text-white mb-3"
+                                style="height: 100%;" data-toggle="modal" data-target="#TemplateModal" onclick="downloadFile()">
+                                <i data-feather="download" width="20" height="13" class="me-2"></i>
+                                Download
+                    </a>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -487,6 +492,30 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function downloadFile() {
+            // URL file yang ingin didownload
+            var fileUrl = 'https://drive.google.com/uc?export=download&id=1D7ekwsYKEaaizCsdlaLmdshEb2B_ghmQ';
+
+            // Nama file yang ingin ditampilkan saat diunduh
+            var fileName = 'Template Transaksi';
+
+            // Membuat elemen <a> untuk mendownload file
+            var link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = fileName;
+
+            // Menambahkan elemen <a> ke dalam dokumen
+            document.body.appendChild(link);
+
+            // Simulasi klik pada elemen <a> untuk memulai proses unduhan
+            link.click();
+
+            // Menghapus elemen <a> setelah proses unduhan selesai
+            document.body.removeChild(link);
+        }
     </script>
 
 
