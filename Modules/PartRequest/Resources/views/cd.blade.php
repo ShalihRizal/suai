@@ -54,7 +54,7 @@
                         Filter
                     </a>
                     <div class="table-responsive">
-                        <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
+                        <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
@@ -1486,35 +1486,47 @@
         });
     </script>
 
-    <script>
-        // Add event listener to the dropdown
-        document.getElementById('machine_id').addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            var machineName = selectedOption.getAttribute('data-machine-name');
-            var machineNumber = selectedOption.getAttribute('data-machine-number');
-
-            // Set the values of the input fields
-            document.getElementById('machine_name').value = machineName;
-            document.getElementById('machine_no').value = machineNumber;
+<script>
+    $(document).ready(function() {
+        var table = $('#table-data').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false, // Disable DataTables search
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
         });
-
-        document.querySelector('.btnFilter').addEventListener('click', function() {
-            const startDate = new Date(document.getElementById('start_date').value);
-            const endDate = new Date(document.getElementById('end_date').value);
-            const rows = document.querySelectorAll('.part-row');
-
-            rows.forEach(function(row) {
-                const createdAt = new Date(row.getAttribute('data-created-at'));
-
-                if (
-                    (!startDate || createdAt >= startDate) &&
-                    (!endDate || createdAt <= endDate)
-                ) {
-                    row.style.display = 'table-row';
+    
+        // Add event listeners to the date range input fields
+        $('#start_date, #end_date').on('change', function() {
+            var startDate = $('#start_date').val();
+            var endDate = $('#end_date').val();
+    
+            // Iterate through each row
+            table.rows().every(function() {
+                var row = this.node();
+                var rowData = this.data();
+    
+                // Get the date column value (adjust the index accordingly)
+                var dateValue = rowData[2]; // Assuming the date is in the third column
+    
+                // Check if the date is within the selected range
+                if (isDateInRange(dateValue, startDate, endDate)) {
+                    $(row).show(); // Show the row
                 } else {
-                    row.style.display = 'none';
+                    $(row).hide(); // Hide the row
                 }
             });
         });
+    
+        // Function to check if a date is within a given range
+        function isDateInRange(dateStr, start, end) {
+            var date = new Date(dateStr);
+            var startDate = new Date(start);
+            var endDate = new Date(end);
+    
+            return date >= startDate && date <= endDate;
+        }
+    });
     </script>
 @endsection
