@@ -82,6 +82,11 @@ class StockOpnameController extends Controller
         $stockopnames = $this->_stockopnameRepository->getAll();
 
 
+        // dd($yesCount):
+
+
+
+
         return view('stockopname::index', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount'));
     }
     public function afindex()
@@ -465,6 +470,7 @@ class StockOpnameController extends Controller
         //         ->withInput();
         // }
         // dd($request);
+        // dd($request->all());
 
         DB::beginTransaction();
 
