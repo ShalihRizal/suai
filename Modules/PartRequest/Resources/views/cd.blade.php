@@ -121,7 +121,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table id="table-data"
+                            <table id="table-data-modal"
                                 class="table table-stripped card-table table-vcenter text-nowrap">
                                 <thead>
                                     <tr>
@@ -1579,7 +1579,7 @@
 
     <script>
       $(document).ready(function() {
-        var table = $('#table-data').DataTable({
+        var table = $('#table-data-modal').DataTable({
             "paging": false,
             "lengthChange": false,
             "searching": false,
