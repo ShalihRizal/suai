@@ -118,11 +118,11 @@
                                                         data-toggle="tooltip" data-placement="top" title="Details">
                                                         <i data-feather="list" width="16" height="16">Details</i>
                                                     </a>
-                                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                                    {{-- <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
                                         data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
                                         title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>
-                                    </a>
+                                    </a> --}}
                                                 @endif
                                             </td>
                                 </td>
