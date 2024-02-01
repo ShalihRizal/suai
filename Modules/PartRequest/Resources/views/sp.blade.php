@@ -1528,6 +1528,30 @@
     </script>
 
 <script>
+    // JavaScript code to populate Part Name and Part Number based on the selected Part
+    document.getElementById("machine_id").addEventListener("change", function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var machineNameInput = document.getElementById("machine_name");
+        var machineNo = document.getElementById("machine_no");
+
+        // Check if a valid option is selected
+        if (selectedOption.value !== "") {
+            // Get the data attributes from the selected option
+            var machineName = selectedOption.getAttribute("data-machine-name");
+            var machineNumber = selectedOption.getAttribute("data-machine-number");
+
+            // Set the values in the input fields
+            machineNameInput.value = machineName;
+            machineNo.value = machineNumber;
+        } else {
+            // Clear the input fields if no option is selected
+            machineNameInput.value = "";
+            machineNo.value = "";
+        }
+    });
+</script>
+
+<script>
     $(document).ready(function() {
         var table = $('#table-data').DataTable({
             "paging": true,
