@@ -44,9 +44,9 @@
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
-                         <a href="/stockopname" class="btn btn-success btnAdd text-white mb-3">
-                                <i data-feather="arrow-left" width="16" height="16" class="me-2"></i> Kembali
-                            </a>
+                        <a href="/stockopname" class="btn btn-success btnAdd text-white mb-3">
+                            <i data-feather="arrow-left" width="16" height="16" class="me-2"></i> Kembali
+                        </a>
                         <div colspan="4" align="center">ㅤ</div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ url('stockopname/update/') }}" method="POST">
+                <form action="{{ url('stockopname/update/cf/') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-body">
@@ -179,7 +179,7 @@
                 var id = $(this).attr('data-id');
                 var url = "{{ url('stockopname/getdata') }}";
 
-                $('.addReset form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
+                $('.addReset form').attr('action', "{{ url('stockopname/update/cf') }}" + '/' + id);
 
                 $.ajax({
                     type: 'GET',
@@ -275,7 +275,7 @@
                 var id = $(this).attr('data-id');
                 var url = "{{ url('stockopname/getdata') }}";
 
-                $('.partModal form').attr('action', "{{ url('stockopname/update') }}" + '/' + id);
+                $('.partModal form').attr('action', "{{ url('stockopname/update/cf') }}" + '/' + id);
 
                 $.ajax({
                     type: 'GET',
