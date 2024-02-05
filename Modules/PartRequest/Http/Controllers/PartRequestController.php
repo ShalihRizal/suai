@@ -621,10 +621,19 @@ dd($cek);
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
-        $file = $request->image_part;
-        $fileName = DataHelper::getFileName($file);
-        $filePath = DataHelper::getFilePath(false, true);
-        $request->file('image_part')->storeAs($filePath, $fileName, 'public');
+        $fileName = null; 
+        $filePath = null;
+
+        if ($request->hasFile('image_part')) {
+            $file = $request->file('image_part');
+
+            // Proses file
+            $fileName = DataHelper::getFileName($file);
+            $filePath = DataHelper::getFilePath(false, true);
+            $file->storeAs($filePath, $fileName, 'public');
+
+            // Tambahan proses terkait file jika diperlukan
+        }
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
 
@@ -836,10 +845,19 @@ dd($cek);
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
-        $file = $request->image_part;
-        $fileName = DataHelper::getFileName($file);
-        $filePath = DataHelper::getFilePath(false, true);
-        $request->file('image_part')->storeAs($filePath, $fileName, 'public');
+        $fileName = null; 
+        $filePath = null;
+
+        if ($request->hasFile('image_part')) {
+            $file = $request->file('image_part');
+
+            // Proses file
+            $fileName = DataHelper::getFileName($file);
+            $filePath = DataHelper::getFilePath(false, true);
+            $file->storeAs($filePath, $fileName, 'public');
+
+            // Tambahan proses terkait file jika diperlukan
+        }
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
 
