@@ -60,9 +60,9 @@
                                     <th width="5%">Shift</th>
                                     <th width="5%">Stroke</th>
                                     <!-- <th width="5%">Carline Maker</th>
-                                    <th width="5%">Remarks</th>
-                                    <th width="5%">PIC</th>
-                                    <th width="5%">Part Number</th> -->
+                                        <th width="5%">Remarks</th>
+                                        <th width="5%">PIC</th>
+                                        <th width="5%">Part Number</th> -->
                                     <!-- <th width="5%">Approved By</th> -->
                                     <th width="5%">Status</th>
                                     <th width="5%">Aksi</th>
@@ -88,44 +88,39 @@
                                             <td width="5%">{{ $partrequests->serial_no }}</td>
                                             <td width="5%">{{ $partrequests->shift }}</td>
                                             <td width="5%">{{ $partrequests->stroke }}</td>
-                                            
+
                                             <td width="5%">
                                                 @if ($partrequests->wear_and_tear_status == 'Open')
-                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
-                                                        data-toggle="tooltip" data-placement="top" title="Ubah">
-                                                        <i width="16" height="16"
-                                                            class="open-text">Open</i>
-                                                    </a>
+                                                    <span data-id="{{ $partrequests->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Ubah"
+                                                        class="open-text">Open</span>
                                                 @elseif($partrequests->wear_and_tear_status == 'On Progress')
-                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
-                                                        data-toggle="tooltip" data-placement="top" title="On Progress">
-                                                        <i  width="16" height="16"
-                                                            class="open-text2">On Progress</i>
-                                                    </a>
+                                                    <span data-id="{{ $partrequests->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="On Progress"
+                                                        class="open-text2">On Progress</span>
                                                 @elseif($partrequests->wear_and_tear_status == 'Closed')
-                                                    <a data-id="{{ $partrequests->wear_and_tear_status }}"
-                                                        data-toggle="tooltip" data-placement="top" title="Closed">
-                                                        <i  width="16" height="16"
-                                                            class="open-text3">Closed</i>
-                                                    </a>
+                                                    <span data-id="{{ $partrequests->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Closed"
+                                                        class="open-text3">Closed</span>
                                                 @endif
                                             </td>
+
                                             <td width="5%">
                                                 @if ($partrequests->part_req_id > 0)
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btnEdit btn-success text-white"
-                                                        data-id="{{ $partrequests->part_req_id }}"
-                                                        data-toggle="tooltip" data-placement="top" title="Details">
+                                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip"
+                                                        data-placement="top" title="Details">
                                                         <i data-feather="list" width="16" height="16">Details</i>
                                                     </a>
-                                                    <!-- <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                                        title="Ubah">
-                                                        <i data-feather="edit" width="16" height="16"></i>
-                                                    </a> -->
+                                                    {{-- <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                        title="Ubah">
+                                        <i data-feather="edit" width="16" height="16"></i>
+                                    </a> --}}
                                                 @endif
                                             </td>
-                                </td>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif

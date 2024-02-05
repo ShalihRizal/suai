@@ -155,7 +155,7 @@ class SupervisorNotificationController extends Controller
                     'kategori_inventory' => $request->kategori_inventory,
                 ];
                 $updateStatus2 = [
-                    'wear_and_tear_status' => 'closed',
+                    'wear_and_tear_status' => 'Closed',
                     'status' => 2,
                 ];
             } else {
