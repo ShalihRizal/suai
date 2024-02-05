@@ -49,10 +49,10 @@ class DashboardController extends Controller
         // dd($lastMonthStart);
 
         // Filter parts by created_by for this month
-        $thisMonthParts = $allParts->whereBetween('created_at', [$thisMonthStart, $thisMonthEnd]);
+        $thisMonthParts = $allParts->whereBetween('updated_at', [$thisMonthStart, $thisMonthEnd]);
 
         // Filter parts by created_by for last month
-        $lastMonthParts = $allParts->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd]);
+        $lastMonthParts = $allParts->where('updated_at', '<=' ,$lastMonthEnd);
         //    dd($lastMonthParts);
 
 

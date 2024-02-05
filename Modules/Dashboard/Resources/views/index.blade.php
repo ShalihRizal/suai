@@ -157,7 +157,9 @@
                 backgroundColor: 'transparent',
                 pieSliceTextStyle: { color: 'transparent' },
                 pieSliceText: 'label',
-                sliceVisibilityThreshold: 0
+                sliceVisibilityThreshold: 0,
+                is3D: true,
+                colors: ['#33d4be', '#43e686', '#9fe643', '#dead28', '#a772f2']
             };
 
             const columnOptions = {
@@ -165,6 +167,7 @@
                 legend: { position: 'right' },
                 bar: { groupWidth: '95%' },
                 backgroundColor: 'transparent',
+                colors: ['#a772f2', '#33d4be'],
                 annotations: {
                     textStyle: {
                         fontSize: 12,
