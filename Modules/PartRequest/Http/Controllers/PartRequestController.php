@@ -378,11 +378,11 @@ class PartRequestController extends Controller
         $orders = $request->input('order');
         // $machine_ids = $request->input('machine_id');
         // $machine_names = $request->input('machine_name');
-        $strokes = $request->input('stroke');
+        // $strokes = $request->input('stroke');
         $pics = $request->input('pic');
         $remarkss = $request->input('remarks');
         $part_qtys = $request->input('part_qty');
-        $part_nos = $request->input('part_no');
+        // $part_nos = $request->input('part_no');
         // $part_names = $request->input('part_name');
         $wear_and_tear_statuss = $request->input('wear_and_tear_status');
 
@@ -403,11 +403,11 @@ class PartRequestController extends Controller
                 'order' => $orders[$index],
                 // 'machine_id' => $machine_ids[$index],
                 // 'machine_name' => $machine_names[$index],
-                'stroke' => $strokes[$index],
+                // 'stroke' => $strokes[$index],
                 'pic' => $pics[$index],
                 'remarks' => $remarkss[$index],
                 'part_qty' => $part_qtys[$index],
-                'part_no' => $part_nos[$index],
+                // 'part_no' => $part_nos[$index],
                 'status' => 0,
                 // 'part_name' => $part_names[$index],
                 'wear_and_tear_status' => $wear_and_tear_statuss[$index],

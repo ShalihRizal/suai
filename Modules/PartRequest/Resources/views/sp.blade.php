@@ -1528,6 +1528,30 @@
     </script>
 
 <script>
+    // JavaScript code to populate Part Name and Part Number based on the selected Part
+    document.getElementById("machine_id").addEventListener("change", function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var machineNameInput = document.getElementById("machine_name");
+        var machineNo = document.getElementById("machine_no");
+
+        // Check if a valid option is selected
+        if (selectedOption.value !== "") {
+            // Get the data attributes from the selected option
+            var machineName = selectedOption.getAttribute("data-machine-name");
+            var machineNumber = selectedOption.getAttribute("data-machine-number");
+
+            // Set the values in the input fields
+            machineNameInput.value = machineName;
+            machineNo.value = machineNumber;
+        } else {
+            // Clear the input fields if no option is selected
+            machineNameInput.value = "";
+            machineNo.value = "";
+        }
+    });
+</script>
+
+<script>
     $(document).ready(function() {
         var table = $('#table-data').DataTable({
             "paging": true,
@@ -1569,5 +1593,17 @@
             return date >= startDate && date <= endDate;
         }
     });
+    </script>
+     <script>
+        $(document).ready(function() {
+            // Add change event listener to the dropdown
+            $('#part_id').change(function() {
+                // Get the selected part number from the data attribute
+                var selectedPartNumber = $(this).find(':selected').data('part-asal');
+
+                // Update the value of the order input field
+                $('#order').val(selectedPartNumber);
+            });
+        });
     </script>
 @endsection
