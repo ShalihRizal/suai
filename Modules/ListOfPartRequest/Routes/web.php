@@ -20,4 +20,6 @@ Route::prefix('listofpartrequest')->group(function () {
     Route::post('/update/{id}', 'ListOfPartRequestController@update');
     Route::get('/delete/{id}', 'ListOfPartRequestController@destroy');
     Route::get('/getdata/{id}', 'ListOfPartRequestController@getdata');
+    Route::get('download-pdf', 'ListOfPartRequestController@downloadPDF');
+
 });
