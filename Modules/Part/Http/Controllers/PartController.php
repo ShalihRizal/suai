@@ -50,20 +50,22 @@ class PartController extends Controller
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
+
+
         return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
     }
-    
+
     public function afindex(Request $request)
     {
         // // Authorize
         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
-        
+
         $params = [
             'part_category_id' => 3
         ];
-        
+
         $parts = $this->_partRepository->getAllByParams($params);
 
         $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
@@ -84,11 +86,11 @@ class PartController extends Controller
         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
-        
+
         $params = [
             'part_category_id' => 4
         ];
-        
+
         $parts = $this->_partRepository->getAllByParams($params);
 
         $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
@@ -109,11 +111,11 @@ class PartController extends Controller
         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
-        
+
         $params = [
             'part_category_id' => 1
         ];
-        
+
         $parts = $this->_partRepository->getAllByParams($params);
 
         $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
@@ -134,11 +136,11 @@ class PartController extends Controller
         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
-        
+
         $params = [
             'part_category_id' => 2
         ];
-        
+
         $parts = $this->_partRepository->getAllByParams($params);
 
         $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
