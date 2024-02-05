@@ -12,6 +12,7 @@ use Modules\PartRequest\Repositories\PartRequestRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
+use PDF;
 use Validator;
 
 class ListOfPartRequestController extends Controller
@@ -46,6 +47,19 @@ class ListOfPartRequestController extends Controller
         $partrequests = $this->_PartRequestRepository->getAll();
         // dd($listofpartrequests);
         return view('listofpartrequest::index', compact('partrequests'));
+    }
+    public function downloadPDF(Request $request)
+    {
+        $partrequests = $this->_PartRequestRepository->getAll();
+
+        if (sizeof($partrequests) == 0) {
+            return redirect('listofpartrequest')->with('message', 'Tidak ada data untuk diunduh.');
+        }
+
+        $pdf = PDF::loadView('listofpartrequest::pdf', compact('partrequests'));
+
+        // Ubah 'download' menjadi 'stream' jika ingin menampilkan PDF di browser tanpa mengunduh
+        return $pdf->download('listofpartrequest.pdf');
     }
 
     /**
