@@ -24,7 +24,10 @@ Route::prefix('stockopname')->group(function () {
     Route::get('/show/{id}', 'StockOpnameController@show');
     Route::get('/edit/{id}', 'StockOpnameController@edit');
     Route::post('/store', 'StockOpnameController@store');
-    Route::post('/update/{id}', 'StockOpnameController@update');
+    Route::post('/update/sp/{id}', 'StockOpnameController@spupdate');
+    Route::post('/update/cd/{id}', 'StockOpnameController@cdupdate');
+    Route::post('/update/cf/{id}', 'StockOpnameController@cfupdate');
+    Route::post('/update/af/{id}', 'StockOpnameController@afupdate');
     Route::get('/delete/{id}', 'StockOpnameController@destroy');
     Route::get('/getdata/{id}', 'StockOpnameController@getdata');
     Route::get('/scan', 'StockOpnameController@scan');

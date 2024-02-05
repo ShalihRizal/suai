@@ -87,7 +87,8 @@ class StockOpnameController extends Controller
     public function afindex()
     {
         $params = [
-            'part_category_id' => 3
+            'part_category_id' => 3,
+            'has_sto' => 'no'
         ];
 
         // Fetch data from your repository
@@ -136,13 +137,16 @@ class StockOpnameController extends Controller
         $stockopnames = $this->_stockopnameRepository->getAll();
         $crimpingdies = $this->_partRepository->getAllByParams($params);
 
+        // dd($crimpingdies);
 
-        return view('stockopname::afindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','racks','crimpingdies'));
+
+        return view('stockopname::afindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'racks', 'crimpingdies'));
     }
     public function cfindex()
     {
         $params = [
-            'part_category_id' => 4
+            'part_category_id' => 4,
+            'has_sto' => 'no'
         ];
 
         // Fetch data from your repository
@@ -192,12 +196,13 @@ class StockOpnameController extends Controller
         $crimpingdies = $this->_partRepository->getAllByParams($params);
 
 
-        return view('stockopname::cfindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','racks','crimpingdies'));
+        return view('stockopname::cfindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'racks', 'crimpingdies'));
     }
     public function spindex()
     {
         $params = [
-            'part_category_id' => 2
+            'part_category_id' => 2,
+            'has_sto' => 'no'
         ];
 
         // Fetch data from your repository
@@ -246,12 +251,13 @@ class StockOpnameController extends Controller
         $crimpingdies = $this->_partRepository->getAllByParams($params);
 
 
-        return view('stockopname::spindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','crimpingdies','racks'));
+        return view('stockopname::spindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));
     }
     public function cdindex()
     {
         $params = [
-            'part_category_id' => 1
+            'part_category_id' => 1,
+            'has_sto' => 'no'
         ];
 
         // Fetch data from your repository
@@ -295,14 +301,14 @@ class StockOpnameController extends Controller
         //     return redirect('unauthorize');
         // }
 
-        
+
         $parts = $this->_partRepository->getAllByParams($params);
         $racks = $this->_rackRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
         $crimpingdies = $this->_partRepository->getAllByParams($params);
 
 
-        return view('stockopname::cdindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount','crimpingdies','racks'));
+        return view('stockopname::cdindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));
     }
 
     /**
@@ -443,28 +449,8 @@ class StockOpnameController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function afupdate(Request $request, $id)
     {
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
-        $validator = Validator::make($request->all(), $this->_validationRules($id));
-
-        // if ($validator->fails()) {
-        //     return redirect('stockopname')
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-
-        // dd($request->all());
-        // if ($validator->fails()) {
-        //     return redirect('stockopname')
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-        // dd($request);
 
         DB::beginTransaction();
 
@@ -473,14 +459,45 @@ class StockOpnameController extends Controller
 
         DB::commit();
 
-        return redirect('stockopname')->with('message', 'StockOpname berhasil diubah');
+        return redirect('stockopname/af')->with('message', 'StockOpname berhasil diubah');
+    }
+    public function cfupdate(Request $request, $id)
+    {
+
+        DB::beginTransaction();
+
+        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return redirect('stockopname/cf')->with('message', 'StockOpname berhasil diubah');
+    }
+    public function cdupdate(Request $request, $id)
+    {
+
+        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return redirect('stockopname/cd')->with('message', 'StockOpname berhasil diubah');
+    }
+    public function spupdate(Request $request, $id)
+    {
+
+        DB::beginTransaction();
+
+        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return redirect('stockopname/sp')->with('message', 'StockOpname berhasil diubah');
     }
 
     public function updateall(Request $request)
     {
-
-
-
 
         DB::beginTransaction();
 
