@@ -93,19 +93,19 @@
                                                 @if ($partrequests->wear_and_tear_status == 'Open')
                                                     <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="Ubah">
-                                                        <i data-feather="check" width="16" height="16"
+                                                        <i width="16" height="16"
                                                             class="open-text">Open</i>
                                                     </a>
                                                 @elseif($partrequests->wear_and_tear_status == 'On Progress')
                                                     <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="On Progress">
-                                                        <i data-feather="clock" width="16" height="16"
+                                                        <i  width="16" height="16"
                                                             class="open-text2">On Progress</i>
                                                     </a>
                                                 @elseif($partrequests->wear_and_tear_status == 'Closed')
                                                     <a data-id="{{ $partrequests->wear_and_tear_status }}"
                                                         data-toggle="tooltip" data-placement="top" title="Closed">
-                                                        <i data-feather="close" width="16" height="16"
+                                                        <i  width="16" height="16"
                                                             class="open-text3">Closed</i>
                                                     </a>
                                                 @endif
@@ -118,11 +118,11 @@
                                                         data-toggle="tooltip" data-placement="top" title="Details">
                                                         <i data-feather="list" width="16" height="16">Details</i>
                                                     </a>
-                                                    {{-- <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
-                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah">
-                                        <i data-feather="edit" width="16" height="16"></i>
-                                    </a> --}}
+                                                    <!-- <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                                        data-id="{{ $partrequests->part_req_id }}" data-toggle="tooltip" data-placement="top"
+                                                        title="Ubah">
+                                                        <i data-feather="edit" width="16" height="16"></i>
+                                                    </a> -->
                                                 @endif
                                             </td>
                                 </td>

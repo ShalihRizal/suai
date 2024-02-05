@@ -283,7 +283,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Upload PNG File (Max 2MB) <span
                                                 class="text-danger">*</span></label>
-                                        <input type="file" class="form-control" name="image_part">
+                                        <input required type="file" class="form-control" name="image_part">
                                     </div>
                                 </div>
 
@@ -465,7 +465,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -645,7 +645,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -824,7 +824,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -1107,7 +1107,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 

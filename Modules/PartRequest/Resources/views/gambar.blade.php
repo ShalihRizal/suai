@@ -34,19 +34,23 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header w-100">
-                        <div class="col-md-12">
-                            <div class="form-group text-center">
+                    <div class="col-md-12">
+                        <div class="form-group text-center">
+                            @if($partrequests->part_req_pic_filename)
                                 <img style="max-width: 100px; max-height: 100px; display: inline-block;" src="/storage/uploads/images/{{$partrequests->part_req_pic_filename}}">
-                            </div>
+                            @else
+                                <p class="text-danger">Part Request ini tidak memiliki gambar.</p>
+                            @endif
                         </div>
-                        <div class="modal-footer">
-                        {{-- <button type="button"  class="text-white btn btn-success" onclick="window.history.back()">Kembali</button> --}}
-
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="text-white btn btn-success" onclick="window.history.back()">Kembali</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Modal Add -->
 
 @endsection

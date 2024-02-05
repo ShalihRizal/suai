@@ -236,7 +236,7 @@
                                                 class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="text" hidden name="wear_and_tear_status[]"
                                                 placeholder="wt status" class="form-control" value="Open"></td>
-                                        <td><input type="file" name="image_part[]" placeholder="wt status"
+                                        <td><input required type="file" name="image_part[]" placeholder="wt status"
                                                 class="form-control" value="{{ old('image_part') }}"></td>
                                         <td><a href="#" class="btn btn-danger remove">-</a></td>
                                     </tr>
@@ -419,7 +419,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -599,7 +599,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -778,7 +778,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -1061,7 +1061,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Upload PNG File (Max 2MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" name="image_part">
+                            <input required type="file" class="form-control" name="image_part">
                         </div>
                     </div>
 
@@ -1442,7 +1442,7 @@
                 //                         '<td><input type="text" name="part_no[]" placeholder="part_no"'+
                 //                                 'class="form-control" ></td>'+
                 '<td><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open"></td>' +
-                '<td><input type="file" name="image_part[]" placeholder="wt status" class="form-control" ></td>' +
+                '<td><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" ></td>' +
                 '<td><a href="#" class="btn btn-danger remove">-</a></td>' +
                 '</tr>';
             $('.table-body1').append(tr);
