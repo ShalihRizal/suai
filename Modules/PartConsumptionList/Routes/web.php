@@ -17,7 +17,9 @@ Route::prefix('partconsumptionlist')->group(function () {
     Route::get('/create', 'PartConsumptionListController@create');
     Route::get('/show/{id}', 'PartConsumptionListController@show');
     Route::get('/edit/{id}', 'PartConsumptionListController@edit');
+    Route::get('/detail/{id}', 'PartConsumptionListController@detail');
     Route::post('/store', 'PartConsumptionListController@store');
+    Route::post('/upload/{id}', 'PartConsumptionListController@importCSV');
     Route::post('/update/{id}', 'PartConsumptionListController@update');
     Route::get('/delete/{id}', 'PartConsumptionListController@destroy');
     Route::get('/getdata/{id}', 'PartConsumptionListController@getdata');

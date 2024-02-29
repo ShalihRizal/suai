@@ -70,8 +70,8 @@
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="5%">
                                                 @if ($partconsumptionlist->pcl_id > 0)
-                                                    <a href="javascript:void(0)"
-                                                        class="btn btn-icon btnEdit btn-warning text-white"
+                                                    <a href="{{ url('partconsumptionlist/detail/' . $partconsumptionlist->pcl_id) }}"
+                                                        class="btn btn-icon btn-warning text-white"
                                                         data-id="{{ $partconsumptionlist->pcl_id }}" data-toggle="tooltip"
                                                         data-placement="top" title="Ubah">
                                                         <i data-feather="edit" width="16" height="16"></i>
@@ -218,17 +218,6 @@
 @endsection
 
 @section('script')
-
-    <script>
-        document.getElementById('alasan').addEventListener('change', function() {
-            var otherReasonDiv = document.getElementById('otherReasonDiv');
-            if (this.value === 'Option4') {
-                otherReasonDiv.style.display = 'block';
-            } else {
-                otherReasonDiv.style.display = 'none';
-            }
-        });
-    </script>
 
     <script type="text/javascript">
         $('.btnAdd').click(function() {
@@ -527,29 +516,4 @@
             }
         });
     </script>
-
-    {{-- <script>
-    // JavaScript code to populate Machine Name and Machine Number based on the selected Machine
-    document.getElementById("machine_id").addEventListener("change", function () {
-        var selectedOption = this.options[this.selectedIndex];
-        var machineNameInput = document.getElementById("machine_name");
-        var machineNoInput = document.getElementById("machine_no");
-
-        // Check if a valid option is selected
-        if (selectedOption.value !== "") {
-            // Get the data attributes from the selected option
-            var machineName = selectedOption.getAttribute("data-machine-name");
-            var machineNumber = selectedOption.getAttribute("data-machine-number");
-
-            // Set the values in the input fields
-            machineNameInput.value = machineName;
-            machineNoInput.value = machineNumber;
-        } else {
-            // Clear the input fields if no option is selected
-            machineNameInput.value = "";
-            machineNoInput.value = "";
-        }
-    });
-</script> --}}
-
 @endsection
