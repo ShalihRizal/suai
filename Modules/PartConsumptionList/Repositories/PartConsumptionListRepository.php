@@ -33,19 +33,4 @@ class PartConsumptionListRepository extends QueryBuilderImplementation
         $this->pk = 'pcl_id';
     }
 
-    //overide
-    // public function getAll()
-    // {
-    //     try {
-    //         return DB::connection($this->db)
-    //             ->table($this->table)
-    //             ->join('part', 'part_consumption_list.part_id', '=', 'part.part_id')
-    //             ->orderBy('pcl_id')
-    //             ->get();
-    //     } catch (Exception $e) {
-    //         return $e->getMessage();
-    //     }
-    // }
-
-
 }

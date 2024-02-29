@@ -8,30 +8,52 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon;
 
-use Modules\PartConsumptionList\Repositories\PartConsumptionListRepository;
-use Modules\Carline\Repositories\CarlineRepository;
-use Modules\Carname\Repositories\CarnameRepository;
-use Modules\Machine\Repositories\MachineRepository;
-use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
-use App\Helpers\DataHelper;
+use Modules\PartConsumptionList\Repositories\PartConsumptionListRepository;
+use Modules\PartConsumptionList\Repositories\PartConsumptionListDetailRepository;
+use Modules\Carline\Repositories\CarlineRepository;
+use Modules\Machine\Repositories\MachineRepository;
+use Modules\Carname\Repositories\CarnameRepository;
+use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use App\Helpers\LogHelper;
+use App\Helpers\DataHelper;
+
 use DB;
 use Validator;
 
 class PartConsumptionListController extends Controller
 {
-    public function __construct()
-    {
+
+    protected $partRepository;
+    protected $partConsumptionListRepository;
+    protected $partConsumptionListDetailRepository;
+    protected $carlineRepository;
+    protected $machineRepository;
+    protected $carnameRepository;
+    protected $carlineCategoryRepository;
+    protected $logHelper;
+    protected $module;
+
+    public function __construct(
+        PartRepository $partRepository,
+        PartConsumptionListRepository $partConsumptionListRepository,
+        PartConsumptionListDetailRepository $partConsumptionListDetailRepository,
+        CarlineRepository $carlineRepository,
+        MachineRepository $machineRepository,
+        CarnameRepository $carnameRepository,
+        CarlineCategoryRepository $carlineCategoryRepository,
+        LogHelper $logHelper
+    ) {
         $this->middleware('auth');
 
-        $this->_partRepository = new PartRepository;
-        $this->_PartConsumptionListRepository = new PartConsumptionListRepository;
-        $this->_CarlineRepository = new CarlineRepository;
-        $this->_MachineRepository = new MachineRepository;
-        $this->_carnameRepository = new CarnameRepository;
-        $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
-        $this->_logHelper = new LogHelper;
+        $this->partRepository = $partRepository;
+        $this->partConsumptionListRepository = $partConsumptionListRepository;
+        $this->partConsumptionListDetailRepository = $partConsumptionListDetailRepository;
+        $this->carlineRepository = $carlineRepository;
+        $this->machineRepository = $machineRepository;
+        $this->carnameRepository = $carnameRepository;
+        $this->carlineCategoryRepository = $carlineCategoryRepository;
+        $this->logHelper = $logHelper;
         $this->module = "PartConsumptionList";
     }
 
@@ -47,12 +69,14 @@ class PartConsumptionListController extends Controller
             return redirect('unauthorize');
         }
 
-        $partconsumptionlists = $this->_PartConsumptionListRepository->getAll();
-        $parts = $this->_partRepository->getAll();
-        $carlines = $this->_CarlineRepository->getAll();
-        $machines = $this->_MachineRepository->getAll();
-        $carnames = $this->_carnameRepository->getAll();
-        $carlinecategories = $this->_CarlineCategoryRepository->getAll();
+        $partconsumptionlists = $this->partConsumptionListRepository->getAll();
+        $parts = $this->partRepository->getAll();
+        $carlines = $this->carlineRepository->getAll();
+        $machines = $this->machineRepository->getAll();
+        $carnames = $this->carnameRepository->getAll();
+        $carlinecategories = $this->carlineCategoryRepository->getAll();
+
+        // dd()
 
         return view('partconsumptionlist::index', compact('partconsumptionlists', 'parts', 'carlines', 'carlinecategories', 'carnames', 'machines'));
     }
@@ -105,9 +129,9 @@ class PartConsumptionListController extends Controller
         // dd($request);
 
         DB::beginTransaction();
-        $this->_PartConsumptionListRepository->insert(DataHelper::_normalizeParams($request->all()));
-        // $check = $this->_PartConsumptionListRepository->insert(DataHelper::_normalizeParams($partreq, true));
-        $this->_logHelper->store($this->module, $request->pcl_id, 'create');
+        $this->partConsumptionListRepository->insert(DataHelper::_normalizeParams($request->all()));
+        // $check = $this->partConsumptionListRepository->insert(DataHelper::_normalizeParams($partreq, true));
+        $this->logHelper->store($this->module, $request->pcl_id, 'create');
         DB::commit();
         // dd($check);
 
@@ -127,6 +151,20 @@ class PartConsumptionListController extends Controller
         }
 
         return view('partconsumptionlist::show');
+    }
+    public function detail($id)
+    {
+
+        $params = [
+            'part_consumption_list_id' => $id
+        ];
+
+        $partconsumptionlists = $this->partConsumptionListRepository->getById($id);
+        $partconsumptionlistsdetails = $this->partConsumptionListDetailRepository->getAllByParams($params);
+
+        // dd($partconsumptionlistsdetails);
+
+        return view('partconsumptionlist::detail', compact('partconsumptionlists', 'partconsumptionlistsdetails'));
     }
 
     public function sendWA()
@@ -170,6 +208,43 @@ class PartConsumptionListController extends Controller
         return view('partconsumptionlist::show');
     }
 
+    public function importCSV(Request $request, $id)
+    {
+
+        // dd($id);
+        $request->validate([
+            'csv' => 'required|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('csv');
+        $csvData = array_map('str_getcsv', file($file));
+
+        DB::beginTransaction();
+        foreach ($csvData as $row) {
+            $check = $this->partConsumptionListDetailRepository->insert([
+
+                'part_consumption_list_id' => $id,
+                'part_id' => $row[0],
+                'end_drawing' => $row[1],
+                'no_accessories' => $row[2],
+                'type' => $row[3],
+                'tiang' => $row[4],
+                'qty_per_jb' => $row[5],
+                'qty_total' => $row[6],
+                'created_at' => $row[7],
+                'created_by' => $row[8],
+                'updated_at' => $row[9],
+                'updated_by' => $row[10]
+
+            ]);
+        }
+
+        // dd($request);
+        DB::commit();
+
+        return redirect('partconsumptionlist')->with('message', 'CSV file has been imported successfully.');
+    }
+
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -210,11 +285,11 @@ class PartConsumptionListController extends Controller
 
         // dd($request);
         DB::beginTransaction();
-        
-        // $check = $this->_PartConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_PartConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->part_req_number, 'update');
-        
+
+        // $check = $this->partConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->partConsumptionListRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $this->logHelper->store($this->module, $request->part_req_number, 'update');
+
         DB::commit();
         // dd($, $request);
 
@@ -233,7 +308,7 @@ class PartConsumptionListController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail = $this->_PartConsumptionListRepository->getById($id);
+        $detail = $this->partConsumptionListRepository->getById($id);
 
         if (!$detail) {
             return redirect('partconsumptionlist');
@@ -241,8 +316,8 @@ class PartConsumptionListController extends Controller
 
         DB::beginTransaction();
 
-        $this->_PartConsumptionListRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+        $this->partConsumptionListRepository->delete($id);
+        $this->logHelper->store($this->module, $detail->part_req_number, 'delete');
 
         DB::commit();
 
@@ -258,7 +333,7 @@ class PartConsumptionListController extends Controller
     {
 
         $response = array('status' => 0, 'result' => array());
-        $getDetail = $this->_PartConsumptionListRepository->getById($id);
+        $getDetail = $this->partConsumptionListRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
