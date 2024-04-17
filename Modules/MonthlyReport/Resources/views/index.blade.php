@@ -52,6 +52,9 @@
                         </tr>
                     </thead>
                     <tbody id="part-table-body"> <!-- Add an id to the tbody -->
+                        @php
+                            $totalQtyEnd = 0; // Initialize total quantity end
+                        @endphp
                         @if (sizeof($parts) == 0)
                             <!-- No data message -->
                             <tr>
@@ -59,6 +62,9 @@
                             </tr>
                         @else
                             @foreach ($parts as $part)
+                                @php
+                                    $totalQtyEnd += $part->qty_end; // Accumulate quantity end
+                                @endphp
                                 <tr class="part-row" data-category="{{ $part->part_category_name }}">
                                     <!-- Add a class and data-category attribute -->
                                     <td width="5%">{{ $loop->iteration }}</td>
@@ -94,8 +100,16 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            <!-- Display total quantity end after the loop -->
+                            <tr>
+                                <td colspan="6"></td>
+                                <td colspan="2"><strong>Total Qty End:</strong></td>
+                                <td colspan="2">{{ $totalQtyEnd }}</td>
+                                <td colspan="9"></td>
+                            </tr>
                         @endif
                     </tbody>
+
                 </table>
             </div>
         </div>

@@ -235,7 +235,6 @@ class PartConsumptionListController extends Controller
                 'created_by' => $row[8],
                 'updated_at' => $row[9],
                 'updated_by' => $row[10]
-
             ]);
         }
 

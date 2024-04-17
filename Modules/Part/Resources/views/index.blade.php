@@ -102,7 +102,7 @@
                                             <td width="5%">{{ $part->rop }}</td>
                                             <td width="5%">{{ $part->forecast }}</td>
                                             <td width="5%">{{ $part->max }}</td>
-                                            <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td>
+                                            <td width="5%">{{ QrCode::size(75)->generate($part->part_no) }}</td>
                                             <td width="5%">
                                                 @if ($part->part_id > 0)
                                                     <a href="javascript:void(0)"

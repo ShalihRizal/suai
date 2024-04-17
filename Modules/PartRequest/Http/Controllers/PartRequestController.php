@@ -135,9 +135,10 @@ class PartRequestController extends Controller
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
 
+        $target = ['6281911511380, 6285215337568, 6287785121808, 6285965970004, 6287824003437, 6287824003436, 6285351891534'];
 
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => '6288223492747',
+            'target' => $target,
             'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
             'token' => 'fU7Xwicj-MrQ!hcHTNgp',
         ]);
