@@ -89,9 +89,10 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                                         <i data-feather="trash-2" width="16" height="16"></i>
                                                     </a>
-                                                    <a href="gambar/{{$partrequest->part_req_id}}" class="btn btn-icon btn-info text-white"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                                        title="Ubah">
+                                                    <a href="gambar/{{ $partrequest->part_req_id }}"
+                                                        class="btn btn-icon btn-info text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
+                                                        data-placement="top" title="Ubah">
                                                         <i data-feather="eye" width="16" height="16"></i>
                                                     </a>
                                                 @endif
@@ -1527,74 +1528,74 @@
         });
     </script>
 
-<script>
-    // JavaScript code to populate Part Name and Part Number based on the selected Part
-    document.getElementById("machine_id").addEventListener("change", function() {
-        var selectedOption = this.options[this.selectedIndex];
-        var machineNameInput = document.getElementById("machine_name");
-        var machineNo = document.getElementById("machine_no");
+    <script>
+        // JavaScript code to populate Part Name and Part Number based on the selected Part
+        document.getElementById("machine_id").addEventListener("change", function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var machineNameInput = document.getElementById("machine_name");
+            var machineNo = document.getElementById("machine_no");
 
-        // Check if a valid option is selected
-        if (selectedOption.value !== "") {
-            // Get the data attributes from the selected option
-            var machineName = selectedOption.getAttribute("data-machine-name");
-            var machineNumber = selectedOption.getAttribute("data-machine-number");
+            // Check if a valid option is selected
+            if (selectedOption.value !== "") {
+                // Get the data attributes from the selected option
+                var machineName = selectedOption.getAttribute("data-machine-name");
+                var machineNumber = selectedOption.getAttribute("data-machine-number");
 
-            // Set the values in the input fields
-            machineNameInput.value = machineName;
-            machineNo.value = machineNumber;
-        } else {
-            // Clear the input fields if no option is selected
-            machineNameInput.value = "";
-            machineNo.value = "";
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        var table = $('#table-data').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false, // Disable DataTables search
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
+                // Set the values in the input fields
+                machineNameInput.value = machineName;
+                machineNo.value = machineNumber;
+            } else {
+                // Clear the input fields if no option is selected
+                machineNameInput.value = "";
+                machineNo.value = "";
+            }
         });
-    
-        // Add event listeners to the date range input fields
-        $('#start_date, #end_date').on('change', function() {
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
-    
-            // Iterate through each row
-            table.rows().every(function() {
-                var row = this.node();
-                var rowData = this.data();
-    
-                // Get the date column value (adjust the index accordingly)
-                var dateValue = rowData[2]; // Assuming the date is in the third column
-    
-                // Check if the date is within the selected range
-                if (isDateInRange(dateValue, startDate, endDate)) {
-                    $(row).show(); // Show the row
-                } else {
-                    $(row).hide(); // Hide the row
-                }
-            });
-        });
-    
-        // Function to check if a date is within a given range
-        function isDateInRange(dateStr, start, end) {
-            var date = new Date(dateStr);
-            var startDate = new Date(start);
-            var endDate = new Date(end);
-    
-            return date >= startDate && date <= endDate;
-        }
-    });
     </script>
-     <script>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#table-data').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false, // Disable DataTables search
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
+            });
+
+            // Add event listeners to the date range input fields
+            $('#start_date, #end_date').on('change', function() {
+                var startDate = $('#start_date').val();
+                var endDate = $('#end_date').val();
+
+                // Iterate through each row
+                table.rows().every(function() {
+                    var row = this.node();
+                    var rowData = this.data();
+
+                    // Get the date column value (adjust the index accordingly)
+                    var dateValue = rowData[2]; // Assuming the date is in the third column
+
+                    // Check if the date is within the selected range
+                    if (isDateInRange(dateValue, startDate, endDate)) {
+                        $(row).show(); // Show the row
+                    } else {
+                        $(row).hide(); // Hide the row
+                    }
+                });
+            });
+
+            // Function to check if a date is within a given range
+            function isDateInRange(dateStr, start, end) {
+                var date = new Date(dateStr);
+                var startDate = new Date(start);
+                var endDate = new Date(end);
+
+                return date >= startDate && date <= endDate;
+            }
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             // Add change event listener to the dropdown
             $('#part_id').change(function() {
