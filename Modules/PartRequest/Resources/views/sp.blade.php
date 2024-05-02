@@ -264,11 +264,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6" hidden>
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                            placeholder="Masukan Part Quantity" value="1">
+                                            placeholder="Masukan Part Quantity">
                                     </div>
                                 </div>
 

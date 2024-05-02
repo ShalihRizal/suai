@@ -25,108 +25,122 @@
         }
     </style>
     <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header w-100">
-                @if (session('message'))
-                    <strong id="msgId" hidden>{{ session('message') }}</strong>
-                @endif
-                <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header w-100">
+                    @if (session('message'))
+                        <strong id="msgId" hidden>{{ session('message') }}</strong>
+                    @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="h3">List Of Part Request</h3>
+                            {{ date('Y-m-d') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header w-100">
                     <div class="col-md-6">
-                        <h3 class="h3">List Of Part Request</h3>
-                        {{ date('Y-m-d') }}
+                        <div class="addData">
+                            <a href="{{ url('/listofpartrequest/download-pdf') }}" class="btn btn-success text-white mb-3">
+                                <i data-feather="download" width="16" height="16" class="me-2"></i>
+                                Download PDF
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-header w-100">
-                <div class="col-md-6">
-                    <div class="addData">
-                        <a href="{{ url('/listofpartrequest/download-pdf') }}" class="btn btn-success text-white mb-3">
-                        <i data-feather="download" width="16" height="16" class="me-2"></i>
-                                    Download PDF
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
-                        <thead>
-                            <tr>
-                                <th width="5%">No</th>
-                                <th width="5%">Date Transaksi</th>
-                                <th width="5%">Receiving</th>
-                                <th width="5%">Status Stok</th>
-                                <th width="5%">Molts No</th>
-                                <th width="5%">Applicator No</th>
-                                <th width="5%">Part Name</th>
-                                <th width="5%">Qty</th>
-                                <th width="5%">Machine</th>
-                                <th width="5%">Serial Number</th>
-                                <th width="5%">Shift</th>
-                                <th width="5%">Stroke</th>
-                                <th width="5%">Status</th>
-                                <th width="5%">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (sizeof($partrequests) == 0)
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
+                            <thead>
                                 <tr>
-                                    <td colspan="14" align="center">Data kosong</td>
+                                    <th width="5%">No</th>
+                                    <th width="5%">Part Req Number</th>
+                                    <th width="5%">Carname</th>
+                                    <th width="5%">Car Model</th>
+                                    <th width="5%">Alasan</th>
+                                    <th width="5%">Order</th>
+                                    <th width="5%">Shift</th>
+                                    <th width="5%">Machine No</th>
+                                    <th width="5%">Applicator No</th>
+                                    <th width="5%">Wear And Tear Code</th>
+                                    <th width="5%">Serial No</th>
+                                    <th width="5%">Side No</th>
+                                    <th width="5%">Stroke</th>
+                                    <th width="5%">Pic</th>
+                                    <th width="5%">Remarks</th>
+                                    <th width="5%">Part Qty</th>
+                                    <th width="5%">Status</th>
+                                    <th width="5%">Approved By</th>
+                                    <th width="5%">Part No</th>
+                                    <th width="5%">Wear And Tear Status</th>
+                                    <th width="5%">Aksi</th>
                                 </tr>
-                            @else
-                                @foreach ($partrequests as $partrequest)
+                            </thead>
+                            <tbody>
+                                @if (sizeof($partrequests) == 0)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ substr($partrequest->updated_at, 0, 10) }}</td>
-                                        <td>{{ $partrequest->part_req_number }}</td>
-                                        <td>{{ $partrequest->status }}</td>
-                                        <td>{{ $partrequest->molts_no }}</td>
-                                        <td>{{ $partrequest->applicator_no }}</td>
-                                        <td>{{ $partrequest->part_name }}</td>
-                                        <td>{{ $partrequest->part_qty }}</td>
-                                        <td>{{ $partrequest->machine_no }}</td>
-                                        <td>{{ $partrequest->serial_no }}</td>
-                                        <td>{{ $partrequest->shift }}</td>
-                                        <td>{{ $partrequest->stroke }}</td>
-                                        <td>
-                                            @if ($partrequest->wear_and_tear_status == 'Open')
-                                                <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Ubah">
-                                                    <i width="16" height="16" class="open-text">Open</i>
-                                                </a>
-                                            @elseif($partrequest->wear_and_tear_status == 'On Progress')
-                                                <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                                    data-toggle="tooltip" data-placement="top" title="On Progress">
-                                                    <i width="16" height="16" class="open-text2">On Progress</i>
-                                                </a>
-                                            @elseif($partrequest->wear_and_tear_status == 'Closed')
-                                                <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Closed">
-                                                    <i width="16" height="16" class="open-text3">Closed</i>
-                                                </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($partrequest->part_req_id > 0)
-                                                <a href="javascript:void(0)"
-                                                    class="btn btn-icon btnEdit btn-success text-white"
-                                                    data-id="{{ $partrequest->part_req_id }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Details">
-                                                    <i data-feather="list" width="16" height="16">Details</i>
-                                                </a>
-                                            @endif
-                                        </td>
+                                        <td colspan="14" align="center">Data kosong</td>
                                     </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                @else
+                                    @foreach ($partrequests as $partrequest)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $partrequest->part_req_number }}</td>
+                                            <td>{{ $partrequest->carname_name }}</td>
+                                            <td>{{ $partrequest->carline_name }}</td>
+                                            <td>{{ $partrequest->alasan }}</td>
+                                            <td>{{ $partrequest->order }}</td>
+                                            <td>{{ $partrequest->shift }}</td>
+                                            <td>{{ $partrequest->machine_no }}</td>
+                                            <td>{{ $partrequest->applicator_no }}</td>
+                                            <td>{{ $partrequest->wear_and_tear_code }}</td>
+                                            <td>{{ $partrequest->serial_no }}</td>
+                                            <td>{{ $partrequest->side_no }}</td>
+                                            <td>{{ $partrequest->stroke }}</td>
+                                            <td>{{ $partrequest->pic }}</td>
+                                            <td>{{ $partrequest->remarks }}</td>
+                                            <td>{{ $partrequest->part_qty }}</td>
+                                            <td>{{ $partrequest->status }}</td>
+                                            <td>{{ $partrequest->approved_by }}</td>
+                                            <td>{{ $partrequest->part_no }}</td>
+                                            <td>
+                                                @if ($partrequest->wear_and_tear_status == 'Open')
+                                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Ubah">
+                                                        <i width="16" height="16" class="open-text">Open</i>
+                                                    </a>
+                                                @elseif($partrequest->wear_and_tear_status == 'On Progress')
+                                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="On Progress">
+                                                        <i width="16" height="16" class="open-text2">On Progress</i>
+                                                    </a>
+                                                @elseif($partrequest->wear_and_tear_status == 'Closed')
+                                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Closed">
+                                                        <i width="16" height="16" class="open-text3">Closed</i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($partrequest->part_req_id > 0)
+                                                    <a href="javascript:void(0)"
+                                                        class="btn btn-icon btnEdit btn-success text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
+                                                        data-placement="top" title="Details">
+                                                        <i data-feather="list" width="16" height="16">Details</i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- ============================================================== -->

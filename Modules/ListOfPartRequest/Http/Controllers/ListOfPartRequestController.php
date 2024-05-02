@@ -45,7 +45,7 @@ class ListOfPartRequestController extends Controller
 
         // $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
         $partrequests = $this->_PartRequestRepository->getAll();
-        // dd($listofpartrequests);
+        // dd($partrequests);
         return view('listofpartrequest::index', compact('partrequests'));
     }
     public function downloadPDF(Request $request)

@@ -379,7 +379,7 @@ class PartRequestController extends Controller
         $orders = $request->input('order');
         // $machine_ids = $request->input('machine_id');
         // $machine_names = $request->input('machine_name');
-        // $strokes = $request->input('stroke');
+        $strokes = $request->input('stroke');
         $pics = $request->input('pic');
         $remarkss = $request->input('remarks');
         $part_qtys = $request->input('part_qty');
@@ -404,7 +404,7 @@ class PartRequestController extends Controller
                 'order' => $orders[$index],
                 // 'machine_id' => $machine_ids[$index],
                 // 'machine_name' => $machine_names[$index],
-                // 'stroke' => $strokes[$index],
+                'stroke' => $strokes[$index],
                 'pic' => $pics[$index],
                 'remarks' => $remarkss[$index],
                 'part_qty' => $part_qtys[$index],
@@ -622,7 +622,7 @@ dd($cek);
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
-        $fileName = null; 
+        $fileName = null;
         $filePath = null;
 
         if ($request->hasFile('image_part')) {
@@ -846,7 +846,7 @@ dd($cek);
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
-        $fileName = null; 
+        $fileName = null;
         $filePath = null;
 
         if ($request->hasFile('image_part')) {

@@ -89,9 +89,10 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                                         <i data-feather="trash-2" width="16" height="16"></i>
                                                     </a>
-                                                    <a href="gambar/{{$partrequest->part_req_id}}" class="btn btn-icon btn-info text-white"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                                        title="Ubah">
+                                                    <a href="gambar/{{ $partrequest->part_req_id }}"
+                                                        class="btn btn-icon btn-info text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
+                                                        data-placement="top" title="Ubah">
                                                         <i data-feather="eye" width="16" height="16"></i>
                                                     </a>
                                                 @endif
@@ -129,7 +130,7 @@
                                         <th>Nama Carline</th>
                                         <th>Shift Bagian</th>
                                         <th>Machine</th>
-                                        <!-- <th>Nama Stroke</th> -->
+                                        <th>Nama Stroke</th>
                                         <th>ㅤㅤPartㅤㅤ</th>
                                         <th>ㅤㅤAlasanㅤㅤ</th>
                                         <th>ㅤㅤOrderㅤㅤ</th>
@@ -139,7 +140,7 @@
                                         <th>Person in Charge</th>
                                         <th>Remarks</th>
                                         <!-- <th>Part Name</th>
-                                        <th>Part Number</th> -->
+                                                    <th>Part Number</th> -->
                                         <th></th>
                                         <th>Upload PNG File (Max 2MB)</th>
                                         <th><a href="#" class="btn btn-success addRow" id="addRow">+</a></th>
@@ -180,33 +181,35 @@
                                             </select>
                                         </td>
                                         <td>
-                                        <select class="form-control" name="machine_no[]" id="machine_no[]">
-                                            <option value=""disabled selected>- Pilih Machine -</option>
-                                            @if (sizeof($machines) > 0)
-                                                @foreach ($machines as $machine)
-                                                    <option value="{{ $machine->machine_id }}"
-                                                        data-machine-name="{{ $machine->machine_name }}"
-                                                        data-machine-number="{{ $machine->machine_no }}">
-                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                            <select class="form-control" name="machine_no[]" id="machine_no[]">
+                                                <option value=""disabled selected>- Pilih Machine -</option>
+                                                @if (sizeof($machines) > 0)
+                                                    @foreach ($machines as $machine)
+                                                        <option value="{{ $machine->machine_id }}"
+                                                            data-machine-name="{{ $machine->machine_name }}"
+                                                            data-machine-number="{{ $machine->machine_no }}">
+                                                            {{ $machine->machine_no }} - {{ $machine->machine_name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                         </td>
-                                        <!-- <td><input type="text" name="stroke[]" placeholder="stroke"
-                                                class="form-control" value="{{ old('stroke') }}"></td> -->
+                                        <td><input type="text" name="stroke[]" placeholder="stroke"
+                                                class="form-control" value="{{ old('stroke') }}"></td>
                                         <td>
-                                        <select class="form-control" name="part_id[]" id="part_id">
-                                            <option value="">- Pilih Part -</option>
-                                            @if (sizeof($parts) > 0)
-                                                @foreach ($parts as $part)
-                                                    <option
-                                                        value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
-                                                        data-part-asal="{{ $part->asal }}"
-                                                        data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -
-                                                        {{ $part->part_name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                            <select class="form-control" name="part_id[]" id="part_id">
+                                                <option value="">- Pilih Part -</option>
+                                                @if (sizeof($parts) > 0)
+                                                    @foreach ($parts as $part)
+                                                        <option
+                                                            value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"
+                                                            data-part-asal="{{ $part->asal }}"
+                                                            data-part-number="{{ $part->part_no }}">{{ $part->part_no }}
+                                                            -
+                                                            {{ $part->part_name }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                         </td>
                                         <td>
                                             <select class="form-control" name="alasan[]" id="alasan">
@@ -223,7 +226,7 @@
                                             </select>
                                         </td>
                                         <!-- <td><input type="text" name="part_no[]" placeholder="part no"
-                                                class="form-control" value="{{ old('part_no') }}"></td> -->
+                                                            class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="number" name="part_qty[]" placeholder="Jumlah"
                                                 class="form-control" value="{{ old('part_qty') }}"></td>
                                         <td><input type="text" name="pic[]" placeholder="pic" class="form-control"
@@ -231,9 +234,9 @@
                                         <td><input type="text" name="remarks[]" placeholder="remarks"
                                                 class="form-control" value="{{ old('remarks') }}"></td>
                                         <!-- <td><input type="text" name="part_name[]" placeholder="part_name"
-                                                class="form-control" value="{{ old('part_name') }}"></td>
-                                        <td><input type="text" name="part_no[]" placeholder="part_no"
-                                                class="form-control" value="{{ old('part_no') }}"></td> -->
+                                                            class="form-control" value="{{ old('part_name') }}"></td>
+                                                    <td><input type="text" name="part_no[]" placeholder="part_no"
+                                                            class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="text" hidden name="wear_and_tear_status[]"
                                                 placeholder="wt status" class="form-control" value="Open"></td>
                                         <td><input required type="file" name="image_part[]" placeholder="wt status"
@@ -881,7 +884,8 @@
                                                     <option value="{{ $machine->machine_id }}"
                                                         data-machine-name="{{ $machine->machine_name }}"
                                                         data-machine-number="{{ $machine->machine_no }}">
-                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}</option>
+                                                        {{ $machine->machine_no }} - {{ $machine->machine_name }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -1391,33 +1395,33 @@
                 '<option value="B">Shift B</option>' +
                 '</select>' +
                 '</td>' +
-                '<td>'+
-                '<select class="form-control" name="machine_no[]" id="machine_no">'+
-                                            '<option value=""disabled selected>- Pilih Machine -</option>'+
-                                            '@if (sizeof($machines) > 0)'+
-                                                '@foreach ($machines as $machine)'+
-                                                    '<option value="{{ $machine->machine_id }}"'+
-                                                        'data-machine-name="{{ $machine->machine_name }}"'+
-                                                        'data-machine-number="{{ $machine->machine_no }}">'+
-                                                        '{{ $machine->machine_no }} - {{ $machine->machine_name }}</option>'+
-                                                '@endforeach'+
-                                            '@endif'+
-                                        '</select>'+
+                '<td>' +
+                '<select class="form-control" name="machine_no[]" id="machine_no">' +
+                '<option value=""disabled selected>- Pilih Machine -</option>' +
+                '@if (sizeof($machines) > 0)' +
+                '@foreach ($machines as $machine)' +
+                '<option value="{{ $machine->machine_id }}"' +
+                'data-machine-name="{{ $machine->machine_name }}"' +
+                'data-machine-number="{{ $machine->machine_no }}">' +
+                '{{ $machine->machine_no }} - {{ $machine->machine_name }}</option>' +
+                '@endforeach' +
+                '@endif' +
+                '</select>' +
                 '</td>' +
                 // '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}"></td>' +
                 '<td>' +
-                '<select class="form-control" name="part_id[]" id="part_id">'+
-                                            '<option value="">- Pilih Part -</option>'+
-                                            '@if (sizeof($parts) > 0)'+
-                                                '@foreach ($parts as $part)'+
-                                                    '<option'+
-                                                        'value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"'+
-                                                        'data-part-asal="{{ $part->asal }}"'+
-                                                        'data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -'+
-                                                        '{{ $part->part_name }}</option>'+
-                                                '@endforeach'+
-                                            '@endif'+
-                                        '</select>'+
+                '<select class="form-control" name="part_id[]" id="part_id">' +
+                '<option value="">- Pilih Part -</option>' +
+                '@if (sizeof($parts) > 0)' +
+                '@foreach ($parts as $part)' +
+                '<option' +
+                'value="{{ $part->part_id }}"data-part-name="{{ $part->part_name }}"' +
+                'data-part-asal="{{ $part->asal }}"' +
+                'data-part-number="{{ $part->part_no }}">{{ $part->part_no }} -' +
+                '{{ $part->part_name }}</option>' +
+                '@endforeach' +
+                '@endif' +
+                '</select>' +
                 '</td>' +
                 '<td>' +
                 '<select class="form-control" name="alasan[]" id="alasan">' +
@@ -1498,50 +1502,50 @@
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        var table = $('#table-data').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false, // Disable DataTables search
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
-    
-        // Add event listeners to the date range input fields
-        $('#start_date, #end_date').on('change', function() {
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
-    
-            // Iterate through each row
-            table.rows().every(function() {
-                var row = this.node();
-                var rowData = this.data();
-    
-                // Get the date column value (adjust the index accordingly)
-                var dateValue = rowData[2]; // Assuming the date is in the third column
-    
-                // Check if the date is within the selected range
-                if (isDateInRange(dateValue, startDate, endDate)) {
-                    $(row).show(); // Show the row
-                } else {
-                    $(row).hide(); // Hide the row
-                }
+    <script>
+        $(document).ready(function() {
+            var table = $('#table-data').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false, // Disable DataTables search
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
             });
+
+            // Add event listeners to the date range input fields
+            $('#start_date, #end_date').on('change', function() {
+                var startDate = $('#start_date').val();
+                var endDate = $('#end_date').val();
+
+                // Iterate through each row
+                table.rows().every(function() {
+                    var row = this.node();
+                    var rowData = this.data();
+
+                    // Get the date column value (adjust the index accordingly)
+                    var dateValue = rowData[2]; // Assuming the date is in the third column
+
+                    // Check if the date is within the selected range
+                    if (isDateInRange(dateValue, startDate, endDate)) {
+                        $(row).show(); // Show the row
+                    } else {
+                        $(row).hide(); // Hide the row
+                    }
+                });
+            });
+
+            // Function to check if a date is within a given range
+            function isDateInRange(dateStr, start, end) {
+                var date = new Date(dateStr);
+                var startDate = new Date(start);
+                var endDate = new Date(end);
+
+                return date >= startDate && date <= endDate;
+            }
         });
-    
-        // Function to check if a date is within a given range
-        function isDateInRange(dateStr, start, end) {
-            var date = new Date(dateStr);
-            var startDate = new Date(start);
-            var endDate = new Date(end);
-    
-            return date >= startDate && date <= endDate;
-        }
-    });
     </script>
-     <script>
+    <script>
         // JavaScript code to populate Part Name and Part Number based on the selected Part
         document.getElementById("part_id").addEventListener("change", function() {
             var selectedOption = this.options[this.selectedIndex];
@@ -1578,16 +1582,16 @@
     </script>
 
     <script>
-      $(document).ready(function() {
-        var table = $('#table-data-modal').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "info": false,
-            "autoWidth": false
+        $(document).ready(function() {
+            var table = $('#table-data-modal').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false
+            });
         });
-    });
     </script>
-   
+
 @endsection

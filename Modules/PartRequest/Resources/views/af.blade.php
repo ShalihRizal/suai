@@ -89,9 +89,10 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
                                                         <i data-feather="trash-2" width="16" height="16"></i>
                                                     </a>
-                                                    <a href="gambar/{{$partrequest->part_req_id}}" class="btn btn-icon btn-info text-white"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top"
-                                                        title="Ubah">
+                                                    <a href="gambar/{{ $partrequest->part_req_id }}"
+                                                        class="btn btn-icon btn-info text-white"
+                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
+                                                        data-placement="top" title="Ubah">
                                                         <i data-feather="eye" width="16" height="16"></i>
                                                     </a>
                                                 @endif
@@ -271,11 +272,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6" hidden>
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Part Quantity <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                            placeholder="Masukan Part Quantity" value="1">
+                                            placeholder="Masukan Part Quantity">
                                     </div>
                                 </div>
 

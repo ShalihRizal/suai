@@ -61,22 +61,26 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
     //         return $e->getMessage();
     //     }
     // }
-    
+
     public function getAll()
-        {
-            try {
-                return DB::connection($this->db)
-                ->table($this->table)
-                ->join('part', 'part_request.part_id', '=', 'part.part_id')
-                ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
-                ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
-                ->select("part_request.*","part.*","carname.*","sys_users.*","part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
-                ->orderBy('part_req_id')
-                ->get();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+{
+    try {
+        return DB::connection($this->db)
+            ->table($this->table)
+            ->join('part', 'part_request.part_id', '=', 'part.part_id')
+            ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+            ->join('carline', function ($join) {
+                $join->on(DB::raw('CAST(part_request.car_model AS UNSIGNED)'), '=', 'carline.carline_id');
+            })
+            ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
+            ->select("part_request.*", "part.*", "carname.*", "carline.*", "sys_users.*", "part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
+            ->orderBy('part_req_id')
+            ->get();
+    } catch (Exception $e) {
+        return $e->getMessage();
     }
+}
+
 
 
     // public function getAllByParams(array $params)
@@ -91,7 +95,7 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
     //             return $e->getMessage();
     //         }
     //     }
-        
+
     //     public function getAll()
     //     {
     //         try {
