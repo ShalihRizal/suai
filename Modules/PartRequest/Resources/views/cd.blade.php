@@ -74,7 +74,7 @@
                                             data-created-at="{{ $partrequest->created_at }}">
                                             <td width="5%">{{ $loop->iteration }}</td>
                                             <td width="80%">{{ $partrequest->part_req_number }}</td>
-                                            <td width="80%">{{ $partrequest->part_request_created_at }}</td>
+                                            <td width="80%">{{ $partrequest->created_at }}</td>
                                             <td width="15%">
                                                 @if ($partrequest->part_req_id > 0)
                                                     <a href="javascript:void(0)"
@@ -140,7 +140,7 @@
                                         <th>Person in Charge</th>
                                         <th>Remarks</th>
                                         <!-- <th>Part Name</th>
-                                                    <th>Part Number</th> -->
+                                                        <th>Part Number</th> -->
                                         <th></th>
                                         <th>Upload PNG File (Max 2MB)</th>
                                         <th><a href="#" class="btn btn-success addRow" id="addRow">+</a></th>
@@ -226,7 +226,7 @@
                                             </select>
                                         </td>
                                         <!-- <td><input type="text" name="part_no[]" placeholder="part no"
-                                                            class="form-control" value="{{ old('part_no') }}"></td> -->
+                                                                class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="number" name="part_qty[]" placeholder="Jumlah"
                                                 class="form-control" value="{{ old('part_qty') }}"></td>
                                         <td><input type="text" name="pic[]" placeholder="pic" class="form-control"
@@ -234,9 +234,9 @@
                                         <td><input type="text" name="remarks[]" placeholder="remarks"
                                                 class="form-control" value="{{ old('remarks') }}"></td>
                                         <!-- <td><input type="text" name="part_name[]" placeholder="part_name"
-                                                            class="form-control" value="{{ old('part_name') }}"></td>
-                                                    <td><input type="text" name="part_no[]" placeholder="part_no"
-                                                            class="form-control" value="{{ old('part_no') }}"></td> -->
+                                                                class="form-control" value="{{ old('part_name') }}"></td>
+                                                        <td><input type="text" name="part_no[]" placeholder="part_no"
+                                                                class="form-control" value="{{ old('part_no') }}"></td> -->
                                         <td><input type="text" hidden name="wear_and_tear_status[]"
                                                 placeholder="wt status" class="form-control" value="Open"></td>
                                         <td><input required type="file" name="image_part[]" placeholder="wt status"

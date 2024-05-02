@@ -391,6 +391,7 @@ class PartRequestController extends Controller
         $partRequests = [];
         // if (isset($part_req_numbers) && is_array($part_req_numbers)) {
         $index = 0;
+        date_default_timezone_set('Asia/Jakarta');
         foreach ($part_ids as $part_id) {
             $partRequests[] = [
                 'part_req_pic_filename' => $file_images[$index],
@@ -413,6 +414,7 @@ class PartRequestController extends Controller
                 // 'part_name' => $part_names[$index],
                 'wear_and_tear_status' => $wear_and_tear_statuss[$index],
                 'part_req_number' => $part_req_number,
+                'created_at' => date('Y-m-d H:i:s'),
             ];
             $index++;
         }

@@ -27,14 +27,6 @@
 @endsection
 
 @section('content')
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- <div class="container-fluid"> -->
-    <!-- ============================================================== -->
-    <!-- Start Page Content -->
-    <!-- ============================================================== -->
-
-
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -96,39 +88,6 @@
                                                     <i data-feather="list" width="16" height="16"></i>
                                                 </a>
                                             </td>
-                                            {{-- <td width="15%">
-                                                @if ($notification->part_req_id > 0)
-                                                    @foreach ($parts as $part)
-                                                        @if ($notification->part_id == $part->part_id)
-                                                            @if ($notification->part_qty > $part->qty_end)
-                                                                <a hidden href="javascript:void(0)"
-                                                                    class="btn btn-icon btnEdit btn-warning text-white"
-                                                                    data-id="{{ $notification->part_req_id }}"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Approve">
-                                                                    <i data-feather="check" width="16"
-                                                                        height="16"></i>
-                                                                </a>
-                                                            @else
-                                                                <a href="javascript:void(0)"
-                                                                    class="btn btn-icon btnEdit btn-warning text-white"
-                                                                    data-id="{{ $notification->part_req_id }}"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Approve">
-                                                                    <i data-feather="check" width="16"
-                                                                        height="16"></i>
-                                                                </a>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-                                                    <a href="javascript:void(0)"
-                                                        class="btn btn-icon btnDetail btn-success text-white"
-                                                        data-id="{{ $notification->part_req_id }}" data-toggle="tooltip"
-                                                        data-placement="top" title="Approve">
-                                                        <i data-feather="list" width="16" height="16"></i>
-                                                    </a>
-                                                @endif
-                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 @endif
@@ -143,13 +102,6 @@
     </div>
     </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End PAge Content -->
-    <!-- ============================================================== -->
-    <!-- </div> -->
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-
     <div class="modal detailModal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -172,35 +124,108 @@
                                 <div class="form-group">
                                     <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
-                                        placeholder="Masukan Insulation Crimper" value="{{ old('pic') }}" disabled>
+                                        placeholder="Masukan Insulation Crimper" value="pic" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Qty <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
-                                        placeholder="Masukan Part Qty" value="{{ old('part_qty') }}" disabled>
+                                        placeholder="Masukan Part Qty" value="part_qty" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_no" id="part_no"
-                                        placeholder="Masukan Part Number" value="{{ old('part_no') }}" disabled>
+                                        placeholder="Masukan Part Number" value="part_no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="part_name" id="part_name"
-                                        placeholder="Masukan Part Name" value="{{ old('part_name') }}" disabled>
+                                        placeholder="Masukan Part Name" value="part_name" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Lokasi <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
-                                        placeholder="Masukan Lokasi" value="{{ old('loc_ppti') }}" disabled>
+                                        placeholder="Masukan Lokasi" value="loc_ppti" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Car Model<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="car_model" id="car_model"
+                                        placeholder="Masukan Variable" value="car_model" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Alasan<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="alasan" id="alasan"
+                                        placeholder="Masukan Variable" value="alasan" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Order<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="order" id="order"
+                                        placeholder="Masukan Variable" value="order" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Shift<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="shift" id="shift"
+                                        placeholder="Masukan Variable" value="shift" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Machine No<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="machine_no" id="machine_no"
+                                        placeholder="Masukan Variable" value="machine_no" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Wear and Tear Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="wear_and_tear_code"
+                                        id="wear_and_tear_code" placeholder="Masukan Variable" value="wear_and_tear_code"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Stroke<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="stroke" id="stroke"
+                                        placeholder="Masukan Variable" value="stroke" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Remarks<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="remarks" id="remarks"
+                                        placeholder="Masukan Variable" value="remarks" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="status" id="status"
+                                        placeholder="Masukan Variable" value="status" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Wear and Tear Status<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="wear_and_tear_status"
+                                        id="wear_and_tear_status" placeholder="Masukan Variable"
+                                        value="wear_and_tear_status" disabled>
                                 </div>
                             </div>
                         </div>
@@ -324,11 +349,27 @@
 
                     if (data.status == 1) {
                         $('#part_req_number').val(data.result.part_req_number);
-                        $('#pic').val(data.result.pic);
-                        $('#part_name').val(data.result.part_name);
-                        $('#part_qty').val(data.result.part_qty);
-                        $('#part_no').val(data.result.part_no);
+                        $('#carname').val(data.result.carname);
                         $('#loc_ppti').val(data.result.loc_ppti);
+                        $('#alasan').val(data.result.alasan);
+                        $('#order').val(data.result.order);
+                        $('#part_name').val(data.result.part_name);
+                        $('#car_model').val(data.result.car_model);
+                        $('#alasan').val(data.result.alasan);
+                        $('#order').val(data.result.order);
+                        $('#shift').val(data.result.shift);
+                        $('#machine_no').val(data.result.machine_no);
+                        $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
+                        $('#stroke').val(data.result.stroke);
+                        $('#pic').val(data.result.pic);
+                        $('#remarks').val(data.result.remarks);
+                        $('#part_qty').val(data.result.part_qty);
+                        $('#status').val(data.result.status);
+                        $('#approved_by').val(data.result.approved_by);
+                        $('#part_no').val(data.result.part_no);
+                        $('#part_req_pic_path').val(data.result.part_req_pic_path);
+                        $('#part_req_pic_filename').val(data.result.part_req_pic_filename);
+                        $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
                         $('.detailModal .modal-title').text('Details');
                         $('.detailModal').modal('show');
                     }
