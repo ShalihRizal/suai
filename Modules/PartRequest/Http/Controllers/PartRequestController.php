@@ -110,8 +110,8 @@ class PartRequestController extends Controller
             'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
-            'carname' => $request->carname,
-            'car_model' => $request->car_model,
+            'carline' => $request->carname,
+            'car_model' => (int)$request->car_model,
             'alasan' => $request->alasan,
             'order' => $request->order,
             'shift' => $request->shift,
@@ -133,10 +133,23 @@ class PartRequestController extends Controller
         // dd($partreq);
 
         DB::beginTransaction();
-       $cek =  $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
-        $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+        $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+
+        //    dd($partreq, $cek);
+        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+
         DB::commit();
 
+        $additional = [
+            "part_req_id" => $cek,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        // dd($cek, $additional, $partreq);
+
+        $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
+
+        $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+        DB::commit();
         $target = ['6281911511380, 6285215337568, 6287785121808, 6285965970004, 6287824003437, 6287824003436, 6285351891534'];
 
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [
@@ -351,15 +364,6 @@ class PartRequestController extends Controller
                 $file_paths[$index] = $filePath;
             }
         }
-        // $file = $request->image_part;
-        // $fileName = DataHelper::getFileName($file);
-        // $filePath = DataHelper::getFilePath(false, true);
-        // $request->file('image_part')->storeAs($filePath, $fileName, 'public');
-
-        // if (Gate::denies(FUNCTION, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        // dd($file_images, $file_paths);
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
         $currentYear = date('Y');
@@ -370,8 +374,7 @@ class PartRequestController extends Controller
         } else {
             $part_req_number = "0000/TO/CD/$currentMonth/$currentYear";
         }
-        // $part_req_pic_filenames = $request->input('part_req_pic_filename');
-        // $part_req_pic_paths = $request->input('part_req_pic_path');
+
         $part_ids = $request->input('part_id');
         $carnames = $request->input('carname');
         $carmodels = $request->input('car_model');
@@ -379,67 +382,65 @@ class PartRequestController extends Controller
         $machine_nos = $request->input('machine_no');
         $alasans = $request->input('alasan');
         $orders = $request->input('order');
-        // $machine_ids = $request->input('machine_id');
-        // $machine_names = $request->input('machine_name');
         $strokes = $request->input('stroke');
         $pics = $request->input('pic');
         $remarkss = $request->input('remarks');
         $part_qtys = $request->input('part_qty');
-        // $part_nos = $request->input('part_no');
-        // $part_names = $request->input('part_name');
         $wear_and_tear_statuss = $request->input('wear_and_tear_status');
 
-
         $partRequests = [];
-        // if (isset($part_req_numbers) && is_array($part_req_numbers)) {
-        $index = 0;
         date_default_timezone_set('Asia/Jakarta');
-        foreach ($part_ids as $part_id) {
+        foreach ($part_ids as $index => $part_id) {
             $partRequests[] = [
-                'part_req_pic_filename' => $file_images[$index],
-                'part_req_pic_path' => $file_paths[$index],
+                'part_req_pic_filename' => $file_images[$index] ?? null,
+                'part_req_pic_path' => $file_paths[$index] ?? null,
                 'part_id' => $part_ids[$index],
-                'carname' => $carnames[$index],
+                'carline' => $carnames[$index],
                 'car_model' => $carmodels[$index],
                 'shift' => $shifts[$index],
                 'machine_no' => $machine_nos[$index],
                 'alasan' => $alasans[$index],
                 'order' => $orders[$index],
-                // 'machine_id' => $machine_ids[$index],
-                // 'machine_name' => $machine_names[$index],
                 'stroke' => $strokes[$index],
                 'pic' => $pics[$index],
                 'remarks' => $remarkss[$index],
                 'part_qty' => $part_qtys[$index],
-                // 'part_no' => $part_nos[$index],
                 'status' => 0,
-                // 'part_name' => $part_names[$index],
                 'wear_and_tear_status' => $wear_and_tear_statuss[$index],
                 'part_req_number' => $part_req_number,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
-            $index++;
         }
-        // }
+
         // dd($partRequests);
+
         foreach ($partRequests as $partreq) {
-            // DB::beginTransaction();
-            $cek[] = $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
-            // $check = $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
-            // $this->_logHelper->store($this->module, $partRequests['part_id'], 'create');
-            // DB::commit();
+            DB::beginTransaction();
+            try {
+                $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+                $listofpartreq = [
+                    "part_req_id" => $cek,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // dd($cek, $listofpartreq, $partRequests);
+                $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
+                $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // Handle exception
+            }
         }
-        // dd($cek);
-        // dd($check);
+
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [
             'target' => '6288223492747',
             'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
             'token' => 'fU7Xwicj-MrQ!hcHTNgp',
         ]);
 
-
         return redirect('partrequest/cd')->with('message', 'PartRequest berhasil ditambahkan');
     }
+
 
     /**
      * Show the cdecified resource.
@@ -657,8 +658,8 @@ dd($cek);
             'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
-            'carname' => $request->carname,
-            'car_model' => $request->car_model,
+            'carline' => $request->carname,
+            'car_model' => (int)$request->car_model,
             'alasan' => $request->alasan,
             'order' => $request->order,
             'shift' => $request->shift,
@@ -680,10 +681,24 @@ dd($cek);
         // dd($partreq);
 
         DB::beginTransaction();
-        $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
+        $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+
+        //    dd($partreq, $cek);
+        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+
+        DB::commit();
+
+        $additional = [
+            "part_req_id" => $cek,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        // dd($cek, $additional, $partreq);
+
+        $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
 
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
+
 
 
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [

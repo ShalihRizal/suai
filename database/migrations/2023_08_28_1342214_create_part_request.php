@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->bigInteger('part_id')->unsigned()->nullable();
             $table->string('part_req_number')->nullable();
             $table->string('carline', 100);
-            $table->string('car_model', 100);
+            $table->integer('car_model');
             $table->string('alasan')->nullable();
             $table->string('order')->nullable();
             $table->string('shift')->nullable();
