@@ -10,76 +10,56 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
 
     public $fillable = [
         'part_req_id',
-        'part_id',
-        'part_req_number',
-        'carname',
-        'car_model',
-        'alasan',
-        'order',
-        'part_req_pic_filename',
-        'part_req_pic_path',
-        'shift',
-        'machine_no',
-        'applicator_no',
-        'wear_and_tear_code',
-        'serial_no',
-        'side_no',
-        'stroke',
-        'pic',
-        'remarks',
-        'part_qty',
-        'status',
-        'approved_by',
-        'part_no',
-        'wear_and_tear_status',
-        'anvil',
-        'insulation_crimper',
-        'wire_crimper',
-        'other',
         'created_at',
         'created_by',
         'updated_at',
-        'updated_by'
+        'updated_by',
+
     ];
 
     public function __construct()
     {
-        $this->table = 'part_request';
-        $this->pk = 'part_req_id';
+        $this->table = 'partlist';
+        $this->pk = 'partlist_id';
     }
 
     //overide
+    public function getAll()
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part_request', 'part_request.part_req_id', '=', 'partlist.part_req_id')
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
+                ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
+                // ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
+                // S->select("partlist.part_req_id as partlist_part_req_id", "part_request.part_req_id as part_request_part_req_id")
+                // ->orderBy('part_req_id')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     // public function getAll()
     // {
     //     try {
     //         return DB::connection($this->db)
     //             ->table($this->table)
-    //             ->leftJoin('part', 'part.part_id', '=', 'part_request.part_id')
-    //             // ->orderBy('part_req_id')
+    //             ->join('part', 'part_request.part_id', '=', 'part.part_id')
+    //             ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
+    //             ->join('carline', function ($join) {
+    //                 $join->on(DB::raw('CAST(part_request.car_model AS UNSIGNED)'), '=', 'carline.carline_id');
+    //             })
+    //             ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
+    //             ->select("part_request.", "part.", "carname.", "carline.", "sys_users.*", "part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
+    //             ->orderBy('part_req_id')
     //             ->get();
     //     } catch (Exception $e) {
     //         return $e->getMessage();
     //     }
     // }
-
-    public function getAll()
-{
-    try {
-        return DB::connection($this->db)
-            ->table($this->table)
-            ->join('part', 'part_request.part_id', '=', 'part.part_id')
-            ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
-            ->join('carline', function ($join) {
-                $join->on(DB::raw('CAST(part_request.car_model AS UNSIGNED)'), '=', 'carline.carline_id');
-            })
-            ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
-            ->select("part_request.*", "part.*", "carname.*", "carline.*", "sys_users.*", "part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
-            ->orderBy('part_req_id')
-            ->get();
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-}
 
 
 
@@ -107,7 +87,6 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
     //             ->get();
     //     } catch (Exception $e) {
     //         return $e->getMessage();
-    //     }
-    // }
-
+    //     }
 }
+    // }

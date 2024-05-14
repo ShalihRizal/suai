@@ -5,11 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('part_request', function (Blueprint $table) {
@@ -33,8 +28,8 @@ return new class extends Migration {
             $table->string('status')->nullable();
             $table->string('approved_by')->nullable();
             $table->string('part_no')->nullable();
-            $table->string('part_rec_pic_path')->nullable();
-            $table->string('part_rec_pic_filename')->nullable();
+            $table->string('part_req_pic_path')->nullable(); // updated
+            $table->string('part_req_pic_filename')->nullable(); // updated
             $table->string('wear_and_tear_status')->nullable();
             $table->dateTime('created_at');
             $table->bigInteger('created_by')->unsigned();
@@ -60,13 +55,9 @@ return new class extends Migration {
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('part_request');
     }
 };
+

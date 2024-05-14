@@ -12,6 +12,7 @@ use Modules\PartRequest\Repositories\PartRequestRepository;
 use Modules\Carline\Repositories\CarlineRepository;
 use Modules\Carname\Repositories\CarnameRepository;
 use Modules\Machine\Repositories\MachineRepository;
+use Modules\ListOfPartRequest\Repositories\ListOfPartRequestRepository;
 use Modules\Users\Repositories\UsersRepository;
 use Modules\CarlineCategory\Repositories\CarlineCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
@@ -33,6 +34,7 @@ class PartRequestController extends Controller
         $this->_carnameRepository = new CarnameRepository;
         $this->_userRepository = new UsersRepository;
         $this->_MachineRepository = new MachineRepository;
+        $this->_ListOfPartRequestRepository = new ListOfPartRequestRepository;
         $this->_CarlineCategoryRepository = new CarlineCategoryRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "PartRequest";
@@ -879,8 +881,8 @@ dd($cek);
             'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
-            'carname' => $request->carname,
-            'car_model' => $request->car_model,
+            'carline' => $request->carname,
+            'car_model' => (int) $request->car_model,
             'alasan' => $request->alasan,
             'order' => $request->order,
             'shift' => $request->shift,
@@ -899,13 +901,22 @@ dd($cek);
             'part_no' => $part->part_no,
         ];
 
-        // dd($partreq);
 
         DB::beginTransaction();
-       $cek =  $this->_PartRequestRepository->insert(DataHelper::_normalizeParams($partreq, true));
-        $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+        $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+
+        //    dd($partreq, $cek);
+        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
+
         DB::commit();
 
+        $additional = [
+            "part_req_id" => $cek,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        // dd($cek, $additional, $partreq);
+
+        $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
 
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [
             'target' => '6288223492747',
@@ -915,6 +926,7 @@ dd($cek);
 
         return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
     }
+
 
     /**
      * Show the cfecified resource.

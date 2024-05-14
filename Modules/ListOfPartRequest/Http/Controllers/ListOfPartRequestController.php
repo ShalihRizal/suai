@@ -23,8 +23,8 @@ class ListOfPartRequestController extends Controller
 
         $this->_ListOfPartRequestRepository = new ListOfPartRequestRepository;
         $this->_PartRequestRepository = new PartRequestRepository;
-        $this->_logHelper           = new LogHelper;
-        $this->module               = "PartRequest";
+        $this->_logHelper = new LogHelper;
+        $this->module = "PartRequest";
     }
 
     /**
@@ -44,8 +44,8 @@ class ListOfPartRequestController extends Controller
         // ];
 
         // $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
-        $partrequests = $this->_PartRequestRepository->getAll();
-        // dd($partrequests);
+        $partrequests = $this->_ListOfPartRequestRepository->getAll();
+        dd($partrequests);
         return view('listofpartrequest::index', compact('partrequests'));
     }
     public function downloadPDF(Request $request)
@@ -177,7 +177,7 @@ class ListOfPartRequestController extends Controller
             return redirect('unauthorize');
         }
         // Check detail to db
-        $detail  = $this->_ListOfPartRequestRepository->getById($id);
+        $detail = $this->_ListOfPartRequestRepository->getById($id);
 
         if (!$detail) {
             return redirect('listofpartrequest');
@@ -201,8 +201,8 @@ class ListOfPartRequestController extends Controller
     public function getdata($id)
     {
 
-        $response   = array('status' => 0, 'result' => array());
-        $getDetail  = $this->_ListOfPartRequestRepository->getById($id);
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_ListOfPartRequestRepository->getById($id);
 
         if ($getDetail) {
             $response['status'] = 1;
@@ -222,6 +222,6 @@ class ListOfPartRequestController extends Controller
             return [
                 'part_req_number' => 'required',
             ];
-        }
+    }
     }
 }
