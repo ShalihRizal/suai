@@ -77,12 +77,12 @@
                                             <td width="80%">{{ $partrequest->part_request_created_at }}</td>
                                             <td width="15%">
                                                 @if ($partrequest->part_req_id > 0)
-                                                    <a href="javascript:void(0)"
+                                                    {{-- <a href="javascript:void(0)"
                                                         class="btn btn-icon btnEdit btn-warning text-white"
                                                         data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
                                                         data-placement="top" title="Ubah">
                                                         <i data-feather="edit" width="16" height="16"></i>
-                                                    </a>
+                                                    </a> --}}
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btn-danger text-white btnDelete"
                                                         data-url="{{ url('partrequest/sp/delete/' . $partrequest->part_req_id) }}"
@@ -126,8 +126,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Date <span class="text-danger"></span></label>
-                                        <input type="date" class="form-control" value={{ date('Y-m-d') }}
-                                            name="date" id="date" readonly>
+                                        <input type="date" class="form-control" value={{ date('Y-m-d') }} name="date"
+                                            id="date" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

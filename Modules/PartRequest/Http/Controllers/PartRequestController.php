@@ -8,6 +8,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 
+use Illuminate\Support\Facades\Auth;
+
 use Modules\PartRequest\Repositories\PartRequestRepository;
 use Modules\Carline\Repositories\CarlineRepository;
 use Modules\Carname\Repositories\CarnameRepository;
@@ -85,6 +87,8 @@ class PartRequestController extends Controller
      */
     public function spstore(Request $request)
     {
+
+    $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -152,6 +156,12 @@ class PartRequestController extends Controller
             '6285215337568',
             '6281911511380'
         ];
+
+        if ($userGroupId == 1) {
+            $targetNumbers = array_slice($targetNumbers, 0, 5);
+        } elseif ($userGroupId == 3) {
+            $targetNumbers = array_slice($targetNumbers, 4);
+        }
 
         // Pesan yang akan dikirim
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
@@ -364,6 +374,8 @@ class PartRequestController extends Controller
      */
     public function cdstore(Request $request)
     {
+
+    $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -455,6 +467,12 @@ class PartRequestController extends Controller
             '6285215337568',
             '6281911511380'
         ];
+
+        if ($userGroupId == 1) {
+            $targetNumbers = array_slice($targetNumbers, 0, 5);
+        } elseif ($userGroupId == 3) {
+            $targetNumbers = array_slice($targetNumbers, 4);
+        }
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
         $token = 'fU7Xwicj-MrQ!hcHTNgp';
@@ -656,6 +674,8 @@ class PartRequestController extends Controller
      */
     public function afstore(Request $request)
     {
+
+    $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -734,6 +754,12 @@ class PartRequestController extends Controller
             '6285215337568',
             '6281911511380'
         ];
+
+        if ($userGroupId == 1) {
+            $targetNumbers = array_slice($targetNumbers, 0, 5);
+        } elseif ($userGroupId == 3) {
+            $targetNumbers = array_slice($targetNumbers, 4);
+        }
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
         $token = 'fU7Xwicj-MrQ!hcHTNgp';
@@ -872,7 +898,6 @@ class PartRequestController extends Controller
 
     public function cfindex()
     {
-
         $params = [
             'part_category_id' => 4
         ];
@@ -907,102 +932,111 @@ class PartRequestController extends Controller
      * @return Response
      */
     public function cfstore(Request $request)
-    {
-        $part = $this->_partRepository->getById($request->part_id);
-        $last = $this->_PartRequestRepository->getLast();
+{
+    $userGroupId = Auth::user()->group_id;
 
-        $fileName = null;
-        $filePath = null;
+    $part = $this->_partRepository->getById($request->part_id);
+    $last = $this->_PartRequestRepository->getLast();
 
-        if ($request->hasFile('image_part')) {
-            $file = $request->file('image_part');
+    $fileName = null;
+    $filePath = null;
 
-            // Proses file
-            $fileName = DataHelper::getFileName($file);
-            $filePath = DataHelper::getFilePath(false, true);
-            $file->storeAs($filePath, $fileName, 'public');
+    if ($request->hasFile('image_part')) {
+        $file = $request->file('image_part');
 
-            // Tambahan proses terkait file jika diperlukan
-        }
+        // Proses file
+        $fileName = DataHelper::getFileName($file);
+        $filePath = DataHelper::getFilePath(false, true);
+        $file->storeAs($filePath, $fileName, 'public');
 
-        $currentMonth = strtoupper(substr(date("F"), 0, 3));
-        $currentYear = date('Y');
-
-        if ($last != null) {
-            $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
-        } else {
-            $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
-        }
-
-        $partreq = [
-            'part_req_pic_filename' => $fileName,
-            'part_req_pic_path' => $filePath,
-            'part_id' => $request->part_id,
-            'part_req_number' => $part_req_number,
-            'carline' => $request->carname,
-            'car_model' => (int) $request->car_model,
-            'alasan' => $request->alasan,
-            'order' => $request->order,
-            'shift' => $request->shift,
-            'machine_no' => $request->machine_no,
-            'applicator_no' => $request->applicator_no,
-            'wear_and_tear_code' => $request->wear_and_tear_code,
-            'wear_and_tear_status' => $request->wear_and_tear_status,
-            'serial_no' => $request->serial_no,
-            'side_no' => $request->side_no,
-            'stroke' => $request->stroke,
-            'pic' => $request->pic,
-            'remarks' => $request->remarks,
-            'part_qty' => $request->part_qty,
-            'status' => $request->status,
-            'approved_by' => $request->approved_by,
-            'part_no' => $part->part_no,
-        ];
-
-        DB::beginTransaction();
-        $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-
-        DB::commit();
-
-        $additional = [
-            "part_req_id" => $cek,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
-
-        $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
-
-        $targetNumbers = [
-            '6288223492747',
-            '6285351891534',
-            '6285351891534',
-            '6287824003436',
-            '6287824003437',
-            '6285965970004',
-            '6287785121808',
-            '6285215337568',
-            '6281911511380'
-        ];
-
-        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'fU7Xwicj-MrQ!hcHTNgp';
-
-        foreach ($targetNumbers as $number) {
-            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-                'target' => $number,
-                'message' => $message,
-                'token' => $token,
-            ]);
-
-            if ($whatsappResponse->failed()) {
-                // Tangani jika pengiriman gagal
-                // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
-                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
-            }
-        }
-
-        return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
+        // Tambahan proses terkait file jika diperlukan
     }
+
+    $currentMonth = strtoupper(substr(date("F"), 0, 3));
+    $currentYear = date('Y');
+
+    if ($last != null) {
+        $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
+        $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
+    } else {
+        $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
+    }
+
+    $partreq = [
+        'part_req_pic_filename' => $fileName,
+        'part_req_pic_path' => $filePath,
+        'part_id' => $request->part_id,
+        'part_req_number' => $part_req_number,
+        'carline' => $request->carname,
+        'car_model' => (int) $request->car_model,
+        'alasan' => $request->alasan,
+        'order' => $request->order,
+        'shift' => $request->shift,
+        'machine_no' => $request->machine_no,
+        'applicator_no' => $request->applicator_no,
+        'wear_and_tear_code' => $request->wear_and_tear_code,
+        'wear_and_tear_status' => $request->wear_and_tear_status,
+        'serial_no' => $request->serial_no,
+        'side_no' => $request->side_no,
+        'stroke' => $request->stroke,
+        'pic' => $request->pic,
+        'remarks' => $request->remarks,
+        'part_qty' => $request->part_qty,
+        'status' => $request->status,
+        'approved_by' => $request->approved_by,
+        'part_no' => $part->part_no,
+    ];
+
+    DB::beginTransaction();
+    $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+
+    DB::commit();
+
+    $additional = [
+        "part_req_id" => $cek,
+        'created_at' => date('Y-m-d H:i:s'),
+    ];
+
+    $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
+
+    $targetNumbers = [
+        '6288223492747',
+        '6285351891534',
+        '6285351891534',
+        '6287824003436',
+        '6287824003437',
+        '6285965970004',
+        '6287785121808',
+        '6285215337568',
+        '6281911511380'
+    ];
+
+    if ($userGroupId == 1) {
+        $targetNumbers = array_slice($targetNumbers, 0, 5);
+    } elseif ($userGroupId == 3) {
+        $targetNumbers = array_slice($targetNumbers, 4);
+    }
+
+    $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+    $token = 'fU7Xwicj-MrQ!hcHTNgp';
+
+    foreach ($targetNumbers as $number) {
+        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+            'target' => $number,
+            'message' => $message,
+            'token' => $token,
+        ]);
+
+        if ($whatsappResponse->failed()) {
+            // Tangani jika pengiriman gagal
+            // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
+            Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+        }
+    }
+
+    return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
+}
+
     /**
      * Show the cfecified resource.
      * @param int $id

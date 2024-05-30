@@ -70,12 +70,12 @@
                                             <td width="80%">{{ $partrequest->created_at }}</td>
                                             <td width="15%">
                                                 @if ($partrequest->part_req_id > 0)
-                                                    <a href="javascript:void(0)"
+                                                    {{-- <a href="javascript:void(0)"
                                                         class="btn btn-icon btnEdit btn-warning text-white"
                                                         data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
                                                         data-placement="top" title="Ubah">
                                                         <i data-feather="edit" width="16" height="16"></i>
-                                                    </a>
+                                                    </a> --}}
                                                     <a href="javascript:void(0)"
                                                         class="btn btn-icon btn-danger text-white btnDelete"
                                                         data-url="{{ url('partrequest/cd/delete/' . $partrequest->part_req_id) }}"
@@ -115,8 +115,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table id="table-data-modal"
-                                class="table table-stripped card-table table-vcenter text-nowrap">
+                            <table id="table-data-modal" class="table table-stripped card-table table-vcenter text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>Nama Car Model</th>
