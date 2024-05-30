@@ -61,7 +61,7 @@ class PartRequestController extends Controller
 
         // dd($users);
 
-        return view('partrequest::sp', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
+        return view('partrequest::sp', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines', 'carnames'));
     }
 
     /**
@@ -71,7 +71,7 @@ class PartRequestController extends Controller
     public function spcreate()
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -94,7 +94,6 @@ class PartRequestController extends Controller
         $request->file('image_part')->storeAs($filePath, $fileName, 'public');
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
-
         $currentYear = date('Y');
 
         if ($last != null) {
@@ -104,14 +103,13 @@ class PartRequestController extends Controller
             $part_req_number = "0000/TO/SP/$currentMonth/$currentYear";
         }
 
-
         $partreq = [
             'part_req_pic_filename' => $fileName,
             'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
             'carline' => $request->carname,
-            'car_model' => (int)$request->car_model,
+            'car_model' => (int) $request->car_model,
             'alasan' => $request->alasan,
             'order' => $request->order,
             'shift' => $request->shift,
@@ -130,66 +128,83 @@ class PartRequestController extends Controller
             'part_no' => $part->part_no,
         ];
 
-        // dd($partreq);
-
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-
-        //    dd($partreq, $cek);
-        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
-
         DB::commit();
 
         $additional = [
             "part_req_id" => $cek,
             'created_at' => date('Y-m-d H:i:s'),
         ];
-        // dd($cek, $additional, $partreq);
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
-
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
-        DB::commit();
-        $target = ['6281911511380, 6285215337568, 6287785121808, 6285965970004, 6287824003437, 6287824003436, 6285351891534'];
 
-        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => $target,
-            'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
-            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
-        ]);
+        // Array nomor yang akan dikirimi pesan
+        $targetNumbers = [
+            '6288223492747',
+            '6285351891534',
+            '6285351891534',
+            '6287824003436',
+            '6287824003437',
+            '6285965970004',
+            '6287785121808',
+            '6285215337568',
+            '6281911511380'
+        ];
+
+        // Pesan yang akan dikirim
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+
+        // Looping melalui setiap nomor dan kirim pesan
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
 
         return redirect('partrequest/sp')->with('message', 'PartRequest berhasil ditambahkan');
     }
 
 
-    public function SendWA() {
-    $userparams = [
-        'group_id' => 7
-    ];
 
-    $users = $this->_userRepository->getAllByParams($userparams);
+    public function SendWA()
+    {
+        $userparams = [
+            'group_id' => 7
+        ];
 
-    // Extract phone numbers from users
-    $phoneNumbers = [];
-    foreach ($users as $user) {
-        // Assuming phone number is stored in the 'phone' property, modify it accordingly
-        if (!empty($user->no_hp)) {
-            $phoneNumbers[] = $user->no_hp;
+        $users = $this->_userRepository->getAllByParams($userparams);
+
+        // Extract phone numbers from users
+        $phoneNumbers = [];
+        foreach ($users as $user) {
+            // Assuming phone number is stored in the 'phone' property, modify it accordingly
+            if (!empty($user->no_hp)) {
+                $phoneNumbers[] = $user->no_hp;
+            }
         }
+
+        // Convert the array of phone numbers to a comma-separated string
+        $target = implode(',', $phoneNumbers);
+
+        $part_req_number = '...'; // Provide the actual part request number
+
+        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+            'target' => $target,
+            'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini: https://inventory.suaisystem.com',
+            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
+        ]);
+        return redirect('partrequest/sp')->with('message', 'PartRequest berhasil ditambahkan');
     }
-
-    // Convert the array of phone numbers to a comma-separated string
-    $target = implode(',', $phoneNumbers);
-
-    $part_req_number = '...'; // Provide the actual part request number
-
-    $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-        'target' => $target,
-        'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini: https://inventory.suaisystem.com',
-        'token' => 'fU7Xwicj-MrQ!hcHTNgp',
-    ]);
-    return redirect('partrequest/sp')->with('message', 'PartRequest berhasil ditambahkan');
-}
 
 
     /**
@@ -200,7 +215,7 @@ class PartRequestController extends Controller
     public function spshow($id)
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -215,7 +230,7 @@ class PartRequestController extends Controller
     public function spedit($id)
     {
 
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -233,7 +248,7 @@ class PartRequestController extends Controller
 
 
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -263,7 +278,7 @@ class PartRequestController extends Controller
     public function spdestroy($id)
     {
 
-        // if (Gate::denies(_FUNCTION_, $this->module)) {
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -325,7 +340,7 @@ class PartRequestController extends Controller
 
         // dd($partrequests);
 
-        return view('partrequest::cd', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
+        return view('partrequest::cd', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines', 'carnames'));
     }
 
     /**
@@ -335,7 +350,7 @@ class PartRequestController extends Controller
     public function cdcreate()
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -412,8 +427,6 @@ class PartRequestController extends Controller
             ];
         }
 
-        // dd($partRequests);
-
         foreach ($partRequests as $partreq) {
             DB::beginTransaction();
             try {
@@ -422,7 +435,6 @@ class PartRequestController extends Controller
                     "part_req_id" => $cek,
                     'created_at' => date('Y-m-d H:i:s'),
                 ];
-                // dd($cek, $listofpartreq, $partRequests);
                 $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
                 $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
                 DB::commit();
@@ -432,16 +444,36 @@ class PartRequestController extends Controller
             }
         }
 
-        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => '6288223492747',
-            'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
-            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
-        ]);
+        $targetNumbers = [
+            '6288223492747',
+            '6285351891534',
+            '6285351891534',
+            '6287824003436',
+            '6287824003437',
+            '6285965970004',
+            '6287785121808',
+            '6285215337568',
+            '6281911511380'
+        ];
+
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
 
         return redirect('partrequest/cd')->with('message', 'PartRequest berhasil ditambahkan');
     }
-
-
     /**
      * Show the cdecified resource.
      * @param int $id
@@ -450,7 +482,7 @@ class PartRequestController extends Controller
     public function cdshow($id)
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -465,7 +497,7 @@ class PartRequestController extends Controller
     public function cdedit($id)
     {
 
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -483,7 +515,7 @@ class PartRequestController extends Controller
 
 
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -501,7 +533,7 @@ class PartRequestController extends Controller
         $cek = $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         // $this->_logHelper->store($this->module, $request->part_req_number, 'update');
 
-dd($cek);
+        dd($cek);
         DB::commit();
 
         return redirect('partrequest')->with('message', 'PartRequest berhasil diubah');
@@ -511,7 +543,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -541,7 +573,7 @@ dd($cek);
     public function cddestroy($id)
     {
 
-        // if (Gate::denies(_FUNCTION_, $this->module)) {
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -589,7 +621,7 @@ dd($cek);
     public function afindex()
     {
 
-       $params = [
+        $params = [
             'part_category_id' => 3
         ];
 
@@ -600,7 +632,7 @@ dd($cek);
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
 
-        return view('partrequest::af', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
+        return view('partrequest::af', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines', 'carnames'));
     }
 
     /**
@@ -610,7 +642,7 @@ dd($cek);
     public function afcreate()
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -642,7 +674,6 @@ dd($cek);
         }
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
-
         $currentYear = date('Y');
 
         if ($last != null) {
@@ -652,14 +683,13 @@ dd($cek);
             $part_req_number = "0000/TO/AF/$currentMonth/$currentYear";
         }
 
-
         $partreq = [
             'part_req_pic_filename' => $fileName,
             'part_req_pic_path' => $filePath,
             'part_id' => $request->part_id,
             'part_req_number' => $part_req_number,
             'carline' => $request->carname,
-            'car_model' => (int)$request->car_model,
+            'car_model' => (int) $request->car_model,
             'alasan' => $request->alasan,
             'order' => $request->order,
             'shift' => $request->shift,
@@ -678,13 +708,8 @@ dd($cek);
             'part_no' => $part->part_no,
         ];
 
-        // dd($partreq);
-
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-
-        //    dd($partreq, $cek);
-        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
 
         DB::commit();
 
@@ -692,23 +717,44 @@ dd($cek);
             "part_req_id" => $cek,
             'created_at' => date('Y-m-d H:i:s'),
         ];
-        // dd($cek, $additional, $partreq);
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
 
         $this->_logHelper->store($this->module, $request->part_req_number, 'create');
         DB::commit();
 
+        $targetNumbers = [
+            '6288223492747',
+            '6285351891534',
+            '6285351891534',
+            '6287824003436',
+            '6287824003437',
+            '6285965970004',
+            '6287785121808',
+            '6285215337568',
+            '6281911511380'
+        ];
 
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'fU7Xwicj-MrQ!hcHTNgp';
 
-        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => '6288223492747',
-            'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
-            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
-        ]);
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
 
         return redirect('partrequest/af')->with('message', 'PartRequest berhasil ditambahkan');
     }
+
 
     /**
      * Show the afecified resource.
@@ -718,7 +764,7 @@ dd($cek);
     public function afshow($id)
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -733,7 +779,7 @@ dd($cek);
     public function afedit($id)
     {
 
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -751,7 +797,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -781,7 +827,7 @@ dd($cek);
     public function afdestroy($id)
     {
 
-        // if (Gate::denies(_FUNCTION_, $this->module)) {
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -838,7 +884,7 @@ dd($cek);
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
 
-        return view('partrequest::cf', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines','carnames'));
+        return view('partrequest::cf', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines', 'carnames'));
     }
 
     /**
@@ -848,7 +894,7 @@ dd($cek);
     public function cfcreate()
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -880,7 +926,6 @@ dd($cek);
         }
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
-
         $currentYear = date('Y');
 
         if ($last != null) {
@@ -889,7 +934,6 @@ dd($cek);
         } else {
             $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
         }
-
 
         $partreq = [
             'part_req_pic_filename' => $fileName,
@@ -916,12 +960,8 @@ dd($cek);
             'part_no' => $part->part_no,
         ];
 
-
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-
-        //    dd($partreq, $cek);
-        // $this->_logHelper->store($this->module, $request->part_req_number, 'create');
 
         DB::commit();
 
@@ -929,20 +969,40 @@ dd($cek);
             "part_req_id" => $cek,
             'created_at' => date('Y-m-d H:i:s'),
         ];
-        // dd($cek, $additional, $partreq);
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
 
-        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => '6288223492747',
-            'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com',
-            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
-        ]);
+        $targetNumbers = [
+            '6288223492747',
+            '6285351891534',
+            '6285351891534',
+            '6287824003436',
+            '6287824003437',
+            '6285965970004',
+            '6287785121808',
+            '6285215337568',
+            '6281911511380'
+        ];
+
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
 
         return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
     }
-
-
     /**
      * Show the cfecified resource.
      * @param int $id
@@ -951,7 +1011,7 @@ dd($cek);
     public function cfshow($id)
     {
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -966,7 +1026,7 @@ dd($cek);
     public function cfedit($id)
     {
 
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -984,7 +1044,7 @@ dd($cek);
 
 
         // Authorize
-        if (Gate::denies(_FUNCTION_, $this->module)) {
+        if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
@@ -1015,7 +1075,7 @@ dd($cek);
     public function cfdestroy($id)
     {
 
-        // if (Gate::denies(_FUNCTION_, $this->module)) {
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -1095,6 +1155,6 @@ dd($cek);
             return [
                 'part_id' => 'required',
             ];
-        }
+    }
     }
 }
