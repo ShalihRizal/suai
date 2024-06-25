@@ -77,6 +77,7 @@
                                                         <i data-feather="edit" width="16" height="16"></i>
                                                     </a> --}}
                                                     <a href="javascript:void(0)"
+
                                                         class="btn btn-icon btn-danger text-white btnDelete"
                                                         data-url="{{ url('partrequest/cd/delete/' . $partrequest->part_req_id) }}"
                                                         data-toggle="tooltip" data-placement="top" title="Hapus">
