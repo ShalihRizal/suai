@@ -556,6 +556,28 @@ class StockOpnameController extends Controller
         return $response;
     }
 
+    public function getdataByParam($param)
+    {
+
+        // dd($param);
+
+        $params = [
+            'part_no' => $param
+        ];
+
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_stockopnameRepository->getByParams($params);
+
+        // dd($getDetail);
+
+        if ($getDetail) {
+            $response['status'] = 1;
+            $response['result'] = $getDetail;
+        }
+
+        return $response;
+    }
+
     private function _validationRules($id = '')
     {
         if ($id == '') {
