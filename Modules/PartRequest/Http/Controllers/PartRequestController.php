@@ -88,7 +88,7 @@ class PartRequestController extends Controller
     public function spstore(Request $request)
     {
 
-    $userGroupId = Auth::user()->group_id;
+        $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -375,7 +375,7 @@ class PartRequestController extends Controller
     public function cdstore(Request $request)
     {
 
-    $userGroupId = Auth::user()->group_id;
+        $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -406,6 +406,8 @@ class PartRequestController extends Controller
         $carnames = $request->input('carname');
         $carmodels = $request->input('car_model');
         $shifts = $request->input('shift');
+        $serialnos = $request->input('serial_no');
+        $sidenos = $request->input('side_no');
         $machine_nos = $request->input('machine_no');
         $alasans = $request->input('alasan');
         $orders = $request->input('order');
@@ -425,6 +427,8 @@ class PartRequestController extends Controller
                 'carline' => $carnames[$index],
                 'car_model' => $carmodels[$index],
                 'shift' => $shifts[$index],
+                'serial_no' => $serialnos[$index],
+                'side_no' => $sidenos[$index],
                 'machine_no' => $machine_nos[$index],
                 'alasan' => $alasans[$index],
                 'order' => $orders[$index],
@@ -675,7 +679,7 @@ class PartRequestController extends Controller
     public function afstore(Request $request)
     {
 
-    $userGroupId = Auth::user()->group_id;
+        $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         $last = $this->_PartRequestRepository->getLast();
 
@@ -727,6 +731,7 @@ class PartRequestController extends Controller
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
+        // dd($partreq);
 
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
@@ -932,110 +937,110 @@ class PartRequestController extends Controller
      * @return Response
      */
     public function cfstore(Request $request)
-{
-    $userGroupId = Auth::user()->group_id;
+    {
+        $userGroupId = Auth::user()->group_id;
 
-    $part = $this->_partRepository->getById($request->part_id);
-    $last = $this->_PartRequestRepository->getLast();
+        $part = $this->_partRepository->getById($request->part_id);
+        $last = $this->_PartRequestRepository->getLast();
 
-    $fileName = null;
-    $filePath = null;
+        $fileName = null;
+        $filePath = null;
 
-    if ($request->hasFile('image_part')) {
-        $file = $request->file('image_part');
+        if ($request->hasFile('image_part')) {
+            $file = $request->file('image_part');
 
-        // Proses file
-        $fileName = DataHelper::getFileName($file);
-        $filePath = DataHelper::getFilePath(false, true);
-        $file->storeAs($filePath, $fileName, 'public');
+            // Proses file
+            $fileName = DataHelper::getFileName($file);
+            $filePath = DataHelper::getFilePath(false, true);
+            $file->storeAs($filePath, $fileName, 'public');
 
-        // Tambahan proses terkait file jika diperlukan
-    }
-
-    $currentMonth = strtoupper(substr(date("F"), 0, 3));
-    $currentYear = date('Y');
-
-    if ($last != null) {
-        $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-        $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
-    } else {
-        $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
-    }
-
-    $partreq = [
-        'part_req_pic_filename' => $fileName,
-        'part_req_pic_path' => $filePath,
-        'part_id' => $request->part_id,
-        'part_req_number' => $part_req_number,
-        'carline' => $request->carname,
-        'car_model' => (int) $request->car_model,
-        'alasan' => $request->alasan,
-        'order' => $request->order,
-        'shift' => $request->shift,
-        'machine_no' => $request->machine_no,
-        'applicator_no' => $request->applicator_no,
-        'wear_and_tear_code' => $request->wear_and_tear_code,
-        'wear_and_tear_status' => $request->wear_and_tear_status,
-        'serial_no' => $request->serial_no,
-        'side_no' => $request->side_no,
-        'stroke' => $request->stroke,
-        'pic' => $request->pic,
-        'remarks' => $request->remarks,
-        'part_qty' => $request->part_qty,
-        'status' => $request->status,
-        'approved_by' => $request->approved_by,
-        'part_no' => $part->part_no,
-    ];
-
-    DB::beginTransaction();
-    $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-
-    DB::commit();
-
-    $additional = [
-        "part_req_id" => $cek,
-        'created_at' => date('Y-m-d H:i:s'),
-    ];
-
-    $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
-
-    $targetNumbers = [
-        '6288223492747',
-        '6285351891534',
-        '6285351891534',
-        '6287824003436',
-        '6287824003437',
-        '6285965970004',
-        '6287785121808',
-        '6285215337568',
-        '6281911511380'
-    ];
-
-    if ($userGroupId == 1) {
-        $targetNumbers = array_slice($targetNumbers, 0, 5);
-    } elseif ($userGroupId == 3) {
-        $targetNumbers = array_slice($targetNumbers, 4);
-    }
-
-    $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-    $token = 'fU7Xwicj-MrQ!hcHTNgp';
-
-    foreach ($targetNumbers as $number) {
-        $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-            'target' => $number,
-            'message' => $message,
-            'token' => $token,
-        ]);
-
-        if ($whatsappResponse->failed()) {
-            // Tangani jika pengiriman gagal
-            // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
-            Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            // Tambahan proses terkait file jika diperlukan
         }
-    }
 
-    return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
-}
+        $currentMonth = strtoupper(substr(date("F"), 0, 3));
+        $currentYear = date('Y');
+
+        if ($last != null) {
+            $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
+            $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
+        } else {
+            $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
+        }
+
+        $partreq = [
+            'part_req_pic_filename' => $fileName,
+            'part_req_pic_path' => $filePath,
+            'part_id' => $request->part_id,
+            'part_req_number' => $part_req_number,
+            'carline' => $request->carname,
+            'car_model' => (int) $request->car_model,
+            'alasan' => $request->alasan,
+            'order' => $request->order,
+            'shift' => $request->shift,
+            'machine_no' => $request->machine_no,
+            'applicator_no' => $request->applicator_no,
+            'wear_and_tear_code' => $request->wear_and_tear_code,
+            'wear_and_tear_status' => $request->wear_and_tear_status,
+            'serial_no' => $request->serial_no,
+            'side_no' => $request->side_no,
+            'stroke' => $request->stroke,
+            'pic' => $request->pic,
+            'remarks' => $request->remarks,
+            'part_qty' => $request->part_qty,
+            'status' => $request->status,
+            'approved_by' => $request->approved_by,
+            'part_no' => $part->part_no,
+        ];
+
+        DB::beginTransaction();
+        $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+
+        DB::commit();
+
+        $additional = [
+            "part_req_id" => $cek,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
+
+        $targetNumbers = [
+            '6288223492747',
+            '6285351891534',
+            '6285351891534',
+            '6287824003436',
+            '6287824003437',
+            '6285965970004',
+            '6287785121808',
+            '6285215337568',
+            '6281911511380'
+        ];
+
+        if ($userGroupId == 1) {
+            $targetNumbers = array_slice($targetNumbers, 0, 5);
+        } elseif ($userGroupId == 3) {
+            $targetNumbers = array_slice($targetNumbers, 4);
+        }
+
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
+
+        return redirect('partrequest/cf')->with('message', 'PartRequest berhasil ditambahkan');
+    }
 
     /**
      * Show the cfecified resource.
@@ -1189,6 +1194,6 @@ class PartRequestController extends Controller
             return [
                 'part_id' => 'required',
             ];
-    }
+        }
     }
 }

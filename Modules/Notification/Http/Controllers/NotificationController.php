@@ -44,13 +44,11 @@ class NotificationController extends Controller
         ];
 
         $notifications = $this->_notificationRepository->getAllByParams($params);
-        // $parts = $this->_partRepository->getAll(15);
         $users = $this->_userRepository->getAll();
-
-        // dd($notifications);
 
         return view('notification::index', compact('notifications', 'users'));
     }
+
 
     /**
      * Show the form for creating a new resource.
