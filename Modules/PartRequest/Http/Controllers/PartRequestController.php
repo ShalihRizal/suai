@@ -146,22 +146,11 @@ class PartRequestController extends Controller
 
         // Array nomor yang akan dikirimi pesan
         $targetNumbers = [
-            '6288223492747',
-            '6285351891534',
-            '6285351891534',
-            '6287824003436',
+            '6287836410547',
             '6287824003437',
-            '6285965970004',
-            '6287785121808',
-            '6285215337568',
-            '6281911511380'
+            '6287824003436',
+            '6285351891534'
         ];
-
-        if ($userGroupId == 1) {
-            $targetNumbers = array_slice($targetNumbers, 0, 5);
-        } elseif ($userGroupId == 3) {
-            $targetNumbers = array_slice($targetNumbers, 4);
-        }
 
         // Pesan yang akan dikirim
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
@@ -461,22 +450,11 @@ class PartRequestController extends Controller
         }
 
         $targetNumbers = [
-            '6288223492747',
-            '6285351891534',
-            '6285351891534',
-            '6287824003436',
+            '6287836410547',
             '6287824003437',
-            '6285965970004',
-            '6287785121808',
-            '6285215337568',
-            '6281911511380'
+            '6287824003436',
+            '6285351891534'
         ];
-
-        if ($userGroupId == 1) {
-            $targetNumbers = array_slice($targetNumbers, 0, 5);
-        } elseif ($userGroupId == 3) {
-            $targetNumbers = array_slice($targetNumbers, 4);
-        }
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
         $token = 'fU7Xwicj-MrQ!hcHTNgp';
@@ -749,22 +727,11 @@ class PartRequestController extends Controller
         DB::commit();
 
         $targetNumbers = [
-            '6288223492747',
-            '6285351891534',
-            '6285351891534',
-            '6287824003436',
-            '6287824003437',
-            '6285965970004',
-            '6287785121808',
-            '6285215337568',
-            '6281911511380'
+            '+6281911511380',
+            '+6285215337568',
+            '+6287785121808',
+            '+6285965970004'
         ];
-
-        if ($userGroupId == 1) {
-            $targetNumbers = array_slice($targetNumbers, 0, 5);
-        } elseif ($userGroupId == 3) {
-            $targetNumbers = array_slice($targetNumbers, 4);
-        }
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
         $token = 'fU7Xwicj-MrQ!hcHTNgp';
@@ -1005,22 +972,11 @@ class PartRequestController extends Controller
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
 
         $targetNumbers = [
-            '6288223492747',
-            '6285351891534',
-            '6285351891534',
-            '6287824003436',
-            '6287824003437',
-            '6285965970004',
-            '6287785121808',
-            '6285215337568',
-            '6281911511380'
+            '+6281911511380',
+            '+6285215337568',
+            '+6287785121808',
+            '+6285965970004'
         ];
-
-        if ($userGroupId == 1) {
-            $targetNumbers = array_slice($targetNumbers, 0, 5);
-        } elseif ($userGroupId == 3) {
-            $targetNumbers = array_slice($targetNumbers, 4);
-        }
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
         $token = 'fU7Xwicj-MrQ!hcHTNgp';
