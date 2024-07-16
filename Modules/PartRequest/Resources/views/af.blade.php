@@ -212,6 +212,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label">Applicator No Remarks<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_no" id="applicator_no">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label">Machine Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="machine_no" id="machine_no" readonly>
                                 </div>

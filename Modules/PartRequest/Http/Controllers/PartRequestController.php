@@ -396,6 +396,7 @@ class PartRequestController extends Controller
         $carmodels = $request->input('car_model');
         $shifts = $request->input('shift');
         $serialnos = $request->input('serial_no');
+        $applicatornos = $request->input('applicator_no');
         $sidenos = $request->input('side_no');
         $machine_nos = $request->input('machine_no');
         $alasans = $request->input('alasan');
@@ -417,6 +418,7 @@ class PartRequestController extends Controller
                 'car_model' => $carmodels[$index],
                 'shift' => $shifts[$index],
                 'serial_no' => $serialnos[$index],
+                'applicator_no' => $applicatornos[$index],
                 'side_no' => $sidenos[$index],
                 'machine_no' => $machine_nos[$index],
                 'alasan' => $alasans[$index],
@@ -431,7 +433,7 @@ class PartRequestController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
             ];
         }
-
+        // dd($partRequests);
         foreach ($partRequests as $partreq) {
             DB::beginTransaction();
             try {
