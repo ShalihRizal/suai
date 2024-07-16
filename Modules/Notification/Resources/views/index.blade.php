@@ -115,82 +115,77 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Req Number <span class="text-danger">*</span></label>
+                                    <label class="form-label">Part Req Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_req_number" id="part_req_number"
                                         placeholder="Masukan Approved" value="part_req_number" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Person In Charge <span class="text-danger">*</span></label>
+                                    <label class="form-label">Person In Charge <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="pic" id="pic"
                                         placeholder="Masukan Insulation Crimper" value="pic" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Qty <span class="text-danger">*</span></label>
+                                    <label class="form-label">Part Qty <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_qty" id="part_qty"
                                         placeholder="Masukan Part Qty" value="part_qty" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Number <span class="text-danger">*</span></label>
+                                    <label class="form-label">Part Number <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_no" id="part_no"
                                         placeholder="Masukan Part Number" value="part_no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Name <span class="text-danger">*</span></label>
+                                    <label class="form-label">Part Name <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_name" id="part_name"
                                         placeholder="Masukan Part Name" value="part_name" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Lokasi <span class="text-danger">*</span></label>
+                                    <label class="form-label">Lokasi <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
                                         placeholder="Masukan Lokasi" value="loc_ppti" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Carline<span class="text-danger">*</span></label>
-                                    <<<<<<< Updated upstream <label class="form-label">Car Model<span
-                                            class="text-danger">*</span></label>
-                                        =======
-                                        <label class="form-label">Carline<span class="text-danger"></span></label>
-                                        >>>>>>> Stashed changes
+                                    <label class="form-label">Carline<span class="text-danger"></span></label>
                                         <input type="text" class="form-control" name="car_model" id="car_model"
                                             placeholder="Masukan Variable" value="car_model" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Alasan<span class="text-danger">*</span></label>
+                                    <label class="form-label">Alasan<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="alasan" id="alasan"
                                         placeholder="Masukan Variable" value="alasan" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Serial No<span class="text-danger">*</span></label>
+                                    <label class="form-label">Serial No<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="serial_no" id="serial_no"
                                         placeholder="Masukan Variable" value="serial_no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Side No<span class="text-danger">*</span></label>
+                                    <label class="form-label">Side No<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="side_no" id="side_no"
                                         placeholder="Masukan Variable" value="side_no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Part Applicator No<span class="text-danger">*</span></label>
+                                    <label class="form-label">Part Applicator No<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_applicator_no"
                                         id="part_applicator_no" placeholder="Masukan Variable" value="part_applicator_no"
                                         disabled>
@@ -199,7 +194,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part Request Applicator No<span
-                                            class="text-danger">*</span></label>
+                                            class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="part_request_applicator_no"
                                         id="part_request_applicator_no" placeholder="Masukan Variable"
                                         value="part_request_applicator_no" disabled>
@@ -207,28 +202,28 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Order<span class="text-danger">*</span></label>
+                                    <label class="form-label">Order<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="order" id="order"
                                         placeholder="Masukan Variable" value="order" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Shift<span class="text-danger">*</span></label>
+                                    <label class="form-label">Shift<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="shift" id="shift"
                                         placeholder="Masukan Variable" value="shift" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Machine No<span class="text-danger">*</span></label>
+                                    <label class="form-label">Machine No<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="machine_no" id="machine_no"
                                         placeholder="Masukan Variable" value="machine_no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Wear and Tear Code<span class="text-danger">*</span></label>
+                                    <label class="form-label">Wear and Tear Code<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_code"
                                         id="wear_and_tear_code" placeholder="Masukan Variable" value="wear_and_tear_code"
                                         disabled>
@@ -236,21 +231,21 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Stroke<span class="text-danger">*</span></label>
+                                    <label class="form-label">Stroke<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="stroke" id="stroke"
                                         placeholder="Masukan Variable" value="stroke" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Remarks<span class="text-danger">*</span></label>
+                                    <label class="form-label">Remarks<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="remarks" id="remarks"
                                         placeholder="Masukan Variable" value="remarks" disabled>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                                    <label class="form-label">Status<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="status" id="status"
                                         placeholder="Masukan Variable" value="status" disabled>
                                 </div>
@@ -258,7 +253,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Wear and Tear Status<span
-                                            class="text-danger">*</span></label>
+                                            class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_status"
                                         id="wear_and_tear_status" placeholder="Masukan Variable"
                                         value="wear_and_tear_status" disabled>
@@ -290,7 +285,7 @@
                         <div class="form-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Approved By <span class="text-danger">*</span></label>
+                                    <label class="form-label">Approved By <span class="text-danger"></span></label>
                                     <select class="form-control" name="approved_by" id="approved_by">
                                         <option value="" disableld selected>- Pilih Approved By -</option>
                                         @if (sizeof($users) > 0)
@@ -305,14 +300,14 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group" hidden>
-                                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                                    <label class="form-label">Status<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="wear_and_tear_status"
                                         id="wear_and_tear_status" value="On Progres">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group" hidden>
-                                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                                    <label class="form-label">Status<span class="text-danger"></span></label>
                                     <input type="text" class="form-control" name="status" id="status"
                                         value="1">
                                 </div>
