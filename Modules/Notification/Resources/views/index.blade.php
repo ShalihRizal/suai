@@ -144,7 +144,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label">Car Model<span class="text-danger">*</span></label>
+                                <label class="form-label">Carline<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="car_model" id="car_model" placeholder="Masukan Variable" value="car_model" disabled>
                             </div>
                         </div>
@@ -168,8 +168,14 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label">Applicator No<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="applicator_no" id="applicator_no" placeholder="Masukan Variable" value="applicator_no" disabled>
+                                <label class="form-label">Part Applicator No<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="part_applicator_no" id="part_applicator_no" placeholder="Masukan Variable" value="part_applicator_no" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Part Request Applicator No<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="part_request_applicator_no" id="part_request_applicator_no" placeholder="Masukan Variable" value="part_request_applicator_no" disabled>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -344,18 +350,19 @@
                     $('#alasan').val(data.result.alasan);
                     $('#order').val(data.result.order);
                     $('#part_name').val(data.result.part_name);
-                    $('#car_model').val(data.result.car_model);
+                    $('#car_model').val(data.result.carline_name);
                     $('#alasan').val(data.result.alasan);
                     $('#order').val(data.result.order);
                     $('#shift').val(data.result.shift);
-                    $('#applicator_no').val(data.result.applicator_no);
+                    $('#part_applicator_no').val(data.result.part_applicator_no);
+                    $('#part_request_applicator_no').val(data.result.part_request_applicator_no);
                     $('#machine_no').val(data.result.machine_no);
                     $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
                     $('#stroke').val(data.result.stroke);
                     $('#serial_no').val(data.result.serial_no);
                     $('#side_no').val(data.result.side_no);
                     $('#pic').val(data.result.pic);
-                    $('#remarks').val(data.result.remarks);
+                    $('#remarks').val(data.result.part_request_remarks);
                     $('#part_qty').val(data.result.part_qty);
                     $('#status').val(data.result.status);
                     $('#approved_by').val(data.result.approved_by);

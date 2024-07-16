@@ -46,6 +46,8 @@ class NotificationController extends Controller
         $notifications = $this->_notificationRepository->getAllByParams($params);
         $users = $this->_userRepository->getAll();
 
+        // dd($notifications);
+
         return view('notification::index', compact('notifications', 'users'));
     }
 
