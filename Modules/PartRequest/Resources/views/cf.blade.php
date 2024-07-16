@@ -176,6 +176,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label">Applicator No Remarks<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_no" id="applicator_no">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label">Machine <span class="text-danger">*</span></label>
                                     <select class="form-control" name="machine_id" id="machine_id">
                                         <option value="">- Pilih Machine -</option>
