@@ -122,6 +122,7 @@
                                     <th>ㅤㅤOrderㅤㅤ</th>
                                     <th>Part Quantity</th>
                                     <th>Person in Charge</th>
+                                    <th>Applicator No Remarks</th>
                                     <th>Remarks</th>
                                     <th></th>
                                     <th>Upload PNG File (Max 2MB)</th>
@@ -199,7 +200,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control" readonly name="order[]" id="order">
+                                        <select class="form-control" readonly name="order[]" id="order" required>
                                             <option value="" disabled selected>- Pilih Order -</option>
                                             <option value="Lokal"> Lokal </option>
                                             <option value="Import"> Import </option>
@@ -207,6 +208,7 @@
                                     </td>
                                     <td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="{{ old('part_qty') }}"></td>
                                     <td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="{{ old('pic') }}"></td>
+                                    <td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="{{ old('applicator_no') }}"></td>
                                     <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}"></td>
                                     <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open"></td>
                                     <td><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}"></td>
@@ -575,7 +577,7 @@
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control" readonly name="order[]" id="order">' +
+            '<select class="form-control" readonly name="order[]" id="order" required>' +
             '<option value="" disabled selected>- Pilih Order -</option>' +
             '<option value="Lokal"> Lokal </option>' +
             '<option value="Import"> Import </option>' +
@@ -583,6 +585,7 @@
             '</td>' +
             '<td style="padding-right: 10px;"><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control"></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="pic[]" placeholder="pic" class="form-control"></td>' +
+            '<td style="padding-right: 10px;"><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control"></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="remarks[]" placeholder="remarks" class="form-control"></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open"></td>' +
             '<td style="padding-right: 10px;"><input required type="file" name="image_part[]" placeholder="wt status" class="form-control"></td>' +
