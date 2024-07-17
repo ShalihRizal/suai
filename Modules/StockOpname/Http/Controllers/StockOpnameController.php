@@ -560,7 +560,8 @@ class StockOpnameController extends Controller
     {
 
         $param = [
-            'part_no' => $part_no
+            'part_no' => $part_no,
+            'has_sto' => 'no'
         ];
 
         $response = array('status' => 0, 'result' => array());
@@ -586,11 +587,12 @@ class StockOpnameController extends Controller
         // dd($param);
 
         $params = [
-            'part_no' => $param
+            'part_no' => $param,
+            'has_sto' => 'no'
         ];
 
         $response = array('status' => 0, 'result' => array());
-        $getDetail = $this->_stockopnameRepository->getByParams($params);
+        $getDetail = $this->_partRepository->getAllByParams($params);
 
         // dd($getDetail);
 

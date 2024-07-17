@@ -53,7 +53,7 @@
                 <div class="col-md-3 mb-3">
                     <div class="form-group">
                         <label class="form-label">Part No<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control part_no" name="part_no" data-id="{{ 190 }}"
+                        <input type="text" class="form-control part_no" name="part_no"
                             id="part_no" autofocus>
                         <div colspan="4" align="center">ㅤ</div>
                     </div>
@@ -168,14 +168,11 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $('.part_no').on('keyup', function(event) {
             if (event.key === "Enter") {
-                var id = $(this).attr('data-id');
+                // var id = $(this).attr('data-id');
                 var url = "{{ url('stockopname/getdata') }}";
-
-                $('.addReset form').attr('action', "{{ url('stockopname/update/cd') }}" + '/' + id);
-
                 $.ajax({
                     type: 'GET',
                     url: url + '/' + id,
@@ -188,6 +185,7 @@
                             $('#qty_no_hidden').val(data.result.qty_end);
                             $('#Status').val('yes');
                             $('.addReset .modal-title').text('Approve');
+                            $('.addReset form').attr('action', "{{ url('stockopname/update/cd') }}" + '/' + data.result.part_id);
                             $('.addReset').modal('show');
                         }
 
@@ -198,7 +196,7 @@
                 });
             }
         });
-    </script>
+    </script> --}}
 
     <script type="text/javascript">
         // Function to show/hide tables based on dropdown selection
@@ -251,7 +249,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const partNoInput = document.getElementById("part_no");
 
@@ -262,59 +260,75 @@
                 partNoInput.setAttribute("data-id", inputValue);
             });
         });
-    </script>
+    </script> --}}
 
-<script>
-   $(document).ready(function() {
-    $('.part_no').on('keyup', function(event) {
-        if (event.key === "Enter") {
-            var partNo = $(this).val();
-            var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
-            var url2 = "{{ url('stockopname/getdatabypartno') }}/" + partNo;
+    <script>
+        $(document).ready(function() {
+            $('.part_no').on('keyup', function(event) {
+                if (event.key === "Enter") {
+                    var partNo = $(this).val();
+                    var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
+                    var url2 = "{{ url('stockopname/getdatabypartno') }}/" + partNo;
 
-            $.ajax({
-                type: 'GET',
-                url: url,
-                dataType: 'JSON',
-                success: function(data) {
-                    if (data.status === 1) {
-                        var lastStoInput = document.getElementById("last_sto");
-                        var currentDateTime = new Date();
-                        var formattedDate = currentDateTime.toISOString().split('T')[0];
-                        lastStoInput.value = formattedDate;
-                        $('#part_name_hidden').val(data.result.part_name);
-                        $('#part_no_hidden').val(data.result.part_no);
-                        $('#has_sto').val('yes');
-                        $('.partModal form').attr('action', "{{ url('stockopname/update/cd') }}/" + data.result.part_id);
-                        $('.partModal .modal-title').text('Approve');
-                        $('.partModal').modal('show');
-                    }
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error: Gagal mengambil data');
+                    console.log('Fetching data for partNo:', partNo);
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log('Response from first AJAX call:', data);
+                            if (data.status === 1) {
+                                console.log('Result:', data.result); // Log the result object
+                                if (data.result) {
+                                    $('#part_name_hidden').val(data.result[0].part_name);
+                                    $('#part_no_hidden').val(data.result[0].part_no);
+                                    $('#has_sto').val('yes');
+
+                                    var lastStoInput = document.getElementById("last_sto");
+                                    var currentDateTime = new Date();
+                                    var formattedDate = currentDateTime.toISOString().split('T')[0];
+                                    lastStoInput.value = formattedDate;
+
+                                    $('.partModal form').attr('action', "{{ url('stockopname/update/cd') }}/" + data.result[0].part_id);
+                                    $('.partModal .modal-title').text('Approve');
+                                    $('.partModal').modal('show');
+                                } else {
+                                    console.error('Result is undefined');
+                                }
+                            } else {
+                                console.log('Data status is not 1');
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error('Error during first AJAX call:', textStatus, errorThrown);
+                            alert('Error: Gagal mengambil data');
+                        }
+                    });
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url2,
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log('Response from second AJAX call:', data);
+                            if (data.status === 1) {
+                                $('#qty_no_hidden').val(data.total);
+                            } else {
+                                console.log('Data status is not 1');
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error('Error during second AJAX call:', textStatus, errorThrown);
+                            alert('Error: Gagal mengambil data');
+                        }
+                    });
                 }
             });
+        });
+     </script>
 
-            $.ajax({
-                type: 'GET',
-                url: url2,
-                dataType: 'JSON',
-                success: function(data) {
-                    if (data.status === 1) {
-                        $('#qty_no_hidden').val(data.total);
-                    }
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error: Gagal mengambil data');
-                }
-            });
-        }
-    });
-});
 
-</script>
-
-</script>
 
 
 @endsection
