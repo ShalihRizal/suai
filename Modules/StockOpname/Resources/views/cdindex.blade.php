@@ -265,36 +265,55 @@
     </script>
 
 <script>
+   $(document).ready(function() {
     $('.part_no').on('keyup', function(event) {
-    if (event.key === "Enter") {
-        var id = $(this).attr('data-id');
-        var url = "{{ url('stockopname/getdatabyparam') }}";
+        if (event.key === "Enter") {
+            var partNo = $(this).val();
+            var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
+            var url2 = "{{ url('stockopname/getdatabypartno') }}/" + partNo;
 
-        $.ajax({
-            type: 'GET',
-            url: url + '/' + $('#part_no').val(),
-            dataType: 'JSON',
-            success: function(data) {
-                if (data.status == 1) {
-                    var lastStoInput = document.getElementById("last_sto");
-                    var currentDateTime = new Date();
-                    var formattedDate = currentDateTime.toISOString().split('T')[0];
-                    lastStoInput.value = formattedDate;
-                    $('#part_name_hidden').val(data.result.part_name);
-                    $('#part_no_hidden').val(data.result.part_no);
-                    $('#qty_no_hidden').val(data.result.qty_end);
-                    $('#has_sto').val('yes');
-                    $('.partModal form').attr('action', "{{ url('stockopname/update/cd') }}" + '/' + data.result.part_id);
-                    $('.partModal .modal-title').text('Approve');
-                    $('.partModal').modal('show');
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'JSON',
+                success: function(data) {
+                    if (data.status === 1) {
+                        var lastStoInput = document.getElementById("last_sto");
+                        var currentDateTime = new Date();
+                        var formattedDate = currentDateTime.toISOString().split('T')[0];
+                        lastStoInput.value = formattedDate;
+                        $('#part_name_hidden').val(data.result.part_name);
+                        $('#part_no_hidden').val(data.result.part_no);
+                        $('#has_sto').val('yes');
+                        $('.partModal form').attr('action', "{{ url('stockopname/update/cd') }}/" + data.result.part_id);
+                        $('.partModal .modal-title').text('Approve');
+                        $('.partModal').modal('show');
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: Gagal mengambil data');
                 }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('Error: Gagal mengambil data');
-            }
-        });
-    }
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: url2,
+                dataType: 'JSON',
+                success: function(data) {
+                    if (data.status === 1) {
+                        $('#qty_no_hidden').val(data.total);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error: Gagal mengambil data');
+                }
+            });
+        }
+    });
 });
+
+</script>
+
 </script>
 
 

@@ -35,14 +35,13 @@ class QueryBuilderImplementation implements CRUDContract
 
     public function getAllByParams(array $params)
     {
-        try {
-            return DB::connection($this->db)
-                ->table($this->table)
-                ->where($params)
-                ->get();
-        } catch (Exception $e) {
-            return $e->getMessage();
+        $query = DB::table($this->table);
+
+        foreach ($params as $key => $value) {
+            $query->where($key, $value);
         }
+
+        return $query->get();
     }
 
     public function getById($id)

@@ -427,6 +427,7 @@ class StockOpnameController extends Controller
         $params = [
             'has_sto' => 'yes'
         ];
+        // dd($params);
 
         $parts = $this->_partRepository->getAllByParams($params);
 
@@ -553,6 +554,29 @@ class StockOpnameController extends Controller
             $response['result'] = $getDetail;
         }
 
+        return $response;
+    }
+    public function getdataByPartNo($part_no)
+    {
+
+        $param = [
+            'part_no' => $part_no
+        ];
+
+        $response = array('status' => 0, 'result' => array());
+        $getDetail = $this->_partRepository->getAllByParams($param);
+
+        $totalqtyend = 0;
+
+        foreach ($getDetail as $detail) {
+            $totalqtyend += $detail->qty_end;
+        }
+
+        if ($getDetail) {
+            $response['status'] = 1;
+            $response['result'] = $getDetail;
+            $response['total'] = $totalqtyend;
+        }
         return $response;
     }
 

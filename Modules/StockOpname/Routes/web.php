@@ -30,6 +30,7 @@ Route::prefix('stockopname')->group(function () {
     Route::post('/update/af/{id}', 'StockOpnameController@afupdate');
     Route::get('/delete/{id}', 'StockOpnameController@destroy');
     Route::get('/getdata/{id}', 'StockOpnameController@getdata');
+    Route::get('/getdatabypartno/{part_no}', 'StockOpnameController@getdataByPartNo');
     Route::get('/getdatabyparam/{param}', 'StockOpnameController@getdataByParam');
     Route::get('/scan', 'StockOpnameController@scan');
     Route::get('/hassto', 'StockOpnameController@hassto');
