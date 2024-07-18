@@ -259,6 +259,12 @@
                                         value="wear_and_tear_status" disabled>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Picture <span class="text-danger"></span></label>
+                                    <img id="part_req_pic" src="" alt="Part Picture" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -365,56 +371,62 @@
         });
     </script>
 
-    <script>
-        $('.btnDetail').click(function() {
+<script>
+    $('.btnDetail').click(function() {
 
-            var id = $(this).attr('data-id');
-            var url = "{{ url('notification/getdata') }}";
+        var id = $(this).attr('data-id');
+        var url = "{{ url('notification/getdata') }}";
 
-            $.ajax({
-                type: 'GET',
-                url: url + '/' + id,
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
+        $.ajax({
+            type: 'GET',
+            url: url + '/' + id,
+            dataType: 'JSON',
+            success: function(data) {
+                console.log(data);
 
-                    if (data.status == 1) {
-                        $('#part_req_number').val(data.result.part_req_number);
-                        $('#carname').val(data.result.carname);
-                        $('#loc_ppti').val(data.result.loc_ppti);
-                        $('#alasan').val(data.result.alasan);
-                        $('#order').val(data.result.order);
-                        $('#part_name').val(data.result.part_name);
-                        $('#car_model').val(data.result.carline_name);
-                        $('#alasan').val(data.result.alasan);
-                        $('#order').val(data.result.order);
-                        $('#shift').val(data.result.shift);
-                        $('#part_applicator_no').val(data.result.part_applicator_no);
-                        $('#part_request_applicator_no').val(data.result.part_request_applicator_no);
-                        $('#machine_no').val(data.result.machine_no);
-                        $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
-                        $('#stroke').val(data.result.stroke);
-                        $('#serial_no').val(data.result.serial_no);
-                        $('#side_no').val(data.result.side_no);
-                        $('#pic').val(data.result.pic);
-                        $('#remarks').val(data.result.part_request_remarks);
-                        $('#part_qty').val(data.result.part_qty);
-                        $('#status').val(data.result.status);
-                        $('#approved_by').val(data.result.approved_by);
-                        $('#part_no').val(data.result.part_no);
-                        $('#part_req_pic_path').val(data.result.part_req_pic_path);
-                        $('#part_req_pic_filename').val(data.result.part_req_pic_filename);
-                        $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
-                        $('.detailModal .modal-title').text('Details');
-                        $('.detailModal').modal('show');
-                    }
+                if (data.status == 1) {
+                    $('#part_req_number').val(data.result.part_req_number);
+                    $('#carname').val(data.result.carname);
+                    $('#loc_ppti').val(data.result.loc_ppti);
+                    $('#alasan').val(data.result.alasan);
+                    $('#order').val(data.result.order);
+                    $('#part_name').val(data.result.part_name);
+                    $('#car_model').val(data.result.carline_name);
+                    $('#alasan').val(data.result.alasan);
+                    $('#order').val(data.result.order);
+                    $('#shift').val(data.result.shift);
+                    $('#part_applicator_no').val(data.result.part_applicator_no);
+                    $('#part_request_applicator_no').val(data.result.part_request_applicator_no);
+                    $('#machine_no').val(data.result.machine_no);
+                    $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
+                    $('#stroke').val(data.result.stroke);
+                    $('#serial_no').val(data.result.serial_no);
+                    $('#side_no').val(data.result.side_no);
+                    $('#pic').val(data.result.pic);
+                    $('#remarks').val(data.result.part_request_remarks);
+                    $('#part_qty').val(data.result.part_qty);
+                    $('#status').val(data.result.status);
+                    $('#approved_by').val(data.result.approved_by);
+                    $('#part_no').val(data.result.part_no);
+                    $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
 
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error : Gagal mengambil data');
+                    // Update the image source
+                    var imgPath = data.result.part_req_pic_path;
+                    var imgFilename = data.result.part_req_pic_filename;
+                    var imgUrl = "/storage/"+imgPath + '/' + imgFilename;
+                    $('#part_req_pic').attr('src', imgUrl);
+
+                    $('.detailModal .modal-title').text('Details');
+                    $('.detailModal').modal('show');
                 }
-            });
 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error : Gagal mengambil data');
+            }
         });
-    </script>
+
+    });
+</script>
+
 @endsection
