@@ -58,7 +58,7 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
                 ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
-                ->select("part_request.", "part.","carname.","carline.","machine.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
+                ->select("part_request.*", "part.*", "carname.*", "carline.*", "machine.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
                 ->orderBy('part_req_id')
                 ->get();
         } catch (Exception $e) {
@@ -94,8 +94,6 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
+        }
     }
-    }
-
-
 }
