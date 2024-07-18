@@ -477,7 +477,7 @@
 <script>
     function downloadFile() {
         // URL file yang ingin didownload
-        var fileUrl = 'https://drive.google.com/file/d/1dhnliCjHC2X5QddjNu9x3fVGGtUATniX/view?usp=sharing';
+        var fileUrl = 'https://drive.google.com/uc?export=download&id=1dhnliCjHC2X5QddjNu9x3fVGGtUATniX';
 
         // Nama file yang ingin ditampilkan saat diunduh
         var fileName = 'Template Transaksi';
