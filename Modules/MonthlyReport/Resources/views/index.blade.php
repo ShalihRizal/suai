@@ -45,10 +45,10 @@
                     </div>
                 </form>
                 <div class="addData">
-                    {{-- <a href="{{ route() }}" class="btn btn-success btnAdd text-white mb-3">
-                    <i data-feather="download" width="16" height="16" class="me-2"></i>
-                    Download Monthly Report - {{ date('F') }}
-                    </a> --}}
+                    <a href="{{ url('monthlyreport/exportExcel')}}" class="btn btn-success btnAdd text-white mb-3">
+                        <i data-feather="download" width="16" height="16" class="me-2"></i>
+                        Download Monthly Report - {{ date('F') }}
+                    </a>
                 </div>
             </div>
         </div>
