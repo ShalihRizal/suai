@@ -11,21 +11,22 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 mb-3">
+
+    <div class="col-md-3">
         <div class="form-group">
-            <div class="form-group">
-                <div colspan="4" align="center">ㅤ</div>
-                <select class="form-control" name="filter-select" id="tabDropdown">
-                    <option value="">- Semua Kategori -</option>
-                    @if (sizeof($partcategories) > 0)
-                    @foreach ($partcategories as $part_category)
-                    <option value="{{ $part_category->part_category_name }}">
-                        {{ $part_category->part_category_name }}
-                    </option>
-                    @endforeach
-                    @endif
-                </select>
-            </div>
+            <br>
+            <label class="form-label">Pencarian<span class="text-danger"></span></label>
+            <select class="form-control mb-3" name="filter-select" id="tabDropdown">
+                <option value="">- Semua Kategori -</option>
+                @if (sizeof($partcategories) > 0)
+                @foreach ($partcategories as $part_category)
+                <option value="{{ $part_category->part_category_name }}">
+                    {{ $part_category->part_category_name }}
+                </option>
+                @endforeach
+                @endif
+            </select>
+            <input type="text" class="form-control" id="searchInput" placeholder="Cari...">
         </div>
     </div>
     <div class="card-header w-100">
@@ -33,11 +34,11 @@
             <div class="col-md-6">
                 <form action="{{ route('exportExcel') }}" method="GET" id="export">
                     <div class="form-group">
-                        <label class="form-label">Date Begin<span class="text-danger">*</span></label>
+                        <label class="form-label">Date Begin<span class="text-danger"></span></label>
                         <input type="date" class="form-control" name="date_begin" id="date_begin">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Date End<span class="text-danger">*</span></label>
+                        <label class="form-label">Date End<span class="text-danger"></span></label>
                         <input type="date" class="form-control" name="date_end" id="date_end">
                     </div>
                     <div class="form-group">
@@ -130,6 +131,7 @@
                     @endif
                 </tbody>
 
+
             </table>
         </div>
     </div>
@@ -171,5 +173,29 @@
             $('.part-row').hide();
             $('.part-row[data-category="' + selectedCategory + '"]').show();
         });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        function filterData() {
+            var selectedCategory = $('#tabDropdown').val().toLowerCase();
+            var searchQuery = $('#searchInput').val().toLowerCase();
+
+            $('.part-row').each(function() {
+                var row = $(this);
+                var categoryMatch = (selectedCategory === "") || row.data('category').toLowerCase() === selectedCategory;
+                var textMatch = row.text().toLowerCase().includes(searchQuery);
+
+                if (categoryMatch && textMatch) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        }
+
+        $('#tabDropdown').change(filterData);
+        $('#searchInput').on('keyup', filterData);
     });
 </script>
