@@ -395,18 +395,20 @@ class PartRequestController extends Controller
                     $file_images[$index] = $fileName;
                     $file_paths[$index] = $filePath;
                 } else {
-                    // Jika file tidak valid, gunakan nama dari image_part_display dengan random nomor
-                    $randomNumber = rand(1000, 9999);
-                    $file_images[$index] = $image_part_displays[$index] ? $randomNumber . '_' . $image_part_displays[$index] : null;
-                    $file_paths[$index] = 'uploads/images/';
+                    // Jika file tidak valid, gunakan nama dari image_part_display
+                    $fileName = DataHelper::getFileName($image_part_displays[$index]);
+                    $filePath = DataHelper::getFilePath(false, true);
+                    $file_images[$index] = $fileName;
+                    $file_paths[$index] = $filePath;
                 }
             }
         } else {
-            // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display dengan random nomor
+            // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display
             foreach ($image_part_displays as $index => $display) {
-                $randomNumber = rand(1000, 9999);
-                $file_images[$index] = $display ? $randomNumber . '_' . $display : null;
-                $file_paths[$index] = 'uploads/images/';
+                $fileName = DataHelper::getFileName($display);
+                $filePath = DataHelper::getFilePath(false, true);
+                $file_images[$index] = $fileName;
+                $file_paths[$index] = $filePath;
             }
         }
 
@@ -439,10 +441,9 @@ class PartRequestController extends Controller
         $partRequests = [];
         date_default_timezone_set('Asia/Jakarta');
         foreach ($part_ids as $index => $part_id) {
-            $randomNumber = rand(1000, 9999); // Generate random number for each part_req_pic_filename
-            $partRequests[] = [
-                'part_req_pic_filename' => isset($file_images[$index]) ? $randomNumber . '_' . $file_images[$index] : (isset($image_part_displays[$index]) ? $randomNumber . '_' . $image_part_displays[$index] : null),
-                'part_req_pic_path' => $file_paths[$index] ?? 'uploads/images/',
+            $partRequests_initial[] = [
+                'part_req_pic_filename' => isset($file_images[$index]) ? $file_images[$index] : (isset($image_part_displays[$index]) ? $image_part_displays[$index] : null),
+                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
                 'part_id' => $part_ids[$index],
                 'carline' => $carnames[$index],
                 'car_model' => $carmodels[$index],
@@ -463,7 +464,36 @@ class PartRequestController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
             ];
         }
+
+        $partImage = $partRequests_initial[0]['part_req_pic_filename'];
+
+        foreach ($part_ids as $index => $part_id) {
+            $partRequests[] = [
+                'part_req_pic_filename' => $partImage,
+                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
+                'part_id' => $part_ids[$index],
+                'carline' => $carnames[$index],
+                'car_model' => $carmodels[$index],
+                'shift' => $shifts[$index],
+                'serial_no' => $serialnos[$index],
+                'applicator_no' => $applicatornos[$index],
+                'side_no' => $sidenos[$index],
+                'machine_no' => $machine_nos[$index],
+                'alasan' => $alasans[$index],
+                'order' => $orders[$index],
+                'stroke' => $strokes[$index],
+                'pic' => $pics[$index],
+                'remarks' => $remarkss[$index],
+                'part_qty' => $part_qtys[$index],
+                'status' => 0,
+                'wear_and_tear_status' => $wear_and_tear_statuss[$index],
+                'part_req_number' => $part_req_number,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+
         // dd($partRequests);
+
         foreach ($partRequests as $partreq) {
             DB::beginTransaction();
             try {
