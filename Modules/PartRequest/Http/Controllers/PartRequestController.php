@@ -355,6 +355,20 @@ class PartRequestController extends Controller
 
         return view('partrequest::cdcreate');
     }
+    public function createcd()
+    {
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+        $partrequests = $this->_PartRequestRepository->getAll();
+        $parts = $this->_partRepository->getAll();
+        $carlines = $this->_CarlineRepository->getAll();
+        $machines = $this->_MachineRepository->getAll();
+        $carlinecategories = $this->_CarlineCategoryRepository->getAll();
+        $carnames = $this->_carnameRepository->getAll();
+        return view('partrequest::createcd', compact('partrequests', 'parts', 'carlines', 'machines', 'carlinecategories', 'carnames'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -370,14 +384,29 @@ class PartRequestController extends Controller
 
         $file_images = [];
         $file_paths = [];
+        $image_part_displays = $request->input('image_part_display');
 
         if ($request->hasFile('image_part')) {
             foreach ($request->file('image_part') as $index => $file) {
-                $fileName = DataHelper::getFileName($file);
-                $filePath = DataHelper::getFilePath(false, true);
-                $file->storeAs($filePath, $fileName, 'public');
-                $file_images[$index] = $fileName;
-                $file_paths[$index] = $filePath;
+                if ($file->isValid()) {
+                    $fileName = DataHelper::getFileName($file);
+                    $filePath = DataHelper::getFilePath(false, true);
+                    $file->storeAs($filePath, $fileName, 'public');
+                    $file_images[$index] = $fileName;
+                    $file_paths[$index] = $filePath;
+                } else {
+                    // Jika file tidak valid, gunakan nama dari image_part_display dengan random nomor
+                    $randomNumber = rand(1000, 9999);
+                    $file_images[$index] = $image_part_displays[$index] ? $randomNumber . '_' . $image_part_displays[$index] : null;
+                    $file_paths[$index] = 'uploads/images/';
+                }
+            }
+        } else {
+            // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display dengan random nomor
+            foreach ($image_part_displays as $index => $display) {
+                $randomNumber = rand(1000, 9999);
+                $file_images[$index] = $display ? $randomNumber . '_' . $display : null;
+                $file_paths[$index] = 'uploads/images/';
             }
         }
 
@@ -410,9 +439,10 @@ class PartRequestController extends Controller
         $partRequests = [];
         date_default_timezone_set('Asia/Jakarta');
         foreach ($part_ids as $index => $part_id) {
+            $randomNumber = rand(1000, 9999); // Generate random number for each part_req_pic_filename
             $partRequests[] = [
-                'part_req_pic_filename' => $file_images[$index] ?? null,
-                'part_req_pic_path' => $file_paths[$index] ?? null,
+                'part_req_pic_filename' => isset($file_images[$index]) ? $randomNumber . '_' . $file_images[$index] : (isset($image_part_displays[$index]) ? $randomNumber . '_' . $image_part_displays[$index] : null),
+                'part_req_pic_path' => $file_paths[$index] ?? 'uploads/images/',
                 'part_id' => $part_ids[$index],
                 'carline' => $carnames[$index],
                 'car_model' => $carmodels[$index],
@@ -936,6 +966,7 @@ class PartRequestController extends Controller
             $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
         }
 
+
         $partreq = [
             'part_req_pic_filename' => $fileName,
             'part_req_pic_path' => $filePath,
@@ -992,7 +1023,6 @@ class PartRequestController extends Controller
 
             if ($whatsappResponse->failed()) {
                 // Tangani jika pengiriman gagal
-                // Anda bisa logging atau mengirim notifikasi lain jika diperlukan
                 Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
             }
         }

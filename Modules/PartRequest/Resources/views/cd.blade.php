@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                <a href="createcd/" class="btn btn-success  text-white mb-3">
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Part Request
                 </a>
@@ -132,7 +132,7 @@
                             <tbody class="table-body1">
                                 <tr>
                                     <td style="padding-right: 10px;">
-                                        <select class="form-control carname" name="carname[]" id="carname">
+                                        <select class="form-control carname" name="carname[]" id="carname" required>
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carnames) > 0)
                                             @foreach ($carnames as $carname)
@@ -144,7 +144,7 @@
                                         </select>
                                     </td>
                                     <td style="padding-right: 10px;">
-                                        <select class="form-control car_model" name="car_model[]" id="car_model">
+                                        <select class="form-control car_model" name="car_model[]" id="car_model" required>
                                             <option value="">- Pilih Car Model -</option>
                                             @if (sizeof($carlines) > 0)
                                             @foreach ($carlines as $carline)
@@ -156,14 +156,14 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="shift[]" id="shift">
+                                        <select class="form-control" name="shift[]" id="shift" required>
                                             <option value="">- Pilih Shift -</option>
                                             <option value="A">Shift A</option>
                                             <option value="B">Shift B</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="machine_no[]" id="machine_no[]">
+                                        <select class="form-control" name="machine_no[]" id="machine_no[]" required>
                                             <option value="" disabled selected>- Pilih Machine -</option>
                                             @if (sizeof($machines) > 0)
                                             @foreach ($machines as $machine)
@@ -174,13 +174,13 @@
                                             @endif
                                         </select>
                                     </td>
-                                    <td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}"></td>
+                                    <td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('stroke') }}" required></td>
 
-                                    <td><input type="text" name="serial_no[]" placeholder="Serial No" class="form-control" value="{{ old('serial_no') }}"></td>
+                                    <td><input type="text" name="serial_no[]" placeholder="Serial No" class="form-control" value="{{ old('serial_no') }}" required></td>
 
-                                    <td><input type="text" name="side_no[]" placeholder="Side No" class="form-control" value="{{ old('side_no') }}"></td>
+                                    <td><input type="text" name="side_no[]" placeholder="Side No" class="form-control" value="{{ old('side_no') }}" required></td>
                                     <td>
-                                        <select class="form-control" name="part_id[]" id="part_id">
+                                        <select class="form-control" name="part_id[]" id="part_id" required>
                                             <option value="">- Pilih Part -</option>
                                             @if (sizeof($parts) > 0)
                                             @foreach ($parts as $part)
@@ -193,7 +193,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control" name="alasan[]" id="alasan">
+                                        <select class="form-control" name="alasan[]" id="alasan" required>
                                             <option value="" disabled selected>- Pilih Alasan -</option>
                                             <option value="New Project">- New Project -</option>
                                             <option value="Replacement">- Replacement -</option>
@@ -206,12 +206,12 @@
                                             <option value="Import"> Import </option>
                                         </select>
                                     </td>
-                                    <td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="{{ old('part_qty') }}"></td>
-                                    <td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="{{ old('pic') }}"></td>
-                                    <td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="{{ old('applicator_no') }}"></td>
-                                    <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}"></td>
-                                    <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open"></td>
-                                    <td><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}"></td>
+                                    <td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="{{ old('part_qty') }}" required></td>
+                                    <td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="{{ old('pic') }}" required></td>
+                                    <td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="{{ old('applicator_no') }}" required></td>
+                                    <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}" required></td>
+                                    <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open" required></td>
+                                    <td><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}" required></td>
                                     <td><a href="#" class="btn btn-danger remove">-</a></td>
                                 </tr>
                             </tbody>
@@ -269,6 +269,22 @@
         });
         $('#part_id').on('select2:open', function(e) {
             $('.select2-search__field').attr('placeholder', 'Cari Part...');
+        });
+
+        $('.car_model').select2({
+            placeholder: "- Pilih Car Model -",
+            allowClear: true
+        });
+        $('.car_model').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Car Model...');
+        });
+
+        $('select[name="machine_no[]"]').select2({
+            placeholder: "- Pilih Machine -",
+            allowClear: true
+        });
+        $('select[name="machine_no[]"]').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Machine...');
         });
     });
 </script>
@@ -517,7 +533,7 @@
     function addRow() {
         var tr = '<tr>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control carname" name="carname[]" id="carname">' +
+            '<select class="form-control carname" name="carname[]" id="carname" required>' +
             '<option value="">- Pilih Carline -</option>' +
             '@if (sizeof($carnames) > 0)' +
             '@foreach ($carnames as $carname)' +
@@ -527,7 +543,7 @@
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control car_model" name="car_model[]" id="car_model">' +
+            '<select class="form-control car_model" name="car_model[]" id="car_model" required>' +
             '<option value="">- Pilih Car Model -</option>' +
             '@if (sizeof($carlines) > 0)' +
             '@foreach ($carlines as $carline)' +
@@ -537,14 +553,14 @@
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control" name="shift[]" id="shift">' +
+            '<select class="form-control" name="shift[]" id="shift" required>' +
             '<option value="">- Pilih Shift -</option>' +
             '<option value="A">Shift A</option>' +
             '<option value="B">Shift B</option>' +
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control" name="machine_no[]" id="machine_no">' +
+            '<select class="form-control" name="machine_no[]" id="machine_no" required>' +
             '<option value="" disabled selected>- Pilih Machine -</option>' +
             '@if (sizeof($machines) > 0)' +
             '@foreach ($machines as $machine)' +
@@ -554,13 +570,13 @@
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;"><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="{{ old('
-        stroke ') }}"></td>' +
+        stroke ') }}" required></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="serial_no[]" placeholder="serial_no" class="form-control" value="{{ old('
-        serial_no ') }}"></td>' +
+        serial_no ') }}" required></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="side_no[]" placeholder="side_no" class="form-control" value="{{ old('
-        side_no ') }}"></td>' +
+        side_no ') }}" required></td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control" name="part_id[]" id="part_id">' +
+            '<select class="form-control" name="part_id[]" id="part_id" required>' +
             '<option value="">- Pilih Part -</option>' +
             '@if (sizeof($parts) > 0)' +
             '@foreach ($parts as $part)' +
@@ -570,7 +586,7 @@
             '</select>' +
             '</td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control" name="alasan[]" id="alasan">' +
+            '<select class="form-control" name="alasan[]" id="alasan" required>' +
             '<option value="" disabled selected>- Pilih Alasan -</option>' +
             '<option value="New Project">- New Project -</option>' +
             '<option value="Replacement">- Replacement -</option>' +
@@ -583,12 +599,12 @@
             '<option value="Import"> Import </option>' +
             '</select>' +
             '</td>' +
-            '<td style="padding-right: 10px;"><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control"></td>' +
-            '<td style="padding-right: 10px;"><input type="text" name="pic[]" placeholder="pic" class="form-control"></td>' +
-            '<td style="padding-right: 10px;"><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control"></td>' +
-            '<td style="padding-right: 10px;"><input type="text" name="remarks[]" placeholder="remarks" class="form-control"></td>' +
-            '<td style="padding-right: 10px;"><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open"></td>' +
-            '<td style="padding-right: 10px;"><input required type="file" name="image_part[]" placeholder="wt status" class="form-control"></td>' +
+            '<td style="padding-right: 10px;"><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" required></td>' +
+            '<td style="padding-right: 10px;"><input type="text" name="pic[]" placeholder="pic" class="form-control" required></td>' +
+            '<td style="padding-right: 10px;"><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" required></td>' +
+            '<td style="padding-right: 10px;"><input type="text" name="remarks[]" placeholder="remarks" class="form-control" required></td>' +
+            '<td style="padding-right: 10px;"><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open" required></td>' +
+            '<td style="padding-right: 10px;"><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" required></td>' +
             '<td><a href="#" class="btn btn-danger remove">-</a></td>' +
             '</tr>';
         $('.table-body1').append(tr);
