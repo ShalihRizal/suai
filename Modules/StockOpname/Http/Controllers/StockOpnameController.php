@@ -11,10 +11,15 @@ use Modules\Part\Repositories\PartRepository;
 use Modules\Rack\Repositories\RackRepository;
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\StockOpname\Repositories\StockOpnameRepository;
+use Modules\StockOpname\Repositories\LogPartRequestRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
+use Illuminate\Support\Facades\Redirect;
 use Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\hasstoexport;
+use App\Exports\Nostoexport;
 
 class StockOpnameController extends Controller
 {
@@ -26,6 +31,7 @@ class StockOpnameController extends Controller
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_stockopnameRepository = new StockOpnameRepository;
+        $this->_logPartReqRepository = new LogPartRequestRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "StockOpname";
     }
@@ -352,6 +358,24 @@ class StockOpnameController extends Controller
 
         return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
     }
+    public function adjusting(Request $request)
+    {
+
+        $data = [
+            'part_no' => $request->part_no_hidden,
+            'description' => 'Pada Part No : ' . $request->part_no_hidden . 'Terdapat perbedaan qty pada sistem dan aktual part'
+        ];
+
+        dd($data);
+
+
+        DB::beginTransaction();
+        $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'create');
+        DB::commit();
+
+        return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
+    }
 
     /**
      * Show the specified resource.
@@ -477,12 +501,24 @@ class StockOpnameController extends Controller
     public function cdupdate(Request $request, $id)
     {
 
+        // dd($request->all());
+
+        $data = [
+            'description' => $request->adjusting,
+            'part_no' => $request->part_nos
+        ];
+        // dd($data);
+
         $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
+        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+
+        // dd($cek);
         $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();
 
-        return redirect('stockopname/cd')->with('message', 'StockOpname berhasil diubah');
+        return Redirect::back();
     }
     public function spupdate(Request $request, $id)
     {
@@ -602,6 +638,15 @@ class StockOpnameController extends Controller
         }
 
         return $response;
+    }
+
+    public function hasstoexport()
+    {
+        return Excel::download(new HasstoExport, 'stockopname.xlsx');
+    }
+    public function nostoexport()
+    {
+        return Excel::download(new Nostoexport, 'stockopname.xlsx');
     }
 
     private function _validationRules($id = '')

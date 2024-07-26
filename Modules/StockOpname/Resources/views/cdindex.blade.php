@@ -27,7 +27,6 @@
 @endsection
 
 @section('content')
-
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -115,7 +114,7 @@
                                             <td width="5%">{{ $part->qty_end }}</td>
                                             <td width="10%">{{ $part->loc_ppti }}</td>
                                             <td width="5%">{{ $part->last_sto }}</td>
-                                            <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td>
+                                            {{-- <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td> --}}
                                         </tr>
                                     @endforeach
                                 @endif
@@ -131,7 +130,7 @@
     <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ url('stockopname/update/af') }}" method="POST">
+                <form action="{{ url('stockopname/update/cd') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-body">
@@ -155,9 +154,17 @@
                                 <label class="form-label">Status<span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
                             </div>
+                            <div class="form-group">
+                                <label class="form-label">Adjusting<span class="text-danger"></span></label>
+                                <input type="text" class="form-control" id="adjusting" name="adjusting" value="">
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="form-label">Part No<span class="text-danger"></span></label>
+                                <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="text-white btn btn-success">STO</button>
+                            <button type="submit" class="text-white btn btn-success submitButton">STO</button>
                             <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                         </div>
                     </div>
@@ -168,35 +175,6 @@
 @endsection
 
 @section('script')
-    {{-- <script type="text/javascript">
-        $('.part_no').on('keyup', function(event) {
-            if (event.key === "Enter") {
-                // var id = $(this).attr('data-id');
-                var url = "{{ url('stockopname/getdata') }}";
-                $.ajax({
-                    type: 'GET',
-                    url: url + '/' + id,
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log(data);
-
-                        if (data.status == 1) {
-                            $('#part_no_hidden').val(data.result.part_no);
-                            $('#qty_no_hidden').val(data.result.qty_end);
-                            $('#Status').val('yes');
-                            $('.addReset .modal-title').text('Approve');
-                            $('.addReset form').attr('action', "{{ url('stockopname/update/cd') }}" + '/' + data.result.part_id);
-                            $('.addReset').modal('show');
-                        }
-
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert('Error : Gagal mengambil data');
-                    }
-                });
-            }
-        });
-    </script> --}}
 
     <script type="text/javascript">
         // Function to show/hide tables based on dropdown selection
@@ -284,6 +262,7 @@
                                     $('#part_name_hidden').val(data.result[0].part_name);
                                     $('#part_no_hidden').val(data.result[0].part_no);
                                     $('#has_sto').val('yes');
+                                    $('#part_nos').val(data.result[0].part_no);
 
                                     var lastStoInput = document.getElementById("last_sto");
                                     var currentDateTime = new Date();
@@ -326,9 +305,5 @@
                 }
             });
         });
-     </script>
-
-
-
-
+    </script>
 @endsection

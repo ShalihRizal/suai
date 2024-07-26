@@ -1,5 +1,6 @@
 <?php
 use Modules\MonthlyReport\Http\Controllers\MonthlyReportController;
+use Maatwebsite\Excel\Excel;
 
 
 /*
@@ -36,5 +37,7 @@ Route::prefix('stockopname')->group(function () {
     Route::get('/hassto', 'StockOpnameController@hassto');
     Route::get('/nosto', 'StockOpnameController@nosto');
     Route::get('/updateall', 'StockOpnameController@updateall');
+    Route::post('/adjusting', 'StockOpnameController@adjusting');
+    Route::get('/export-hassto', 'StockOpnameController@hasstoexport');
+    Route::get('/export-nosto', 'StockOpnameController@nostoexport');
 });
-

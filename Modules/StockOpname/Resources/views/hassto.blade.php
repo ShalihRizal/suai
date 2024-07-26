@@ -54,6 +54,12 @@
                     </div>
                 </div>
                 <div colspan="4" align="center">ㅤ</div>
+                <div class="col-auto ms-3 d-print-none">
+                    <a href="{{ url('stockopname/export-hassto') }}" class="btn btn-primary">
+                        <i data-feather="download" width="16" height="16" class="me-2"></i> Export
+                    </a>
+                </div>
+                <div colspan="4" align="center">ㅤ</div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header w-100">
@@ -65,6 +71,7 @@
                             </div>
                             <div class="col-md-12 text-end"></div>
                         </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
@@ -74,7 +81,7 @@
                                             <th width="20%">Part Name</th>
                                             <th width="15%">Part Number</th>
                                             <th width="20%">Stock</th>
-                                            <th width="20%">QR Code</th>
+                                            {{-- <th width="20%">QR Code</th> --}}
                                             <th width="15%">Last STO</th>
                                         </tr>
                                     </thead>
@@ -90,7 +97,7 @@
                                                     <td width="20%">{{ $part->part_name }}</td>
                                                     <td width="15%">{{ $part->part_no }}</td>
                                                     <td width="20%">{{ $part->qty_end }}</td>
-                                                    <td width="20%">{{ QrCode::size(150)->generate($part->part_id) }}
+                                                    {{-- <td width="20%">{{ QrCode::size(150)->generate($part->part_id) }} --}}
                                                     </td>
                                                     <td width="15%">{{ $part->last_sto }}</td>
                                                     {{-- <td width="15%">{{ substr($part->updated_at, 0,10) }}</td> --}}
