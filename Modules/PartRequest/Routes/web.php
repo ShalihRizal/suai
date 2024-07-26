@@ -15,6 +15,7 @@
 Route::prefix('partrequest')->group(function () {
     Route::get('/', 'PartRequestController@index');
     Route::get('/create', 'PartRequestController@create');
+    Route::get('/createcd', 'PartRequestController@createcd');
     Route::get('/show/{id}', 'PartRequestController@show');
     Route::get('/edit/{id}', 'PartRequestController@edit');
     Route::post('/store', 'PartRequestController@store');
@@ -60,4 +61,3 @@ Route::prefix('partrequest')->group(function () {
     Route::get('/cf/delete/{id}', 'PartRequestController@cfdestroy');
     Route::get('/cf/getdata/{id}', 'PartRequestController@getdata');
 });
-
