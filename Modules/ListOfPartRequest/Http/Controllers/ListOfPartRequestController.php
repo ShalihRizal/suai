@@ -222,6 +222,6 @@ class ListOfPartRequestController extends Controller
             return [
                 'part_req_number' => 'required',
             ];
-    }
+        }
     }
 }
