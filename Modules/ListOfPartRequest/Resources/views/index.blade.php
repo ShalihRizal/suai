@@ -41,9 +41,9 @@
             <div class="card-header w-100">
                 <div class="col-md-6">
                     <div class="addData">
-                        <a href="{{ url('/listofpartrequest/download-pdf') }}" class="btn btn-success text-white mb-3">
+                        <a href="{{ url('/listofpartrequest/export-listofpartreq') }}" class="btn btn-success text-white mb-3">
                             <i data-feather="download" width="16" height="16" class="me-2"></i>
-                            Download PDF
+                            Download
                         </a>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                                 <td>{{ $partrequest->carname_name }}</td>
                                 <td>{{ $partrequest->carline_name }}</td>
                                 <td>{{ $partrequest->alasan }}</td>
-                                <td>{{ $partrequest->order }}</td>
+                                <td>{{ $partrequest->kategori }}</td>
                                 <td>{{ $partrequest->shift }}</td>
                                 <td>{{ $partrequest->machine_no }}</td>
                                 <td>{{ $partrequest->applicator_no }}</td>
@@ -122,10 +122,10 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($partrequest->part_req_id > 0)
+                                    @if ($partrequest->partlist_id > 0)
                                     <a href="javascript:void(0)"
                                         class="btn btn-icon btnEdit btn-success text-white"
-                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
+                                        data-id="{{ $partrequest->partlist_id }}" data-toggle="tooltip"
                                         data-placement="top" title="Details">
                                         <i data-feather="list" width="16" height="16">Details</i>
                                     </a>
@@ -329,16 +329,17 @@
                     $('#carline').val(data.result.carline_name);
                     $('#car_model').val(data.result.carname_name);
                     $('#alasan').val(data.result.alasan);
-                    $('#order').val(data.result.order);
+                    $('#order').val(data.result.kategori);
                     $('#shift').val(data.result.shift);
                     $('#machine_no').val(data.result.machine_no);
                     $('#applicator_no').val(data.result.applicator_no);
                     $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
+                    $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
                     $('#serial_no').val(data.result.serial_no);
                     $('#side_no').val(data.result.side_no);
                     $('#stroke').val(data.result.stroke);
                     $('#pic').val(data.result.pic);
-                    $('#remarks').val(data.result.remarks);
+                    $('#remarks').val(data.result.part_request_remarks);
                     $('#part_qty').val(data.result.part_qty);
                     $('#status').val(data.result.status);
                     $('#approved_by').val(data.result.approved_by);

@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Modules\Part\Repositories\PartRepository;
 
-class Nostoexport implements FromCollection, ShouldAutoSize
+class NostoExport implements FromCollection, ShouldAutoSize
 {
     protected $partRepository;
 

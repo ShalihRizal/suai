@@ -2,6 +2,7 @@
 
 namespace Modules\ListOfPartRequest\Http\Controllers;
 
+use App\Exports\listofpartreqexport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -12,6 +13,7 @@ use Modules\PartRequest\Repositories\PartRequestRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Validator;
 
@@ -210,6 +212,11 @@ class ListOfPartRequestController extends Controller
         }
 
         return $response;
+    }
+
+    public function listofpartreqexport()
+    {
+        return Excel::download(new listofpartreqexport, 'listofpartreq.xlsx');
     }
 
     private function _validationRules($id = '')

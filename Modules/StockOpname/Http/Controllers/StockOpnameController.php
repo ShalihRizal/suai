@@ -646,7 +646,7 @@ class StockOpnameController extends Controller
     }
     public function nostoexport()
     {
-        return Excel::download(new Nostoexport, 'stockopname.xlsx');
+        return Excel::download(new NostoExport, 'stockopname.xlsx');
     }
 
     private function _validationRules($id = '')
