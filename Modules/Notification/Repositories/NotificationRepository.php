@@ -36,8 +36,8 @@ class NotificationRepository extends QueryBuilderImplementation
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
-                ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
-                ->select("part_request.*", "part.*", "carline.*", "machine.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks", "part_request.applicator_no as part_request_applicator_no", "part.applicator_no as part_applicator_no")
+                // ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
+                ->select("part_request.*", "part.*", "carline.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks", "part_request.applicator_no as part_request_applicator_no", "part.applicator_no as part_applicator_no")
                 ->where($this->pk, '=', $id)
                 ->first();
         } catch (Exception $e) {
