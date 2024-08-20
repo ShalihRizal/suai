@@ -51,7 +51,7 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
-                ->select("part_request.*", "part.*", "carline.*", "carname.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
+                ->select("part_request.*", "part.*", "carline.*", "carname.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks", "part_request.applicator_no as part_request_applicator_no")
                 ->where($this->pk, '=', $id)
                 ->first();
         } catch (Exception $e) {
