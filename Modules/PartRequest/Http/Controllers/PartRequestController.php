@@ -90,7 +90,7 @@ class PartRequestController extends Controller
 
         $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
-        $last = $this->_PartRequestRepository->getLast();
+        // $last = $this->_PartRequestRepository->getLast();
 
         $file = $request->image_part;
         $fileName = DataHelper::getFileName($file);
@@ -100,12 +100,10 @@ class PartRequestController extends Controller
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
         $currentYear = date('Y');
 
-        if ($last != null) {
-            $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/SP/$currentMonth/$currentYear";
-        } else {
-            $part_req_number = "0000/TO/SP/$currentMonth/$currentYear";
-        }
+        $count = $this->_PartRequestRepository->count();
+
+        $padded_part_req_id = str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $part_req_number = "$padded_part_req_id/TO/SP/$currentMonth/$currentYear";
 
         $partreq = [
             'part_req_pic_filename' => $fileName,
