@@ -970,7 +970,7 @@ class PartRequestController extends Controller
         $userGroupId = Auth::user()->group_id;
 
         $part = $this->_partRepository->getById($request->part_id);
-        $last = $this->_PartRequestRepository->getLast();
+        // $last = $this->_PartRequestRepository->getLast();
 
         $fileName = null;
         $filePath = null;
@@ -989,12 +989,10 @@ class PartRequestController extends Controller
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
         $currentYear = date('Y');
 
-        if ($last != null) {
-            $padded_part_req_id = str_pad($last->part_req_id, 4, '0', STR_PAD_LEFT);
-            $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
-        } else {
-            $part_req_number = "0000/TO/CF/$currentMonth/$currentYear";
-        }
+        $count = $this->_PartRequestRepository->count();
+
+        $padded_part_req_id = str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $part_req_number = "$padded_part_req_id/TO/CF/$currentMonth/$currentYear";
 
 
         $partreq = [
@@ -1021,6 +1019,8 @@ class PartRequestController extends Controller
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
         ];
+
+        // dd($partreq);
 
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
@@ -1138,10 +1138,10 @@ class PartRequestController extends Controller
 
         $detail = $this->_PartRequestRepository->getById($id);
 
+        // dd($detail);
         if (!$detail) {
             return redirect('partrequest/cf');
         }
-
         DB::beginTransaction();
 
         $this->_PartRequestRepository->delete($id);
