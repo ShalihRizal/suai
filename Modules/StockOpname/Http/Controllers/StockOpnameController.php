@@ -2,6 +2,7 @@
 
 namespace Modules\StockOpname\Http\Controllers;
 
+use App\Exports\Adjusting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -20,7 +21,6 @@ use Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\hasstoexport;
 use App\Exports\Nostoexport;
-use App\Exports\AdjustingExport;
 
 class StockOpnameController extends Controller
 {
@@ -361,7 +361,7 @@ class StockOpnameController extends Controller
     }
     public function adjusting()
     {
-        return Excel::download(new AdjustingExport, 'adjusting.xlsx');
+        return Excel::download(new Adjusting, 'adjusting.xlsx');
     }
 
     /**
