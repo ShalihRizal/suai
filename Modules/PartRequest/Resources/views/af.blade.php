@@ -575,6 +575,45 @@
     });
 </script>
 <script>
+    $(document).ready(function() {
+        $('#machine_id').select2({
+            placeholder: "- Pilih Machine -",
+            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+        });
+
+        // Fungsi pencarian saat pengguna mengetik di input
+        $('#machine_id').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Machine...');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#carname').select2({
+            placeholder: "- Pilih Car -",
+            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+        });
+
+        // Fungsi pencarian saat pengguna mengetik di input
+        $('#carname').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Car...');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#car_model').select2({
+            placeholder: "- Pilih Model -",
+            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+        });
+
+        // Fungsi pencarian saat pengguna mengetik di input
+        $('#car_model').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Model...');
+        });
+    });
+</script>
+<script>
     var video;
     var captureInterval;
 
