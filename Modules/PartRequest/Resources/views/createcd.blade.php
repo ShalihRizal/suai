@@ -79,9 +79,7 @@
                                                 <option value="" disabled selected>- Pilih Machine -</option>
                                                 @if (sizeof($machines) > 0)
                                                 @foreach ($machines as $machine)
-                                                <option value="{{ $machine->machine_id }}" data-machine-name="{{ $machine->machine_name }}" data-machine-number="{{ $machine->machine_no }}">
-                                                    {{ $machine->machine_no }} - {{ $machine->machine_name }}
-                                                </option>
+                                                <option value="{{ $machine->machine_no }}">{{ $machine->machine_no }}</option>
                                                 @endforeach
                                                 @endif
                                             </select>
@@ -243,15 +241,16 @@
             '</td>' +
             '<td>' +
             '<select class="form-control" name="machine_no[]" id="machine_no[]" required>' +
-            '<option value="" disabled>- Pilih Machine -</option>' +
+            '<option value="" disabled selected>- Pilih Machine -</option>' +
             '@if (sizeof($machines) > 0)' +
             '@foreach ($machines as $machine)' +
-            '<option value="{{ $machine->machine_id }}" data-machine-name="{{ $machine->machine_name }}" data-machine-number="{{ $machine->machine_no }}"' + (lastMachineNo == "{{ $machine->machine_id }}" ? ' selected' : '') + '>{{ $machine->machine_no }} - {{ $machine->machine_name }}</option>' +
+            '<option value="{{ $machine->machine_no }}">{{ $machine->machine_no }}</option>' +
             '@endforeach' +
             '@endif' +
             '</select>' +
             '</td>' +
-            '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="' + lastStroke + '" required></td>' +
+            '<td>' +
+            '<input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="' + lastStroke + '" required></td>' +
             '<td><input type="text" name="serial_no[]" placeholder="Serial No" class="form-control" value="' + lastSerialNo + '" required></td>' +
             '<td><input type="text" name="side_no[]" placeholder="Side No" class="form-control" value="' + lastSideNo + '" required></td>' +
             '<td>' +

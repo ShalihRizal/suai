@@ -474,7 +474,7 @@ class PartRequestController extends Controller
                 'serial_no' => $serialnos[$index],
                 'applicator_no' => $applicatornos[$index],
                 'side_no' => $sidenos[$index],
-                'machine_no' => (int) $machine_nos[$index],
+                'machine_no' => $machine_nos[$index],
                 'alasan' => $alasans[$index],
                 'order' => $orders[$index],
                 'stroke' => $strokes[$index],
@@ -488,7 +488,7 @@ class PartRequestController extends Controller
             ];
         }
 
-        dd($partRequests);
+        // dd($partRequests);
 
         foreach ($partRequests as $partreq) {
             DB::beginTransaction();
