@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Modules\StockOpname\Repositories\LogPartRequestRepository;
 
-class adjustingexport implements FromCollection, ShouldAutoSize
+class AdjustingExport implements FromCollection, ShouldAutoSize
 {
     protected $partRepository;
 
