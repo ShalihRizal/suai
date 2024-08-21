@@ -615,19 +615,6 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#machine_id').select2({
-            placeholder: "- Pilih Machine -",
-            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
-        });
-
-        // Fungsi pencarian saat pengguna mengetik di input
-        $('#machine_id').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Machine...');
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
         $('#carname').select2({
             placeholder: "- Pilih Car -",
             allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
@@ -1027,19 +1014,44 @@
         }
     });
 </script>
+<script>
+    $(document).ready(function() {
+        // Inisialisasi select2 untuk machine_id
+        $('#machine_id').select2({
+            placeholder: "- Pilih Machine -",
+            allowClear: true // Untuk membolehkan pengguna menghapus pilihan yang sudah dipilih
+        });
 
+        // Fungsi pencarian saat pengguna mengetik di input
+        $('#machine_id').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Machine...');
+        });
+
+        // Event listener untuk mengupdate Machine Name dan Machine Number
+        $('#machine_id').on('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var machineNameInput = document.getElementById("machine_name");
+            var machineNoInput = document.getElementById("machine_no");
+
+            // Check if a valid option is selected
+            if (selectedOption.value !== "") {
+                // Get the data attributes from the selected option
+                var machineName = selectedOption.getAttribute("data-machine-name");
+                var machineNumber = selectedOption.getAttribute("data-machine-number");
+
+                // Set the values in the input fields
+                machineNameInput.value = machineName;
+                machineNoInput.value = machineNumber;
+            } else {
+                // Clear the input fields if no option is selected
+                machineNameInput.value = "";
+                machineNoInput.value = "";
+            }
+        });
+    });
+</script>
 <script>
     // Add event listener to the dropdown
-    document.getElementById('machine_id').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
-        var machineName = selectedOption.getAttribute('data-machine-name');
-        var machineNumber = selectedOption.getAttribute('data-machine-number');
-
-        // Set the values of the input fields
-        document.getElementById('machine_name').value = machineName;
-        document.getElementById('machine_no').value = machineNumber;
-    });
-
     document.querySelector('.btnFilter').addEventListener('click', function() {
         const startDate = new Date(document.getElementById('start_date').value);
         const endDate = new Date(document.getElementById('end_date').value);

@@ -133,7 +133,7 @@ class PartRequestController extends Controller
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
         DB::commit();
-
+        dd($cek, $partreq);
         $additional = [
             "part_req_id" => $cek,
             'created_at' => date('Y-m-d H:i:s'),
