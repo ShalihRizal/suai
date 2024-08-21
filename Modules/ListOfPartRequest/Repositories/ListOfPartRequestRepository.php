@@ -33,6 +33,7 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
+                ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
                 // ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
                 // S->select("partlist.part_req_id as partlist_part_req_id", "part_request.part_req_id as part_request_part_req_id")
                 // ->orderBy('part_req_id')

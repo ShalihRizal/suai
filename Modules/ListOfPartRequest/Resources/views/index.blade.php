@@ -101,7 +101,7 @@
                                 <td>{{ $partrequest->remarks }}</td>
                                 <td>{{ $partrequest->part_qty }}</td>
                                 <td>{{ $partrequest->status }}</td>
-                                <td>{{ $partrequest->approved_by }}</td>
+                                <td>{{ $partrequest->user_name }}</td>
                                 <td>{{ $partrequest->part_no }}</td>
                                 <td>
                                     @if ($partrequest->wear_and_tear_status == 'Open')
