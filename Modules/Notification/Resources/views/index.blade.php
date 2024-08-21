@@ -384,6 +384,7 @@
             success: function(data) {
                 console.log(data);
 
+
                 if (data.status == 1) {
                     $('#part_req_number').val(data.result.part_req_number);
                     $('#carname').val(data.result.carname);
