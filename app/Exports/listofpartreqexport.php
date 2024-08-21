@@ -28,6 +28,8 @@ class listofpartreqexport implements FromCollection, ShouldAutoSize
         // Fetch data from the PartRepository
         $data = $this->partRepository->getAll();
 
+        // dd($data);
+
         // Define the header row with all the specified field names
         $formattedData = [
             [
@@ -79,7 +81,7 @@ class listofpartreqexport implements FromCollection, ShouldAutoSize
                 $item->status,
                 $item->user_name,
                 $item->wear_and_tear_status,
-                $item->created_at,
+                $item->part_request_created_at,
             ];
         }
 

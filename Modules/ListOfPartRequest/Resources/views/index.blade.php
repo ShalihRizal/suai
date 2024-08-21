@@ -122,10 +122,10 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($partrequest->partlist_id > 0)
+                                    @if ($partrequest->partlist_part_req_id > 0)
                                     <a href="javascript:void(0)"
                                         class="btn btn-icon btnEdit btn-success text-white"
-                                        data-id="{{ $partrequest->partlist_id }}" data-toggle="tooltip"
+                                        data-id="{{ $partrequest->partlist_part_req_id }}" data-toggle="tooltip"
                                         data-placement="top" title="Details">
                                         <i data-feather="list" width="16" height="16">Details</i>
                                     </a>
