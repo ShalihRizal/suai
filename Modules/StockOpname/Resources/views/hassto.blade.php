@@ -58,6 +58,11 @@
                     <a href="{{ url('stockopname/export-hassto') }}" class="btn btn-primary">
                         <i data-feather="download" width="16" height="16" class="me-2"></i> Export
                     </a>
+                    <a href="/stockopname/adjusting" class="btn btn-success btnAdd text-white">
+                        <i data-feather="file-text" width="16" height="16" class="me-2"></i> Adjusting
+                    </a>
+                {{-- </div>
+                <div class="col-auto ms-3 d-print-none"> --}}
                 </div>
                 <div colspan="4" align="center">ㅤ</div>
                 <div class="col-md-12">

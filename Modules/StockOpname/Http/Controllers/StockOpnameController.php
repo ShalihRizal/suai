@@ -20,6 +20,7 @@ use Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\hasstoexport;
 use App\Exports\Nostoexport;
+use App\Exports\AdjustingExport;
 
 class StockOpnameController extends Controller
 {
@@ -358,23 +359,9 @@ class StockOpnameController extends Controller
 
         return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
     }
-    public function adjusting(Request $request)
+    public function adjusting()
     {
-
-        $data = [
-            'part_no' => $request->part_no_hidden,
-            'description' => 'Pada Part No : ' . $request->part_no_hidden . 'Terdapat perbedaan qty pada sistem dan aktual part'
-        ];
-
-        dd($data);
-
-
-        DB::beginTransaction();
-        $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'create');
-        DB::commit();
-
-        return redirect('stockopname')->with('message', 'StockOpname berhasil ditambahkan');
+        return Excel::download(new AdjustingExport, 'adjusting.xlsx');
     }
 
     /**
@@ -504,8 +491,8 @@ class StockOpnameController extends Controller
         // dd($request->all());
 
         $data = [
-            'description' => $request->adjusting,
-            'part_no' => $request->part_nos
+            'part_no' => $request->part_nos,
+            'description' => 'Pada Part No : ' . $request->part_nos . ' Terdapat perbedaan qty pada sistem dan aktual part sebesar ' . $request->adjusting
         ];
         // dd($data);
 
