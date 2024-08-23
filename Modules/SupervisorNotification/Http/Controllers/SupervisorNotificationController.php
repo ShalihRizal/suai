@@ -143,14 +143,14 @@ class SupervisorNotificationController extends Controller
         $part = $this->_partRepository->getById($detail->part_id);
         // dd($part, $detail);
         if ($part) {
-            $stock = intval($part->qty_end) - intval($detail->part_qty);
+            $stock = intval($part->qty_out) + intval($detail->part_qty);
             if (intval($detail->status) == 0) {
                 $updateStatus = [
                     // 'status' => 1,
                 ];
                 $updatePart = [
                     // 'status' => 1,
-                    'qty_end' => $stock,
+                    'qty_out' => $stock,
                     // 'part_no' => $request->part_no,
                     'kategori_inventory' => $request->kategori_inventory,
                 ];

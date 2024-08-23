@@ -143,33 +143,15 @@ class NotificationController extends Controller
         $part = $this->_partRepository->getById($detail->part_id);
         // dd($part, $detail);
         if ($part) {
-            $stock = intval($part->qty_end) - intval($detail->part_qty);
-            if (intval($detail->status) == 0) {
                 $updateStatus = [
                     'status' => 1,
-                    'wear_and_tear_status' => "On Progress",
-                    'status' => "1",
-                    'approved_by' => $request->approved_by
-                ];
-                $updatePart = [
-                    'qty_end' => $stock
-                ];
-            } else {
-                $updateStatus = [
-                    'status' => 0,
-                    'wear_and_tear_status' => "On Progress",
-                    'status' => "1",
-                    'approved_by' => $request->approved_by
-
-                ];
-                $updatePart = [
-                    'qty_end' => $stock
-                ];
-            }
+                'wear_and_tear_status' => "On Progress",
+                'approved_by' => $request->approved_by
+            ];
             // dd($updateStatus);
             DB::beginTransaction();
-            $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
-            $check = $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
+            // $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
+            $this->_notificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
             $this->_logHelper->store($this->module, $request->notification_id, 'update');
             // dd($request, $check);
             DB::commit();
