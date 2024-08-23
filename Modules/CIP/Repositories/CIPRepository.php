@@ -20,15 +20,14 @@ class CIPRepository extends QueryBuilderImplementation
     {
         try {
             return DB::connection($this->db)
-
                 ->table($this->table)
                 ->leftJoin('part', 'part_request.part_id', '=', 'part.part_id')
-                ->leftJoin('carname', 'part_request.carname', '=', 'carname.carname_id')
+                // Perbaiki referensi kolom di sini
+                ->leftJoin('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->leftJoin('carline_category', 'part_request.car_model', '=', 'carline_category.carline_category_id')
                 ->select("part_request.*", "part.*", "carname.*", "carline_category.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at")
                 ->where($params)
                 ->get();
-
         } catch (Exception $e) {
             return $e->getMessage();
         }
