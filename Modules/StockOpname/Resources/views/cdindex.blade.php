@@ -126,44 +126,6 @@
     </div>
 </div>
 
-<<<<<<< Updated upstream
-    <!-- Modal -->
-    <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="{{ url('stockopname/update/cd') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-body">
-                            <div class="form-group">
-                                <label class="form-label">Part Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="part_name_hidden" name="part_name_hidden" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Part No<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">QTY<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
-                            </div>
-                            <div class="form-group" hidden>
-                                <label class="form-label">Status<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
-                            </div>
-                            <div class="form-group" hidden>
-                                <label class="form-label">Status<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">QTY Actual<span class="text-danger"></span></label>
-                                <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
-                            </div>
-                            <div class="form-group" hidden>
-                                <label class="form-label">Part No<span class="text-danger"></span></label>
-                                <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
-                            </div>
-=======
 <!-- Modal -->
 <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -175,7 +137,6 @@
                         <div class="form-group">
                             <label class="form-label">Part Name<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="part_name_hidden" name="part_name_hidden" disabled>
->>>>>>> Stashed changes
                         </div>
                         <div class="form-group">
                             <label class="form-label">Part No<span class="text-danger">*</span></label>
@@ -185,6 +146,31 @@
                             <label class="form-label">QTY<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
                         </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="form-label">QTY Actual<span class="text-danger"></span></label>
+                            <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Part No<span class="text-danger"></span></label>
+                            <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Part No<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">QTY<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
+                    </div> -->
                         <!-- <div class="form-group">
                             <label class="form-label">QTY End<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_end" name="qty_end" value="" disabled>
