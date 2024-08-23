@@ -88,6 +88,8 @@ class PartRequestController extends Controller
     public function spstore(Request $request)
     {
 
+        date_default_timezone_set('Asia/Jakarta');
+
         $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         // $last = $this->_PartRequestRepository->getLast();
@@ -128,7 +130,9 @@ class PartRequestController extends Controller
             'status' => $request->status,
             'approved_by' => $request->approved_by,
             'part_no' => $part->part_no,
+            'created_at' => now(), // Diubah untuk mengambil jam pada saat dibuat
         ];
+        // dd($partreq);
 
         DB::beginTransaction();
         $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
@@ -136,7 +140,7 @@ class PartRequestController extends Controller
         // dd($cek, $partreq);
         $additional = [
             "part_req_id" => $cek,
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => now(), // Diubah untuk mengambil jam pada saat dibuat
         ];
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
@@ -376,6 +380,7 @@ class PartRequestController extends Controller
     public function cdstore(Request $request)
     {
 
+        date_default_timezone_set('Asia/Jakarta');
         $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         // $last = $this->_PartRequestRepository->getLast();
@@ -496,7 +501,7 @@ class PartRequestController extends Controller
                 $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
                 $listofpartreq = [
                     "part_req_id" => $cek,
-                    'created_at' => date('Y-m-d H:i:s'),
+                    'created_at' => now(),
                 ];
                 $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
                 $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
@@ -715,6 +720,7 @@ class PartRequestController extends Controller
     public function afstore(Request $request)
     {
 
+        date_default_timezone_set('Asia/Jakarta');
         $userGroupId = Auth::user()->group_id;
         $part = $this->_partRepository->getById($request->part_id);
         // $last = $this->_PartRequestRepository->getLast();
@@ -774,7 +780,7 @@ class PartRequestController extends Controller
 
         $additional = [
             "part_req_id" => $cek,
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => now(),
         ];
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
@@ -961,6 +967,8 @@ class PartRequestController extends Controller
      */
     public function cfstore(Request $request)
     {
+
+        date_default_timezone_set('Asia/Jakarta');
         $userGroupId = Auth::user()->group_id;
 
         $part = $this->_partRepository->getById($request->part_id);
@@ -1023,7 +1031,7 @@ class PartRequestController extends Controller
 
         $additional = [
             "part_req_id" => $cek,
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => now(),
         ];
 
         $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($additional), true);
