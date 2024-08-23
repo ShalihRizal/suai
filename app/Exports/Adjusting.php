@@ -32,11 +32,11 @@ class Adjusting implements FromCollection, ShouldAutoSize
         $formattedData = [
             ['Total Part Yang Adjusting:', $totalParts],
             [''],
-            ['Part Number', 'Adjusting']
+            ['Part Number', 'Adjusting', 'Qty Sistem', 'Qty Actual']
         ];
 
         foreach ($data as $item) {
-            $formattedData[] = [$item->part_no, $item->description]; // Adjust the columns as per your needs
+            $formattedData[] = [$item->part_no, $item->description, $item->qty_end, $item->qty_actual]; // Adjust the columns as per your needs
         }
 
         return collect($formattedData);

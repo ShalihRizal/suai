@@ -15,6 +15,8 @@ return new class extends Migration {
         Schema::create('log_part_request', function (Blueprint $table) {
             $table->id();
             $table->string('part_no');
+            $table->integer('qty_end');
+            $table->integer('qty_actual');
             $table->string('description');
             $table->dateTime('created_at');
             $table->bigInteger('created_by')->unsigned();

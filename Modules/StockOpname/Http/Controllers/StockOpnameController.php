@@ -489,12 +489,17 @@ class StockOpnameController extends Controller
     {
 
         // dd($request->all());
+        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $adjusting = $qty_end - $request->adjusting;
 
+        // $qtyend2 = $qty_end['total'];
         $data = [
             'part_no' => $request->part_nos,
-            'description' => 'Pada Part No : ' . $request->part_nos . ' Terdapat perbedaan qty pada sistem dan aktual part sebesar ' . $request->adjusting
+            'description' => $request->adjusting,
+            'qty_end' => $qty_end,
+            'qty_actual' => $adjusting
         ];
-        // dd($data);
+        // dd($data, $qty_end);
 
         $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
