@@ -155,7 +155,7 @@
                                 <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Adjusting<span class="text-danger"></span></label>
+                                <label class="form-label">QTY Actual<span class="text-danger"></span></label>
                                 <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
                             </div>
                             <div class="form-group" hidden>
