@@ -33,13 +33,26 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
-                ->leftJoin('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id') // Mengubah menjadi left join
-                ->select("part_request.*", "sys_users.*", "part.*", "carline.*", "carname.*", "part.created_at as part_created_at", "partlist.part_req_id as partlist_part_req_id", "part_request.part_req_id as part_request_part_req_id", "part_request.created_at as part_request_created_at", "partlist.created_at as partlist_created_at")
+                ->leftJoin('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
+                ->select(
+                    "part_request.*",
+                    "sys_users.*",
+                    "part.*",
+                    "carline.*",
+                    "carname.*",
+                    "part.created_at as part_created_at",
+                    "partlist.part_req_id as partlist_part_req_id",
+                    "part_request.part_req_id as part_request_part_req_id",
+                    "part_request.created_at as part_request_created_at",
+                    "partlist.created_at as partlist_created_at"
+                )
+                ->orderBy('part_request.created_at', 'desc') // Order by descending
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
+
 
     public function getById($id)
     {

@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-md-12 text-end"></div>
             </div>
-            <div class="card-body" style="height: 550px; width:700px;">
+            <div class="card-body" style="height: 650px; width:1000px;">
                 {{-- <div class="container-md"> --}}
                     <div id="piechart" style="width: 100%; height: 100%;"></div>
                 {{-- </div> --}}
@@ -83,7 +83,7 @@
             <div class="card-header w-100">
                 <div class="row">
                     <div class="col-md-6">
-                        <h3 class="h3">Quantity</h3>
+                        <h3 class="h3">Quantity Inventory (pcs)</h3>
                     </div>
                     <div class="col-md-6"></div>
                 </div>
@@ -101,7 +101,7 @@
             <div class="card-header w-100">
                 <div class="row">
                     <div class="col-md-6">
-                        <h3 class="h3">Amount (KUSD)</h3>
+                        <h3 class="h3">Amount Inventory (KUSD)</h3>
                     </div>
                     <div class="col-md-6"></div>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="container-md">
                     <div id="barchart" style="width: 100%; height: 100%;"></div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 </div>
@@ -155,8 +155,8 @@
                 title: '',
                 legend: { position: 'right' },
                 backgroundColor: 'transparent',
-                pieSliceTextStyle: { color: 'transparent' },
-                pieSliceText: 'label',
+                pieSliceText: 'percentage', // Show percentage text on slices
+                pieSliceTextStyle: { color: 'black' }, // Color of percentage text
                 sliceVisibilityThreshold: 0,
                 is3D: true,
                 colors: ['#33d4be', '#43e686', '#9fe643', '#dead28', '#a772f2']
@@ -186,3 +186,4 @@
         }
     </script>
 @endsection
+

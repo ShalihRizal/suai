@@ -21,13 +21,21 @@ class NotificationRepository extends QueryBuilderImplementation
             return DB::connection($this->db)
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
-                ->select("part_request.*", "part.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
+                ->select(
+                    "part_request.*",
+                    "part.*",
+                    "part.created_at as part_created_at",
+                    "part_request.created_at as part_request_created_at",
+                    "part_request.remarks as part_request_remarks"
+                )
                 ->where($params)
+                ->orderBy('part_request.created_at', 'desc') // Order by descending
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
+
 
     public function getById($id)
     {

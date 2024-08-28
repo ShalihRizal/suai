@@ -55,6 +55,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="5%">Part Req Number</th>
+                                <th width="5%">Waktu</th>
                                 <th width="5%">Carname</th>
                                 <th width="5%">Car Model</th>
                                 <th width="5%">Alasan</th>
@@ -86,6 +87,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $partrequest->part_req_number }}</td>
+                                <td width="20%">{{ Str::substr($partrequest->part_request_created_at, 10, 18) }}</td>
                                 <td>{{ $partrequest->carname_name }}</td>
                                 <td>{{ $partrequest->carline_name }}</td>
                                 <td>{{ $partrequest->alasan }}</td>
