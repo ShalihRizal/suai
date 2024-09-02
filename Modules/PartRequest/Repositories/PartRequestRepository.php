@@ -61,7 +61,7 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->select("part_request.*", "part.*", "carname.*", "carline.*", "machine.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
                 ->orderBy('part_req_id')
                 ->get();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -89,7 +89,7 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
-                ->select("part_request.*", "part.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at")
+                ->select("part_request.*")
                 ->where($params)
                 ->get();
         } catch (Exception $e) {

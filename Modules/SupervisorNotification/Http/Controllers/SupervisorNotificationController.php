@@ -49,6 +49,9 @@ class SupervisorNotificationController extends Controller
         $parts = $this->_partRepository->getAll();
         $users = $this->_userRepository->getAll();
 
+        // Menyimpan jumlah supervisornotifications ke dalam session
+        session(['supervisornotifications_count' => count($supervisornotifications)]);
+
         // dd($supervisornotifications);
 
         return view('supervisornotification::index', compact('supervisornotifications', 'parts', 'users'));

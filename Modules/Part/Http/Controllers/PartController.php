@@ -54,6 +54,28 @@ class PartController extends Controller
 
         return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
     }
+    public function allindex(Request $request)
+    {
+        // Authorize
+        // if (Gate::denies(__FUNCTION__, $this->module)) {
+        //     return redirect('unauthorize');
+        // }
+
+        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
+
+        $parts = $this->_partRepository->getAll();
+        $partcategories = $this->_partCategoryRepository->getAll();
+        $racks = $this->_rackRepository->getAll();
+
+        // Filter parts based on the selected category
+        if (!empty($partCategoryFilter)) {
+            $parts = $parts->where('part_category_id', $partCategoryFilter);
+        }
+
+
+
+        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+    }
 
     public function afindex(Request $request)
     {

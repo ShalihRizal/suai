@@ -24,11 +24,21 @@ class SupervisorNotificationRepository extends QueryBuilderImplementation
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
                 ->where($params)
+                ->select(
+                    'part_request.*',
+                    'part.part_no',
+                    'sys_users.user_name',
+                    'part.loc_ppti',
+                    'part_request.created_at as part_request_created_at'
+                )
                 ->get();
         } catch (Exception $e) {
-            return $e->getMessage();
+            return [];
         }
     }
+
+
+
 
     public function getById($id)
     {

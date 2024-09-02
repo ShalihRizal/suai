@@ -17,6 +17,7 @@ Route::prefix('part')->group(function () {
     Route::get('/af', 'PartController@afindex');
     Route::get('/cd', 'PartController@cdindex');
     Route::get('/cf', 'PartController@cfindex');
+    Route::get('/all', 'PartController@allindex');
     Route::get('/sp', 'PartController@spindex');
     Route::get('/create', 'PartController@create');
     Route::get('/show/{id}', 'PartController@show');
@@ -26,4 +27,3 @@ Route::prefix('part')->group(function () {
     Route::get('/delete/{id}', 'PartController@destroy');
     Route::get('/getdata/{id}', 'PartController@getdata');
 });
-

@@ -244,7 +244,7 @@
             '<option value="" disabled selected>- Pilih Machine -</option>' +
             '@if (sizeof($machines) > 0)' +
             '@foreach ($machines as $machine)' +
-            '<option value="{{ $machine->machine_no }}">{{ $machine->machine_no }}</option>' +
+            '<option value="{{ $machine->machine_no }}"' + (lastMachineNo == "{{ $machine->machine_no }}" ? ' selected' : '') + '>{{ $machine->machine_no }}</option>' +
             '@endforeach' +
             '@endif' +
             '</select>' +
