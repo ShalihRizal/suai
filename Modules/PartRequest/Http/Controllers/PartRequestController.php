@@ -493,7 +493,7 @@ class PartRequestController extends Controller
             ];
         }
 
-        dd($partRequests);
+        // dd($partRequests);
 
         foreach ($partRequests as $partreq) {
             DB::beginTransaction();
