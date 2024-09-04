@@ -124,10 +124,10 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($partrequest->partlist_part_req_id > 0)
+                                    @if ($partrequest->partlist_id > 0)
                                     <a href="javascript:void(0)"
                                         class="btn btn-icon btnEdit btn-success text-white"
-                                        data-id="{{ $partrequest->partlist_part_req_id }}" data-toggle="tooltip"
+                                        data-id="{{ $partrequest->partlist_id }}" data-toggle="tooltip"
                                         data-placement="top" title="Details">
                                         <i data-feather="list" width="16" height="16">Details</i>
                                     </a>
@@ -183,10 +183,9 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label disabled">Car Model <span
-                                            class="text-danger"></span></label>
-                                    <input type="text" class="form-control" name="car_model" id="car_model"
-                                        value="{{ old('car_model') }}" readonly>
+                                    <label class="form-label disabled">Car Name <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" name="carname_name" id="carname"
+                                        value="{{ old('carline') }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -314,9 +313,9 @@
     $('.btnEdit').click(function() {
 
         var id = $(this).attr('data-id');
-        var url = "{{ url('partrequest/getdata') }}";
+        var url = "{{ url('listofpartrequest/getdata') }}";
 
-        $('.addModal form').attr('action', "{{ url('listofpartrequest/update') }}" + '/' + id);
+        // $('.addModal form').attr('action', "{{ url('listofpartrequest/update') }}" + '/' + id);
 
         $.ajax({
             type: 'GET',
@@ -328,8 +327,8 @@
                 if (data.status == 1) {
 
                     $('#part_req_number').val(data.result.part_req_number);
-                    $('#carline').val(data.result.carline_name);
-                    $('#car_model').val(data.result.carname_name);
+                    $('#carline').val(data.result.carline_name); // car model
+                    $('#carname').val(data.result.carname_part_request);
                     $('#alasan').val(data.result.alasan);
                     $('#order').val(data.result.kategori);
                     $('#shift').val(data.result.shift);

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Modules\ListOfPartRequest\Repositories\ListOfPartRequestRepository;
 use Modules\PartRequest\Repositories\PartRequestRepository;
+use Modules\Carname\Repositories\CarnameRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -25,6 +26,7 @@ class ListOfPartRequestController extends Controller
 
         $this->_ListOfPartRequestRepository = new ListOfPartRequestRepository;
         $this->_PartRequestRepository = new PartRequestRepository;
+        $this->_CarnameRepository = new CarnameRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "PartRequest";
     }
@@ -202,7 +204,6 @@ class ListOfPartRequestController extends Controller
      */
     public function getdata($id)
     {
-
         $response = array('status' => 0, 'result' => array());
         $getDetail = $this->_ListOfPartRequestRepository->getById($id);
 

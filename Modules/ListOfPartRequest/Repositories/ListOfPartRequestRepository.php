@@ -39,14 +39,15 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                     "sys_users.*",
                     "part.*",
                     "carline.*",
-                    "carname.*",
+                    "carname.*",  // Pastikan ini ada
                     "part.created_at as part_created_at",
                     "partlist.part_req_id as partlist_part_req_id",
                     "part_request.part_req_id as part_request_part_req_id",
                     "part_request.created_at as part_request_created_at",
                     "partlist.created_at as partlist_created_at",
+                    "partlist.partlist_id as partlist_id",
                 )
-                ->orderBy('part_request.created_at', 'desc') // Order by descending
+                ->orderBy('part_request.created_at', 'desc')
                 ->get();
         } catch (Exception $e) {
             return $e->getMessage();
@@ -63,7 +64,17 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
-                ->select("part_request.*", "part.*", "carline.*", "carname.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks", "part_request.applicator_no as part_request_applicator_no",)
+                ->select(
+                    "part_request.*",
+                    "part.*",
+                    "carline.*",
+                    "carname.*",
+                    "part.created_at as part_created_at",
+                    "part_request.created_at as part_request_created_at",
+                    "part_request.remarks as part_request_remarks",
+                    "part_request.applicator_no as part_request_applicator_no",
+                    "carname.carname_name as carname_part_request",
+                )
                 ->where($this->pk, '=', $id)
                 ->first();
         } catch (Exception $e) {
