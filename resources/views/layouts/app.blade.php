@@ -73,14 +73,14 @@
       <ul class="nav">
         <li class="nav-item">
           <a class="nav-link text-muted my-2" id="notifications" href="{{ url('notification') }}">
-            <span style="color: red;">@include('components.notification')</span>
+            <span style="color: red; font-weight: bold; font-size: 1.5em;">@include('components.notification')</span>
             <i data-feather="bell" width="20" height="20" style="color: initial;"></i>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-muted my-2" id="supervisornotifications" href="{{ url('supervisornotification') }}">
-            <span style="color: red;">{{ session('supervisornotifications_count', 0) }}</span>
-            <i data-feather="hexagon" width="20" height="20" style="color: initial;"></i>
+            <span style="color: red; font-weight: bold; font-size: 1.5em;">{{ session('supervisornotifications_count', 0) }}</span>
+            <i data-feather="hexagon" width="24" height="24" style="color: initial;"></i>
           </a>
         </li>
 

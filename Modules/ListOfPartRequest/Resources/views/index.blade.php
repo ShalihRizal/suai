@@ -314,9 +314,9 @@
     $('.btnEdit').click(function() {
 
         var id = $(this).attr('data-id');
-        var url = "{{ url('listofpartrequest/getdata') }}";
+        var url = "{{ url('partrequest/getdata') }}";
 
-        $('.addModal form').attr('action', "{{ url('partrequest/update') }}" + '/' + id);
+        $('.addModal form').attr('action', "{{ url('listofpartrequest/update') }}" + '/' + id);
 
         $.ajax({
             type: 'GET',
@@ -334,7 +334,7 @@
                     $('#order').val(data.result.kategori);
                     $('#shift').val(data.result.shift);
                     $('#machine_no').val(data.result.machine_no);
-                    $('#applicator_no').val(data.result.part_request_applicator_no);
+                    $('#applicator_no').val(data.result.applicator_no);
                     $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
                     $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
                     $('#serial_no').val(data.result.serial_no);

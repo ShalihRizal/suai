@@ -73,7 +73,7 @@
                             <tr class="part-row" data-category="{{ $partrequest->part_req_number }}" data-created-at="{{ $partrequest->created_at }}">
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="80%">{{ $partrequest->part_req_number }}</td>
-                                <td width="80%">{{ $partrequest->part_request_created_at }}</td>
+                                <td width="80%">{{ $partrequest->created_at }}</td>
                                 <td width="15%">
                                     @if ($partrequest->part_req_id > 0)
                                     {{-- <a href="javascript:void(0)"
