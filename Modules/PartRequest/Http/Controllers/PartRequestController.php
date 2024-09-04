@@ -156,7 +156,7 @@ class PartRequestController extends Controller
 
         // Pesan yang akan dikirim
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+        $token = 'xT-cKdExR44PbctH-8LY';
 
         // Looping melalui setiap nomor dan kirim pesan
         foreach ($targetNumbers as $number) {
@@ -202,7 +202,7 @@ class PartRequestController extends Controller
         $whatsappResponse = Http::get('https://api.fonnte.com/send', [
             'target' => $target,
             'message' => 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini: https://inventory.suaisystem.com',
-            'token' => 'fU7Xwicj-MrQ!hcHTNgp',
+            'token' => 'xT-cKdExR44PbctH-8LY',
         ]);
         return redirect('partrequest/sp')->with('message', 'PartRequest berhasil ditambahkan');
     }
@@ -520,7 +520,7 @@ class PartRequestController extends Controller
         ];
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+        $token = 'xT-cKdExR44PbctH-8LY';
 
         foreach ($targetNumbers as $number) {
             $whatsappResponse = Http::get('https://api.fonnte.com/send', [
@@ -796,7 +796,7 @@ class PartRequestController extends Controller
         ];
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+        $token = 'xT-cKdExR44PbctH-8LY';
 
         foreach ($targetNumbers as $number) {
             $whatsappResponse = Http::get('https://api.fonnte.com/send', [
@@ -1044,7 +1044,7 @@ class PartRequestController extends Controller
         ];
 
         $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'fU7Xwicj-MrQ!hcHTNgp';
+        $token = 'xT-cKdExR44PbctH-8LY';
 
         foreach ($targetNumbers as $number) {
             $whatsappResponse = Http::get('https://api.fonnte.com/send', [
