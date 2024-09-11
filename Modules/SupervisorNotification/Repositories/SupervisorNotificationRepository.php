@@ -31,6 +31,7 @@ class SupervisorNotificationRepository extends QueryBuilderImplementation
                     'part.loc_ppti',
                     'part_request.created_at as part_request_created_at'
                 )
+                ->orderBy('part_request.created_at', 'desc')
                 ->get();
         } catch (Exception $e) {
             return [];
