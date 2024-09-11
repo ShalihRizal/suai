@@ -60,7 +60,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="20%">Nomor Part Request</th>
-                                <th width="20%">Waktu</th>
+                                <!-- <th width="20%">Waktu</th> -->
                                 <th width="20%">Tanggal</th>
                                 <th width="20%">PIC</th>
                                 <th width="20%">Approved By</th>
@@ -81,7 +81,7 @@
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="20%">{{ $notification->part_req_number }}</td>
-                                <td width="20%">{{ Str::substr($notification->created_at, 10, 18) }}</td>
+                                <!-- <td width="20%">{{ Str::substr($notification->created_at, 10, 18) }}</td> -->
                                 <td width="20%">{{ $notification->created_at }}</td>
                                 <td width="20%">{{ $notification->pic }}</td>
                                 <td width="20%">{{ $notification->user_name }}</td>
