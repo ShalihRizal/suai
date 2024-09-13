@@ -110,7 +110,7 @@
                                 <td width="5%">{{ $part->qty_in }}</td>
                                 <td width="5%">{{ $part->qty_out }}</td>
                                 <td width="5%">{{ $part->adjust }}</td>
-                                <td width="5%">{{ $part->qty_in - $part->qty_out }}</td>
+                                <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
                                 <td width="5%">{{ $part->status }}</td>
                                 <td width="5%">{{ $part->ss }}</td>
                                 <td width="5%">{{ $part->rop }}</td>

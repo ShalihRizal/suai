@@ -211,7 +211,7 @@
                                     <td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="{{ old('applicator_no') }}" required></td>
                                     <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}" required></td>
                                     <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open" required></td>
-                                    <td><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}" required></td>
+                                    <td><input  type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}" ></td>
                                     <td><a href="#" class="btn btn-danger remove">-</a></td>
                                 </tr>
                             </tbody>
@@ -604,7 +604,7 @@
             '<td style="padding-right: 10px;"><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" required></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="remarks[]" placeholder="remarks" class="form-control" required></td>' +
             '<td style="padding-right: 10px;"><input type="text" name="wear_and_tear_status[]" hidden placeholder="wt status" class="form-control" value="Open" required></td>' +
-            '<td style="padding-right: 10px;"><input required type="file" name="image_part[]" placeholder="wt status" class="form-control" required></td>' +
+            '<td style="padding-right: 10px;"><input type="file" name="image_part[]" placeholder="wt status" class="form-control"></td>' +
             '<td><a href="#" class="btn btn-danger remove">-</a></td>' +
             '</tr>';
         $('.table-body1').append(tr);

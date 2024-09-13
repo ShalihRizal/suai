@@ -125,7 +125,7 @@
                                         <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}" required></td>
                                         <td>
                                             <input type="text" name="image_part_display[]" class="form-control" readonly>
-                                            <input type="file" name="image_part[]" class="form-control" onchange="updateImagePartDisplay(this)" required>
+                                            <input type="file" name="image_part[]" class="form-control" onchange="updateImagePartDisplay(this)">
                                         </td>
                                         <td><a href="#" class="btn btn-danger remove">-</a></td>
                                         <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open" required></td>
