@@ -408,10 +408,8 @@ class PartRequestController extends Controller
         } else {
             // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display
             foreach ($image_part_displays as $index => $display) {
-                $fileName = DataHelper::getFileName($display);
-                $filePath = DataHelper::getFilePath(false, true);
-                $file_images[$index] = $fileName;
-                $file_paths[$index] = $filePath;
+                $file_images[$index] = $display;
+                $file_paths[$index] = DataHelper::getFilePath(false, true);
             }
         }
 
