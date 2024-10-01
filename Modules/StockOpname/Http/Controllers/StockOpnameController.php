@@ -50,7 +50,7 @@ class StockOpnameController extends Controller
 
         // Process the data as needed
         $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
+        $noCount = $partschart->where('has_sto', 'NO')->pluck('qty_end')->sum();
 
         // dd($yesCount, $noCount);
 

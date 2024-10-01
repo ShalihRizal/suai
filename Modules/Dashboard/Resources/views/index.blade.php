@@ -130,7 +130,7 @@
             var columnChartData = [['Label', 'Last Month', { role: 'annotation' }, 'This Month', { role: 'annotation' }]];
 
             @foreach ($labels as $partCategoryId => $label)
-                pieChartData.push(['{{ $label }}', {{ $thsqty[$partCategoryId] }}]);
+                pieChartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
                 barChartData.push([
                     '{{ $label }}',
                     {{ $lstamounts[$partCategoryId] }},
