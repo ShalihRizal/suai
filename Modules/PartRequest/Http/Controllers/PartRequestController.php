@@ -338,6 +338,7 @@ class PartRequestController extends Controller
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
+        // dd($partrequests);
 
         // dd($partrequests);
 

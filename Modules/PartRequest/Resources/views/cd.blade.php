@@ -51,8 +51,9 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="80%">Part Request Number</th>
-                                <th width="80%">Date</th>
+                                <th width="15%">Part Request Number</th>
+                                <th width="15%">Part Number</th>
+                                <th width="15%">Date</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -65,8 +66,9 @@
                             @foreach ($partrequests as $partrequest)
                             <tr class="part-row" data-category="{{ $partrequest->part_req_number }}" data-created-at="{{ $partrequest->created_at }}">
                                 <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="80%">{{ $partrequest->part_req_number }}</td>
-                                <td width="80%">{{ $partrequest->created_at }}</td>
+                                <td width="15%">{{ $partrequest->part_req_number }}</td>
+                                <td width="15%">{{ $partrequest->part_no }}</td>
+                                <td width="15%">{{ $partrequest->created_at }}</td>
                                 <td width="15%">
                                     @if ($partrequest->part_req_id > 0)
                                     {{-- <a href="javascript:void(0)"
@@ -211,7 +213,7 @@
                                     <td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="{{ old('applicator_no') }}" required></td>
                                     <td><input type="text" name="remarks[]" placeholder="remarks" class="form-control" value="{{ old('remarks') }}" required></td>
                                     <td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open" required></td>
-                                    <td><input  type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}" ></td>
+                                    <td><input type="file" name="image_part[]" placeholder="wt status" class="form-control" value="{{ old('image_part') }}"></td>
                                     <td><a href="#" class="btn btn-danger remove">-</a></td>
                                 </tr>
                             </tbody>

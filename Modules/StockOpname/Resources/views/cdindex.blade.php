@@ -97,7 +97,7 @@
                                 <th width="5%">Stock</th>
                                 <th width="10%">Lokasi</th>
                                 <th width="5%">Last STO</th>
-                                <th width="5%">QR Code</th>
+                                <!-- <th width="5%">QR Code</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -152,7 +152,7 @@
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
+                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
                         </div>
                         <!-- <div class="form-group">
                             <label class="form-label">QTY Actual<span class="text-danger"></span></label>
@@ -181,7 +181,7 @@
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
+                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Actual<span class="text-danger"></span></label>

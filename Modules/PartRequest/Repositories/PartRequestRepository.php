@@ -89,7 +89,7 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
-                ->select("part_request.*")
+                ->select("part_request.*", "part.part_no")
                 ->where($params)
                 ->get();
         } catch (Exception $e) {

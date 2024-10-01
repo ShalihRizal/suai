@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 use Modules\Part\Repositories\PartRepository;
 use Modules\Rack\Repositories\RackRepository;
@@ -497,6 +498,7 @@ class StockOpnameController extends Controller
             'part_no' => $request->part_nos,
             'description' => $request->adjusting,
             'qty_end' => $qty_end,
+            'last_sto' => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
         // dd($data, $qty_end);
