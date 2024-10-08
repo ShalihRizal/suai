@@ -37,5 +37,4 @@ class StockOpnameRepository extends QueryBuilderImplementation
             return false;
         }
     }
-
 }

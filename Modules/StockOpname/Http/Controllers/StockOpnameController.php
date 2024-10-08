@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon;
-
 use Modules\Part\Repositories\PartRepository;
 use Modules\Rack\Repositories\RackRepository;
 use Modules\PartCategory\Repositories\PartCategoryRepository;
@@ -439,11 +438,17 @@ class StockOpnameController extends Controller
         $params = [
             'has_sto' => 'yes'
         ];
-        // dd($params);
 
         $parts = $this->_partRepository->getAllByParams($params);
+        $logs = $this->_logPartReqRepository->getAll();
 
-        return view('stockopname::hassto', compact('parts'));
+        // Tambahkan qty_actual dari logs ke dalam parts
+        foreach ($parts as $part) {
+            $log = $logs->where('part_no', $part->part_no)->first();
+            $part->qty_description = $log ? $log->description : null; // Menambahkan qty_actual dari log
+        }
+
+        return view('stockopname::hassto', compact('parts', 'logs'));
     }
     public function nosto()
     {
