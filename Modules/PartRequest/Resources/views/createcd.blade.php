@@ -94,7 +94,7 @@
                                                 <option value="">- Pilih Part -</option>
                                                 @if (sizeof($parts) > 0)
                                                 @foreach ($parts as $part)
-                                                @if ($part->qty_end > 0)
+                                                @if ($part->qty_begin + $part->qty_in- $part->qty_out > 0)
                                                 <option value="{{ $part->part_id }}" data-part-name="{{ $part->part_name }}" data-part-asal="{{ $part->asal }}" data-part-number="{{ $part->part_no }}" data-qty-end="{{ $part->qty_end }}" data-created-at="{{ $part->created_at }}">{{ $part->part_no }}
                                                     -
                                                     {{ $part->part_name }}
@@ -258,8 +258,12 @@
             '<option value="">- Pilih Part -</option>' +
             '@if (sizeof($parts) > 0)' +
             '@foreach ($parts as $part)' +
-            '@if ($part->qty_end > 0)' +
-            '<option value="{{ $part->part_id }}" data-part-name="{{ $part->part_name }}" data-part-asal="{{ $part->asal }}" data-part-number="{{ $part->part_no }}" data-qty-end="{{ $part->qty_end }}" data-created-at="{{ $part->created_at }}"' + (lastPartId == "{{ $part->part_id }}" ? ' selected' : '') + '>{{ $part->part_no }} - {{ $part->part_name }} (Qty: {{ $part->qty_end }}, Dibuat: {{ substr($part->created_at, 0, 10) }})</option>' +
+            '@if ($part->qty_begin + $part->qty_in- $part->qty_out > 0)' +
+            '<option value="{{ $part->part_id }}" data-part-name="{{ $part->part_name }}" data-part-asal="{{ $part->asal }}" data-part-number="{{ $part->part_no }}" data-qty-end="{{ $part->qty_end }}" data-created-at="{{ $part->created_at }}">{{ $part->part_no }}' +
+            '-' +
+            '{{ $part->part_name }}' +
+            '(Qty: {{ $part->qty_begin + $part->qty_in- $part->qty_out }}, Dibuat: {{ substr($part->created_at, 0, 10) }})' +
+            '</option>' +
             '@endif' +
             '@endforeach' +
             '@endif' +
