@@ -91,7 +91,6 @@
                                 <th width="5%">ROP</th>
                                 <th width="5%">Forecast</th>
                                 <th width="5%">Max</th>
-                                <!-- <th width="5%">QR Code</th> -->
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
@@ -117,19 +116,16 @@
                                 <td width="5%">{{ $part->rop }}</td>
                                 <td width="5%">{{ $part->forecast }}</td>
                                 <td width="5%">{{ $part->max }}</td>
-                                <!-- <td width="5%">{{ QrCode::size(75)->generate($part->part_no) }}</td> -->
                                 <td width="5%">
                                     @if ($part->part_id > 0)
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-icon btnEdit btn-warning text-white"
+                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
                                         data-id="{{ $part->part_id }}" data-toggle="tooltip"
                                         data-placement="top" title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>
                                     </a>
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-icon btn-danger text-white btnDelete"
-                                        data-url="{{ url('part/delete/' . $part->part_id) }}"
-                                        data-toggle="tooltip" data-placement="top" title="Hapus">
+                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
+                                        data-url="{{ url('part/delete/' . $part->part_id) }}" data-toggle="tooltip"
+                                        data-placement="top" title="Hapus">
                                         <i data-feather="trash-2" width="16" height="16"></i>
                                     </a>
                                     @endif
@@ -413,6 +409,9 @@
 @endsection
 
 @section('script')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
 <script type="text/javascript">
     $('.btnAdd').click(function() {
         $('#part_no').val('');
@@ -608,5 +607,16 @@
     if (msg !== undefined) {
         notyf.success(msg)
     }
+</script>
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTable
+        var table = $('#table-data').DataTable();
+
+        // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
+        $('#table-data_filter input').unbind().bind('keyup', function() {
+            table.column(1).search(this.value).draw();
+        });
+    });
 </script>
 @endsection
