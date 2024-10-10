@@ -12,6 +12,8 @@ use Modules\Users\Repositories\UsersRepository;
 use Modules\Part\Repositories\PartRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
+
+use Illuminate\Support\Facades\Http;
 use DB;
 use Validator;
 
@@ -141,6 +143,7 @@ class NotificationController extends Controller
 
         $detail = $this->_notificationRepository->getById($id);
         $part = $this->_partRepository->getById($detail->part_id);
+        $part_req_number = $detail->part_req_number;
         // dd($part, $detail);
         if ($part) {
                 $updateStatus = [
@@ -156,6 +159,29 @@ class NotificationController extends Controller
             // dd($request, $check);
             DB::commit();
             // dd($check);
+
+            $targetNumbers = [
+                '6288223492747',
+                '6288223492747',
+                '6288223492747',
+                '6288223492747'
+            ];
+
+            $message = 'Pemberitahuan! Part Request dengan nomor ' . $part_req_number . ', telah di approve, mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+            $token = 'xT-cKdExR44PbctH-8LY';
+
+            foreach ($targetNumbers as $number) {
+                $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                    'target' => $number,
+                    'message' => $message,
+                    'token' => $token,
+                ]);
+
+                if ($whatsappResponse->failed()) {
+                    // Tangani jika pengiriman gagal
+                    Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+                }
+            }
         }
 
 
