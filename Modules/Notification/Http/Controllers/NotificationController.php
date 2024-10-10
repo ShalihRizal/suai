@@ -161,10 +161,10 @@ class NotificationController extends Controller
             // dd($check);
 
             $targetNumbers = [
-                '6288223492747',
-                '6288223492747',
-                '6288223492747',
-                '6288223492747'
+                '6287836410547',
+                '6287824003437',
+                '6287824003436',
+                '6285351891534'
             ];
 
             $message = 'Pemberitahuan! Part Request dengan nomor ' . $part_req_number . ', telah di approve, mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
