@@ -44,6 +44,8 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
                     "partlist.part_req_id as partlist_part_req_id",
                     "part_request.part_req_id as part_request_part_req_id",
                     "part_request.created_at as part_request_created_at",
+                    "part_request.applicator_no as part_request_applicator_no",
+                    "part_request.applicator_no as applicator_no2",
                     "partlist.created_at as partlist_created_at",
                     "partlist.partlist_id as partlist_id",
                 )

@@ -63,6 +63,7 @@
                                 <th width="5%">Shift</th>
                                 <th width="5%">Machine No</th>
                                 <th width="5%">Applicator No</th>
+                                <th width="5%">Applicator No Input</th>
                                 <th width="5%">Wear And Tear Code</th>
                                 <th width="5%">Serial No</th>
                                 <th width="5%">Side No</th>
@@ -95,6 +96,7 @@
                                 <td>{{ $partrequest->shift }}</td>
                                 <td>{{ $partrequest->machine_no }}</td>
                                 <td>{{ $partrequest->applicator_no }}</td>
+                                <td>{{ $partrequest->applicator_no2 }}</td>
                                 <td>{{ $partrequest->wear_and_tear_code }}</td>
                                 <td>{{ $partrequest->serial_no }}</td>
                                 <td>{{ $partrequest->side_no }}</td>
