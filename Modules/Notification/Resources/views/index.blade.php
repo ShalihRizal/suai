@@ -296,7 +296,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Approved By <span class="text-danger"></span></label>
-                                <select class="form-control" name="approved_by" id="approved_by">
+                                <select class="form-control" name="approved_by" id="approved_by" required>
                                     <option value="" disableld selected>- Pilih Approved By -</option>
                                     @if (sizeof($users) > 0)
                                     @foreach ($users as $user)
