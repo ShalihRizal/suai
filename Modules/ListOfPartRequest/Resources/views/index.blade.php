@@ -69,6 +69,7 @@
                                 <th width="5%">Side No</th>
                                 <th width="5%">Stroke</th>
                                 <th width="5%">Pic</th>
+                                <!-- <th width="5%">Remarks</th> -->
                                 <th width="5%">Remarks</th>
                                 <th width="5%">Part Qty</th>
                                 <th width="5%">Status</th>
@@ -102,7 +103,8 @@
                                 <td>{{ $partrequest->side_no }}</td>
                                 <td>{{ $partrequest->stroke }}</td>
                                 <td>{{ $partrequest->pic }}</td>
-                                <td>{{ $partrequest->remarks }}</td>
+                                <!-- <td>{{ $partrequest->remarks }}</td> -->
+                                <td>{{ $partrequest->remarks2 }}</td>
                                 <td>{{ $partrequest->part_qty }}</td>
                                 <td>{{ $partrequest->status }}</td>
                                 <td>{{ $partrequest->user_name ? $partrequest->user_name : 'Belum Di Approve' }}</td>
