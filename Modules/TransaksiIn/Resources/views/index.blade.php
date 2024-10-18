@@ -111,7 +111,7 @@
                                 <td width="5%">{{ $transaksiin->part_name }}</td>
                                 <td hidden width="5%">{{ $transaksiin->part_category_name }}</td>
                                 <td width="5%">{{ $transaksiin->molts_no }}</td>
-                                <td width="5%">${{ $transaksiin->price }}</td>
+                                <td width="5%">${{ $transaksiin->price2 }}</td>
                                 <td width="5%">{{ $transaksiin->part_no }}</td>
                                 <td width="5%">{{ $transaksiin->qty2 }}</td>
                                 <!-- <td width="5%">{{ $transaksiin->qty_end }}</td> -->
