@@ -35,11 +35,11 @@
                     Tambah Transaksi IN
                 </a>
                 <a href="javascript:void(0)" class="btn btn-success btnUpload text-white mb-3" style="height: 100%;" data-toggle="modal" data-target="#uploadModal">
-                    <i data-feather="plus" width="20" height="13" class="me-2"></i>
+                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Upload
                 </a>
                 <a href="javascript:void(0)" class="btn btn-info btnTemplate text-white mb-3" style="height: 100%;" data-toggle="modal" data-target="#TemplateModal" onclick="downloadFile()">
-                    <i data-feather="download" width="20" height="13" class="me-2"></i>
+                    <i data-feather="download" width="16" height="16" class="me-2"></i>
                     Download
                 </a>
                 <div class="row">
@@ -106,14 +106,15 @@
                                 <td width="1%">{{ $loop->iteration }}</td>
                                 <td width="5%">{{ $transaksiin->invoice_no }}</td>
                                 <td width="5%">{{ $transaksiin->po_no }}</td>
-                                <td width="5%">{{ $transaksiin->po_date }}</td>
+                                <td width="5%">{{ $transaksiin->po_date2 }}</td>
                                 <td width="5%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
                                 <td width="5%">{{ $transaksiin->part_name }}</td>
                                 <td hidden width="5%">{{ $transaksiin->part_category_name }}</td>
                                 <td width="5%">{{ $transaksiin->molts_no }}</td>
                                 <td width="5%">${{ $transaksiin->price }}</td>
                                 <td width="5%">{{ $transaksiin->part_no }}</td>
-                                <td width="5%">{{ $transaksiin->qty_end }}</td>
+                                <td width="5%">{{ $transaksiin->qty2 }}</td>
+                                <!-- <td width="5%">{{ $transaksiin->qty_end }}</td> -->
                                 <td width="5%">{{ $transaksiin->loc_ppti }}</td>
                                 <td hidden width="5%">{{ $transaksiin->transaksi_created_at }}</td>
                                 <td width="5%">
@@ -201,33 +202,30 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Quantity <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po_no" id="po_no" placehold*er="Masukan Quantity" value="{{ old('po_no') }}">
+                                    <input type="text" class="form-control" name="qty" id="qty" placeholder="Masukan Quantity" value="{{ old('qty') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Part <span class="text-danger">*</span></label>
                                     <div class="addData">
-                                        <div class="btn-group" style="height: 40px;">
-                                            {{-- Your Blade view content --}}
-                                            <div class="col-md-9">
-                                                <div class="form-group">
-                                                    <select class="form-control" name="part_id" id="part_id">
-                                                        <option value="">- Pilih Part -</option>
-                                                        @if (sizeof($parts) > 0)
-                                                        @foreach ($parts as $part)
-                                                        <option value="{{ $part->part_id }}">
-                                                            {{ $part->part_name }} - {{ $part->part_no }}
-                                                        </option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <select class="form-control" name="part_id" id="part_id" style="width: 100%;">
+                                                    <option value="">- Pilih Part -</option>
+                                                    @if (sizeof($parts) > 0)
+                                                    @foreach ($parts as $part)
+                                                    <option value="{{ $part->part_id }}">
+                                                        {{ $part->part_name }} - {{ $part->part_no }}
+                                                    </option>
+                                                    @endforeach
+                                                    @endif
+                                                </select>
                                             </div>
-                                            <div class="col-md-6">
-                                                <a href="{{ url('part') }}" style="height: 85%;" class="btn btn-success btnAdd text-white mb-3">
+                                            <div class="ml-3">
+                                                <a href="{{ url('part') }}" class="btn btn-success btnAdd text-white">
                                                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
-                                                    Part Baru
+                                                    Tambah Part Baru
                                                 </a>
                                             </div>
                                         </div>
@@ -292,6 +290,12 @@
 @endsection
 
 @section('script')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script type="text/javascript">
     $('.btnAdd').click(function() {
         $('#invoice_no').val('');
@@ -496,6 +500,14 @@
         // Menghapus elemen <a> setelah proses unduhan selesai
         document.body.removeChild(link);
     }
+</script>
+<script>
+    $(document).ready(function() {
+        $('#part_id').select2({
+            placeholder: "- Pilih Part -",
+            allowClear: true
+        });
+    });
 </script>
 
 

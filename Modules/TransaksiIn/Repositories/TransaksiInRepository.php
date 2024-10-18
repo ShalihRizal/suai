@@ -24,6 +24,8 @@ class TransaksiInRepository extends QueryBuilderImplementation
                 ->select(
                     "transaksi_in.created_at as transaksi_created_at",
                     "part.created_at as part_created_at",
+                    "transaksi_in.qty as qty2",
+                    "transaksi_in.po_date as po_date2",
                     "transaksi_in.*",
                     "part.*",
                     "part_category.*" // Add the columns from the part_category table that you need
@@ -35,6 +37,4 @@ class TransaksiInRepository extends QueryBuilderImplementation
             return $e->getMessage();
         }
     }
-
-
 }
