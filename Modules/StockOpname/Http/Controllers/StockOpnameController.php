@@ -605,7 +605,7 @@ class StockOpnameController extends Controller
         $totalqtyend = 0;
 
         foreach ($getDetail as $detail) {
-            $totalqtyend += $detail->qty_end;
+            $totalqtyend += $detail->qty_begin + $detail->qty_in - $detail->qty_out;
         }
 
         if ($getDetail) {
