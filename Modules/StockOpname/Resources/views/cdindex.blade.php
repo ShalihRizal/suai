@@ -185,7 +185,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Actual<span class="text-danger"></span></label>
-                            <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
+                            <input type="number" class="form-control" id="adjusting" name="adjusting" value="" required>
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Part No<span class="text-danger"></span></label>
