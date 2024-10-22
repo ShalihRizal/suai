@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
+use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use Modules\Rack\Repositories\RackRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -23,6 +24,7 @@ class PartController extends Controller
 
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
+        $this->_transaksiinRepository = new TransaksiInRepository;
         $this->_rackRepository = new RackRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "Part";
@@ -129,53 +131,60 @@ class PartController extends Controller
     }
     public function cdindex(Request $request)
     {
-        // // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
         $params = [
             'part_category_id' => 1
         ];
 
         $parts = $this->_partRepository->getAllByParams($params);
-
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
+        $partCategoryFilter = $request->input('part_category');
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
-        // Filter parts based on the selected category
+        // Mengambil qty berdasarkan part_id dari transaksi_in
+        foreach ($parts as $part) {
+            $transaksi = DB::table('transaksi_in')
+                ->where('part_id', $part->part_id)
+                ->select('qty')
+                ->first();
+
+            // Menambahkan qty ke objek part
+            $part->qty = $transaksi->qty ?? 0; // Jika tidak ada transaksi, set qty ke 0
+        }
+
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
         return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
     }
+
     public function spindex(Request $request)
     {
-        // // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
         $params = [
             'part_category_id' => 2
         ];
 
         $parts = $this->_partRepository->getAllByParams($params);
-
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
+        $partCategoryFilter = $request->input('part_category');
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
-        // Filter parts based on the selected category
+        // Mengambil qty berdasarkan part_id dari transaksi_in
+        foreach ($parts as $part) {
+            $transaksi = DB::table('transaksi_in')
+                ->where('part_id', $part->part_id)
+                ->select('qty')
+                ->first();
+
+            // Menambahkan qty ke objek part
+            $part->qty = $transaksi->qty ?? 0; // Jika tidak ada transaksi, set qty ke 0
+        }
+
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
-        return view('part::sp', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
     }
 
     /**
