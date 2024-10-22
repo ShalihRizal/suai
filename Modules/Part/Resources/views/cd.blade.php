@@ -106,7 +106,7 @@
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->loc_ppti }}</td>
                                 <td width="5%">{{ $part->qty_begin }}</td>
-                                <td width="5%">{{ $part->qty ?? 0 }}</td>
+                                <td width="5%">{{ (int)$part->qty + (int)$part->qty_in ?? 0 }}</td>
                                 <td width="5%">{{ $part->qty_out }}</td>
                                 <td width="5%">{{ $part->adjust }}</td>
                                 <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
