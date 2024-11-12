@@ -146,8 +146,8 @@ class NotificationController extends Controller
         $part_req_number = $detail->part_req_number;
         // dd($part, $detail);
         if ($part) {
-                $updateStatus = [
-                    'status' => 1,
+            $updateStatus = [
+                'status' => 1,
                 'wear_and_tear_status' => "On Progress",
                 'approved_by' => $request->approved_by
             ];
