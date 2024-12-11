@@ -84,52 +84,27 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
             return $e->getMessage();
         }
     }
-
-    // public function getAll()
-    // {
-    //     try {
-    //         return DB::connection($this->db)
-    //             ->table($this->table)
-    //             ->join('part', 'part_request.part_id', '=', 'part.part_id')
-    //             ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
-    //             ->join('carline', function ($join) {
-    //                 $join->on(DB::raw('CAST(part_request.car_model AS UNSIGNED)'), '=', 'carline.carline_id');
-    //             })
-    //             ->join('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')
-    //             ->select("part_request.", "part.", "carname.", "carline.", "sys_users.*", "part_request.remarks as part_request_remarks", "part.remarks as part_remarks")
-    //             ->orderBy('part_req_id')
-    //             ->get();
-    //     } catch (Exception $e) {
-    //         return $e->getMessage();
-    //     }
-    // }
-
-
-
-    // public function getAllByParams(array $params)
-    // {
-    //     try {
-    //         return DB::connection($this->db)
-    //             ->table($this->table)
-    //             ->leftJoin('part', 'part_request.part_id', '=', 'part.part_id')
-    //             ->where($params)
-    //             ->get();
-    //         } catch (Exception $e) {
-    //             return $e->getMessage();
-    //         }
-    //     }
-
-    //     public function getAll()
-    //     {
-    //         try {
-    //             return DB::connection($this->db)
-    //             ->table($this->table)
-    //             ->join('part', 'part_request.part_id', '=', 'part.part_id')
-    //             ->join('carname', 'part_request.carname', '=', 'carname.carname_id')
-    //             ->orderBy('part_req_id')
-    //             ->get();
-    //     } catch (Exception $e) {
-    //         return $e->getMessage();
-    //     }
+    public function getByDateRange($startDate, $endDate)
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->join('part_request', 'part_request.part_req_id', '=', 'partlist.part_req_id')
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
+                ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
+                ->select(
+                    "part_request.*",
+                    "part.*",
+                    "carline.*",
+                    "carname.*",
+                    "part_request.created_at as part_request_created_at"
+                )
+                ->whereBetween('part_request.created_at', [$startDate, $endDate])
+                ->orderBy('part_request.created_at', 'desc')
+                ->get();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
-    // }

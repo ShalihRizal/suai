@@ -29,23 +29,15 @@
                 </a>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="start_date">Start Date:</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="end_date">End Date:</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date">
-                        </div>
+                        <form method="GET" action="{{ url('partrequest/cd') }}">
+                            <div class="input-group mb-3">
+                                <input type="date" class="form-control" name="start_date" placeholder="Tanggal Dari" value="{{ request()->get('start_date') }}">
+                                <input type="date" class="form-control" name="end_date" placeholder="Tanggal Hingga" value="{{ request()->get('end_date') }}">
+                                <button class="btn btn-primary" type="submit">Filter</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <a href="javascript:void(0)" class="btn btn-success btnFilter text-white mb-3">
-                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
-                    Filter
-                </a>
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
                         <thead>
@@ -670,32 +662,6 @@
             "info": true,
             "autoWidth": false
         });
-
-        $('#start_date, #end_date').on('change', function() {
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
-
-            table.rows().every(function() {
-                var row = this.node();
-                var rowData = this.data();
-
-                var dateValue = rowData[2];
-
-                if (isDateInRange(dateValue, startDate, endDate)) {
-                    $(row).show();
-                } else {
-                    $(row).hide();
-                }
-            });
-        });
-
-        function isDateInRange(dateStr, start, end) {
-            var date = new Date(dateStr);
-            var startDate = new Date(start);
-            var endDate = new Date(end);
-
-            return date >= startDate && date <= endDate;
-        }
     });
 </script>
 <script>
@@ -704,19 +670,6 @@
             var selectedPartNumber = $(this).find(':selected').data('part-asal');
 
             $('#order').val(selectedPartNumber);
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        var table = $('#table-data-modal').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "info": false,
-            "autoWidth": false
         });
     });
 </script>

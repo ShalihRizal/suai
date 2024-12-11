@@ -215,10 +215,20 @@ class ListOfPartRequestController extends Controller
         return $response;
     }
 
-    public function listofpartreqexport()
+    public function listofpartreqexport(Request $request)
     {
-        return Excel::download(new listofpartreqexport, 'listofpartreq.xlsx');
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+
+        // Pastikan format tanggal valid
+        if (!$startDate || !$endDate) {
+            return redirect()->back()->with('message', 'Please select a valid date range.');
+        }
+
+        // Kirim parameter tanggal ke export class
+        return Excel::download(new listofpartreqexport($startDate, $endDate), 'listofpartreq.xlsx');
     }
+
 
     private function _validationRules($id = '')
     {

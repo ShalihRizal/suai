@@ -9,15 +9,19 @@ use Modules\ListOfPartRequest\Repositories\ListOfPartRequestRepository;
 class listofpartreqexport implements FromCollection, ShouldAutoSize
 {
     protected $partRepository;
+    protected $startDate;
+    protected $endDate;
 
     // public function __construct(PartRepository $partRepository)
     // {
     //     $this->partRepository = $partRepository;
     // }
 
-    public function __construct()
+    public function __construct($startDate, $endDate)
     {
         $this->partRepository = new ListOfPartRequestRepository;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -26,7 +30,7 @@ class listofpartreqexport implements FromCollection, ShouldAutoSize
     public function collection()
     {
         // Fetch data from the PartRepository
-        $data = $this->partRepository->getAll();
+        $data = $this->partRepository->getByDateRange($this->startDate, $this->endDate);
 
         // dd($data);
 
@@ -79,7 +83,7 @@ class listofpartreqexport implements FromCollection, ShouldAutoSize
                 $item->pic,
                 $item->remarks,
                 $item->status,
-                $item->user_name,
+                $item->user_name ?? '',
                 $item->wear_and_tear_status,
                 $item->part_request_created_at,
             ];
@@ -87,5 +91,4 @@ class listofpartreqexport implements FromCollection, ShouldAutoSize
 
         return collect($formattedData);
     }
-
 }

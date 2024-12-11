@@ -36,23 +36,15 @@
                 </a>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="start_date">Start Date:</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="end_date">End Date:</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date">
-                        </div>
+                        <form method="GET" action="{{ url('partrequest/af') }}">
+                            <div class="input-group mb-3">
+                                <input type="date" class="form-control" name="start_date" placeholder="Tanggal Dari" value="{{ request()->get('start_date') }}">
+                                <input type="date" class="form-control" name="end_date" placeholder="Tanggal Hingga" value="{{ request()->get('end_date') }}">
+                                <button class="btn btn-primary" type="submit">Filter</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <a href="javascript:void(0)" class="btn btn-success btnFilter text-white mb-3">
-                    <i data-feather="plus" width="16" height="16" class="me-2"></i>
-                    Filter
-                </a>
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                         <thead>
@@ -75,7 +67,7 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="15%">{{ $partrequest->part_req_number }}</td>
                                 <td width="15%">{{ $partrequest->part_no }}</td>
-                                <td width="15%">{{ $partrequest->part_request_created_at }}</td>
+                                <td width="15%">{{ $partrequest->created_at }}</td>
                                 <td width="15%">
                                     @if ($partrequest->part_req_id > 0)
                                     {{-- <a href="javascript:void(0)"

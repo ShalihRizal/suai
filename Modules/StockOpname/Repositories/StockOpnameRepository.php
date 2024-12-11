@@ -37,4 +37,17 @@ class StockOpnameRepository extends QueryBuilderImplementation
             return false;
         }
     }
+    public function getAllByParams(array $params)
+    {
+        $query = DB::connection($this->db)
+            ->table($this->table)
+            ->select('part_name', 'part_no', 'qty_end')
+            ->where('has_sto', $params['has_sto']);
+
+        if (isset($params['part_category_id'])) {
+            $query->where('part_category_id', $params['part_category_id']);
+        }
+
+        return $query->get();
+    }
 }

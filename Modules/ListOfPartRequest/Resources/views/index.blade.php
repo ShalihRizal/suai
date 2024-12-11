@@ -39,12 +39,23 @@
                 </div>
             </div>
             <div class="card-header w-100">
-                <div class="col-md-6">
-                    <div class="addData">
-                        <a href="{{ url('/listofpartrequest/export-listofpartreq') }}" class="btn btn-success text-white mb-3">
-                            <i data-feather="download" width="16" height="16" class="me-2"></i>
-                            Download
-                        </a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form action="{{ url('/listofpartrequest/export-listofpartreq') }}" method="GET">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="date" name="end_date" class="form-control" placeholder="End Date">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-success text-white">
+                                        <i data-feather="download" width="16" height="16" class="me-2"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -55,6 +66,7 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="5%">Part Req Number</th>
+                                <th width="5%">Waktu</th>
                                 <th width="5%">Waktu</th>
                                 <th width="5%">Carname</th>
                                 <th width="5%">Car Model</th>
@@ -90,6 +102,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $partrequest->part_req_number }}</td>
                                 <td width="20%">{{ Str::substr($partrequest->part_request_created_at, 10, 18) }}</td>
+                                <td>{{ $partrequest->part_request_created_at }}</td>
                                 <td>{{ $partrequest->carname_name }}</td>
                                 <td>{{ $partrequest->carline_name }}</td>
                                 <td>{{ $partrequest->alasan }}</td>
@@ -309,6 +322,21 @@
 
 @section('script')
 <script type="text/javascript">
+    // Inisialisasi DataTable
+    $(document).ready(function() {
+        $('#table-data').DataTable({
+            // Opsi tambahan dapat ditambahkan di sini
+            "language": {
+                "emptyTable": "Tidak ada data tersedia",
+                "info": "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
+                "infoEmpty": "Menampilkan 0 hingga 0 dari 0 entri",
+                "lengthMenu": "Tampilkan _MENU_ entri",
+                "search": "Cari:",
+                "zeroRecords": "Tidak ada hasil ditemukan"
+            }
+        });
+    });
+
     // check error
     @if(count($errors))
     $('.addModal').modal('show');

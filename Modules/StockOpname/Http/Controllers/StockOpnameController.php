@@ -622,8 +622,7 @@ class StockOpnameController extends Controller
         // dd($param);
 
         $params = [
-            'part_no' => $param,
-            'has_sto' => 'no'
+            'part_no' => $param
         ];
 
         $response = array('status' => 0, 'result' => array());
@@ -639,10 +638,12 @@ class StockOpnameController extends Controller
         return $response;
     }
 
-    public function hasstoexport()
+    public function hasstoexport(Request $request)
     {
-        return Excel::download(new HasstoExport, 'stockopname.xlsx');
+        $categoryId = $request->input('part_category_id'); // Ambil kategori dari request
+        return Excel::download(new HasstoExport($categoryId), 'stockopname.xlsx');
     }
+
     public function nostoexport()
     {
         return Excel::download(new NostoExport, 'stockopname.xlsx');

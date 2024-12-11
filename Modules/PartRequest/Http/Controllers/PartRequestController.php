@@ -42,7 +42,7 @@ class PartRequestController extends Controller
         $this->module = "PartRequest";
     }
 
-    public function spindex()
+    public function spindex(Request $request)
     {
         $params = [
             'part_category_id' => 2
@@ -51,9 +51,11 @@ class PartRequestController extends Controller
             'group_id' => 22
         ];
 
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
 
-
-        $partrequests = $this->_PartRequestRepository->getAllByParams($params);
+        // Panggil repository dengan filter tanggal jika ada
+        $partrequests = $this->_PartRequestRepository->getAllByParams($params, $startDate, $endDate);
         $parts = $this->_partRepository->getAllByParams($params);
         $users = $this->_userRepository->getAllByParams($userparams);
         $carlines = $this->_CarlineRepository->getAll();
@@ -94,10 +96,19 @@ class PartRequestController extends Controller
         $part = $this->_partRepository->getById($request->part_id);
         // $last = $this->_PartRequestRepository->getLast();
 
-        $file = $request->image_part;
-        $fileName = DataHelper::getFileName($file);
-        $filePath = DataHelper::getFilePath(false, true);
-        $request->file('image_part')->storeAs($filePath, $fileName, 'public');
+        $fileName = null;
+        $filePath = null;
+
+        if ($request->hasFile('image_part')) {
+            $file = $request->file('image_part');
+
+            // Proses file
+            $fileName = DataHelper::getFileName($file);
+            $filePath = DataHelper::getFilePath(false, true);
+            $file->storeAs($filePath, $fileName, 'public');
+
+            // Tambahan proses terkait file jika diperlukan
+        }
 
         $currentMonth = strtoupper(substr(date("F"), 0, 3));
         $currentYear = date('Y');
@@ -325,25 +336,26 @@ class PartRequestController extends Controller
      * @return Response
      */
 
-    public function cdindex()
+    public function cdindex(Request $request)
     {
+        $params = ['part_category_id' => 1];
 
-        $params = [
-            'part_category_id' => 1
-        ];
+        // Tangkap input tanggal dari request
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
 
-        $partrequests = $this->_PartRequestRepository->getAllByParams($params);
+        // Panggil repository dengan filter tanggal jika ada
+        $partrequests = $this->_PartRequestRepository->getAllByParams($params, $startDate, $endDate);
+
         $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();
-        // dd($partrequests);
-
-        // dd($partrequests);
 
         return view('partrequest::cd', compact('partrequests', 'parts', 'carlines', 'carlinecategories', 'machines', 'carnames'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -680,14 +692,19 @@ class PartRequestController extends Controller
      * @return Response
      */
 
-    public function afindex()
+    public function afindex(Request $request)
     {
 
         $params = [
             'part_category_id' => 3
         ];
 
-        $partrequests = $this->_PartRequestRepository->getAllByParams($params);
+        // Tangkap input tanggal dari request
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+
+        // Panggil repository dengan filter tanggal jika ada
+        $partrequests = $this->_PartRequestRepository->getAllByParams($params, $startDate, $endDate);
         $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();
@@ -929,13 +946,16 @@ class PartRequestController extends Controller
      * @return Response
      */
 
-    public function cfindex()
+    public function cfindex(Request $request)
     {
         $params = [
             'part_category_id' => 4
         ];
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
 
-        $partrequests = $this->_PartRequestRepository->getAllByParams($params);
+        // Panggil repository dengan filter tanggal jika ada
+        $partrequests = $this->_PartRequestRepository->getAllByParams($params, $startDate, $endDate);
         $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
         $machines = $this->_MachineRepository->getAll();

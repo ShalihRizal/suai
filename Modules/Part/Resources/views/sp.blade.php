@@ -66,7 +66,7 @@
             </div>
             <div class="card-body">
                 <div class="addData">
-                    <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                    <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3" data-toggle="modal" data-target=".addModal">
                         <i data-feather="plus" width="16" height="16" class="me-2"></i>
                         Tambah Part
                     </a>
@@ -116,7 +116,7 @@
                                 <td width="5%">{{ $part->max }}</td>
                                 <td width="5%">
                                     @if ($part->part_id > 0)
-                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-toggle="modal" data-target=".addModal"
                                         data-id="{{ $part->part_id }}" data-toggle="tooltip"
                                         data-placement="top" title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>

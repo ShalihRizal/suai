@@ -54,16 +54,28 @@
                 </div>
             </div>
             <div colspan="4" align="center">ㅤ</div>
-            <div class="col-auto ms-3 d-print-none">
-                <a href="{{ url('stockopname/export-hassto') }}" class="btn btn-primary">
-                    <i data-feather="download" width="16" height="16" class="me-2"></i> Export
+            <div class="col-auto ms-12 d-print-none">
+                <form method="GET" action="{{ url('stockopname/export-hassto') }}" class="d-inline">
+                    <label for="part_category_id" class="form-label">Pilih Kategori Export:</label>
+                    <select name="part_category_id" id="part_category_id" class="form-select">
+                        <option value="1">Crimping Dies</option>
+                        <option value="2">Sparepart machine</option>
+                        <option value="3">Assembly Fixture</option>
+                        <option value="4">Checker Fixture</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2 me-2">
+                        <i data-feather="download" width="16" height="16" class="me-2"></i> Export
+                    </button>
+                </form>
+                <a href="/stockopname/adjusting" class="btn btn-success btnAdd text-white mt-2">
+                    <i data-feather="file-text" width="16" height="16" class="me-2"></i> Adjusting
                 </a>
+            </div>
+            <!-- <div class="col-auto ms-3 d-print-none">
                 <a href="/stockopname/adjusting" class="btn btn-success btnAdd text-white">
                     <i data-feather="file-text" width="16" height="16" class="me-2"></i> Adjusting
                 </a>
-                {{-- </div>
-                <div class="col-auto ms-3 d-print-none"> --}}
-            </div>
+            </div> -->
             <div colspan="4" align="center">ㅤ</div>
             <div class="col-md-12">
                 <div class="card">

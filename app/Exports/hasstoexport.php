@@ -9,10 +9,12 @@ use Modules\Part\Repositories\PartRepository;
 class HasstoExport implements FromCollection, ShouldAutoSize
 {
     protected $partRepository;
+    protected $categoryId;
 
-    public function __construct()
+    public function __construct($categoryId)
     {
         $this->partRepository = new PartRepository;
+        $this->categoryId = $categoryId;
     }
 
     /**
@@ -21,7 +23,8 @@ class HasstoExport implements FromCollection, ShouldAutoSize
     public function collection()
     {
         $params = [
-            'has_sto' => 'yes'
+            'has_sto' => 'yes',
+            'part_category_id' => $this->categoryId
         ];
 
         // Fetch data from the PartRepository

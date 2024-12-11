@@ -82,16 +82,23 @@ class PartRequestRepository extends QueryBuilderImplementation
         }
     }
 
-    public function getAllByParams(array $params)
+
+    public function getAllByParams(array $params, $startDate = null, $endDate = null)
     {
         try {
-            return DB::connection($this->db)
+            $query = DB::connection($this->db)
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->join('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->select("part_request.*", "part.part_no")
-                ->where($params)
-                ->get();
+                ->where($params);
+
+            // Tambahkan filter tanggal jika tersedia
+            if ($startDate && $endDate) {
+                $query->whereBetween('part_request.created_at', [$startDate, $endDate]);
+            }
+
+            return $query->get();
         } catch (Exception $e) {
             return $e->getMessage();
         }

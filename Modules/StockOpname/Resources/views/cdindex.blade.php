@@ -146,6 +146,10 @@
                             <label class="form-label">QTY<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Qty Adjust<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="adjust_hidden" name="adjust_hidden" value="" disabled>
+                        </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Status<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
@@ -185,7 +189,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Actual<span class="text-danger"></span></label>
-                            <input type="number" class="form-control" id="adjusting" name="adjusting" value="" required>
+                            <input type="number" class="form-control" id="adjusting" name="adjust" value="" required>
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Part No<span class="text-danger"></span></label>
@@ -289,6 +293,7 @@
                             console.log('Result:', data.result); // Log the result object
                             if (data.result) {
                                 $('#part_name_hidden').val(data.result[0].part_name);
+                                $('#adjust_hidden').val(data.result[0].adjust);
                                 $('#part_no_hidden').val(data.result[0].part_no);
                                 $('#has_sto').val('yes');
                                 $('#part_nos').val(data.result[0].part_no);
@@ -301,6 +306,10 @@
                                 $('.partModal form').attr('action', "{{ url('stockopname/update/cd') }}/" + data.result[0].part_id);
                                 $('.partModal .modal-title').text('Approve');
                                 $('.partModal').modal('show');
+
+                                if (data.result[0].has_sto === 'yes') {
+                                    alert('Part ini telah di STO.');
+                                }
                             } else {
                                 console.error('Result is undefined');
                             }

@@ -287,6 +287,9 @@
                         $('.partModal form').attr('action', "{{ url('stockopname/update/cf') }}" + '/' + data.result.part_id);
                         $('.partModal .modal-title').text('Approve');
                         $('.partModal').modal('show');
+                        if (data.result[0].has_sto === 'yes') {
+                            alert('Part ini telah di STO.');
+                        }
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
