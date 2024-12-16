@@ -86,6 +86,7 @@
                                 <th width="5%">Qty Out</th>
                                 <th width="5%">Adjust</th>
                                 <th width="5%">Qty End</th>
+                                <th width="5%">Status Part</th>
                                 <th width="5%">Status</th>
                                 <th width="5%">Safety Stock</th>
                                 <th width="5%">ROP</th>
@@ -112,6 +113,7 @@
                                 <td width="5%">{{ $part->adjust }}</td>
                                 <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
                                 <td width="5%">{{ $part->status }}</td>
+                                <td width="5%">{{ $part->kategori_inventory }}</td>
                                 <td width="5%">{{ $part->ss }}</td>
                                 <td width="5%">{{ $part->rop }}</td>
                                 <td width="5%">{{ $part->forecast }}</td>

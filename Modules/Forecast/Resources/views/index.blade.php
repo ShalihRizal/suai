@@ -427,7 +427,7 @@ headers: {
 <script>
     function downloadFile() {
         // URL file yang ingin didownload
-        var fileUrl = 'https://drive.google.com/uc?export=download&id=1v0sBCweMPaRLFPJVAEH2anfrSaIeGL65';
+        var fileUrl = 'https://drive.google.com/uc?export=download&id=110YCpN7OuNKTvpzbRsMYJ-s94woUyarT';
 
         // Nama file yang ingin ditampilkan saat diunduh
         var fileName = 'Template File Forecast';
