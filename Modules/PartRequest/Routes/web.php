@@ -16,6 +16,9 @@ Route::prefix('partrequest')->group(function () {
     Route::get('/', 'PartRequestController@index');
     Route::get('/create', 'PartRequestController@create');
     Route::get('/createcd', 'PartRequestController@createcd');
+    Route::get('/createsp', 'PartRequestController@createsp');
+    Route::get('/createcf', 'PartRequestController@createcf');
+    Route::get('/createaf', 'PartRequestController@createaf');
     Route::get('/show/{id}', 'PartRequestController@show');
     Route::get('/edit/{id}', 'PartRequestController@edit');
     Route::post('/store', 'PartRequestController@store');

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                <a href="createaf/" class="btn btn-success text-white mb-3">
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Part Request
                 </a>

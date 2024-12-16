@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3">
+                <a href="createcf/" class="btn btn-success  text-white mb-3">
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Part Request
                 </a>
@@ -67,7 +67,7 @@
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="15%">{{ $partrequest->part_req_number }}</td>
                                 <td width="15%">{{ $partrequest->part_no }}</td>
-                                <td width="15%">{{ $partrequest->part_request_created_at }}</td>
+                                <td width="15%">{{ $partrequest->created_at }}</td>
                                 <td width="15%">
                                     @if ($partrequest->part_req_id > 0)
                                     {{-- <a href="javascript:void(0)"
