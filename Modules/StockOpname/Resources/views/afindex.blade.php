@@ -27,14 +27,13 @@
 @endsection
 
 @section('content')
-
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header w-100">
                 <div class="row">
                     <div class="col-md-6">
-                        <h3 class="h3">Stock Opname Assembly Fixture</h3>
+                        <h3 class="h3">Stock Opname Assemblly Fixture</h3>
                         {{ date('Y-m-d') }}
                     </div>
                     <div class="col-md-6">
@@ -53,7 +52,7 @@
             <div class="col-md-3 mb-3">
                 <div class="form-group">
                     <label class="form-label">Part No<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control part_no" name="part_no" data-id="{{ 190 }}"
+                    <input type="text" class="form-control part_no" name="part_no"
                         id="part_no" autofocus>
                     <div colspan="4" align="center">ㅤ</div>
                 </div>
@@ -115,7 +114,7 @@
                                 <td width="5%">{{ $part->qty_end }}</td>
                                 <td width="10%">{{ $part->loc_ppti }}</td>
                                 <td width="5%">{{ $part->last_sto }}</td>
-                                <!-- <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td> -->
+                                {{-- <td width="5%">{{ QrCode::size(75)->generate($part->part_id) }}</td> --}}
                             </tr>
                             @endforeach
                             @endif
@@ -147,17 +146,58 @@
                             <label class="form-label">QTY<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Qty Adjust<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="adjust_hidden" name="adjust_hidden" value="" disabled>
+                        </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Status<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
                         </div>
                         <div class="form-group" hidden>
                             <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="">
+                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="form-label">QTY Actual<span class="text-danger"></span></label>
+                            <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Part No<span class="text-danger"></span></label>
+                            <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Part No<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">QTY<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
+                    </div> -->
+                        <!-- <div class="form-group">
+                            <label class="form-label">QTY End<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="qty_end" name="qty_end" value="" disabled>
+                        </div> -->
+                        <div class="form-group" hidden>
+                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Status<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Actual<span class="text-danger"></span></label>
+                            <input type="number" class="form-control" id="adjusting" name="adjust" value="" required>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label class="form-label">Part No<span class="text-danger"></span></label>
+                            <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="text-white btn btn-success">STO</button>
+                        <button type="submit" class="text-white btn btn-success submitButton">STO</button>
                         <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                     </div>
                 </div>
@@ -168,37 +208,6 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-    $('.part_no').on('keyup', function(event) {
-        if (event.key === "Enter") {
-            var id = $(this).attr('data-id');
-            var url = "{{ url('stockopname/getdata') }}";
-
-            $('.addReset form').attr('action', "{{ url('stockopname/update/af') }}" + '/' + id);
-
-            $.ajax({
-                type: 'GET',
-                url: url + '/' + id,
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
-
-                    if (data.status == 1) {
-                        $('#part_no_hidden').val(data.result.part_no);
-                        $('#qty_no_hidden').val(data.result.qty_end);
-                        $('#Status').val('yes');
-                        $('.addReset .modal-title').text('Approve');
-                        $('.addReset').modal('show');
-                    }
-
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error : Gagal mengambil data');
-                }
-            });
-        }
-    });
-</script>
 
 <script type="text/javascript">
     // Function to show/hide tables based on dropdown selection
@@ -251,51 +260,89 @@
     });
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const partNoInput = document.getElementById("part_no");
+{{-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const partNoInput = document.getElementById("part_no");
 
-        // Add an event listener to the input field
-        partNoInput.addEventListener("input", function() {
-            const inputValue = partNoInput.value;
-            // Set the data-id attribute based on the input value
-            partNoInput.setAttribute("data-id", inputValue);
+            // Add an event listener to the input field
+            partNoInput.addEventListener("input", function() {
+                const inputValue = partNoInput.value;
+                // Set the data-id attribute based on the input value
+                partNoInput.setAttribute("data-id", inputValue);
+            });
+        });
+    </script> --}}
+
+<script>
+    $(document).ready(function() {
+        $('.part_no').on('keyup', function(event) {
+            if (event.key === "Enter") {
+                var partNo = $(this).val();
+                var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
+                var url2 = "{{ url('stockopname/getdatabypartno') }}/" + partNo;
+
+                console.log('Fetching data for partNo:', partNo);
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'JSON',
+                    success: function(data) {
+                        console.log('Response from first AJAX call:', data);
+                        if (data.status === 1) {
+                            console.log('Result:', data.result); // Log the result object
+                            if (data.result) {
+                                $('#part_name_hidden').val(data.result[0].part_name);
+                                $('#adjust_hidden').val(data.result[0].adjust);
+                                $('#part_no_hidden').val(data.result[0].part_no);
+                                $('#has_sto').val('yes');
+                                $('#part_nos').val(data.result[0].part_no);
+
+                                var lastStoInput = document.getElementById("last_sto");
+                                var currentDateTime = new Date();
+                                var formattedDate = currentDateTime.toISOString().split('T')[0];
+                                lastStoInput.value = formattedDate;
+
+                                $('.partModal form').attr('action', "{{ url('stockopname/update/af') }}/" + data.result[0].part_id);
+                                $('.partModal .modal-title').text('Approve');
+                                $('.partModal').modal('show');
+
+                                if (data.result[0].has_sto === 'yes') {
+                                    alert('Part ini telah di STO.');
+                                }
+                            } else {
+                                console.error('Result is undefined');
+                            }
+                        } else {
+                            console.log('Data status is not 1');
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.error('Error during first AJAX call:', textStatus, errorThrown);
+                        alert('Error: Gagal mengambil data');
+                    }
+                });
+
+                $.ajax({
+                    type: 'GET',
+                    url: url2,
+                    dataType: 'JSON',
+                    success: function(data) {
+                        console.log('Response from second AJAX call:', data);
+                        if (data.status === 1) {
+                            $('#qty_no_hidden').val(data.total);
+                            // $('#qty_end').val(data.total);
+                        } else {
+                            console.log('Data status is not 1');
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.error('Error during second AJAX call:', textStatus, errorThrown);
+                        alert('Error: Gagal mengambil data');
+                    }
+                });
+            }
         });
     });
 </script>
-
-<script>
-    $('.part_no').on('keyup', function(event) {
-        if (event.key === "Enter") {
-            var id = $(this).attr('data-id');
-            var url = "{{ url('stockopname/getdatabyparam') }}";
-
-            $.ajax({
-                type: 'GET',
-                url: url + '/' + $('#part_no').val(),
-                dataType: 'JSON',
-                success: function(data) {
-                    if (data.status == 1) {
-                        var lastStoInput = document.getElementById("last_sto");
-                        var currentDateTime = new Date();
-                        var formattedDate = currentDateTime.toISOString().split('T')[0];
-                        lastStoInput.value = formattedDate;
-                        $('#part_name_hidden').val(data.result.part_name);
-                        $('#part_no_hidden').val(data.result.part_no);
-                        $('#qty_no_hidden').val(data.result.qty_end);
-                        $('#has_sto').val('yes');
-                        $('.partModal form').attr('action', "{{ url('stockopname/update/af') }}" + '/' + data.result.part_id);
-                        $('.partModal .modal-title').text('Approve');
-                        $('.partModal').modal('show');
-                    }
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error: Gagal mengambil data');
-                }
-            });
-        }
-    });
-</script>
-
-
 @endsection
