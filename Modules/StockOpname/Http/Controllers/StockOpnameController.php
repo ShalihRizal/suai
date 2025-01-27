@@ -470,47 +470,83 @@ class StockOpnameController extends Controller
     public function afupdate(Request $request, $id)
     {
 
-        DB::beginTransaction();
-
-        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
-
-        return redirect('stockopname/af')->with('message', 'StockOpname berhasil diubah');
-    }
-    public function cfupdate(Request $request, $id)
-    {
-
-        DB::beginTransaction();
-
-        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
-
-        return redirect('stockopname/cf')->with('message', 'StockOpname berhasil diubah');
-    }
-    public function cdupdate(Request $request, $id)
-    {
-
         // dd($request->all());
         $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
-        $adjusting = $qty_end - $request->adjusting;
-
+        $adjusting = $qty_end - $request->adjust;
+        // dd($adjusting, $request->adjust);
         // $qtyend2 = $qty_end['total'];
         $data = [
             'part_no' => $request->part_nos,
-            'description' => $request->adjusting,
+            'description' => $request->adjust,
             'qty_end' => $qty_end,
             'last_sto' => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
         // dd($data, $qty_end);
 
-        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
         // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
         $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+        // dd($data, $cek1, $cek, $request->all());
+
+        // dd($cek);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return Redirect::back();
+    }
+    public function cfupdate(Request $request, $id)
+    {
+
+        // dd($request->all());
+        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $adjusting = $qty_end - $request->adjust;
+        // dd($adjusting, $request->adjust);
+        // $qtyend2 = $qty_end['total'];
+        $data = [
+            'part_no' => $request->part_nos,
+            'description' => $request->adjust,
+            'qty_end' => $qty_end,
+            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'qty_actual' => $adjusting
+        ];
+        // dd($data, $qty_end);
+
+        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
+        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+        // dd($data, $cek1, $cek, $request->all());
+
+        // dd($cek);
+        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+
+        DB::commit();
+
+        return Redirect::back();
+    }
+
+    public function cdupdate(Request $request, $id)
+    {
+
+        // dd($request->all());
+        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $adjusting = $qty_end - $request->adjust;
+        // dd($adjusting, $request->adjust);
+        // $qtyend2 = $qty_end['total'];
+        $data = [
+            'part_no' => $request->part_nos,
+            'description' => $request->adjust,
+            'qty_end' => $qty_end,
+            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'qty_actual' => $adjusting
+        ];
+        // dd($data, $qty_end);
+
+        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
+        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+        // dd($data, $cek1, $cek, $request->all());
 
         // dd($cek);
         $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
@@ -522,14 +558,31 @@ class StockOpnameController extends Controller
     public function spupdate(Request $request, $id)
     {
 
-        DB::beginTransaction();
+        // dd($request->all());
+        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $adjusting = $qty_end - $request->adjust;
+        // dd($adjusting, $request->adjust);
+        // $qtyend2 = $qty_end['total'];
+        $data = [
+            'part_no' => $request->part_nos,
+            'description' => $request->adjust,
+            'qty_end' => $qty_end,
+            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'qty_actual' => $adjusting
+        ];
+        // dd($data, $qty_end);
 
-        $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
+        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+        // dd($data, $cek1, $cek, $request->all());
+
+        // dd($cek);
         $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
 
         DB::commit();
 
-        return redirect('stockopname/sp')->with('message', 'StockOpname berhasil diubah');
+        return Redirect::back();
     }
 
     public function updateall(Request $request)
@@ -595,8 +648,8 @@ class StockOpnameController extends Controller
     {
 
         $param = [
-            'part_no' => $part_no,
-            'has_sto' => 'no'
+            'part_no' => $part_no
+            // 'has_sto' => 'no'
         ];
 
         $response = array('status' => 0, 'result' => array());

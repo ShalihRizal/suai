@@ -35,8 +35,19 @@ class Adjusting implements FromCollection, ShouldAutoSize
             ['Part Number', 'Adjusting', 'Qty Sistem', 'Qty Actual']
         ];
 
+        $qty_end = 0;
+
         foreach ($data as $item) {
-            $formattedData[] = [$item->part_no, $item->description, $item->qty_end, $item->qty_actual]; // Adjust the columns as per your needs
+            if ($item->qty_end == 0) {
+                $qty_end = "0";
+            } else {
+                $qty_end = $item->qty_end;
+            }
+
+            // Check if qty_actual is null or 0
+            $qty_actual = ($item->qty_actual === null || $item->qty_actual == 0) ? "0" : $item->qty_actual;
+
+            $formattedData[] = [$item->part_no, $item->description, $qty_end, $qty_actual]; // Adjust the columns as per your needs
         }
 
         return collect($formattedData);

@@ -289,7 +289,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div class="form-group" hidden>
                                     <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="loc_tapc" id="loc_tapc">
                                         <option value="">- Pilih Loc TAPC -</option>
@@ -304,19 +304,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Loc PPTI <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="loc_ppti" id="loc_ppti">
-                                        <option value="">- Pilih Loc PPTI -</option>
+                                    <label class="form-label">Rak <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="rack" id="rack">
+                                        <option value="">- Pilih Rak -</option>
                                         @if (sizeof($racks) > 0)
                                         @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
-                                        </option>
+                                        <option value="{{ $rack->rack_id }}">{{ $rack->rack_name }}</option>
                                         @endforeach
                                         @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Sub Rak <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="subrack" id="sub_rack">
+                                        <option value="">- Pilih Sub Rak -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc Hib <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="lokasi_hib" id="lokasi_hib">
@@ -618,6 +625,29 @@
         // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
         $('#table-data_filter input').unbind().bind('keyup', function() {
             table.column(1).search(this.value).draw();
+        });
+    });
+</script>
+<script>
+    // Store the subrack data as a JavaScript object for easier management
+    const subracks = @json($subrack);
+
+    // Event listener to update the Sub Rak dropdown based on the selected Rak
+    document.getElementById("rack").addEventListener("change", function() {
+        const selectedRackId = this.value;
+        const subRackDropdown = document.getElementById("sub_rack");
+
+        // Reset Sub Rak dropdown
+        subRackDropdown.innerHTML = '<option value="">- Pilih Sub Rak -</option>';
+
+        // Filter and append relevant Sub Racks
+        subracks.forEach(subrack => {
+            if (subrack.rack_id == selectedRackId) {
+                const option = document.createElement("option");
+                option.value = subrack.sub_rack_id;
+                option.textContent = `${subrack.rack_name}.${subrack.sub_rack_name}`;
+                subRackDropdown.appendChild(option);
+            }
         });
     });
 </script>

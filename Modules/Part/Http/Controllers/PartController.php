@@ -11,6 +11,7 @@ use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use Modules\Rack\Repositories\RackRepository;
+use Modules\SubRack\Repositories\SubRackRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
@@ -25,6 +26,7 @@ class PartController extends Controller
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
+        $this->_subRackRepository = new SubRackRepository;
         $this->_rackRepository = new RackRepository;
         $this->_logHelper = new LogHelper;
         $this->module = "Part";
@@ -97,12 +99,14 @@ class PartController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        $subrack = $this->_subRackRepository->getAll();
+
         // Filter parts based on the selected category
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
-        return view('part::af', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::af', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
     }
     public function cfindex(Request $request)
     {
@@ -122,12 +126,14 @@ class PartController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        $subrack = $this->_subRackRepository->getAll();
+
         // Filter parts based on the selected category
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
-        return view('part::cf', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::cf', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
     }
     public function cdindex(Request $request)
     {
@@ -139,6 +145,8 @@ class PartController extends Controller
         $partCategoryFilter = $request->input('part_category');
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
+        $subrack = $this->_subRackRepository->getAll();
+        // dd($subrack);
 
         // Mengambil qty berdasarkan part_id dari transaksi_in
         foreach ($parts as $part) {
@@ -155,7 +163,7 @@ class PartController extends Controller
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
-        return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
     }
 
     public function spindex(Request $request)
@@ -169,6 +177,8 @@ class PartController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        $subrack = $this->_subRackRepository->getAll();
+
         // Mengambil qty berdasarkan part_id dari transaksi_in
         foreach ($parts as $part) {
             $transaksi = DB::table('transaksi_in')
@@ -184,7 +194,7 @@ class PartController extends Controller
             $parts = $parts->where('part_category_id', $partCategoryFilter);
         }
 
-        return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::sp', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
     }
 
     /**
@@ -214,6 +224,11 @@ class PartController extends Controller
         }
 
         $validator = Validator::make($request->all(), $this->_validationRules(''));
+        // dd($this->_subRackRepository->getById($request->subrack), $request->subrack);
+        $rak = $this->_rackRepository->getById($request->rack)->rack_name;;
+        $subrack = $this->_subRackRepository->getById($request->subrack)->sub_rack_name;
+        $locppti =  $rak . $subrack;
+        // dd($locppti);
 
         if ($validator->fails()) {
             return redirect('part')
@@ -234,7 +249,7 @@ class PartController extends Controller
             'po' => $request->po,
             'po_date' => $request->po_date,
             'rec_date' => $request->rec_date,
-            'loc_ppti' => $request->loc_ppti,
+            'loc_ppti' => $locppti,
             'loc_tapc' => $request->loc_tapc,
             'lokasi_hib' => $request->lokasi_hib,
             'qty_begin' => $request->qty_begin,
@@ -254,7 +269,8 @@ class PartController extends Controller
         ];
 
         DB::beginTransaction();
-        $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
+        $cek = $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
+        // dd($cek);
         // $check = $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
         $this->_logHelper->store($this->module, $request->part_no, 'create');
         DB::commit();

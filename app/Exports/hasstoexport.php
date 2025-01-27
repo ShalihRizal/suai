@@ -13,7 +13,7 @@ class HasstoExport implements FromCollection, ShouldAutoSize
 
     public function __construct($categoryId)
     {
-        $this->partRepository = new PartRepository;
+        $this->partRepository = new PartRepository();
         $this->categoryId = $categoryId;
     }
 
@@ -30,24 +30,51 @@ class HasstoExport implements FromCollection, ShouldAutoSize
         // Fetch data from the PartRepository
         $data = $this->partRepository->getAllByParams($params);
 
-        // Initialize totals
-        $totalParts = count($data);
-        $totalQty = array_sum(array_map(function ($item) {
-            return $item->qty_end;
-        }, $data->toArray()));
+        // Group data by part_no and calculate the total qty_end for each part_no
+        $groupedData = collect($data)->groupBy('part_no')->map(function ($items, $partNo) {
+            return [
+                'part_name' => $items->first()->part_name, // Assume part_name is the same for the same part_no
+                'qty_end' => $items->sum('qty_end'), // Sum all qty_end for the same part_no
+                'adjust' => $items->first()->adjust ?? 0, // Use the first adjust value or default to 0
+            ];
+        });
 
-        // Format the data as required for export
+        // Calculate Qty Sistem for each part_no and prepare formatted data for export
         $formattedData = [
-            ['Total Part Yang sudah STO:', $totalParts],
-            ['Total Qty yang sudah STO:', $totalQty],
-            [''],
-            ['PartName', 'Part No', 'Qty']
+            ['Part Name', 'Part No', 'Qty Sistem', 'Qty Actual'] // Header row
         ];
 
-        foreach ($data as $item) {
-            $formattedData[] = [$item->part_name, $item->part_no, $item->qty_end]; // Adjust the columns as per your needs
+        foreach ($groupedData as $partNo => $item) {
+            $qtySistem = $this->calculateQtySistem($partNo);
+            $formattedData[] = [
+                $item['part_name'],
+                $partNo,
+                $qtySistem,
+                $item['adjust']
+            ];
         }
 
         return collect($formattedData);
+    }
+
+    /**
+     * Calculate the total Qty Sistem for a given part_no
+     *
+     * @param string $partNo
+     * @return int
+     */
+    private function calculateQtySistem($partNo)
+    {
+        $params = [
+            'part_no' => $partNo
+        ];
+
+        // Fetch details for the given part_no
+        $details = $this->partRepository->getAllByParams($params);
+
+        // Calculate total qty_sistem
+        return collect($details)->reduce(function ($total, $detail) {
+            return $total + $detail->qty_begin + $detail->qty_in - $detail->qty_out;
+        }, 0);
     }
 }
