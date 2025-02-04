@@ -147,6 +147,7 @@ class SupervisorNotificationController extends Controller
         // dd($part, $detail);
         if ($part) {
             $stock = intval($part->qty_out) + intval($detail->part_qty);
+            // dd($stock);
             if (intval($detail->status) == 0) {
                 $updateStatus = [
                     // 'status' => 1,

@@ -647,8 +647,10 @@ class StockOpnameController extends Controller
     public function getdataByPartNo($part_no)
     {
 
+        $decoded_part_no = urldecode($part_no);
+        $search_part_no = str_replace('/', '\/', $decoded_part_no);
         $param = [
-            'part_no' => $part_no
+            'part_no' => $decoded_part_no
             // 'has_sto' => 'no'
         ];
 

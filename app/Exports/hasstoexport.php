@@ -41,7 +41,7 @@ class HasstoExport implements FromCollection, ShouldAutoSize
 
         // Calculate Qty Sistem for each part_no and prepare formatted data for export
         $formattedData = [
-            ['Part Name', 'Part No', 'Qty Sistem', 'Qty Actual'] // Header row
+            ['Part Name', 'Part No', 'Qty End', 'Qty STO'] // Header row
         ];
 
         foreach ($groupedData as $partNo => $item) {

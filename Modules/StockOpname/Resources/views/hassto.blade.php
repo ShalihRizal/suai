@@ -55,7 +55,7 @@
             </div>
             <div colspan="4" align="center">ㅤ</div>
             <div class="col-auto ms-12 d-print-none">
-                <form method="GET" action="{{ url('stockopname/export-hassto') }}" class="d-inline">
+                <form method="GET" action="{{route('exporthassto')}}" class="d-inline">
                     <label for="part_category_id" class="form-label">Pilih Kategori Export:</label>
                     <select name="part_category_id" id="part_category_id" class="form-select">
                         <option value="1">Crimping Dies</option>
@@ -67,7 +67,7 @@
                         <i data-feather="download" width="16" height="16" class="me-2"></i> Export
                     </button>
                 </form>
-                <a href="/stockopname/adjusting" class="btn btn-success btnAdd text-white mt-2">
+                <a href="{{route('adjusting')}}" class="btn btn-success btnAdd text-white mt-2">
                     <i data-feather="file-text" width="16" height="16" class="me-2"></i> Adjusting
                 </a>
             </div>

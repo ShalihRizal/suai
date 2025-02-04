@@ -21,6 +21,5 @@ Route::prefix('listofpartrequest')->group(function () {
     Route::get('/delete/{id}', 'ListOfPartRequestController@destroy');
     Route::get('/getdata/{id}', 'ListOfPartRequestController@getdata');
     Route::get('download-pdf', 'ListOfPartRequestController@downloadPDF');
-    Route::get('/export-listofpartreq', 'ListOfPartRequestController@listofpartreqexport');
-
+    Route::get('/export-listofpartreq', 'ListOfPartRequestController@listofpartreqexport')->name('exportlistofpartreq');
 });

@@ -32,7 +32,7 @@ class Adjusting implements FromCollection, ShouldAutoSize
         $formattedData = [
             ['Total Part Yang Adjusting:', $totalParts],
             [''],
-            ['Part Number', 'Adjusting', 'Qty Sistem', 'Qty Actual']
+            ['Part Number', 'Qty Actual', 'Qty Sistem', 'Qty STO']
         ];
 
         $qty_end = 0;

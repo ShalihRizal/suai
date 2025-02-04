@@ -41,7 +41,7 @@
             <div class="card-header w-100">
                 <div class="row">
                     <div class="col-md-6">
-                        <form action="{{ url('/listofpartrequest/export-listofpartreq') }}" method="GET">
+                        <form action="{{route('exportlistofpartreq')}}" method="GET">
                             <div class="row">
                                 <div class="col-md-5">
                                     <input type="date" name="start_date" class="form-control" placeholder="Start Date">

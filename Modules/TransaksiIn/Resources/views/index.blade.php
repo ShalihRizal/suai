@@ -166,9 +166,9 @@
                                     <label class="form-label">Sub Rak <span class="text-danger">*</span> </label>
                                     <select class="form-control" name="rack_name" id="rack_name">
                                         <option value="">- Pilih Sub Rak -</option>
-                                        @if (sizeof($racks) > 0)
-                                        @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
+                                        @if (sizeof($subracks) > 0)
+                                        @foreach ($subracks as $subrack)
+                                        <option value="{{ $subrack->sub_rack_id }}">{{ $subrack->rack_name }}.{{ $subrack->sub_rack_name }}
                                         </option>
                                         @endforeach
                                         @endif

@@ -47,7 +47,21 @@ class StockOpnameRepository extends QueryBuilderImplementation
         if (isset($params['part_category_id'])) {
             $query->where('part_category_id', $params['part_category_id']);
         }
-
+        foreach ($params as $key => $value) {
+            // Handle operator khusus jika ada
+            if (is_array($value)) {
+                $query->where($key, $value[0], $value[1]);
+            }
+            // Handle pencarian partial untuk part_no
+            else if ($key === 'part_no') {
+                $escapedValue = str_replace('/', '\/', $value);
+                $query->where($key, 'LIKE', '%' . $escapedValue . '%');
+            }
+            // Handle kondisi biasa
+            else {
+                $query->where($key, $value);
+            }
+        }
         return $query->get();
     }
 }

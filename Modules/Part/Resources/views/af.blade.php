@@ -80,11 +80,13 @@
                                 <th width="5%">No</th>
                                 <th width="5%">Part No</th>
                                 <th width="5%">Part Name</th>
-                                <th width="5%">Lokasi</th>
+                                <th width="5%">Lokasi PPTI</th>
+                                <th width="5%">Lokasi HIB</th>
+                                <th width="5%">Lokasi TAPC</th>
                                 <th width="5%">Begin</th>
                                 <th width="5%">Qty In</th>
                                 <th width="5%">Qty Out</th>
-                                <th width="5%">Adjust</th>
+                                <th width="5%">Qty STO</th>
                                 <th width="5%">Qty End</th>
                                 <th width="5%">Status Part</th>
                                 <th width="5%">Status</th>
@@ -107,6 +109,8 @@
                                 <td width="5%">{{ $part->part_no }}</td>
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->loc_ppti }}</td>
+                                <td width="5%">{{ $part->lokasi_hib }}</td>
+                                <td width="5%">{{ $part->loc_tapc }}</td>
                                 <td width="5%">{{ $part->qty_begin }}</td>
                                 <td width="5%">{{ $part->qty_in }}</td>
                                 <td width="5%">{{ $part->qty_out }}</td>
@@ -254,8 +258,8 @@
                                     <label class="form-label">Asal <span class="text-danger">*</span></label>
                                     <select class="form-control" name="asal" id="asal">
                                         <option value="">Pilih Asal</option>
-                                        <option value="Lokal">Lokal</option>
-                                        <option value="Import">Import</option>
+                                        <option value="Lokal" {{ old('asal', $part->asal) == 'Lokal' ? 'selected' : '' }}>Lokal</option>
+                                        <option value="Import" {{ old('asal', $part->asal) == 'Import' ? 'selected' : '' }}>Import</option>
                                     </select>
                                 </div>
                             </div>

@@ -277,9 +277,10 @@
     $(document).ready(function() {
         $('.part_no').on('keyup', function(event) {
             if (event.key === "Enter") {
-                var partNo = $(this).val();
+                var partNo = encodeURIComponent($(this).val());
+                var encodedPartNo = encodeURIComponent(partNo); // Encode the part number
                 var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
-                var url2 = "{{ url('stockopname/getdatabypartno') }}/" + partNo;
+                var url2 = "{{ url('stockopname/getdatabypartno') }}/" + encodedPartNo;
 
                 console.log('Fetching data for partNo:', partNo);
 
@@ -292,6 +293,10 @@
                         if (data.status === 1) {
                             console.log('Result:', data.result); // Log the result object
                             if (data.result) {
+                                if (data.result[0].part_category_id != 4) {
+                                    alert('Part bukan kategori Checker Fixture.');
+                                    return; // Exit the function if not category 3
+                                }
                                 $('#part_name_hidden').val(data.result[0].part_name);
                                 $('#adjust_hidden').val(data.result[0].adjust);
                                 $('#part_no_hidden').val(data.result[0].part_no);

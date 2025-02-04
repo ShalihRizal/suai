@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Modules\Part\Repositories\PartRepository;
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Rack\Repositories\RackRepository;
+use Modules\SubRack\Repositories\SubRackRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
 use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
@@ -25,6 +26,7 @@ class TransaksiInController extends Controller
         $this->middleware('auth');
 
         $this->_rackRepository = new RackRepository;
+        $this->_subRackRepository = new SubRackRepository;
         $this->_partRepository = new PartRepository;
         $this->_partCategoryRepository = new PartCategoryRepository;
         $this->_transaksiinRepository = new TransaksiInRepository;
@@ -51,10 +53,12 @@ class TransaksiInController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $parts = $this->_partRepository->getAll();
         $racks = $this->_rackRepository->getAll();
+        $subracks = $this->_subRackRepository->getAll();
+        // dd($subracks);
 
         // dd($transaksiins, $partcategories);
 
-        return view('transaksiin::index', compact('transaksiins', 'parts', 'racks', 'partcategories'));
+        return view('transaksiin::index', compact('transaksiins', 'parts', 'racks', 'partcategories', 'subracks'));
     }
 
     // public function filterTransactions(Request $request)
@@ -98,6 +102,20 @@ class TransaksiInController extends Controller
             foreach ($csvData as $row) {
                 $data = array_combine($header, $row);
                 // dd($data);
+
+                // Get the existing part data
+                $existingPart = DB::table('part')
+                    ->where('part_id', $data['part_id'])
+                    ->first();
+
+                if ($existingPart) {
+                    // Update the qty_in in the part table
+                    $newQtyIn = $existingPart->qty_in + $data['qty'];
+                    DB::table('part')
+                        ->where('part_id', $data['part_id'])
+                        ->update(['qty_in' => $newQtyIn]);
+                }
+
                 $existingData = DB::table('transaksi_in')
                     ->where('transaksi_in_id', $data['transaksi_in_id'])
                     ->first();
@@ -140,7 +158,6 @@ class TransaksiInController extends Controller
      */
     public function store(Request $request)
     {
-
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -154,15 +171,39 @@ class TransaksiInController extends Controller
                 ->withInput();
         }
 
-        // dd($request->all());
-
         DB::beginTransaction();
-        $this->_transaksiinRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->invoice_no, 'create');
-        DB::commit();
-        // dd($request->all(), $check);
 
-        return redirect('transaksiin')->with('message', 'Transaksi berhasil ditambahkan');
+        try {
+            // Normalize and insert the data
+            $normalizedData = DataHelper::_normalizeParams($request->all(), true);
+            $this->_transaksiinRepository->insert($normalizedData);
+
+            // Update the qty_in in the part table
+            $partId = $request->input('part_id');
+            $qty = $request->input('qty');
+
+            $existingPart = DB::table('part')
+                ->where('part_id', $partId)
+                ->first();
+
+            if ($existingPart) {
+                $newQtyIn = $existingPart->qty_in + $qty;
+                DB::table('part')
+                    ->where('part_id', $partId)
+                    ->update(['qty_in' => $newQtyIn]);
+            }
+
+            // Log the creation action
+            $this->_logHelper->store($this->module, $request->invoice_no, 'create');
+
+            DB::commit();
+
+            return redirect('transaksiin')->with('message', 'Transaksi berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Gagal menyimpan transaksi: ' . $e->getMessage() . ' at ' . $e->getFile() . ' line ' . $e->getLine());
+            return redirect('transaksiin')->with('error', 'Gagal menyimpan transaksi. ' . $e->getMessage());
+        }
     }
 
     /**

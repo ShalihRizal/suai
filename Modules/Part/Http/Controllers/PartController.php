@@ -313,9 +313,14 @@ class PartController extends Controller
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
+        $part = $this->_partRepository->getById($id);
+        $racks = $this->_rackRepository->getAll();
 
-        return view('part::edit');
+        $subrack = $this->_subRackRepository->getAll();
+
+        return view('part::edit', compact('part', 'racks', 'subrack'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -332,48 +337,56 @@ class PartController extends Controller
 
         $validator = Validator::make($request->all(), $this->_validationRules($id));
 
+        // $rak = $this->_rackRepository->getById($request->rack)->rack_name;;
+        // $subrack = $this->_subRackRepository->getById($request->subrack)->sub_rack_name;
+        // $locppti =  $rak . $subrack;
         if ($validator->fails()) {
             return redirect('part')
                 ->withErrors($validator)
                 ->withInput();
         }
-        $dataUpdate = [
-            'part_no' => $request->part_no,
-            'no_urut' => $request->no_urut,
-            'applicator_no' => $request->applicator_no,
-            'applicator_type' => $request->applicator_type,
-            'applicator_qty' => $request->applicator_qty,
-            'kode_tooling_bc' => $request->kode_tooling_bc,
-            'part_name' => $request->part_name,
-            'asal' => $request->asal,
-            'invoice' => $request->invoice,
-            'po' => $request->po,
-            'po_date' => $request->po_date,
-            'rec_date' => $request->rec_date,
-            'loc_ppti' => $request->loc_ppti,
-            'loc_tapc' => $request->loc_tapc,
-            'lokasi_hib' => $request->lokasi_hib,
-            'qty_begin' => $request->qty_begin,
-            'molts_no' => $request->molts_no,
-            'qty_in' => $request->qty_in,
-            'qty_out' => $request->qty_out,
-            'kategori_inventory' => $request->kategori_inventory,
-            'adjust' => $request->adjust,
-            'qty_end' => $request->qty_end,
-            'remarks' => $request->remarks,
-            'last_sto' => $request->last_sto,
-            'has_sto' => $request->has_sto,
-            'part_category_id' => $request->part_category_id,
-            'created_at' => $request->created_at,
-            'created_by' => $request->created_by,
-            'updated_at' => $request->updated_at,
-            'updated_by' => $request->updated_by,
-        ];
-        // dd($request);
+        // Ambil data yang ada dari database
 
+        $existingData = $this->_partRepository->getById($id);
+        $dataUpdate = [
+            'part_no' => $request->part_no ?? $existingData->part_no,
+            'no_urut' => $request->no_urut ?? $existingData->no_urut,
+            'applicator_no' => $request->applicator_no ?? $existingData->applicator_no,
+            'applicator_type' => $request->applicator_type ?? $existingData->applicator_type,
+            'applicator_qty' => $request->applicator_qty ?? $existingData->applicator_qty,
+            'kode_tooling_bc' => $request->kode_tooling_bc ?? $existingData->kode_tooling_bc,
+            'part_name' => $request->part_name ?? $existingData->part_name,
+            'asal' => $request->asal ?? $existingData->asal,
+            'invoice' => $request->invoice ?? $existingData->invoice,
+            'po' => $request->po ?? $existingData->po,
+            'po_date' => $request->po_date ?? $existingData->po_date,
+            'rec_date' => $request->rec_date ?? $existingData->rec_date,
+            'loc_ppti' => $request->loc_ppti ?? $existingData->loc_ppti,
+            'loc_tapc' => $request->loc_tapc ?? $existingData->loc_tapc,
+            'lokasi_hib' => $request->lokasi_hib ?? $existingData->lokasi_hib,
+            'qty_begin' => $request->qty_begin ?? $existingData->qty_begin,
+            'molts_no' => $request->molts_no ?? $existingData->molts_no,
+            'qty_in' => $request->qty_in ?? $existingData->qty_in,
+            'qty_out' => $request->qty_out ?? $existingData->qty_out,
+            'kategori_inventory' => $request->kategori_inventory ?? $existingData->kategori_inventory,
+            'adjust' => $request->adjust ?? $existingData->adjust,
+            'qty_end' => $request->qty_end ?? $existingData->qty_end,
+            'remarks' => $request->remarks ?? $existingData->remarks,
+            'last_sto' => $request->last_sto ?? $existingData->last_sto,
+            'has_sto' => $request->has_sto ?? $existingData->has_sto,
+            'part_category_id' => $request->part_category_id ?? $existingData->part_category_id,
+            'created_at' => $request->created_at ?? $existingData->created_at,
+            'created_by' => $request->created_by ?? $existingData->created_by,
+            'updated_at' => $request->updated_at ?? $existingData->updated_at,
+            'updated_by' => $request->updated_by ?? $existingData->updated_by,
+        ];
+        // dd($dataUpdate);
+
+        // Gabungkan data baru dengan data yang ada
         DB::beginTransaction();
 
-        $this->_partRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+        $cek = $this->_partRepository->update(DataHelper::_normalizeParams($dataUpdate, false, true), $id);
+        // dd($cek);
         $this->_logHelper->store($this->module, $request->part_no, 'update');
 
         DB::commit();

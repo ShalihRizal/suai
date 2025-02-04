@@ -78,11 +78,13 @@
                                 <th width="5%">No</th>
                                 <th width="5%">Part No</th>
                                 <th width="5%">Part Name</th>
-                                <th width="5%">Lokasi</th>
+                                <th width="5%">Lokasi PPTI</th>
+                                <th width="5%">Lokasi HIB</th>
+                                <th width="5%">Lokasi TAPC</th>
                                 <th width="5%">Begin</th>
                                 <th width="5%">Qty In</th>
                                 <th width="5%">Qty Out</th>
-                                <th width="5%">Adjust</th>
+                                <th width="5%">Qty STO</th>
                                 <th width="5%">Qty End</th>
                                 <th width="5%">Status</th>
                                 <th width="5%">Status Part</th>
@@ -105,8 +107,10 @@
                                 <td width="5%">{{ $part->part_no }}</td>
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->loc_ppti }}</td>
+                                <td width="5%">{{ $part->lokasi_hib }}</td>
+                                <td width="5%">{{ $part->loc_tapc }}</td>
                                 <td width="5%">{{ $part->qty_begin }}</td>
-                                <td width="5%">{{ (int)$part->qty + (int)$part->qty_in ?? 0 }}</td>
+                                <td width="5%">{{ $part->qty_in}}</td>
                                 <td width="5%">{{ $part->qty_out }}</td>
                                 <td width="5%">{{ $part->adjust }}</td>
                                 <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
@@ -252,8 +256,8 @@
                                     <label class="form-label">Asal <span class="text-danger">*</span></label>
                                     <select class="form-control" name="asal" id="asal">
                                         <option value="">Pilih Asal</option>
-                                        <option value="Lokal">Lokal</option>
-                                        <option value="Import">Import</option>
+                                        <option value="Lokal" {{ old('asal', $part->asal) == 'Lokal' ? 'selected' : '' }}>Lokal</option>
+                                        <option value="Import" {{ old('asal', $part->asal) == 'Import' ? 'selected' : '' }}>Import</option>
                                     </select>
                                 </div>
                             </div>
@@ -275,17 +279,16 @@
                                 <div class="form-group">
                                     <label class="form-label">PO Date<span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" name="po_date" id="po_date"
-                                        placeholder="Masukan PO Date" value="{{ old('po_date') }}">
+                                        placeholder="Masukan PO Date" value="{{ old('po_date', optional($part->po_date)->format('dd/mm/yyyy')) }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Rec Date<span class="text-danger">*</span></label>
                                     <input type="date" class="form-control" name="rec_date" id="rec_date"
-                                        placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
+                                        placeholder="Masukan Rec Date" value="{{ old('rec_date', optional($part->rec_date)->format('dd-mm-yy')) }}">
                                 </div>
                             </div>
-
                             <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
@@ -307,7 +310,7 @@
                                         <option value="">- Pilih Rak -</option>
                                         @if (sizeof($racks) > 0)
                                         @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_id }}">{{ $rack->rack_name }}</option>
+                                        <option value="{{ $rack->rack_id }}" {{ old('rack') == $rack->rack_id ? 'selected' : '' }}>{{ $rack->rack_name }}</option>
                                         @endforeach
                                         @endif
                                     </select>
@@ -487,6 +490,8 @@
                     $('#qty_begin').val(data.result.qty_begin);
                     $('#qty_in').val(data.result.qty_in);
                     $('#qty_out').val(data.result.qty_out);
+                    $('#rack').val(data.result.rack);
+                    $('#subrack').val(data.result.subrack);
                     $('#adjust').val(data.result.adjust);
                     $('#qty_end').val(data.result.qty_end);
                     $('#remarks').val(data.result.remarks);
@@ -623,6 +628,21 @@
         // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
         $('#table-data_filter input').unbind().bind('keyup', function() {
             table.column(1).search(this.value).draw();
+        });
+
+        // Event listener untuk menampilkan nilai rak dan subrak yang dipilih
+        $('#rack').change(function() {
+            var selectedRack = $(this).find('option:selected').text();
+            console.log('Rak yang dipilih: ' + selectedRack);
+            // Tampilkan nilai rak yang dipilih di tempat yang diinginkan
+            $('#selectedRackDisplay').text('Rak yang dipilih: ' + selectedRack);
+        });
+
+        $('#sub_rack').change(function() {
+            var selectedSubRack = $(this).find('option:selected').text();
+            console.log('Sub Rak yang dipilih: ' + selectedSubRack);
+            // Tampilkan nilai subrak yang dipilih di tempat yang diinginkan
+            $('#selectedSubRackDisplay').text('Sub Rak yang dipilih: ' + selectedSubRack);
         });
     });
 </script>
