@@ -164,12 +164,12 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Sub Rak <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="rack_name" id="rack_name">
+                                    <br>
+                                    <select class="form-control select2" name="rack_name" id="rack_name" style="width: 100%;">
                                         <option value="">- Pilih Sub Rak -</option>
                                         @if (sizeof($subracks) > 0)
                                         @foreach ($subracks as $subrack)
-                                        <option value="{{ $subrack->sub_rack_id }}">{{ $subrack->rack_name }}.{{ $subrack->sub_rack_name }}
-                                        </option>
+                                        <option value="{{ $subrack->sub_rack_id }}">{{ $subrack->rack_name }}.{{ $subrack->sub_rack_name }}</option>
                                         @endforeach
                                         @endif
                                     </select>
@@ -591,7 +591,21 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        // Inisialisasi Select2 untuk dropdown Sub Rak
+        $('#rack_name').select2({
+            placeholder: "- Pilih Sub Rak -",
+            allowClear: true
+        });
 
+        // Inisialisasi Select2 untuk dropdown Part
+        $('#part_id').select2({
+            placeholder: "- Pilih Part -",
+            allowClear: true
+        });
+    });
+</script>
 
 
 
