@@ -21,9 +21,11 @@ class Adjusting implements FromCollection, ShouldAutoSize
      */
     public function collection()
     {
-
         // Fetch data from the LogPartRequestRepository
         $data = $this->partRepository->getAll();
+
+        // Remove duplicate entries based on a unique attribute, e.g., 'part_no'
+        $data = $data->unique('part_no');
 
         // Initialize totals
         $totalParts = count($data);
