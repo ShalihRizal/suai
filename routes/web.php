@@ -22,6 +22,5 @@ Route::post('/do_login',     [UserController::class, 'authenticate']);
 Route::view('/unauthorize', 'exceptions.unauthorize');
 // Route::view('/', 			'layouts.landing');
 
-Route::get('/logout',             [UserController::class, 'logout'])->middleware('auth');
+Route::get('/logout',             [UserController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile',             [UserController::class, 'profile'])->middleware('auth');
-Route::post('/changepassword',     [UserController::class, 'changepassword'])->middleware('auth');

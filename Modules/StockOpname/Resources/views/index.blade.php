@@ -86,7 +86,7 @@
                             </a>
                         </div>
                         <div class="addData">
-                            <a href="inventory/public/monthlyreport" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
+                            <a href="{{ url('monthlyreport/') }}" class="btn btn-success btnAdd text-white mb-3 d-block w-60">
                                 <i data-feather="file-text" width="16" height="16" class="me-2"></i> Monthly Report
                             </a>
                         </div>
