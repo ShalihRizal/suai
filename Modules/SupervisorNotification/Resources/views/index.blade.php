@@ -66,7 +66,9 @@
                                 <th width="20%">Approved By</th>
                                 <th width="20%">Part Number</th>
                                 <th width="15%">Part Quantity</th>
-                                <th width="15%">Lokasi</th>
+                                <th width="15%">Lokasi PPTI</th>
+                                <th width="15%">Lokasi HIB</th>
+                                <th width="15%">Lokasi TAPC</th>
                                 <th width="15%">Status</th>
                                 <th width="15%">Aksi</th>
                             </tr>
@@ -88,6 +90,8 @@
                                 <td width="20%">{{ $notification->part_no }}</td>
                                 <td width="15%">{{ $notification->part_qty }}</td>
                                 <td width="15%">{{ $notification->loc_ppti }}</td>
+                                <td width="15%">{{ $notification->lokasi_hib }}</td>
+                                <td width="15%">{{ $notification->loc_tapc }}</td>
                                 <td width="15%">{{ $notification->wear_and_tear_status }}</td>
                                 <td width="15%">
                                     @if ($notification->part_req_id > 0)

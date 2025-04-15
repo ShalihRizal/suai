@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Modules\PartCategory\Repositories\PartCategoryRepository;
 use Modules\Part\Repositories\PartRepository;
 use Modules\TransaksiIn\Repositories\TransaksiInRepository;
@@ -49,6 +50,7 @@ class PartController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        $subrack = $this->_subRackRepository->getAll();
         // Filter parts based on the selected category
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
@@ -56,7 +58,75 @@ class PartController extends Controller
 
 
 
-        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter','subrack'));
+    }
+    public function download(Request $request)
+    {
+        $category = $request->input('category');
+        
+        if ($category) {
+            $parts = $this->_partRepository->getAllByParams(['part_category_id' => $category]);
+        } else {
+            $parts = $this->_partRepository->getAll();
+        }
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set header
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Part No');
+        $sheet->setCellValue('C1', 'Part Name'); 
+        $sheet->setCellValue('D1', 'Lokasi PPTI');
+        $sheet->setCellValue('E1', 'Lokasi HIB');
+        $sheet->setCellValue('F1', 'Lokasi TAPC');
+        $sheet->setCellValue('G1', 'Begin');
+        $sheet->setCellValue('H1', 'Qty In');
+        $sheet->setCellValue('I1', 'Qty Out');
+        $sheet->setCellValue('J1', 'Qty STO');
+        $sheet->setCellValue('K1', 'Qty End');
+        $sheet->setCellValue('L1', 'Status Part');
+        $sheet->setCellValue('M1', 'Status');
+        $sheet->setCellValue('N1', 'Safety Stock');
+        $sheet->setCellValue('O1', 'ROP');
+        $sheet->setCellValue('P1', 'Forecast');
+        $sheet->setCellValue('Q1', 'Max');
+
+        $row = 2;
+        foreach ($parts as $index => $part) {
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $part->part_no);
+            $sheet->setCellValue('C' . $row, $part->part_name);
+            $sheet->setCellValue('D' . $row, $part->loc_ppti);
+            $sheet->setCellValue('E' . $row, $part->lokasi_hib);
+            $sheet->setCellValue('F' . $row, $part->loc_tapc);
+            $sheet->setCellValue('G' . $row, $part->qty_begin);
+            $sheet->setCellValue('H' . $row, $part->qty_in);
+            $sheet->setCellValue('I' . $row, $part->qty_out);
+            $sheet->setCellValue('J' . $row, $part->adjust);
+            $sheet->setCellValue('K' . $row, $part->qty_begin + $part->qty_in - $part->qty_out);
+            $sheet->setCellValue('L' . $row, $part->status);
+            $sheet->setCellValue('M' . $row, $part->kategori_inventory);
+            $sheet->setCellValue('N' . $row, $part->ss);
+            $sheet->setCellValue('O' . $row, $part->rop);
+            $sheet->setCellValue('P' . $row, $part->forecast);
+            $sheet->setCellValue('Q' . $row, $part->max);
+            $row++;
+        }
+
+        // Auto size columns
+        foreach(range('A','Q') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'parts_data_' . date('Y-m-d') . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
     public function allindex(Request $request)
     {
@@ -71,6 +141,7 @@ class PartController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
 
+        $subrack = $this->_subRackRepository->getAll();
         // Filter parts based on the selected category
         if (!empty($partCategoryFilter)) {
             $parts = $parts->where('part_category_id', $partCategoryFilter);
@@ -78,7 +149,7 @@ class PartController extends Controller
 
 
 
-        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter'));
+        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter','subrack'));
     }
 
     public function afindex(Request $request)

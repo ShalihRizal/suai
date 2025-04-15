@@ -28,7 +28,7 @@ class SupervisorNotificationRepository extends QueryBuilderImplementation
                     'part_request.*',
                     'part.part_no',
                     'sys_users.user_name',
-                    'part.loc_ppti',
+                    'part.*',
                     'part_request.created_at as part_request_created_at'
                 )
                 ->orderBy('part_request.created_at', 'desc')

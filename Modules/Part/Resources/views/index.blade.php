@@ -62,15 +62,33 @@
                         <h3 class="h3">Part</h3>
                         {{ date('Y-m-d') }}
                     </div>
-                    <div class="col-md-6"></div>
+                    <div class="col-md-6 text-end">
+                        <!-- Tambahkan tombol download di sini -->
+                        
+                    </div>
                 </div>
             </div>
             <div class="card-body">
-                <div class="addData">
-                    <a href="javascript:void(0)" class="btn btn-success btnAdd text-white mb-3" data-toggle="modal" data-target=".addModal">
+                <div class="addData d-flex gap-3">
+                    <a href="javascript:void(0)" class="btn btn-success btnAdd text-white" data-toggle="modal" data-target=".addModal">
                         <i data-feather="plus" width="16" height="16" class="me-2"></i>
                         Tambah Part
                     </a>
+                    <label for="">ㅤ</label>
+                    <div class="btn-group ms-2">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="download" width="16" height="16" class="me-2"></i>
+                            Download Data
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ route('part.download') }}">Semua Data</a>
+                            @foreach($partcategories as $category)
+                                <a class="dropdown-item" href="{{ route('part.download', ['category' => $category->part_category_id]) }}">
+                                    {{ $category->part_category_name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
@@ -212,9 +230,35 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
+                                    <label class="form-label">No Applicator<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_no"
+                                        id="applicator_no" placeholder="Masukan No Applicator"
+                                        value="{{ old('applicator_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Tipe Applicator<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_type"
+                                        id="applicator_type" placeholder="Masukan Tipe Applicator"
+                                        value="{{ old('applicator_type') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
                                     <label class="form-label">Molts Number<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="molts_no" id="molts_no"
                                         placeholder="Masukan Molts Number" value="{{ old('molts_no') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Kuantitas Applicator<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_qty"
+                                        id="applicator_qty" placeholder="Masukan Kuantitas Applicator"
+                                        value="{{ old('applicator_qty') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -231,8 +275,8 @@
                                     <label class="form-label">Asal <span class="text-danger">*</span></label>
                                     <select class="form-control" name="asal" id="asal">
                                         <option value="">Pilih Asal</option>
-                                        <option value="Lokal">Lokal</option>
-                                        <option value="Import">Import</option>
+                                        <option value="Lokal" {{ old('asal', $part->asal) == 'Lokal' ? 'selected' : '' }}>Lokal</option>
+                                        <option value="Import" {{ old('asal', $part->asal) == 'Import' ? 'selected' : '' }}>Import</option>
                                     </select>
                                 </div>
                             </div>
@@ -264,11 +308,12 @@
                                         placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+
+                            <div class="col-md-6" hidden>
                                 <div class="form-group">
-                                    <label class="form-label">Loc PPTI <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="loc_ppti" id="loc_ppti">
-                                        <option value="">- Pilih Loc PPTI -</option>
+                                    <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="loc_tapc" id="loc_tapc">
+                                        <option value="">- Pilih Loc TAPC -</option>
                                         @if (sizeof($racks) > 0)
                                         @foreach ($racks as $rack)
                                         <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
@@ -278,6 +323,63 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Rak <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="rack" id="rack">
+                                        <option value="">- Pilih Rak -</option>
+                                        @if (sizeof($racks) > 0)
+                                        @foreach ($racks as $rack)
+                                        <option value="{{ $rack->rack_id }}">{{ $rack->rack_name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Sub Rak <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="subrack" id="sub_rack">
+                                        <option value="">- Pilih Sub Rak -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <div class="form-group">
+                                    <label class="form-label">Loc Hib <span class="text-danger">*</span> </label>
+                                    <select class="form-control" name="lokasi_hib" id="lokasi_hib">
+                                        <option value="">- Pilih Loc Hib -</option>
+                                        @if (sizeof($racks) > 0)
+                                        @foreach ($racks as $rack)
+                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
+                                        </option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{-- <div class="col-md-6 mb-3"hidden>
+                                <div class="form-group">
+                                    <label class="form-label">Loc PPTI<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
+                                        placeholder="Masukan Loc PPTI" value="{{ old('loc_ppti') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3" hidden>
+                        <div class="form-group">
+                            <label class="form-label">Loc Tapc<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="loc_tapc" id="loc_tapc"
+                                placeholder="Masukan Loc Tapc" value="{{ old('loc_tapc') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3" hidden>
+                        <div class="form-group">
+                            <label class="form-label">Loc Hib<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="lokasi_hib" id="lokasi_hib"
+                                placeholder="Masukan Loc Hib" value="{{ old('lokasi_hib') }}">
+                        </div>
+                    </div> --}}
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
@@ -320,16 +422,17 @@
                                         placeholder="Masukan Remarks" value="{{ old('remarks') }}">
                                 </div>
                             </div>
+
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="text-white btn btn-success">Simpan</button>
-                </div>
-            </form>
+
+
         </div>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+        <button type="submit" class="text-white btn btn-success">Simpan</button>
+    </div>
+    </form>
 </div>
 <!-- Modal Add -->
 @endsection
@@ -342,6 +445,10 @@
     $('.btnAdd').click(function() {
         $('#part_no').val('');
         $('#no_urut').val('');
+        $('#applicator_no').val('');
+        $('#applicator_type').val('');
+        $('#applicator_qty').val('');
+        $('#kode_tooling_bc').val('');
         $('#part_name').val('');
         $('#molts_no').val('');
         $('#asal').val('');
@@ -349,6 +456,8 @@
         $('#po_date').val('');
         $('#rec_date').val('');
         $('#loc_ppti').val('');
+        $('#loc_tapc').val('');
+        $('#lokasi_hib').val('');
         $('#qty_begin').val('');
         $('#qty_in').val('');
         $('#qty_out').val('');
@@ -383,6 +492,9 @@
                 if (data.status == 1) {
                     $('#part_no').val(data.result.part_no);
                     $('#no_urut').val(data.result.no_urut);
+                    $('#applicator_no').val(data.result.applicator_no);
+                    $('#applicator_type').val(data.result.applicator_type);
+                    $('#applicator_qty').val(data.result.applicator_qty);
                     $('#kode_tooling_bc').val(data.result.kode_tooling_bc);
                     $('#part_name').val(data.result.part_name);
                     $('#molts_no').val(data.result.molts_no);
@@ -390,6 +502,8 @@
                     $('#po').val(data.result.po);
                     $('#po_date').val(data.result.po_date);
                     $('#rec_date').val(data.result.rec_date);
+                    $('#loc_ppti').val(data.result.loc_ppti);
+                    $('#loc_tapc').val(data.result.loc_tapc);
                     $('#invoice').val(data.result.invoice);
                     $('#lokasi_hib').val(data.result.lokasi_hib);
                     $('#qty_begin').val(data.result.qty_begin);
@@ -454,6 +568,9 @@
         rules: {
             part_no: "required",
             no_urut: "required",
+            applicator_no: "required",
+            applicator_type: "required",
+            applicator_qty: "required",
             kode_tooling_bc: "required",
             part_name: "required",
             asal: "required",
@@ -462,6 +579,8 @@
             po_date: "required",
             rec_date: "required",
             loc_ppti: "required",
+            loc_tapc: "required",
+            lokasi_hib: "required",
             qty_begin: "required",
             qty_in: "required",
             qty_out: "required",
@@ -473,6 +592,9 @@
         messages: {
             part_no: "Part No Tidak Boleh Kosong",
             no_urut: "No Urut Tidak Boleh Kosong",
+            applicator_no: "Nomor Applicator Tidak Boleh Kosong",
+            applicator_type: "Tipe Apllikator Tidak Boleh Kosong",
+            applicator_qty: "Qty Applikator Tidak Boleh Kosong",
             kode_tooling_bc: "Kode Tooling BC Tidak Boleh Kosong",
             part_name: "Part Name Tidak Boleh Kosong",
             asal: "Asal Tidak Boleh Kosong",
@@ -481,6 +603,8 @@
             po_date: "PO Date Tidak Boleh Kosong",
             rec_date: "Rec Date Tidak Boleh Kosong",
             loc_ppti: "Loc PPTI Tidak Boleh Kosong",
+            loc_tapc: "Loc Tapc Tidak Boleh Kosong",
+            lokasi_hib: "Loc Hib Tidak Boleh Kosong",
             qty_begin: "Qty Begin Tidak Boleh Kosong",
             qty_in: "Qty In Tidak Boleh Kosong",
             qty_out: "Qty Out Tidak Boleh Kosong",
@@ -521,6 +645,29 @@
         // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
         $('#table-data_filter input').unbind().bind('keyup', function() {
             table.column(1).search(this.value).draw();
+        });
+    });
+</script>
+<script>
+    // Store the subrack data as a JavaScript object for easier management
+    const subracks = @json($subrack);
+
+    // Event listener to update the Sub Rak dropdown based on the selected Rak
+    document.getElementById("rack").addEventListener("change", function() {
+        const selectedRackId = this.value;
+        const subRackDropdown = document.getElementById("sub_rack");
+
+        // Reset Sub Rak dropdown
+        subRackDropdown.innerHTML = '<option value="">- Pilih Sub Rak -</option>';
+
+        // Filter and append relevant Sub Racks
+        subracks.forEach(subrack => {
+            if (subrack.rack_id == selectedRackId) {
+                const option = document.createElement("option");
+                option.value = subrack.sub_rack_id;
+                option.textContent = `${subrack.rack_name}.${subrack.sub_rack_name}`;
+                subRackDropdown.appendChild(option);
+            }
         });
     });
 </script>
