@@ -49,11 +49,22 @@
                                 <div class="col-md-5">
                                     <input type="date" name="end_date" class="form-control" placeholder="End Date">
                                 </div>
-                                <div class="col-md-2">
+                                <!-- <div class="col-md-2">
                                     <button type="submit" class="btn btn-success text-white">
                                         <i data-feather="download" width="16" height="16" class="me-2"></i> Download
                                     </button>
-                                </div>
+                                </div> -->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <form action="{{ url('partrequest/allstore') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="input-group">
+                                <input type="file" name="file_upload" class="form-control" required>
+                                <button type="submit" class="btn btn-info text-white">
+                                    <i data-feather="upload" width="16" height="16" class="me-2"></i> Upload
+                                </button>
                             </div>
                         </form>
                     </div>

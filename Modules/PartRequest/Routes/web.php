@@ -21,7 +21,7 @@ Route::prefix('partrequest')->group(function () {
     Route::get('/createaf', 'PartRequestController@createaf');
     Route::get('/show/{id}', 'PartRequestController@show');
     Route::get('/edit/{id}', 'PartRequestController@edit');
-    Route::post('/store', 'PartRequestController@store');
+    Route::post('/allstore', 'PartRequestController@allstore')->name('allstore');
     Route::post('/update/{id}', 'PartRequestController@update');
     Route::get('/delete/{id}', 'PartRequestController@destroy');
     Route::get('/getdata/{id}', 'PartRequestController@getdata');

@@ -658,6 +658,165 @@ class PartRequestController extends Controller
 
         return redirect('partrequest/cd')->with('message', 'PartRequest berhasil ditambahkan');
     }
+    public function allstore(Request $request)
+    {
+        dd($request->all());
+
+        date_default_timezone_set('Asia/Jakarta');
+        $userGroupId = Auth::user()->group_id;
+        $part = $this->_partRepository->getById($request->part_id);
+        // $last = $this->_PartRequestRepository->getLast();
+
+        $file_images = [];
+        $file_paths = [];
+        $image_part_displays = $request->input('image_part_display');
+
+        if ($request->hasFile('image_part')) {
+            foreach ($request->file('image_part') as $index => $file) {
+                if ($file->isValid()) {
+                    $fileName = DataHelper::getFileName($file);
+                    $filePath = DataHelper::getFilePath(false, true);
+                    $file->storeAs($filePath, $fileName, 'public');
+                    $file_images[$index] = $fileName;
+                    $file_paths[$index] = $filePath;
+                } else {
+                    // Jika file tidak valid, gunakan nama dari image_part_display
+                    $fileName = DataHelper::getFileName($image_part_displays[$index]);
+                    $filePath = DataHelper::getFilePath(false, true);
+                    $file_images[$index] = $fileName;
+                    $file_paths[$index] = $filePath;
+                }
+            }
+        } else {
+            // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display
+            foreach ($image_part_displays as $index => $display) {
+                $file_images[$index] = $display;
+                $file_paths[$index] = DataHelper::getFilePath(false, true);
+            }
+        }
+
+        $currentMonth = strtoupper(substr(date("F"), 0, 3));
+        $currentYear = date('Y');
+
+        $count = $this->_PartRequestRepository->count();
+
+        $padded_part_req_id = str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $part_req_number = "$padded_part_req_id/TO/CD/$currentMonth/$currentYear";
+
+        $part_ids = $request->input('part_id');
+        $carnames = $request->input('carname');
+        $carmodels = $request->input('car_model');
+        $shifts = $request->input('shift');
+        $serialnos = $request->input('serial_no');
+        $applicatornos = $request->input('applicator_no');
+        $sidenos = $request->input('side_no');
+        $machine_nos = $request->input('machine_no');
+        $alasans = $request->input('alasan');
+        $orders = $request->input('order');
+        $strokes = $request->input('stroke');
+        $pics = $request->input('pic');
+        $remarkss = $request->input('remarks');
+        $part_qtys = $request->input('part_qty');
+        $wear_and_tear_statuss = $request->input('wear_and_tear_status');
+
+        $partRequests = [];
+        date_default_timezone_set('Asia/Jakarta');
+        foreach ($part_ids as $index => $part_id) {
+            $partRequests_initial[] = [
+                'part_req_pic_filename' => isset($file_images[$index]) ? $file_images[$index] : (isset($image_part_displays[$index]) ? $image_part_displays[$index] : null),
+                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
+                'part_id' => $part_ids[$index],
+                'carline' => $carnames[$index],
+                'car_model' => $carmodels[$index],
+                'shift' => $shifts[$index],
+                'serial_no' => $serialnos[$index],
+                'applicator_no' => $applicatornos[$index],
+                'side_no' => $sidenos[$index],
+                'machine_no' => $machine_nos[$index],
+                'alasan' => $alasans[$index],
+                'order' => $orders[$index],
+                'stroke' => $strokes[$index],
+                'pic' => $pics[$index],
+                'remarks' => $remarkss[$index],
+                'part_qty' => $part_qtys[$index],
+                'status' => 0,
+                'wear_and_tear_status' => $wear_and_tear_statuss[$index],
+                'part_req_number' => $part_req_number,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+
+        $partImage = $partRequests_initial[0]['part_req_pic_filename'];
+
+        foreach ($part_ids as $index => $part_id) {
+            $partRequests[] = [
+                'part_req_pic_filename' => $partImage,
+                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
+                'part_id' => $part_ids[$index],
+                'carline' => $carnames[$index],
+                'car_model' => $carmodels[$index],
+                'shift' => $shifts[$index],
+                'serial_no' => $serialnos[$index],
+                'applicator_no' => $applicatornos[$index],
+                'side_no' => $sidenos[$index],
+                'machine_no' => $machine_nos[$index],
+                'alasan' => $alasans[$index],
+                'order' => $orders[$index],
+                'stroke' => $strokes[$index],
+                'pic' => $pics[$index],
+                'remarks' => $remarkss[$index],
+                'part_qty' => $part_qtys[$index],
+                'status' => 0,
+                'wear_and_tear_status' => $wear_and_tear_statuss[$index],
+                'part_req_number' => $part_req_number,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+
+        dd($partRequests);
+
+        foreach ($partRequests as $partreq) {
+            DB::beginTransaction();
+            try {
+                $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
+                $listofpartreq = [
+                    "part_req_id" => $cek,
+                    'created_at' => now(),
+                ];
+                $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
+                $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // Handle exception
+            }
+        }
+
+        $targetNumbers = [
+            '6287836410547',
+            '6287824003437',
+            '6287824003436',
+            '6285351891534'
+        ];
+
+        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
+        $token = 'xT-cKdExR44PbctH-8LY';
+
+        foreach ($targetNumbers as $number) {
+            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
+                'target' => $number,
+                'message' => $message,
+                'token' => $token,
+            ]);
+
+            if ($whatsappResponse->failed()) {
+                // Tangani jika pengiriman gagal
+                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
+            }
+        }
+
+        return redirect('partrequest/cd')->with('message', 'PartRequest berhasil ditambahkan');
+    }
     /**
      * Show the cdecified resource.
      * @param int $id
