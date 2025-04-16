@@ -52,19 +52,27 @@ class ListOfPartRequestController extends Controller
         // dd($partrequests);
         return view('listofpartrequest::index', compact('partrequests'));
     }
-    public function downloadPDF(Request $request)
+    public function downloadPDF()
     {
-        $partrequests = $this->_PartRequestRepository->getAll();
+        // Path lengkap file
+        $filePath = storage_path('app/public/uploads/images/header_partreq_with_example_data.csv');
 
-        if (sizeof($partrequests) == 0) {
-            return redirect('listofpartrequest')->with('message', 'Tidak ada data untuk diunduh.');
+        // Cek apakah file ada
+        if (!file_exists($filePath)) {
+            // Jika file tidak ditemukan, redirect dengan pesan error
+            return redirect('listofpartrequest')->with('message', 'Template file not found.');
         }
 
-        $pdf = PDF::loadView('listofpartrequest::pdf', compact('partrequests'));
+        // Menentukan nama file saat diunduh
+        $fileName = 'header_partreq_with_example_data.csv';
 
-        // Ubah 'download' menjadi 'stream' jika ingin menampilkan PDF di browser tanpa mengunduh
-        return $pdf->download('listofpartrequest.pdf');
+        // Mengunduh file dengan nama yang sudah ditentukan dan tipe konten CSV
+        return response()->download($filePath, $fileName, [
+            'Content-Type' => 'text/csv', // Menentukan MIME Type untuk file CSV
+        ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

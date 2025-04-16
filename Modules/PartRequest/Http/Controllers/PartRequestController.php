@@ -22,6 +22,7 @@ use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
 use Validator;
+use Carbon\Carbon;
 
 class PartRequestController extends Controller
 {
@@ -660,162 +661,49 @@ class PartRequestController extends Controller
     }
     public function allstore(Request $request)
     {
-        dd($request->all());
+        $request->validate([
+            'file_upload' => 'required|file|mimes:csv,txt',
+        ]);
 
-        date_default_timezone_set('Asia/Jakarta');
-        $userGroupId = Auth::user()->group_id;
-        $part = $this->_partRepository->getById($request->part_id);
-        // $last = $this->_PartRequestRepository->getLast();
+        $file = $request->file('file_upload');
+        $dataArray = [];
 
-        $file_images = [];
-        $file_paths = [];
-        $image_part_displays = $request->input('image_part_display');
+        if (($handle = fopen($file->getPathname(), 'r')) !== false) {
+            $header = fgetcsv($handle); // Read header
 
-        if ($request->hasFile('image_part')) {
-            foreach ($request->file('image_part') as $index => $file) {
-                if ($file->isValid()) {
-                    $fileName = DataHelper::getFileName($file);
-                    $filePath = DataHelper::getFilePath(false, true);
-                    $file->storeAs($filePath, $fileName, 'public');
-                    $file_images[$index] = $fileName;
-                    $file_paths[$index] = $filePath;
-                } else {
-                    // Jika file tidak valid, gunakan nama dari image_part_display
-                    $fileName = DataHelper::getFileName($image_part_displays[$index]);
-                    $filePath = DataHelper::getFilePath(false, true);
-                    $file_images[$index] = $fileName;
-                    $file_paths[$index] = $filePath;
+            while (($row = fgetcsv($handle)) !== false) {
+                if (count($row) === count($header)) {
+                    $record = array_combine($header, $row);
+
+                    // Convert date fields to proper format
+                    if (!empty($record['created_at'])) {
+                        $record['created_at'] = Carbon::createFromFormat('n/j/Y H:i', $record['created_at'])->format('Y-m-d H:i:s');
                 }
-            }
-        } else {
-            // Jika tidak ada file yang diunggah, gunakan nama dari image_part_display
-            foreach ($image_part_displays as $index => $display) {
-                $file_images[$index] = $display;
-                $file_paths[$index] = DataHelper::getFilePath(false, true);
-            }
+                    if (!empty($record['updated_at'])) {
+                        $record['updated_at'] = Carbon::createFromFormat('n/j/Y H:i', $record['updated_at'])->format('Y-m-d H:i:s');
+                    }
+
+                    $dataArray[] = $record;
+                }
         }
 
-        $currentMonth = strtoupper(substr(date("F"), 0, 3));
-        $currentYear = date('Y');
+            fclose($handle);
+        }
 
-        $count = $this->_PartRequestRepository->count();
+        // Optional: If you're using a repository function
+        $inserted = $this->_PartRequestRepository->insertGetIDs($dataArray);
 
-        $padded_part_req_id = str_pad($count + 1, 4, '0', STR_PAD_LEFT);
-        $part_req_number = "$padded_part_req_id/TO/CD/$currentMonth/$currentYear";
-
-        $part_ids = $request->input('part_id');
-        $carnames = $request->input('carname');
-        $carmodels = $request->input('car_model');
-        $shifts = $request->input('shift');
-        $serialnos = $request->input('serial_no');
-        $applicatornos = $request->input('applicator_no');
-        $sidenos = $request->input('side_no');
-        $machine_nos = $request->input('machine_no');
-        $alasans = $request->input('alasan');
-        $orders = $request->input('order');
-        $strokes = $request->input('stroke');
-        $pics = $request->input('pic');
-        $remarkss = $request->input('remarks');
-        $part_qtys = $request->input('part_qty');
-        $wear_and_tear_statuss = $request->input('wear_and_tear_status');
-
-        $partRequests = [];
-        date_default_timezone_set('Asia/Jakarta');
-        foreach ($part_ids as $index => $part_id) {
-            $partRequests_initial[] = [
-                'part_req_pic_filename' => isset($file_images[$index]) ? $file_images[$index] : (isset($image_part_displays[$index]) ? $image_part_displays[$index] : null),
-                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
-                'part_id' => $part_ids[$index],
-                'carline' => $carnames[$index],
-                'car_model' => $carmodels[$index],
-                'shift' => $shifts[$index],
-                'serial_no' => $serialnos[$index],
-                'applicator_no' => $applicatornos[$index],
-                'side_no' => $sidenos[$index],
-                'machine_no' => $machine_nos[$index],
-                'alasan' => $alasans[$index],
-                'order' => $orders[$index],
-                'stroke' => $strokes[$index],
-                'pic' => $pics[$index],
-                'remarks' => $remarkss[$index],
-                'part_qty' => $part_qtys[$index],
-                'status' => 0,
-                'wear_and_tear_status' => $wear_and_tear_statuss[$index],
-                'part_req_number' => $part_req_number,
-                'created_at' => date('Y-m-d H:i:s'),
+        for ($i = 0; $i < count($inserted); $i++) {
+            $listofpartreq = [
+                "part_req_id" => $inserted[$i],
+                'created_at' => now(),
             ];
+            $cek = $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
         }
 
-        $partImage = $partRequests_initial[0]['part_req_pic_filename'];
+        // dd($cek);
 
-        foreach ($part_ids as $index => $part_id) {
-            $partRequests[] = [
-                'part_req_pic_filename' => $partImage,
-                'part_req_pic_path' => $file_paths[$index] ?? DataHelper::getFilePath(false, true),
-                'part_id' => $part_ids[$index],
-                'carline' => $carnames[$index],
-                'car_model' => $carmodels[$index],
-                'shift' => $shifts[$index],
-                'serial_no' => $serialnos[$index],
-                'applicator_no' => $applicatornos[$index],
-                'side_no' => $sidenos[$index],
-                'machine_no' => $machine_nos[$index],
-                'alasan' => $alasans[$index],
-                'order' => $orders[$index],
-                'stroke' => $strokes[$index],
-                'pic' => $pics[$index],
-                'remarks' => $remarkss[$index],
-                'part_qty' => $part_qtys[$index],
-                'status' => 0,
-                'wear_and_tear_status' => $wear_and_tear_statuss[$index],
-                'part_req_number' => $part_req_number,
-                'created_at' => date('Y-m-d H:i:s'),
-            ];
-        }
-
-        dd($partRequests);
-
-        foreach ($partRequests as $partreq) {
-            DB::beginTransaction();
-            try {
-                $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
-                $listofpartreq = [
-                    "part_req_id" => $cek,
-                    'created_at' => now(),
-                ];
-                $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
-                $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-                // Handle exception
-            }
-        }
-
-        $targetNumbers = [
-            '6287836410547',
-            '6287824003437',
-            '6287824003436',
-            '6285351891534'
-        ];
-
-        $message = 'Pemberitahuan! Ada Part Request masuk dengan nomor ' . $part_req_number . ', mohon untuk segera periksa. Terimakasih. Akses disini : https://inventory.suaisystem.com';
-        $token = 'xT-cKdExR44PbctH-8LY';
-
-        foreach ($targetNumbers as $number) {
-            $whatsappResponse = Http::get('https://api.fonnte.com/send', [
-                'target' => $number,
-                'message' => $message,
-                'token' => $token,
-            ]);
-
-            if ($whatsappResponse->failed()) {
-                // Tangani jika pengiriman gagal
-                Log::error('Gagal mengirim pesan ke nomor ' . $number . ': ' . $whatsappResponse->body());
-            }
-        }
-
-        return redirect('partrequest/cd')->with('message', 'PartRequest berhasil ditambahkan');
+        return back()->with('success', count($dataArray) . ' records uploaded.');
     }
     /**
      * Show the cdecified resource.

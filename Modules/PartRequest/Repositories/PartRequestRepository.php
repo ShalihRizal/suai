@@ -103,4 +103,24 @@ class PartRequestRepository extends QueryBuilderImplementation
             return $e->getMessage();
         }
     }
+
+    public function insertBatch(array $data)
+    {
+        return DB::table('part_request')->insert($data); // Or use your model if Eloquent
+    }
+
+    public function insertGetIDs(array $dataArray)
+    {
+        $ids = [];
+
+        foreach ($dataArray as $data) {
+            $id = DB::table('part_request')->insertGetId($data);
+            $ids[] = $id;
+        }
+
+        return $ids;
+    }
+
+
+
 }
