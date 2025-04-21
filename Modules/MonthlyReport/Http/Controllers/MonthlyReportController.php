@@ -452,42 +452,51 @@ class MonthlyReportController extends Controller
             $cellstartU = 'U' . $i;
             $cellStartV = 'V' . $i;
             $cellStartW = 'W' . $i;
+            $cellStartO = 'O' . $i;
+            $cellStartQ = 'Q' . $i;
+            $cellStartP = 'P' . $i;
 
             if ($i % 2 == 0) {
                 $sheet->setCellValue($cellStart, "LOKAL");
                 // qty begin
                 $calculatedValueQtyBegin = $this->getQty($aaa, 'LOKAL', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
-                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_begin');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartD, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartE, $amountidrin);
                 // qty in
                 $calculatedValueQtyIn = $this->getQty($aaa, 'LOKAL', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
-                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_in');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartG, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartH, $amountidrin);
-
-                // qty out
-                $calculatedValueQtyOut = $this->getQty($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd);
-                $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
-                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_out');
-                $sheet->setCellValue($cellStartM, $amountusdin);
-                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
-                $sheet->setCellValue($cellStartN, $amountidrin);
+                // qty out CIP
+                $calculatedValueQtyOutCIP = $this->getQty($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd, 'CIP');
+                $sheet->setCellValue($cellstartL, $calculatedValueQtyOutCIP);
+                $amountusdinCIP = $this->getPrice($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd, 'CIP');
+                $sheet->setCellValue($cellStartM, $amountusdinCIP);
+                $amountidrinCIP = $this->convertAndDisplayAmount($amountusdinCIP);
+                $sheet->setCellValue($cellStartN, $amountidrinCIP);
+                // qty out Expense
+                $calculatedValueQtyOutExp = $this->getQty($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd, 'Expense');
+                $sheet->setCellValue($cellStartO, $calculatedValueQtyOutExp);
+                $amountusdinExp = $this->getPrice($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd, 'Expense');
+                $sheet->setCellValue($cellStartP, $amountusdinExp);
+                $amountidrinExp = $this->convertAndDisplayAmount($amountusdinExp);
+                $sheet->setCellValue($cellStartQ, $amountidrinExp);
                 // adjust
                 $calculatedValueAdjust = $this->getQty($aaa, 'LOKAL', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
-                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'adjust');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartS, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartT, $amountidrin);
                 //qty end
                 $calculatedValueQtyEnd = $this->getQty($aaa, 'LOKAL', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
-                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_end');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartV, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartW, $amountidrin);
@@ -498,35 +507,42 @@ class MonthlyReportController extends Controller
                 // qty begin
                 $calculatedValueQtyBegin = $this->getQty($bbb, 'IMPORT', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
-                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_begin');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartD, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartE, $amountidrin);
                 // qty in
                 $calculatedValueQtyIn = $this->getQty($bbb, 'IMPORT', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
-                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_in');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartG, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartH, $amountidrin);
-                // qty out
-                $calculatedValueQtyOut = $this->getQty($bbb, 'IMPORT', 'qty_out', $dateBegin, $dateEnd);
-                $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
-                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_out');
-                $sheet->setCellValue($cellStartM, $amountusdin);
-                $amountidrin = $this->convertAndDisplayAmount($amountusdin);
-                $sheet->setCellValue($cellStartN, $amountidrin);
+                // qty out CIP
+                $calculatedValueQtyOutCIP = $this->getQty($bbb, 'IMPORT', 'qty_out', $dateBegin, $dateEnd, 'CIP');
+                $sheet->setCellValue($cellstartL, $calculatedValueQtyOutCIP);
+                $amountusdinCIP = $this->getPrice($bbb, 'IMPORT', 'qty_out', $dateBegin, $dateEnd, 'CIP');
+                $sheet->setCellValue($cellStartM, $amountusdinCIP);
+                $amountidrinCIP = $this->convertAndDisplayAmount($amountusdinCIP);
+                $sheet->setCellValue($cellStartN, $amountidrinCIP);
+                // qty out Expense
+                $calculatedValueQtyOutExp = $this->getQty($bbb, 'IMPORT', 'qty_out', $dateBegin, $dateEnd, 'Expense');
+                $sheet->setCellValue($cellStartO, $calculatedValueQtyOutExp);
+                $amountusdinExp = $this->getPrice($bbb, 'IMPORT', 'qty_out', $dateBegin, $dateEnd, 'Expense');
+                $sheet->setCellValue($cellStartP, $amountusdinExp);
+                $amountidrinExp = $this->convertAndDisplayAmount($amountusdinExp);
+                $sheet->setCellValue($cellStartQ, $amountidrinExp);
                 // adjust
                 $calculatedValueAdjust = $this->getQty($bbb, 'IMPORT', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
-                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'adjust');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartS, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartT, $amountidrin);
                 // qty end
                 $calculatedValueQtyEnd = $this->getQty($bbb, 'IMPORT', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
-                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_end');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellStartV, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartW, $amountidrin);
@@ -552,76 +568,201 @@ class MonthlyReportController extends Controller
 
 
 
-    public function getQty($part_id, $asal, $qty_type, $dateBegin, $dateEnd)
-{
-        // if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
-        //     return "Invalid date format or empty date provided.";
-        // }
+    public function getQty($part_id, $asal, $qty_type, $dateBegin, $dateEnd, $kategori_inventory = null)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
 
-    $allParts = $this->_partRepository->getAll();
+        $allParts = $this->_partRepository->getAll();
 
-    // Define your conditions here
-    $conditions = [
+        // Define your conditions here
+        $conditions = [
             'part_category_id' => $part_id,
             'kategori' => $asal,
-    ];
+        ];
 
-        $qtyEndParts = $allParts->filter(function ($part) use ($conditions) {
-        foreach ($conditions as $key => $value) {
-            if ($part->{$key} != $value) {
-                return false;
-            }
+        if ($kategori_inventory !== null) {
+            $conditions['kategori_inventory'] = $kategori_inventory;
         }
-        // Filter by used_date within the specified range
-            return ($part->used_date);
-    })->pluck($qty_type);
 
-    // Perform any operations with the qty_end values obtained
-    // For example, calculating the total qty_end
-    $totalQtyEnd = $qtyEndParts->sum();
-
-    return $totalQtyEnd;
-}
-
-private function isValidDate($date)
-{
-    return (bool) strtotime($date);
-}
-
-private function isDateInRange($date, $startDate, $endDate)
-{
-    return (strtotime($date) >= strtotime($startDate) && strtotime($date) <= strtotime($endDate));
-}
-
-public function getPrice($part_id, $asal, $qty_type)
-{
-    $allParts = $this->_partRepository->getAll();
-
-    // Define your conditions here
-    $conditions = [
-        'part_category_id' => $part_id,
-        'asal' => $asal,
-    ];
-
-    // Filter parts based on conditions and retrieve qty_end within the date range
-    $qtyEndParts = $allParts->filter(function ($part) use ($conditions) {
-        foreach ($conditions as $key => $value) {
-            if ($part->{$key} != $value) {
-                return false;
+        $qtyEndParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
             }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyEndParts->isEmpty()) {
+            return 0;
         }
-        // Filter by used_date within the specified range ('2023-07-05' to '2023-07-28')
-        return ($part->used_date >= '2023-07-05' && $part->used_date <= '2023-07-28');
-    });
 
-    // Calculate the total value of (qty_end * price) within the date range
-    $price_all = $qtyEndParts->reduce(function ($carry, $part) use ($qty_type) {
-        return $carry + ($part->$qty_type * $part->price);
-    }, 0);
+        // Hitung total qty berdasarkan tipe
+        switch($qty_type) {
+            case 'qty_begin':
+                return $qtyEndParts->sum('qty_begin') ?: 0;
+            case 'qty_in':
+                return $qtyEndParts->sum('qty_in') ?: 0;
+            case 'qty_out':
+                return $qtyEndParts->sum('qty_out') ?: 0;
+            case 'adjust':
+                return $qtyEndParts->sum('adjust') ?: 0;
+            case 'qty_end':
+                return $qtyEndParts->sum(function($part) {
+                    return ($part->qty_begin + $part->qty_in - $part->qty_out + $part->adjust);
+                    
+                }) ?: 0;
+            default:
+                return 0;
+        }
+    }
+    public function getQtyExpsense($part_id, $asal, $qty_type, $dateBegin, $dateEnd, $kategori_inventory = null)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
 
-    return $price_all;
-}
+        $allParts = $this->_partRepository->getAll();
 
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $asal,
+        ];
+
+        if ($kategori_inventory !== null) {
+            $conditions['kategori_inventory'] = $kategori_inventory;
+        }
+
+        $qtyEndParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyEndParts->isEmpty()) {
+            return 0;
+        }
+
+        // Hitung total qty berdasarkan tipe
+        switch($qty_type) {
+            case 'qty_begin':
+                return $qtyEndParts->sum('qty_begin') ?: 0;
+            case 'qty_in':
+                return $qtyEndParts->sum('qty_in') ?: 0;
+            case 'qty_out':
+                return $qtyEndParts->sum('qty_out') ?: 0;
+            case 'adjust':
+                return $qtyEndParts->sum('adjust') ?: 0;
+            case 'qty_end':
+                return $qtyEndParts->sum(function($part) {
+                    return ($part->qty_begin + $part->qty_in - $part->qty_out + $part->adjust);
+                    
+                }) ?: 0;
+            default:
+                return 0;
+        }
+    }
+
+    public function getPrice($part_id, $asal, $qty_type, $dateBegin, $dateEnd, $kategori_inventory = null)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
+
+        $allParts = $this->_partRepository->getAll();
+
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $asal,
+        ];
+
+        if ($kategori_inventory !== null) {
+            $conditions['kategori_inventory'] = $kategori_inventory;
+        }
+
+        // Filter parts based on conditions and date range
+        $qtyEndParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyEndParts->isEmpty()) {
+            return 0;
+        }
+
+        // Hitung total price berdasarkan qty_type
+        switch($qty_type) {
+            case 'qty_begin':
+                $total = $qtyEndParts->sum(function($part) {
+                    return ($part->qty_begin * ($part->price ?? 0));
+                });
+                return $total ?: 0;
+            case 'qty_in':
+                $total = $qtyEndParts->sum(function($part) {
+                    return ($part->qty_in * ($part->price ?? 0));
+                });
+                return $total ?: 0;
+            case 'qty_out':
+                $total = $qtyEndParts->sum(function($part) {
+                    return ($part->qty_out * ($part->price ?? 0));
+                });
+                return $total ?: 0;
+            case 'adjust':
+                $total = $qtyEndParts->sum(function($part) {
+                    return ($part->adjust * ($part->price ?? 0));
+                });
+                return $total ?: 0;
+            case 'qty_end':
+                $total = $qtyEndParts->sum(function($part) {
+                    $qty_end = ($part->qty_begin + $part->qty_in - $part->qty_out + $part->adjust);
+                    
+                    return ($qty_end * ($part->price ?? 0));
+                });
+                return $total ?: 0;
+            default:
+                return 0;
+        }
+    }
+
+    private function isValidDate($date)
+    {
+        if (empty($date)) {
+            return false;
+        }
+        return (bool) strtotime($date);
+    }
 
     protected function calculatePriceSum($partCategoryId, $asal)
     {
@@ -645,7 +786,7 @@ public function getPrice($part_id, $asal, $qty_type)
 
     public function convertAndDisplayAmount($usdAmount)
     {
-        $conversionRate = 14000;
+        $conversionRate = 0;
 
         $idrAmount = $usdAmount * $conversionRate;
 
