@@ -11,7 +11,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Carbon\Carbon;
 use App\Helpers\LogHelper;
 
 class MonthlyReportController extends Controller
@@ -194,11 +194,11 @@ class MonthlyReportController extends Controller
             'D14' => 'AMOUNT(USD)',
             'A25' => 'TOTAL',
             'E14' => 'AMOUNT(IDR)',
-            'F12' => 'IN GIT AUGUST',
+            'F12' => 'IN GIT '.strtoupper(date('F')).' '.date('Y'),
             'F14' => 'QTY',
             'G14' => 'AMOUNT(USD)',
             'H14' => 'AMOUNT(IDR)',
-            'I12' => 'IN CIP AUGUST',
+            'I12' => 'IN CIP '.strtoupper(date('F')).' '.date('Y'),
             'I14' => 'QTY',
             'J14' => 'AMOUNT(USD)',
             'K14' => 'AMOUNT(IDR)',
@@ -212,11 +212,11 @@ class MonthlyReportController extends Controller
             'R12' => 'ADJ STO',
             'S14' => 'AMOUNT(USD)',
             'T14' => 'AMOUNT(IDR)',
-            'U12' => 'INVENTORY STORAGE END AUGUST-23',
+            'U12' => 'INVENTORY STORAGE END '.strtoupper(date('F')).' '.date('Y'),
             'U14' => 'QTY',
             'V14' => 'AMOUNT(USD)',
             'W14' => 'AMOUNT(IDR)',
-            'L12' => 'USAGE - AUGUST - 23',
+            'L12' => 'USAGE '.strtoupper(date('F')).' '.date('Y'),
             'L13' => 'CIP',
             'O13' => 'EXPENSE',
             'A36' => 'Kategori',
@@ -263,7 +263,7 @@ class MonthlyReportController extends Controller
             'AD29' => 'QTY',
             'AE29' => 'AMOUNT(USD)',
             'AF29' => 'AMOUNT(IDR)',
-            'AG27' => 'END CIP MESIN AUGUST-23',
+            'AG27' => 'END CIP MESIN'.strtoupper(date('F')).' '.date('Y'),
             'AG29' => 'QTY',
             'AH29' => 'AMOUNT(USD)',
             'AI29' => 'AMOUNT(IDR',
@@ -304,15 +304,15 @@ class MonthlyReportController extends Controller
             'A12' => 'INVENTORY',
             'A24' => 'TOTAL',
             'B12' => 'IMPORT/LOKAL',
-            'C12' => 'BEGIN AUGUST-23',
+            'C12' => 'BEGIN '.strtoupper(date('F')).' '.date('Y'),
             'C14' => 'QTY',
             'A27' => 'CIP TOTAL (CIP INLINE+CIP)',
             'B27' => 'IMPORT LOKAL',
-            'C27' => 'BEGIN AUGUST-23',
+            'C27' => 'BEGIN'.strtoupper(date('F')).' '.date('Y'),
             'C29' => 'QTY',
             'D29' => 'AMOUNT(USD)',
             'E29' => 'AMOUNT(IDR)',
-            'F27' => 'IN AUGUST-23',
+            'F27' => 'IN'.strtoupper(date('F')).' '.date('Y'),
             'F28' => 'IN GIT',
             'F29' => 'QTY',
             'G29' => 'AMOUNT(USD)',
@@ -329,7 +329,7 @@ class MonthlyReportController extends Controller
             'O29' => 'QTY',
             'P29' => 'AMOUNT(USD)',
             'Q29' => 'AMOUNT(IDR)',
-            'R27' => 'TRANSAKSI OUT AUGUST-23',
+            'R27' => 'TRANSAKSI OUT'.strtoupper(date('F')).' '.date('Y'),
             'R28' => 'EXPENSE',
             'R29' => 'QTY',
             'S29' => 'AMOUNT(USD)',

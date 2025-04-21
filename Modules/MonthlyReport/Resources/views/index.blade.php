@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="card-body">
+    <!-- <div class="card-body">
         <div class="table-responsive">
             <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                 <thead>
@@ -78,12 +78,11 @@
                         <th width="20%">Status</th>
                     </tr>
                 </thead>
-                <tbody id="part-table-body"> <!-- Add an id to the tbody -->
+                <tbody id="part-table-body"> 
                     @php
                     $totalQtyEnd = 0; // Initialize total quantity end
                     @endphp
                     @if (sizeof($parts) == 0)
-                    <!-- No data message -->
                     <tr>
                         <td colspan="4" align="center">Data kosong</td>
                     </tr>
@@ -93,7 +92,6 @@
                     $totalQtyEnd += $part->qty_end; // Accumulate quantity end
                     @endphp
                     <tr class="part-row" data-category="{{ $part->part_category_name }}">
-                        <!-- Add a class and data-category attribute -->
                         <td width="5%">{{ $loop->iteration }}</td>
                         <td width="15%">{{ $part->part_no }}</td>
                         <td width="20%">{{ $part->part_name }}</td>
@@ -121,7 +119,6 @@
                             } elseif ($ageInMonths >= 6 && $ageInMonths <= 24) { echo 'Slow Moving' ; } else { echo 'Active' ; } @endphp </td>
                     </tr>
                     @endforeach
-                    <!-- Display total quantity end after the loop -->
                     <tr>
                         <td colspan="6"></td>
                         <td colspan="2"><strong>Total Qty End:</strong></td>
@@ -130,19 +127,17 @@
                     </tr>
                     @endif
                 </tbody>
-
-
             </table>
         </div>
-    </div>
-
+    </div> -->
 </div>
 <div colspan="4" align="center">ㅤ</div>
 <div class="row">
 </div>
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.
+0.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {

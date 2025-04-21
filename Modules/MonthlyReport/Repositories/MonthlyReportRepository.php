@@ -23,8 +23,7 @@ class PartRepository extends QueryBuilderImplementation
             return DB::connection($this->db)
                 ->table($this->table)
                 ->join('part_category', 'part.part_category_id', '=', 'part_category.part_category_id')
-                ->orderBy('part_id')
-                ->get();
+                ->orderBy('part_id');
         } catch (Exception $e) {
             return $e->getMessage();
         }
