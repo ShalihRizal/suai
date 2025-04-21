@@ -65,6 +65,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
+                                    <th width="80%">ID</th>
                                     <th width="80%">Car Name</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
@@ -78,6 +79,7 @@
                                     @foreach ($carnames as $carname)
                                         <tr>
                                             <td width="5%">{{ $loop->iteration }}</td>
+                                            <td width="80%">{{ $carname->carname_id }}</td>
                                             <td width="80%">{{ $carname->carname_name }}</td>
                                             <td width="15%">
                                                 @if ($carname->carname_id > 0)

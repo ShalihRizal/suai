@@ -71,6 +71,7 @@
                             <thead>
                                 <tr>
                                     <th width="25%">No</th>
+                                    <th width="25%">ID</th>
                                     <th width="25%">Nama Car Model</th>
                                     <th width="25%">Carline</th>
                                     <th width="25%">Aksi</th>
@@ -86,6 +87,7 @@
                                     @foreach ($carlines as $carline)
                                         <tr>
                                             <td width="25%">{{ $loop->iteration }}</td>
+                                            <td width="25%">{{ $carline->carline_id }}</td>
                                             <td width="25%">{{ $carline->carline_name }}</td>
                                             <td width="25%">{{ $carline->carname_name }}</td>
                                             <td width="25%">

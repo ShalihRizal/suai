@@ -65,6 +65,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
+                                    <th width="20%">ID</th>
                                     <th width="20%">Nama Machine</th>
                                     <th width="20%">Machine No</th>
                                     <th width="15%">Carline</th>
@@ -80,6 +81,7 @@
                                     @foreach ($machines as $machine)
                                         <tr>
                                             <td width="5%">{{ $loop->iteration }}</td>
+                                            <td width="20%">{{ $machine->machine_id }}</td>
                                             <td width="20%">{{ $machine->machine_name }}</td>
                                             <td width="20%">{{ $machine->machine_no }}</td>
                                             <td width="15%">{{ $machine->carname_name }}</td>

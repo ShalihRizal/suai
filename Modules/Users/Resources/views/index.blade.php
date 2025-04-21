@@ -86,6 +86,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
+                                <th width="25%">ID</th>
                                 <th width="25%">Nama</th>
                                 <th width="15%">Username</th>
                                 <th width="25%">Email</th>
@@ -104,6 +105,7 @@
                             @foreach ($users as $user)
                             <tr class="part-row" data-category="{{ $user->group_id }}">
                                 <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="25%">{{ $user->user_id }}</td>
                                 <td width="25%">{{ $user->user_name }}</td>
                                 <td width="15%">{{ $user->user_username }}</td>
                                 <td width="25%">{{ $user->user_email }}</td>

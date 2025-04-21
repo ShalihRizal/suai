@@ -69,6 +69,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
+                                <th width="5%">ID</th>
                                 <th width="20%">Nama Rak</th>
                                 <th width="15%">Aksi</th>
                             </tr>
@@ -82,6 +83,7 @@
                             @foreach ($racksi as $rack)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="20%">{{ $rack->rack_id }}</td>
                                 <td width="20%">{{ $rack->rack_name }}</td>
                                 <td width="15%">
                                     @if($rack->rack_id > 0)

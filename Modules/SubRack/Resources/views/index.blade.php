@@ -65,6 +65,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No</th>
+                                    <th width="5%">ID</th>
                                     <th width="20%">Nama Sub Rak</th>
                                     <th width="15%">Rack</th>
                                     <th width="15%">Aksi</th>
@@ -79,6 +80,7 @@
                                     @foreach ($subracks as $sub_rack)
                                         <tr>
                                             <td width="5%">{{ $loop->iteration }}</td>
+                                            <td width="20%">{{ $sub_rack->sub_rack_id }}</td>
                                             <td width="20%">{{ $sub_rack->sub_rack_name }}</td>
                                             <td width="15%">{{ $sub_rack->rack_name }}</td>
                                             <td width="15%">

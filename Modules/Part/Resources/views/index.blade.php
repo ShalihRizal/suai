@@ -95,6 +95,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
+                                <th width="5%">ID</th>
                                 <th width="5%">Part No</th>
                                 <th width="5%">Part Name</th>
                                 <th width="5%">Lokasi PPTI</th>
@@ -123,6 +124,7 @@
                             @foreach ($parts as $part)
                             <tr>
                                 <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="5%">{{ $part->part_id }}</td>
                                 <td width="5%">{{ $part->part_no }}</td>
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->loc_ppti }}</td>
