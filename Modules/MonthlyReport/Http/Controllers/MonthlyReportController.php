@@ -143,7 +143,7 @@ class MonthlyReportController extends Controller
 
         // //values qty
         // $calculatedValue = $this->calculateQtyBegin('1','Import');
-        // $sheet->setCellValue('C15', $calculatedValue);
+        // $sheet->setCellValue('C15', "5");
         // $calculatedValue = $this->calculateQtyBegin('1','Lokal');
         // $sheet->setCellValue('C16', $calculatedValue);
 
@@ -454,79 +454,79 @@ class MonthlyReportController extends Controller
             $cellStartW = 'W' . $i;
 
             if ($i % 2 == 0) {
-                $sheet->setCellValue($cellStart, "Lokal");
+                $sheet->setCellValue($cellStart, "LOKAL");
                 // qty begin
-                $calculatedValueQtyBegin = $this->getQty($aaa, 'Lokal', 'qty_begin', $dateBegin, $dateEnd);
+                $calculatedValueQtyBegin = $this->getQty($aaa, 'LOKAL', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
-                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_begin');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_begin');
                 $sheet->setCellValue($cellStartD, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartE, $amountidrin);
                 // qty in
-                $calculatedValueQtyIn = $this->getQty($aaa, 'Lokal', 'qty_in', $dateBegin, $dateEnd);
+                $calculatedValueQtyIn = $this->getQty($aaa, 'LOKAL', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
-                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_in');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_in');
                 $sheet->setCellValue($cellStartG, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartH, $amountidrin);
 
                 // qty out
-                $calculatedValueQtyOut = $this->getQty($aaa, 'Lokal', 'qty_out', $dateBegin, $dateEnd);
+                $calculatedValueQtyOut = $this->getQty($aaa, 'LOKAL', 'qty_out', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
-                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_out');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_out');
                 $sheet->setCellValue($cellStartM, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartN, $amountidrin);
                 // adjust
-                $calculatedValueAdjust = $this->getQty($aaa, 'Lokal', 'adjust', $dateBegin, $dateEnd);
+                $calculatedValueAdjust = $this->getQty($aaa, 'LOKAL', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
-                $amountusdin = $this->getPrice($aaa, 'Lokal', 'adjust');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'adjust');
                 $sheet->setCellValue($cellStartS, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartT, $amountidrin);
                 //qty end
-                $calculatedValueQtyEnd = $this->getQty($aaa, 'Lokal', 'qty_end', $dateBegin, $dateEnd);
+                $calculatedValueQtyEnd = $this->getQty($aaa, 'LOKAL', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
-                $amountusdin = $this->getPrice($aaa, 'Lokal', 'qty_end');
+                $amountusdin = $this->getPrice($aaa, 'LOKAL', 'qty_end');
                 $sheet->setCellValue($cellStartV, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartW, $amountidrin);
                 //qty
                 $aaa++;
             } else {
-                $sheet->setCellValue($cellStart, "Import");
+                $sheet->setCellValue($cellStart, "IMPORT");
                 // qty begin
-                $calculatedValueQtyBegin = $this->getQty($bbb, 'Import', 'qty_begin', $dateBegin, $dateEnd);
+                $calculatedValueQtyBegin = $this->getQty($bbb, 'IMPORT");', 'qty_begin', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartC, $calculatedValueQtyBegin);
-                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_begin');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT");', 'qty_begin');
                 $sheet->setCellValue($cellStartD, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartE, $amountidrin);
                 // qty in
-                $calculatedValueQtyIn = $this->getQty($bbb, 'Import', 'qty_in', $dateBegin, $dateEnd);
+                $calculatedValueQtyIn = $this->getQty($bbb, 'IMPORT");', 'qty_in', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartF, $calculatedValueQtyIn);
-                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_in');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT");', 'qty_in');
                 $sheet->setCellValue($cellStartG, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartH, $amountidrin);
                 // qty out
-                $calculatedValueQtyOut = $this->getQty($bbb, 'Import', 'qty_out', $dateBegin, $dateEnd);
+                $calculatedValueQtyOut = $this->getQty($bbb, 'IMPORT");', 'qty_out', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartL, $calculatedValueQtyOut);
-                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_out');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT");', 'qty_out');
                 $sheet->setCellValue($cellStartM, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartN, $amountidrin);
                 // adjust
-                $calculatedValueAdjust = $this->getQty($bbb, 'Import', 'adjust', $dateBegin, $dateEnd);
+                $calculatedValueAdjust = $this->getQty($bbb, 'IMPORT");', 'adjust', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartR, $calculatedValueAdjust);
-                $amountusdin = $this->getPrice($bbb, 'Import', 'adjust');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT");', 'adjust');
                 $sheet->setCellValue($cellStartS, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartT, $amountidrin);
                 // qty end
-                $calculatedValueQtyEnd = $this->getQty($bbb, 'Import', 'qty_end', $dateBegin, $dateEnd);
+                $calculatedValueQtyEnd = $this->getQty($bbb, 'IMPORT");', 'qty_end', $dateBegin, $dateEnd);
                 $sheet->setCellValue($cellstartU, $calculatedValueQtyEnd);
-                $amountusdin = $this->getPrice($bbb, 'Import', 'qty_end');
+                $amountusdin = $this->getPrice($bbb, 'IMPORT");', 'qty_end');
                 $sheet->setCellValue($cellStartV, $amountusdin);
                 $amountidrin = $this->convertAndDisplayAmount($amountusdin);
                 $sheet->setCellValue($cellStartW, $amountidrin);
@@ -554,24 +554,26 @@ class MonthlyReportController extends Controller
 
     public function getQty($part_id, $asal, $qty_type, $dateBegin, $dateEnd)
 {
-    if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
-        return "Invalid date format or empty date provided.";
-    }
+        // if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+        //     return "Invalid date format or empty date provided.";
+        // }
+
     $allParts = $this->_partRepository->getAll();
 
     // Define your conditions here
     $conditions = [
-        'part_category_id' => $part_id,
-        'asal' => $asal,
+            'part_category_id' => $part_id,
+            'kategori' => $asal,
     ];
-    $qtyEndParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+
+        $qtyEndParts = $allParts->filter(function ($part) use ($conditions) {
         foreach ($conditions as $key => $value) {
             if ($part->{$key} != $value) {
                 return false;
             }
         }
         // Filter by used_date within the specified range
-        return ($this->isDateInRange($part->used_date, $dateBegin, $dateEnd));
+            return ($part->used_date);
     })->pluck($qty_type);
 
     // Perform any operations with the qty_end values obtained
