@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <!-- Tambahkan tombol download di sini -->
-                        
+
                     </div>
                 </div>
             </div>
@@ -94,58 +94,94 @@
                     <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
                         <thead>
                             <tr>
-                                <th width="5%">No</th>
-                                <th width="5%">ID</th>
-                                <th width="5%">Part No</th>
-                                <th width="5%">Part Name</th>
-                                <th width="5%">Lokasi PPTI</th>
-                                <th width="5%">Lokasi HIB</th>
-                                <th width="5%">Lokasi TAPC</th>
-                                <th width="5%">Begin</th>
-                                <th width="5%">Qty In</th>
-                                <th width="5%">Qty Out</th>
-                                <th width="5%">Qty STO</th>
-                                <th width="5%">Qty End</th>
-                                <th width="5%">Status Part</th>
-                                <th width="5%">Status</th>
-                                <th width="5%">Safety Stock</th>
-                                <th width="5%">ROP</th>
-                                <th width="5%">Forecast</th>
-                                <th width="5%">Max</th>
-                                <th width="5%">Aksi</th>
+                                <th>No</th>
+                                <th>ID</th>
+                                <th>Part No</th>
+                                <th>Part Name</th>
+                                <th>Lokasi PPTI</th>
+                                <th>Lokasi HIB</th>
+                                <th>Lokasi TAPC</th>
+                                <th>Begin</th>
+                                <th>Qty In</th>
+                                <th>Qty Out</th>
+                                <th>Qty STO</th>
+                                <th>Qty End</th>
+                                {{-- <th>Status Part</th> --}}
+                                <th>Status</th> <!-- fixed output goes here -->
+                                <th>Safety Stock</th>
+                                <th>ROP</th>
+                                <th>Forecast</th>
+                                <th>Max</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($parts) == 0)
+                            @if ($parts->isEmpty())
                             <tr>
-                                <td colspan="4" align="center">Data kosong</td>
+                                <td colspan="19" class="text-center">Data kosong</td>
                             </tr>
                             @else
                             @foreach ($parts as $part)
                             <tr>
-                                <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="5%">{{ $part->part_id }}</td>
-                                <td width="5%">{{ $part->part_no }}</td>
-                                <td width="5%">{{ $part->part_name }}</td>
-                                <td width="5%">{{ $part->loc_ppti }}</td>
-                                <td width="5%">{{ $part->lokasi_hib }}</td>
-                                <td width="5%">{{ $part->loc_tapc }}</td>
-                                <td width="5%">{{ $part->qty_begin }}</td>
-                                <td width="5%">{{ $part->qty_in }}</td>
-                                <td width="5%">{{ $part->qty_out }}</td>
-                                <td width="5%">{{ $part->adjust }}</td>
-                                <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
-                                <td width="5%">{{ $part->status }}</td>
-                                <td width="5%">{{ $part->kategori_inventory }}</td>
-                                <td width="5%">{{ $part->ss }}</td>
-                                <td width="5%">{{ $part->rop }}</td>
-                                <td width="5%">{{ $part->forecast }}</td>
-                                <td width="5%">{{ $part->max }}</td>
-                                <td width="5%">
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $part->part_id }}</td>
+                                <td>{{ $part->part_no }}</td>
+                                <td>{{ $part->part_name }}</td>
+                                <td>{{ $part->loc_ppti }}</td>
+                                <td>{{ $part->lokasi_hib }}</td>
+                                <td>{{ $part->loc_tapc }}</td>
+                                <td>{{ $part->qty_begin }}</td>
+                                <td>{{ $part->qty_in }}</td>
+                                <td>{{ $part->qty_out }}</td>
+                                <td>{{ $part->adjust }}</td>
+                                <td>{{ $part->qty_begin + $part->qty_in - $part->qty_out }}</td>
+                                {{-- <td>{{ $part->status }}</td> --}}
+
+                                <!-- Status Calculation Output in its own TD -->
+                                <td>
+                                    @php
+                                        $status = 'UNKNOWN';
+                                        if ($part->rec_date && $part->used_date) {
+                                            $recDate = \Carbon\Carbon::parse($part->rec_date);
+                                            $usedDate = \Carbon\Carbon::parse($part->used_date);
+                                            $now = \Carbon\Carbon::now();
+
+                                            $recDiff = $recDate->diffInMonths($now);
+                                            $usedDiff = $usedDate->diffInMonths($now);
+
+                                            if ($recDiff < 6 && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif ($recDiff > 24 && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff > 24 && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff < 6 && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff > 24 && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            } elseif ($recDiff < 6 && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            }
+                                        }
+                                    @endphp
+                                    {{ $status }}
+                                </td>
+
+                                <td>{{ $part->ss }}</td>
+                                <td>{{ $part->rop }}</td>
+                                <td>{{ $part->forecast }}</td>
+                                <td>{{ $part->max }}</td>
+                                <td>
                                     @if ($part->part_id > 0)
-                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-toggle="modal" data-target=".addModal"
-                                        data-id="{{ $part->part_id }}" data-toggle="tooltip"
-                                        data-placement="top" title="Ubah">
+                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white"
+                                        data-toggle="modal" data-target=".addModal" data-id="{{ $part->part_id }}"
+                                        data-toggle="tooltip" data-placement="top" title="Ubah">
                                         <i data-feather="edit" width="16" height="16"></i>
                                     </a>
                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
@@ -160,6 +196,7 @@
                             @endif
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
