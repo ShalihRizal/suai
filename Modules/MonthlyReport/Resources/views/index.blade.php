@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="card-body">
+    <div class="card-body">
         <div class="table-responsive">
             <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">
                 <thead>
@@ -129,7 +129,7 @@
                 </tbody>
             </table>
         </div>
-    </div> -->
+    </div>
 </div>
 <div colspan="4" align="center">ㅤ</div>
 <div class="row">
@@ -157,6 +157,17 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTable
+        var table = $('#table-data').DataTable();
+
+        // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
+        $('#table-data_filter input').unbind().bind('keyup', function() {
+            table.column(1).search(this.value).draw();
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {
