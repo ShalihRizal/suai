@@ -49,6 +49,135 @@ class MonthlyReportController extends Controller
         return view('monthlyreport::create');
     }
 
+    public function getPriceInByWearAndTearCode($part_id, $kategori, $wear_and_tear_code, $dateBegin, $dateEnd)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
+
+        $allParts = $this->_partRepository->getAll();
+
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $kategori,
+            'wear_and_tear_code' => $wear_and_tear_code
+        ];
+
+        $qtyParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyParts->isEmpty()) {
+            return 0;
+        }
+
+        // Menghitung total price berdasarkan qty_in
+        $total = $qtyParts->sum(function($part) {
+            return ($part->qty_in * ($part->price ?? 0));
+        });
+        
+        return $total ?: 0;
+    }
+
+    public function getPriceOutByWearAndTearCode($part_id, $kategori, $wear_and_tear_code, $dateBegin, $dateEnd)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
+
+        $allParts = $this->_partRepository->getAll();
+
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $kategori,
+            'wear_and_tear_code' => $wear_and_tear_code
+        ];
+
+        $qtyParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyParts->isEmpty()) {
+            return 0;
+        }
+
+        // Menghitung total price berdasarkan qty_out
+        $total = $qtyParts->sum(function($part) {
+            return ($part->qty_out * ($part->price ?? 0));
+        });
+        
+        return $total ?: 0;
+    }
+
+    public function getPriceEndByWearAndTearCode($part_id, $kategori, $wear_and_tear_code, $dateBegin, $dateEnd)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
+
+        $allParts = $this->_partRepository->getAll();
+
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $kategori,
+            'wear_and_tear_code' => $wear_and_tear_code
+        ];
+
+        $qtyParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyParts->isEmpty()) {
+            return 0;
+        }
+
+        // Menghitung total price berdasarkan qty_end
+        $total = $qtyParts->sum(function($part) {
+            return ($part->qty_end * ($part->price ?? 0));
+        });
+        
+        return $total ?: 0;
+    }
+
     public function exportExcel(Request $request )
     {
 
@@ -414,6 +543,226 @@ class MonthlyReportController extends Controller
         foreach ($cellValues as $cell => $value) {
             $sheet->setCellValue($cell, $value);
         }
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 101
+        $priceCrimpingImport101 = $this->getPriceByWearAndTearCode(1, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('C38', $priceCrimpingImport101);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 101
+        $priceCrimpingLokal101 = $this->getPriceByWearAndTearCode(1, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('C39', $priceCrimpingLokal101);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 101
+        $priceSparepartImport101 = $this->getPriceByWearAndTearCode(2, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('C40', $priceSparepartImport101);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 101
+        $priceSparepartLokal101 = $this->getPriceByWearAndTearCode(2, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('C41', $priceSparepartLokal101);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 102
+        $priceCrimpingImport102 = $this->getPriceByWearAndTearCode(1, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('D38', $priceCrimpingImport102);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 102
+        $priceCrimpingLokal102 = $this->getPriceByWearAndTearCode(1, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('D39', $priceCrimpingLokal102);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 102
+        $priceSparepartImport102 = $this->getPriceByWearAndTearCode(2, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('D40', $priceSparepartImport102);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 102
+        $priceSparepartLokal102 = $this->getPriceByWearAndTearCode(2, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('D41', $priceSparepartLokal102);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 108
+        $priceCrimpingImport108 = $this->getPriceByWearAndTearCode(1, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('E38', $priceCrimpingImport108);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 108
+        $priceCrimpingLokal108 = $this->getPriceByWearAndTearCode(1, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('E39', $priceCrimpingLokal108);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 108
+        $priceSparepartImport108 = $this->getPriceByWearAndTearCode(2, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('E40', $priceSparepartImport108);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 108
+        $priceSparepartLokal108 = $this->getPriceByWearAndTearCode(2, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('E41', $priceSparepartLokal108);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 101 (qty_in)
+        $priceInCrimpingImport101 = $this->getPriceInByWearAndTearCode(1, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('F38', $priceInCrimpingImport101);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 101 (qty_in)
+        $priceInCrimpingLokal101 = $this->getPriceInByWearAndTearCode(1, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('F39', $priceInCrimpingLokal101);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 101 (qty_in)
+        $priceInSparepartImport101 = $this->getPriceInByWearAndTearCode(2, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('F40', $priceInSparepartImport101);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 101 (qty_in)
+        $priceInSparepartLokal101 = $this->getPriceInByWearAndTearCode(2, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('F41', $priceInSparepartLokal101);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 102 (qty_in)
+        $priceInCrimpingImport102 = $this->getPriceInByWearAndTearCode(1, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('G38', $priceInCrimpingImport102);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 102 (qty_in)
+        $priceInCrimpingLokal102 = $this->getPriceInByWearAndTearCode(1, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('G39', $priceInCrimpingLokal102);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 102 (qty_in)
+        $priceInSparepartImport102 = $this->getPriceInByWearAndTearCode(2, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('G40', $priceInSparepartImport102);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 102 (qty_in)
+        $priceInSparepartLokal102 = $this->getPriceInByWearAndTearCode(2, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('G41', $priceInSparepartLokal102);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 108 (qty_in)
+        $priceInCrimpingImport108 = $this->getPriceInByWearAndTearCode(1, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('H38', $priceInCrimpingImport108);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 108 (qty_in)
+        $priceInCrimpingLokal108 = $this->getPriceInByWearAndTearCode(1, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('H39', $priceInCrimpingLokal108);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 108 (qty_in)
+        $priceInSparepartImport108 = $this->getPriceInByWearAndTearCode(2, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('H40', $priceInSparepartImport108);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 108 (qty_in)
+        $priceInSparepartLokal108 = $this->getPriceInByWearAndTearCode(2, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('H41', $priceInSparepartLokal108);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 101 (qty_out)
+        $priceOutCrimpingImport101 = $this->getPriceOutByWearAndTearCode(1, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('I38', $priceOutCrimpingImport101);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 101 (qty_out)
+        $priceOutCrimpingLokal101 = $this->getPriceOutByWearAndTearCode(1, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('I39', $priceOutCrimpingLokal101);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 101 (qty_out)
+        $priceOutSparepartImport101 = $this->getPriceOutByWearAndTearCode(2, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('I40', $priceOutSparepartImport101);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 101 (qty_out)
+        $priceOutSparepartLokal101 = $this->getPriceOutByWearAndTearCode(2, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('I41', $priceOutSparepartLokal101);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 102 (qty_out)
+        $priceOutCrimpingImport102 = $this->getPriceOutByWearAndTearCode(1, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('J38', $priceOutCrimpingImport102);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 102 (qty_out)
+        $priceOutCrimpingLokal102 = $this->getPriceOutByWearAndTearCode(1, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('J39', $priceOutCrimpingLokal102);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 102 (qty_out)
+        $priceOutSparepartImport102 = $this->getPriceOutByWearAndTearCode(2, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('J40', $priceOutSparepartImport102);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 102 (qty_out)
+        $priceOutSparepartLokal102 = $this->getPriceOutByWearAndTearCode(2, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('J41', $priceOutSparepartLokal102);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 108 (qty_out)
+        $priceOutCrimpingImport108 = $this->getPriceOutByWearAndTearCode(1, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('K38', $priceOutCrimpingImport108);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 108 (qty_out)
+        $priceOutCrimpingLokal108 = $this->getPriceOutByWearAndTearCode(1, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('K39', $priceOutCrimpingLokal108);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 108 (qty_out)
+        $priceOutSparepartImport108 = $this->getPriceOutByWearAndTearCode(2, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('K40', $priceOutSparepartImport108);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 108 (qty_out)
+        $priceOutSparepartLokal108 = $this->getPriceOutByWearAndTearCode(2, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('K41', $priceOutSparepartLokal108);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 101 (qty_end)
+        $priceEndCrimpingImport101 = $this->getPriceEndByWearAndTearCode(1, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('L38', $priceEndCrimpingImport101);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 101 (qty_end)
+        $priceEndCrimpingLokal101 = $this->getPriceEndByWearAndTearCode(1, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('L39', $priceEndCrimpingLokal101);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 101 (qty_end)
+        $priceEndSparepartImport101 = $this->getPriceEndByWearAndTearCode(2, 'IMPORT', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('L40', $priceEndSparepartImport101);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 101 (qty_end)
+        $priceEndSparepartLokal101 = $this->getPriceEndByWearAndTearCode(2, 'LOKAL', '101', $dateBegin, $dateEnd);
+        $sheet->setCellValue('L41', $priceEndSparepartLokal101);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 102 (qty_end)
+        $priceEndCrimpingImport102 = $this->getPriceEndByWearAndTearCode(1, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('M38', $priceEndCrimpingImport102);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 102 (qty_end)
+        $priceEndCrimpingLokal102 = $this->getPriceEndByWearAndTearCode(1, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('M39', $priceEndCrimpingLokal102);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 102 (qty_end)
+        $priceEndSparepartImport102 = $this->getPriceEndByWearAndTearCode(2, 'IMPORT', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('M40', $priceEndSparepartImport102);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 102 (qty_end)
+        $priceEndSparepartLokal102 = $this->getPriceEndByWearAndTearCode(2, 'LOKAL', '102', $dateBegin, $dateEnd);
+        $sheet->setCellValue('M41', $priceEndSparepartLokal102);
+
+        // Crimping Dies - IMPORT dengan wear_and_tear_code 108 (qty_end)
+        $priceEndCrimpingImport108 = $this->getPriceEndByWearAndTearCode(1, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('N38', $priceEndCrimpingImport108);
+
+        // Crimping Dies - LOKAL dengan wear_and_tear_code 108 (qty_end)
+        $priceEndCrimpingLokal108 = $this->getPriceEndByWearAndTearCode(1, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('N39', $priceEndCrimpingLokal108);
+
+        // Sparepart Machine - IMPORT dengan wear_and_tear_code 108 (qty_end)
+        $priceEndSparepartImport108 = $this->getPriceEndByWearAndTearCode(2, 'IMPORT', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('N40', $priceEndSparepartImport108);
+
+        // Sparepart Machine - LOKAL dengan wear_and_tear_code 108 (qty_end)
+        $priceEndSparepartLokal108 = $this->getPriceEndByWearAndTearCode(2, 'LOKAL', '108', $dateBegin, $dateEnd);
+        $sheet->setCellValue('N41', $priceEndSparepartLokal108);
+
+        // Total untuk Crimping Dies - IMPORT (C38 hingga N38)
+        $totalCrimpingImport = $priceCrimpingImport101 + $priceCrimpingImport102 + $priceCrimpingImport108 + 
+                              $priceInCrimpingImport101 + $priceInCrimpingImport102 + $priceInCrimpingImport108 + 
+                              $priceOutCrimpingImport101 + $priceOutCrimpingImport102 + $priceOutCrimpingImport108 + 
+                              $priceEndCrimpingImport101 + $priceEndCrimpingImport102 + $priceEndCrimpingImport108;
+        $sheet->setCellValue('R38', $totalCrimpingImport);
+
+        // Total untuk Crimping Dies - LOKAL (C39 hingga N39)
+        $totalCrimpingLokal = $priceCrimpingLokal101 + $priceCrimpingLokal102 + $priceCrimpingLokal108 + 
+                             $priceInCrimpingLokal101 + $priceInCrimpingLokal102 + $priceInCrimpingLokal108 + 
+                             $priceOutCrimpingLokal101 + $priceOutCrimpingLokal102 + $priceOutCrimpingLokal108 + 
+                             $priceEndCrimpingLokal101 + $priceEndCrimpingLokal102 + $priceEndCrimpingLokal108;
+        $sheet->setCellValue('R39', $totalCrimpingLokal);
+
+        // Total untuk Sparepart Machine - IMPORT (C40 hingga N40)
+        $totalSpmImport = $priceSparepartImport101 + $priceSparepartImport102 + $priceSparepartImport108 + 
+                          $priceInSparepartImport101 + $priceInSparepartImport102 + $priceInSparepartImport108 + 
+                          $priceOutSparepartImport101 + $priceOutSparepartImport102 + $priceOutSparepartImport108 + 
+                          $priceEndSparepartImport101 + $priceEndSparepartImport102 + $priceEndSparepartImport108;
+        $sheet->setCellValue('R40', $totalSpmImport);
+
+        // Total untuk Sparepart Machine - LOKAL (C41 hingga N41)
+        $totalSpmLokal = $priceSparepartLokal101 + $priceSparepartLokal102 + $priceSparepartLokal108 + 
+                         $priceInSparepartLokal101 + $priceInSparepartLokal102 + $priceInSparepartLokal108 + 
+                         $priceOutSparepartLokal101 + $priceOutSparepartLokal102 + $priceOutSparepartLokal108 + 
+                         $priceEndSparepartLokal101 + $priceEndSparepartLokal102 + $priceEndSparepartLokal108;
+        $sheet->setCellValue('R41', $totalSpmLokal);
 
         //Dynamics/Loops
         if (sizeof($partcategories) > 0) {
@@ -793,8 +1142,48 @@ class MonthlyReportController extends Controller
         return $idrAmount;
     }
 
+    public function getPriceByWearAndTearCode($part_id, $kategori, $wear_and_tear_code, $dateBegin, $dateEnd)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return 0;
+        }
 
+        $allParts = $this->_partRepository->getAll();
 
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $kategori,
+            'wear_and_tear_code' => $wear_and_tear_code
+        ];
+
+        $qtyParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        // Jika tidak ada data dalam range waktu yang dipilih, return 0
+        if ($qtyParts->isEmpty()) {
+            return 0;
+        }
+
+        // Menghitung total price (qty_begin * price)
+        $total = $qtyParts->sum(function($part) {
+            return ($part->qty_begin * ($part->price ?? 0));
+        });
+        
+        return $total ?: 0;
+    }
 
     /**
      * Store a newly created resource in storage.
