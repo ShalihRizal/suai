@@ -123,6 +123,7 @@
                             @else
                             @foreach ($parts as $part)
                             <tr>
+<<<<<<< Updated upstream
                                 <td width="5%">{{ $loop->iteration }}</td>
                                 <td width="5%">{{ $part->part_id }}</td>
                                 <td width="5%">{{ $part->part_no }}</td>
@@ -142,6 +143,74 @@
                                 <td width="5%">{{ $part->forecast }}</td>
                                 <td width="5%">{{ $part->max }}</td>
                                 <td width="5%">
+=======
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $part->part_id }}</td>
+                                <td>{{ $part->part_no }}</td>
+                                <td>{{ $part->part_name }}</td>
+                                <td>{{ $part->loc_ppti }}</td>
+                                <td>{{ $part->lokasi_hib }}</td>
+                                <td>{{ $part->loc_tapc }}</td>
+                                <td>{{ $part->qty_begin }}</td>
+                                <td>{{ $part->qty_in }}</td>
+                                <td>{{ $part->qty_out }}</td>
+                                <td>{{ $part->adjust }}</td>
+                                <td>{{ $part->qty_begin + $part->qty_in - $part->qty_out }}</td>
+                                {{-- <td>{{ $part->status }}</td> --}}
+
+                                <!-- Status Calculation Output in its own TD -->
+                                <td>
+                                    @php
+                                        $status = 'UNKNOWN';
+                                        $showMessage = false;
+
+                                        if (is_null($part->rec_date) || $part->rec_date === '-' || is_null($part->used_date) || $part->used_date === '-') {
+                                            $showMessage = true;
+                                        } else {
+                                            $recDate = \Carbon\Carbon::parse($part->rec_date);
+                                            $usedDate = \Carbon\Carbon::parse($part->used_date);
+                                            $now = \Carbon\Carbon::now();
+
+                                            $recDiff = $recDate->diffInMonths($now);
+                                            $usedDiff = $usedDate->diffInMonths($now);
+
+                                            if ($recDiff < 6 && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif ($recDiff > 24 && $usedDiff < 6) {
+                                                $status = 'ACTIVE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff > 24 && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff < 6 && ($usedDiff >= 6 && $usedDiff <= 24)) {
+                                                $status = 'SLOW MOVING';
+                                            } elseif ($recDiff > 24 && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            } elseif ($recDiff < 6 && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            } elseif (($recDiff >= 6 && $recDiff <= 24) && $usedDiff > 24) {
+                                                $status = 'ABSOLUTE';
+                                            }
+                                        }
+                                    @endphp
+
+                                        @if ($showMessage)
+                                            tidak ada receive date
+                                        @else
+                                            {{ $status }}
+                                        @endif
+
+                                    {{-- {{ $status }} --}}
+                                </td>
+
+                                <td>{{ $part->ss }}</td>
+                                <td>{{ $part->rop }}</td>
+                                <td>{{ $part->forecast }}</td>
+                                <td>{{ $part->max }}</td>
+                                <td>
+>>>>>>> Stashed changes
                                     @if ($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-toggle="modal" data-target=".addModal"
                                         data-id="{{ $part->part_id }}" data-toggle="tooltip"
