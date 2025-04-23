@@ -926,7 +926,62 @@ class MonthlyReportController extends Controller
             }
         }
 
+        // Menghitung nilai untuk Crimping Dies
+        $crimpingDiesImport = $this->getPriceByDateDifference(1, 'IMPORT', $dateBegin, $dateEnd);
+        $crimpingDiesLokal = $this->getPriceByDateDifference(1, 'LOKAL', $dateBegin, $dateEnd);
 
+        // Menghitung nilai untuk Sparepart Machine
+        $sparepartMachineImport = $this->getPriceByDateDifference(2, 'IMPORT', $dateBegin, $dateEnd);
+        $sparepartMachineLokal = $this->getPriceByDateDifference(2, 'LOKAL', $dateBegin, $dateEnd);
+
+        // Menghitung nilai untuk Assembly Fixture
+        $assemblyFixtureImport = $this->getPriceByDateDifference(3, 'IMPORT', $dateBegin, $dateEnd);
+        $assemblyFixtureLokal = $this->getPriceByDateDifference(3, 'LOKAL', $dateBegin, $dateEnd);
+
+        // Menghitung nilai untuk Checker Fixture
+        $checkerFixtureImport = $this->getPriceByDateDifference(4, 'IMPORT', $dateBegin, $dateEnd);
+        $checkerFixtureLokal = $this->getPriceByDateDifference(4, 'LOKAL', $dateBegin, $dateEnd);
+
+        // Mengisi nilai untuk Crimping Dies
+        $sheet->setCellValue('I47', $crimpingDiesImport['active'] + $crimpingDiesLokal['active']);
+        $sheet->setCellValue('J47', $crimpingDiesImport['slow_moving'] + $crimpingDiesLokal['slow_moving']);
+        $sheet->setCellValue('K47', $crimpingDiesImport['dead_stock'] + $crimpingDiesLokal['dead_stock']);
+
+        // Mengisi nilai untuk Sparepart Machine
+        $sheet->setCellValue('I48', $sparepartMachineImport['active'] + $sparepartMachineLokal['active']);
+        $sheet->setCellValue('J48', $sparepartMachineImport['slow_moving'] + $sparepartMachineLokal['slow_moving']);
+        $sheet->setCellValue('K48', $sparepartMachineImport['dead_stock'] + $sparepartMachineLokal['dead_stock']);
+
+        // Mengisi nilai untuk Assembly Fixture
+        $sheet->setCellValue('I49', $assemblyFixtureImport['active'] + $assemblyFixtureLokal['active']);
+        $sheet->setCellValue('J49', $assemblyFixtureImport['slow_moving'] + $assemblyFixtureLokal['slow_moving']);
+        $sheet->setCellValue('K49', $assemblyFixtureImport['dead_stock'] + $assemblyFixtureLokal['dead_stock']);
+
+        // Mengisi nilai untuk Checker Fixture
+        $sheet->setCellValue('I50', $checkerFixtureImport['active'] + $checkerFixtureLokal['active']);
+        $sheet->setCellValue('J50', $checkerFixtureImport['slow_moving'] + $checkerFixtureLokal['slow_moving']);
+        $sheet->setCellValue('K50', $checkerFixtureImport['dead_stock'] + $checkerFixtureLokal['dead_stock']);
+
+        // Menghitung dan mengisi total untuk semua kategori
+        $totalActive = ($crimpingDiesImport['active'] + $crimpingDiesLokal['active']) +
+                      ($sparepartMachineImport['active'] + $sparepartMachineLokal['active']) +
+                      ($assemblyFixtureImport['active'] + $assemblyFixtureLokal['active']) +
+                      ($checkerFixtureImport['active'] + $checkerFixtureLokal['active']);
+        
+        $totalSlowMoving = ($crimpingDiesImport['slow_moving'] + $crimpingDiesLokal['slow_moving']) +
+                           ($sparepartMachineImport['slow_moving'] + $sparepartMachineLokal['slow_moving']) +
+                           ($assemblyFixtureImport['slow_moving'] + $assemblyFixtureLokal['slow_moving']) +
+                           ($checkerFixtureImport['slow_moving'] + $checkerFixtureLokal['slow_moving']);
+        
+        $totalDeadStock = ($crimpingDiesImport['dead_stock'] + $crimpingDiesLokal['dead_stock']) +
+                         ($sparepartMachineImport['dead_stock'] + $sparepartMachineLokal['dead_stock']) +
+                         ($assemblyFixtureImport['dead_stock'] + $assemblyFixtureLokal['dead_stock']) +
+                         ($checkerFixtureImport['dead_stock'] + $checkerFixtureLokal['dead_stock']);
+
+        // Mengisi nilai total di baris 51
+        $sheet->setCellValue('I51', $totalActive);
+        $sheet->setCellValue('J51', $totalSlowMoving);
+        $sheet->setCellValue('K51', $totalDeadStock);
 
         $currentMonth = date('F');
         // Buat file Excel
@@ -939,9 +994,6 @@ class MonthlyReportController extends Controller
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
-
-
-
 
     public function getQty($part_id, $asal, $qty_type, $dateBegin, $dateEnd, $kategori_inventory = null)
     {
@@ -1209,6 +1261,71 @@ class MonthlyReportController extends Controller
         });
         
         return $total ?: 0;
+    }
+
+    public function getPriceByDateDifference($part_id, $kategori, $dateBegin, $dateEnd)
+    {
+        if (!$this->isValidDate($dateBegin) || !$this->isValidDate($dateEnd)) {
+            return [
+                'active' => 0,
+                'slow_moving' => 0,
+                'dead_stock' => 0
+            ];
+        }
+
+        $allParts = $this->_partRepository->getAll();
+
+        // Define your conditions here
+        $conditions = [
+            'part_category_id' => $part_id,
+            'kategori' => $kategori
+        ];
+
+        $qtyParts = $allParts->filter(function ($part) use ($conditions, $dateBegin, $dateEnd) {
+            foreach ($conditions as $key => $value) {
+                if ($part->{$key} != $value) {
+                    return false;
+                }
+            }
+            
+            // Filter by used_date within the specified range
+            if ($part->used_date && $part->rec_date) {
+                return (strtotime($part->used_date) >= strtotime($dateBegin) && 
+                       strtotime($part->used_date) <= strtotime($dateEnd));
+            }
+            return false;
+        });
+
+        $result = [
+            'active' => 0,      // < 6 bulan
+            'slow_moving' => 0, // 6-24 bulan
+            'dead_stock' => 0   // > 24 bulan
+        ];
+
+        foreach ($qtyParts as $part) {
+            if (!$part->rec_date || !$part->used_date) {
+                continue;
+            }
+
+            $rec_date = new \DateTime($part->rec_date);
+            $used_date = new \DateTime($part->used_date);
+            $interval = $rec_date->diff($used_date);
+            $months = ($interval->y * 12) + $interval->m;
+
+            $price = $part->price ?? 0;
+            $qty = $part->qty ?? 1;
+            $total = $price * $qty;
+
+            if ($months < 6) {
+                $result['active'] += $total;
+            } elseif ($months >= 6 && $months <= 24) {
+                $result['slow_moving'] += $total;
+            } else {
+                $result['dead_stock'] += $total;
+            }
+        }
+
+        return $result;
     }
 
     /**
