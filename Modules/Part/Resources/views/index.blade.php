@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <!-- Tambahkan tombol download di sini -->
-                        
+
                     </div>
                 </div>
             </div>
@@ -123,27 +123,6 @@
                             @else
                             @foreach ($parts as $part)
                             <tr>
-<<<<<<< Updated upstream
-                                <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="5%">{{ $part->part_id }}</td>
-                                <td width="5%">{{ $part->part_no }}</td>
-                                <td width="5%">{{ $part->part_name }}</td>
-                                <td width="5%">{{ $part->loc_ppti }}</td>
-                                <td width="5%">{{ $part->lokasi_hib }}</td>
-                                <td width="5%">{{ $part->loc_tapc }}</td>
-                                <td width="5%">{{ $part->qty_begin }}</td>
-                                <td width="5%">{{ $part->qty_in }}</td>
-                                <td width="5%">{{ $part->qty_out }}</td>
-                                <td width="5%">{{ $part->adjust }}</td>
-                                <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
-                                <td width="5%">{{ $part->status }}</td>
-                                <td width="5%">{{ $part->kategori_inventory }}</td>
-                                <td width="5%">{{ $part->ss }}</td>
-                                <td width="5%">{{ $part->rop }}</td>
-                                <td width="5%">{{ $part->forecast }}</td>
-                                <td width="5%">{{ $part->max }}</td>
-                                <td width="5%">
-=======
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $part->part_id }}</td>
                                 <td>{{ $part->part_no }}</td>
@@ -210,7 +189,6 @@
                                 <td>{{ $part->forecast }}</td>
                                 <td>{{ $part->max }}</td>
                                 <td>
->>>>>>> Stashed changes
                                     @if ($part->part_id > 0)
                                     <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-toggle="modal" data-target=".addModal"
                                         data-id="{{ $part->part_id }}" data-toggle="tooltip"
