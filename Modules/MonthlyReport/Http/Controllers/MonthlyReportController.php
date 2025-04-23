@@ -238,13 +238,17 @@ class MonthlyReportController extends Controller
             'L47:M47',
             // 'M45:N47',
             'Q57:U57',
-            'A56:U56',
+            'A56:A57',
+            'H56:U56',
             'A66:A67',
-            'B66:E66',
+            'B56:G56',
             'AD27:AF28',
             'AG27:AI28',
             'R12:T13',
             'U12:W13',
+            'B57:F57',
+            'G57:K57',
+            'L57:P57',
         ];
 
 
@@ -491,7 +495,7 @@ class MonthlyReportController extends Controller
             'B33' => 'LOKAL',
             'A56' => 'KATEGORI',
             'B56' => 'SUPPLIER (USD)',
-            'L56' => 'SUPPLIER (IDR)',
+            'H56' => 'SUPPLIER (IDR)',
             'B57' => 'LOKAL',
             'G57' => 'IMPORT',
             'L57' => 'LOKAL',
