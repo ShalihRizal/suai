@@ -29,8 +29,8 @@ class ListOfPartRequestRepository extends QueryBuilderImplementation
         try {
             return DB::connection($this->db)
                 ->table($this->table)
-                ->leftjoin('part_request', 'part_request.part_req_id', '=', 'partlist.part_req_id')
-                ->leftjoin('part', 'part_request.part_id', '=', 'part.part_id')
+                ->join('part_request', 'part_request.part_req_id', '=', 'partlist.part_req_id')
+                ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->leftjoin('carname', 'part_request.carline', '=', 'carname.carname_id')
                 ->leftjoin('carline', 'part_request.car_model', '=', 'carline.carline_id')
                 ->leftJoin('sys_users', 'part_request.approved_by', '=', 'sys_users.user_id')

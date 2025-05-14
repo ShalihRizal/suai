@@ -147,14 +147,14 @@
                                                     $showMessage = false;
 
                                                     if (
-                                                        is_null($part->rec_date) ||
-                                                        $part->rec_date === '-' ||
+                                                        is_null($part->rcv_date) ||
+                                                        $part->rcv_date === '-' ||
                                                         is_null($part->used_date) ||
                                                         $part->used_date === '-'
                                                     ) {
                                                         $showMessage = true;
                                                     } else {
-                                                        $recDate = \Carbon\Carbon::parse($part->rec_date);
+                                                        $recDate = \Carbon\Carbon::parse($part->rcv_date);
                                                         $usedDate = \Carbon\Carbon::parse($part->used_date);
                                                         $now = \Carbon\Carbon::now();
 
