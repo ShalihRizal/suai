@@ -109,6 +109,8 @@
                                     <th>Qty Out</th>
                                     <th>Qty STO</th>
                                     <th>Qty End</th>
+                                    <th>used date</th>
+                                    <th>rcv date</th>
                                     {{-- <th>Status Part</th> --}}
                                     <th>Status</th> <!-- fixed output goes here -->
                                     <th>Safety Stock</th>
@@ -138,6 +140,8 @@
                                             <td>{{ $part->qty_out }}</td>
                                             <td>{{ $part->adjust }}</td>
                                             <td>{{ $part->qty_begin + $part->qty_in - $part->qty_out }}</td>
+                                            <td>{{ $part->used_date}}</td>
+                                            <td>{{ $part->rcv_date}}</td>
                                             {{-- <td>{{ $part->status }}</td> --}}
 
                                             <!-- Status Calculation Output in its own TD -->

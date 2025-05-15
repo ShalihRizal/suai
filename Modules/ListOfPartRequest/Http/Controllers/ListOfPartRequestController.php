@@ -55,7 +55,7 @@ class ListOfPartRequestController extends Controller
     public function downloadPDF()
     {
         // Path lengkap file
-        $filePath = storage_path('app/public/uploads/images/header_partreq_with_example_data.csv');
+        $filePath = storage_path('app/public/uploads/images/transaksi_out.csv');
 
         // Cek apakah file ada
         if (!file_exists($filePath)) {
