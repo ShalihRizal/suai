@@ -64,7 +64,7 @@ class ListOfPartRequestController extends Controller
         }
 
         // Menentukan nama file saat diunduh
-        $fileName = 'header_partreq_with_example_data.csv';
+        $fileName = 'TemplateListOfPartReq.csv';
 
         // Mengunduh file dengan nama yang sudah ditentukan dan tipe konten CSV
         return response()->download($filePath, $fileName, [
