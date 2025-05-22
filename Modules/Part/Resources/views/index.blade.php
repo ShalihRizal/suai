@@ -383,6 +383,20 @@
                                         placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Use Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" name="used_date" id="used_date"
+                                        placeholder="Masukan Use Date" value="{{ old('used_date') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Rcv Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" name="rcv_date" id="rcv_date"
+                                        placeholder="Masukan Rcv Date" value="{{ old('rcv_date') }}">
+                                </div>
+                            </div>
 
                             <div class="col-md-6" hidden>
                                 <div class="form-group">
@@ -455,59 +469,61 @@
                                 placeholder="Masukan Loc Hib" value="{{ old('lokasi_hib') }}">
                         </div>
                     </div> --}}
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_begin" id="qty_begin"
-                                placeholder="Masukan Qty Begin" value="{{ old('qty_begin') }}">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_begin" id="qty_begin"
+                                        placeholder="Masukan Qty Begin" value="{{ old('qty_begin') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty in<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_in" id="qty_in"
+                                        placeholder="Masukan Qty in" value="{{ old('qty_in') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty out<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_out" id="qty_out"
+                                        placeholder="Masukan Qty out" value="{{ old('qty_out') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Adjust<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="adjust" id="adjust"
+                                        placeholder="Masukan Adjust" value="{{ old('adjust') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty end<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_end" id="qty_end"
+                                        placeholder="Masukan Qty end" value="{{ old('qty_end') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Remarks<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="remarks" id="remarks"
+                                        placeholder="Masukan Remarks" value="{{ old('remarks') }}">
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty in<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_in" id="qty_in"
-                                placeholder="Masukan Qty in" value="{{ old('qty_in') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty out<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_out" id="qty_out"
-                                placeholder="Masukan Qty out" value="{{ old('qty_out') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Adjust<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="adjust" id="adjust"
-                                placeholder="Masukan Adjust" value="{{ old('adjust') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty end<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_end" id="qty_end"
-                                placeholder="Masukan Qty end" value="{{ old('qty_end') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Remarks<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="remarks" id="remarks"
-                                placeholder="Masukan Remarks" value="{{ old('remarks') }}">
-                        </div>
-                    </div>
+
 
                 </div>
-
-
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                <button type="submit" class="text-white btn btn-success">Simpan</button>
+            </div>
+            </form>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-        <button type="submit" class="text-white btn btn-success">Simpan</button>
-    </div>
-    </form>
 </div>
 <!-- Modal Add -->
 @endsection
@@ -516,6 +532,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script type="text/javascript">
     $('.btnAdd').click(function() {
         $('#part_no').val('');
@@ -530,6 +551,8 @@
         $('#po').val('');
         $('#po_date').val('');
         $('#rec_date').val('');
+        $('#used_date').val('');
+        $('#rcv_date').val('');
         $('#loc_ppti').val('');
         $('#loc_tapc').val('');
         $('#lokasi_hib').val('');
@@ -577,6 +600,8 @@
                     $('#po').val(data.result.po);
                     $('#po_date').val(data.result.po_date);
                     $('#rec_date').val(data.result.rec_date);
+                    $('#used_date').val(data.result.used_date);
+                    $('#rcv_date').val(data.result.rcv_date);
                     $('#loc_ppti').val(data.result.loc_ppti);
                     $('#loc_tapc').val(data.result.loc_tapc);
                     $('#invoice').val(data.result.invoice);
@@ -653,6 +678,8 @@
             po: "required",
             po_date: "required",
             rec_date: "required",
+            used_date: "required",
+            rcv_date: "required",
             loc_ppti: "required",
             loc_tapc: "required",
             lokasi_hib: "required",
@@ -677,6 +704,8 @@
             po: "PO Tidak Boleh Kosong",
             po_date: "PO Date Tidak Boleh Kosong",
             rec_date: "Rec Date Tidak Boleh Kosong",
+            used_date: "Used Date Tidak Boleh Kosong",
+            rcv_date: "Rcv Date Tidak Boleh Kosong",
             loc_ppti: "Loc PPTI Tidak Boleh Kosong",
             loc_tapc: "Loc Tapc Tidak Boleh Kosong",
             lokasi_hib: "Loc Hib Tidak Boleh Kosong",
@@ -717,32 +746,69 @@
         // Inisialisasi DataTable
         var table = $('#table-data').DataTable();
 
+        // Store the subrack data as a JavaScript object for easier management
+        const subracks = @json($subrack);
+
+        // Inisialisasi Select2 untuk Rak
+        $('#rack').select2({
+            placeholder: "- Pilih Rak -",
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('.addModal'),
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                },
+                searching: function() {
+                    return "Mencari...";
+                }
+            }
+        });
+
+        // Inisialisasi Select2 untuk Sub Rak
+        $('#sub_rack').select2({
+            placeholder: "- Pilih Sub Rak -",
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('.addModal'),
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                },
+                searching: function() {
+                    return "Mencari...";
+                }
+            }
+        });
+
+        // Event listener untuk perubahan Rak
+        $('#rack').on('change', function() {
+            const selectedRackId = this.value;
+            const subRackDropdown = $('#sub_rack');
+            
+            // Reset Sub Rak dropdown
+            subRackDropdown.empty().append('<option value="">- Pilih Sub Rak -</option>');
+            
+            // Filter dan tambahkan Sub Rak yang relevan
+            subracks.forEach(subrack => {
+                if (subrack.rack_id == selectedRackId) {
+                    const option = new Option(
+                        `${subrack.rack_name}.${subrack.sub_rack_name}`,
+                        subrack.sub_rack_id,
+                        false,
+                        false
+                    );
+                    subRackDropdown.append(option);
+                }
+            });
+            
+            // Trigger change event untuk memperbarui tampilan Select2
+            subRackDropdown.trigger('change');
+        });
+
         // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
         $('#table-data_filter input').unbind().bind('keyup', function() {
             table.column(2).search(this.value).draw();
-        });
-    });
-</script>
-<script>
-    // Store the subrack data as a JavaScript object for easier management
-    const subracks = @json($subrack);
-
-    // Event listener to update the Sub Rak dropdown based on the selected Rak
-    document.getElementById("rack").addEventListener("change", function() {
-        const selectedRackId = this.value;
-        const subRackDropdown = document.getElementById("sub_rack");
-
-        // Reset Sub Rak dropdown
-        subRackDropdown.innerHTML = '<option value="">- Pilih Sub Rak -</option>';
-
-        // Filter and append relevant Sub Racks
-        subracks.forEach(subrack => {
-            if (subrack.rack_id == selectedRackId) {
-                const option = document.createElement("option");
-                option.value = subrack.sub_rack_id;
-                option.textContent = `${subrack.rack_name}.${subrack.sub_rack_name}`;
-                subRackDropdown.appendChild(option);
-            }
         });
     });
 </script>

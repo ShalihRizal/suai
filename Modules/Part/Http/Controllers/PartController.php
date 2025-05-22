@@ -75,42 +75,44 @@ class PartController extends Controller
 
         // Set header
         $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Part No');
-        $sheet->setCellValue('C1', 'Part Name'); 
-        $sheet->setCellValue('D1', 'Lokasi PPTI');
-        $sheet->setCellValue('E1', 'Lokasi HIB');
-        $sheet->setCellValue('F1', 'Lokasi TAPC');
-        $sheet->setCellValue('G1', 'Begin');
-        $sheet->setCellValue('H1', 'Qty In');
-        $sheet->setCellValue('I1', 'Qty Out');
-        $sheet->setCellValue('J1', 'Qty STO');
-        $sheet->setCellValue('K1', 'Qty End');
-        $sheet->setCellValue('L1', 'Status Part');
-        $sheet->setCellValue('M1', 'Status');
-        $sheet->setCellValue('N1', 'Safety Stock');
-        $sheet->setCellValue('O1', 'ROP');
-        $sheet->setCellValue('P1', 'Forecast');
-        $sheet->setCellValue('Q1', 'Max');
+        $sheet->setCellValue('B1', 'ID');
+        $sheet->setCellValue('C1', 'Part No');
+        $sheet->setCellValue('D1', 'Part Name'); 
+        $sheet->setCellValue('E1', 'Lokasi PPTI');
+        $sheet->setCellValue('F1', 'Lokasi HIB');
+        $sheet->setCellValue('G1', 'Lokasi TAPC');
+        $sheet->setCellValue('H1', 'Begin');
+        $sheet->setCellValue('I1', 'Qty In');
+        $sheet->setCellValue('J1', 'Qty Out');
+        $sheet->setCellValue('K1', 'Qty STO');
+        $sheet->setCellValue('L1', 'Qty End');
+        $sheet->setCellValue('M1', 'Status Part');
+        $sheet->setCellValue('N1', 'Status');
+        $sheet->setCellValue('O1', 'Safety Stock');
+        $sheet->setCellValue('P1', 'ROP');
+        $sheet->setCellValue('Q1', 'Forecast');
+        $sheet->setCellValue('R1', 'Max');
 
         $row = 2;
         foreach ($parts as $index => $part) {
             $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $part->part_no);
-            $sheet->setCellValue('C' . $row, $part->part_name);
-            $sheet->setCellValue('D' . $row, $part->loc_ppti);
-            $sheet->setCellValue('E' . $row, $part->lokasi_hib);
-            $sheet->setCellValue('F' . $row, $part->loc_tapc);
-            $sheet->setCellValue('G' . $row, $part->qty_begin);
-            $sheet->setCellValue('H' . $row, $part->qty_in);
-            $sheet->setCellValue('I' . $row, $part->qty_out);
-            $sheet->setCellValue('J' . $row, $part->adjust);
-            $sheet->setCellValue('K' . $row, $part->qty_begin + $part->qty_in - $part->qty_out);
-            $sheet->setCellValue('L' . $row, $part->status);
-            $sheet->setCellValue('M' . $row, $part->kategori_inventory);
-            $sheet->setCellValue('N' . $row, $part->ss);
-            $sheet->setCellValue('O' . $row, $part->rop);
-            $sheet->setCellValue('P' . $row, $part->forecast);
-            $sheet->setCellValue('Q' . $row, $part->max);
+            $sheet->setCellValue('B' . $row, $part->part_id);
+            $sheet->setCellValue('C' . $row, $part->part_no);
+            $sheet->setCellValue('D' . $row, $part->part_name);
+            $sheet->setCellValue('E' . $row, $part->loc_ppti);
+            $sheet->setCellValue('F' . $row, $part->lokasi_hib);
+            $sheet->setCellValue('G' . $row, $part->loc_tapc);
+            $sheet->setCellValue('H' . $row, $part->qty_begin);
+            $sheet->setCellValue('I' . $row, $part->qty_in);
+            $sheet->setCellValue('J' . $row, $part->qty_out);
+            $sheet->setCellValue('K' . $row, $part->adjust);
+            $sheet->setCellValue('L' . $row, $part->qty_begin + $part->qty_in - $part->qty_out);
+            $sheet->setCellValue('M' . $row, $part->status);
+            $sheet->setCellValue('N' . $row, $part->kategori_inventory);
+            $sheet->setCellValue('O' . $row, $part->ss);
+            $sheet->setCellValue('P' . $row, $part->rop);
+            $sheet->setCellValue('Q' . $row, $part->forecast);
+            $sheet->setCellValue('R' . $row, $part->max);
             $row++;
         }
 
@@ -320,6 +322,8 @@ class PartController extends Controller
             'po' => $request->po,
             'po_date' => $request->po_date,
             'rec_date' => $request->rec_date,
+            'used_date' => $request->used_date,
+            'rcv_date' => $request->rcv_date,
             'loc_ppti' => $locppti,
             'loc_tapc' => $request->loc_tapc,
             'lokasi_hib' => $request->lokasi_hib,
@@ -338,7 +342,7 @@ class PartController extends Controller
             'updated_at' => $request->updated_at,
             'updated_by' => $request->updated_by,
         ];
-
+// dd($data);
         DB::beginTransaction();
         $cek = $this->_partRepository->insert(DataHelper::_normalizeParams($data, true));
         // dd($cek);

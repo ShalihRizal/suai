@@ -1176,6 +1176,7 @@ class PartRequestController extends Controller
         $partrequests = $this->_PartRequestRepository->getAllByParams($params, $startDate, $endDate);
         $parts = $this->_partRepository->getAllByParams($params);
         $carlines = $this->_CarlineRepository->getAll();
+        // dd($carlines);
         $machines = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
         $carnames = $this->_carnameRepository->getAll();

@@ -38,9 +38,8 @@
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Upload
                 </a>
-                <a href="javascript:void(0)" class="btn btn-info btnTemplate text-white mb-3" style="height: 100%;" data-toggle="modal" data-target="#TemplateModal" onclick="downloadFile()">
-                    <i data-feather="download" width="16" height="16" class="me-2"></i>
-                    Download
+                <a href="{{ route('downloadtemplate') }}" class="btn btn-info text-white mb-3">
+                    <i data-feather="download" width="16" height="16" class="me-2"></i> Download
                 </a>
                 <div class="row">
                     <div class="col-md-6">

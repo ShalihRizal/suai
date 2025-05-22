@@ -289,6 +289,20 @@
                                         placeholder="Masukan Rec Date" value="{{ old('rec_date', optional($part->rec_date)->format('dd-mm-yy')) }}">
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Use Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" name="used_date" id="used_date"
+                                        placeholder="Masukan Use Date" value="{{ old('used_date', optional($part->used_date)->format('dd-mm-yy')) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Rcv Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" name="rcv_date" id="rcv_date"
+                                        placeholder="Masukan Rcv Date" value="{{ old('rcv_date', optional($part->rcv_date)->format('dd-mm-yy')) }}">
+                                </div>
+                            </div>
                             <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
@@ -436,6 +450,8 @@
         $('#po').val('');
         $('#po_date').val('');
         $('#rec_date').val('');
+        $('#used_date').val('');
+        $('#rcv_date').val('');
         $('#loc_ppti').val('');
         $('#loc_tapc').val('');
         $('#lokasi_hib').val('');
@@ -483,6 +499,8 @@
                     $('#po').val(data.result.po);
                     $('#po_date').val(data.result.po_date);
                     $('#rec_date').val(data.result.rec_date);
+                    $('#rcv_date').val(data.result.rcv_date);
+                    $('#used_date').val(data.result.used_date);
                     $('#loc_ppti').val(data.result.loc_ppti);
                     $('#loc_tapc').val(data.result.loc_tapc);
                     $('#invoice').val(data.result.invoice);
@@ -561,6 +579,8 @@
             po: "required",
             po_date: "required",
             rec_date: "required",
+            used_date: "required",
+            rcv_date: "required",
             loc_ppti: "required",
             loc_tapc: "required",
             lokasi_hib: "required",
@@ -585,6 +605,8 @@
             po: "PO Tidak Boleh Kosong",
             po_date: "PO Date Tidak Boleh Kosong",
             rec_date: "Rec Date Tidak Boleh Kosong",
+            used_date: "Use Date Tidak Boleh Kosong",
+            rcv_date: "Rcv Date Tidak Boleh Kosong",
             loc_ppti: "Loc PPTI Tidak Boleh Kosong",
             loc_tapc: "Loc Tapc Tidak Boleh Kosong",
             lokasi_hib: "Loc Hib Tidak Boleh Kosong",

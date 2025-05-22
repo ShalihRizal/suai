@@ -326,4 +326,23 @@ class TransaksiInController extends Controller
             ];
         }
     }
+    public function downloadPDF()
+    {
+        // Path lengkap file
+        $filePath = storage_path('app/public/uploads/images/transaksi_in.csv');
+
+        // Cek apakah file ada
+        if (!file_exists($filePath)) {
+            // Jika file tidak ditemukan, redirect dengan pesan error
+            return redirect('transaksiin')->with('message', 'Template file not found.');
+        }
+
+        // Menentukan nama file saat diunduh
+        $fileName = 'TemplateTransaksiIn.csv';
+
+        // Mengunduh file dengan nama yang sudah ditentukan dan tipe konten CSV
+        return response()->download($filePath, $fileName, [
+            'Content-Type' => 'text/csv', // Menentukan MIME Type untuk file CSV
+        ]);
+    }
 }

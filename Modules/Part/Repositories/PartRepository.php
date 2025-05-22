@@ -21,6 +21,8 @@ class PartRepository extends QueryBuilderImplementation
         'po',
         'po_date',
         'rec_date',
+        'used_date',
+        'rcv_date',
         'loc_ppti',
         'loc_tapc',
         'lokasi_hib',

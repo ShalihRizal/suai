@@ -144,8 +144,20 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">Lokasi <span class="text-danger">*</span></label>
+                                    <label class="form-label">Lokasi PPTI<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="loc_ppti" id="loc_ppti" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Lokasi TAPC<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="loc_tapc" id="loc_tapc" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Lokasi HIB<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="lokasi_hib" id="lokasi_hib" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -223,6 +235,8 @@
                         $('#part_name').val(data.result.part_name);
                         $('#part_no').val(data.result.part_no);
                         $('#loc_tapc').val(data.result.loc_tapc);
+                        $('#lokasi_hib').val(data.result.lokasi_hib);
+                        $('#loc_ppti').val(data.result.loc_ppti);
                         $('#part_qty').val(data.result.part_qty);
                         $('.detailModal form').attr('action', "{{ url('supervisornotification/update') }}" + '/' + id);
                         alert('Berhasil');
@@ -264,6 +278,8 @@
                     $('#part_no').val('');
                     $('#id').val(data.result.part_req_id);
                     $('#loc_ppti').val(data.result.loc_ppti);
+                    $('#lokasi_hib').val(data.result.lokasi_hib);
+                    $('#loc_tapc').val(data.result.loc_tapc);
                     $('#part_qty').val(data.result.part_qty);
                     $('#kategori_inventory').val(data.result.kategori_inventory);
                     $('.detailModal .modal-title').text('Details');
