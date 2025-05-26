@@ -13,6 +13,8 @@ use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
 use Validator;
+use App\Exports\TransaksiOutExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiOutController extends Controller
 {
@@ -191,6 +193,25 @@ class TransaksiOutController extends Controller
         }
 
         return $response;
+    }
+
+    public function export(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+
+            if ($startDate && $endDate && strtotime($startDate) > strtotime($endDate)) {
+                return redirect('transaksiout')->with('error', 'Tanggal mulai harus lebih kecil dari tanggal selesai');
+            }
+
+            $fileName = 'transaksi_out_' . date('Y-m-d_His') . '.xlsx';
+            
+            return Excel::download(new TransaksiOutExport($startDate, $endDate), $fileName);
+        } catch (\Exception $e) {
+            \Log::error('Error exporting transaksi out: ' . $e->getMessage());
+            return redirect('transaksiout')->with('error', 'Gagal mengunduh data: ' . $e->getMessage());
+        }
     }
 
     private function _validationRules($id = '')

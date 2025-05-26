@@ -20,4 +20,5 @@ Route::prefix('transaksiout')->group(function () {
     Route::post('/update/{id}', 'TransaksiOutController@update');
     Route::get('/delete/{id}', 'TransaksiOutController@destroy');
     Route::get('/getdata/{id}', 'TransaksiOutController@getdata');
+    Route::get('/export', 'TransaksiOutController@export')->name('export');
 });

@@ -39,7 +39,32 @@
                     <i data-feather="plus" width="16" height="16" class="me-2"></i>
                     Tambah Transaksi OUT
                 </a>
-                {{-- </div> --}}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <form action="{{ route('export') }}" method="GET">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date:</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="end_date">End Date:</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-success text-white" style="margin-top: 32px;">
+                                        <i data-feather="download" width="16" height="16" class="me-2"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap table-data">

@@ -17,6 +17,7 @@ use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Validator;
+use App\Exports\ListOfPartRequestExport;
 
 class ListOfPartRequestController extends Controller
 {
@@ -237,6 +238,27 @@ class ListOfPartRequestController extends Controller
         return Excel::download(new listofpartreqexport($startDate, $endDate), 'listofpartreq.xlsx');
     }
 
+    public function downloadData(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+
+            // Validasi tanggal jika diisi
+            if ($startDate && $endDate && $startDate > $endDate) {
+                return redirect()->back()->with('error', 'Tanggal mulai harus lebih kecil dari tanggal akhir');
+            }
+
+            // Generate nama file dengan timestamp
+            $fileName = 'list_of_part_request_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+            // Download file Excel
+            return Excel::download(new ListOfPartRequestExport($startDate, $endDate), $fileName);
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengunduh data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mengunduh data. ' . $e->getMessage());
+        }
+    }
 
     private function _validationRules($id = '')
     {
@@ -250,4 +272,5 @@ class ListOfPartRequestController extends Controller
             ];
         }
     }
+    
 }

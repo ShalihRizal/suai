@@ -39,37 +39,40 @@
                 </div>
             </div>
             <div class="card-header w-100">
-                <div class="row">
-                    <div class="col-md-6">
-                        <form action="{{route('exportlistofpartreq')}}" method="GET">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <input type="date" name="start_date" class="form-control" placeholder="Start Date">
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="date" name="end_date" class="form-control" placeholder="End Date">
-                                </div>
-                                <div class="col-md-2">
-                                    <a href="{{ route('downloadtemplate') }}" class="btn btn-success text-white">
-                                        <i data-feather="download" width="16" height="16" class="me-2"></i> Download
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{route('exportlistofpartreq')}}" method="GET">
+                <div class="row align-items-center">
+                    <!-- Jika ingin input tanggal kembali, bisa aktifkan bagian ini -->
+                    <!--
+                    <div class="col-md-5">
+                        <input type="date" name="start_date" class="form-control" placeholder="Start Date">
                     </div>
-                        <div class="col-md-2">
-                            <form action="{{ url('partrequest/allstore') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="input-group">
-                                    <input type="file" name="file_upload" class="form-control" required>
-                                    <button type="submit" class="btn btn-info text-white">
-                                        <i data-feather="upload" width="16" height="16" class="me-2"></i> Upload
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="col-md-5">
+                        <input type="date" name="end_date" class="form-control" placeholder="End Date">
+                    </div>
+                    -->
+                    <div class="col-auto">
+                        <a href="{{ route('downloadtemplatetransaksiout') }}" class="btn btn-success text-white me-2">
+                            <i data-feather="download" width="16" height="16" class="me-1"></i> Template
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{{ route('download.data') }}" class="btn btn-primary text-white me-2">
+                            <i data-feather="download" width="16" height="16" class="me-1"></i> Data
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-info text-white" data-toggle="modal" data-target="#uploadModal">
+                            <i data-feather="upload" width="16" height="16" class="me-1"></i> Upload
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
@@ -329,6 +332,35 @@
     </div>
 </div>
 <!-- Modal Add -->
+
+<!-- Modal Upload -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url('partrequest/allstore') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="file_upload">Pilih File</label>
+                        <input type="file" name="file_upload" class="form-control" id="file_upload" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal Upload -->
+
 @endsection
 
 @section('script')
@@ -471,5 +503,13 @@
     if (msg !== undefined) {
         notyf.success(msg)
     }
+
+    // Script untuk menangani tampilan modal
+    $(document).ready(function() {
+        $('#uploadModal').on('show.bs.modal', function (e) {
+            // Reset form ketika modal dibuka
+            $('#file_upload').val('');
+        });
+    });
 </script>
 @endsection

@@ -345,4 +345,71 @@ class TransaksiInController extends Controller
             'Content-Type' => 'text/csv', // Menentukan MIME Type untuk file CSV
         ]);
     }
+
+    public function downloadData()
+    {
+        try {
+            // Ambil semua data transaksi_in
+            $transaksiins = $this->_transaksiinRepository->getAll();
+            
+            // Buat nama file dengan timestamp
+            $fileName = 'transaksi_in_' . date('Y-m-d_H-i-s') . '.csv';
+            
+            // Buat file CSV
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            ];
+            
+            $callback = function() use ($transaksiins) {
+                $file = fopen('php://output', 'w');
+                
+                // Header CSV
+                fputcsv($file, [
+                    'No',
+                    'Id',
+                    'Invoice No',
+                    'PO Number',
+                    'PO Date',
+                    'Part No Urut',
+                    'Part Name',
+                    'Part Category',
+                    'Molts No',
+                    'Price',
+                    'Part No',
+                    'Qty',
+                    'Loc PPTI',
+                    'Created At'
+                ]);
+                
+                // Data CSV
+                foreach ($transaksiins as $index => $transaksi) {
+                    fputcsv($file, [
+                        $index + 1,
+                        $transaksi->transaksi_in_id,
+                        $transaksi->invoice_no,
+                        $transaksi->po_no,
+                        $transaksi->po_date,
+                        $transaksi->part_no . $transaksi->no_urut,
+                        $transaksi->part_name,
+                        $transaksi->part_category_name,
+                        $transaksi->molts_no,
+                        $transaksi->price,
+                        $transaksi->part_no,
+                        $transaksi->qty,
+                        $transaksi->loc_ppti,
+                        $transaksi->transaksi_created_at
+                    ]);
+                }
+                
+                fclose($file);
+            };
+            
+            return response()->stream($callback, 200, $headers);
+            
+        } catch (\Exception $e) {
+            Log::error('Gagal mengunduh data: ' . $e->getMessage());
+            return redirect('transaksiin')->with('error', 'Gagal mengunduh data. ' . $e->getMessage());
+        }
+    }
 }

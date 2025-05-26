@@ -80,6 +80,7 @@
                         <thead>
                             <tr>
                                 <th width="1%">No</th>
+                                <th width="1%">ID</th>
                                 <th width="5%">Nomor Invoice</th>
                                 <th width="5%">Po Number</th>
                                 <th width="5%">PO Date</th>
@@ -103,6 +104,7 @@
                             @foreach ($transaksiins as $transaksiin)
                             <tr class="part-row" data-category="{{ $transaksiin->part_category_name }}" data-created-at="{{ $transaksiin->transaksi_created_at }}">
                                 <td width="1%">{{ $loop->iteration }}</td>
+                                <td width="5%">{{ $transaksiin->transaksi_in_id }}</td>
                                 <td width="5%">{{ $transaksiin->invoice_no }}</td>
                                 <td width="5%">{{ $transaksiin->po_no }}</td>
                                 <td width="5%">{{ $transaksiin->po_date2 }}</td>
@@ -135,6 +137,10 @@
                 <a href="javascript:void(0)" class="btn btn-success text-white mb-3" style="width: 175px" id="printButton">
                     <i data-feather="printer" class="me-2"></i>
                     Print/Save
+                </a>
+                <a href="{{ url('transaksiin/download-data') }}" class="btn btn-info text-white mb-3" style="width: 175px">
+                    <i data-feather="download" class="me-2"></i>
+                    Download Data
                 </a>
             </div>
         </div>

@@ -20,6 +20,7 @@ Route::prefix('listofpartrequest')->group(function () {
     Route::post('/update/{id}', 'ListOfPartRequestController@update');
     Route::get('/delete/{id}', 'ListOfPartRequestController@destroy');
     Route::get('/getdata/{id}', 'ListOfPartRequestController@getdata');
-    Route::get('downloadtemplate', 'ListOfPartRequestController@downloadPDF')->name('downloadtemplate');
+    Route::get('/downloadtemplatetransaksiout', 'ListOfPartRequestController@downloadPDF')->name('downloadtemplatetransaksiout');
     Route::get('/export-listofpartreq', 'ListOfPartRequestController@listofpartreqexport')->name('exportlistofpartreq');
+    Route::get('/download-data', 'ListOfPartRequestController@downloadData')->name('download.data');
 });

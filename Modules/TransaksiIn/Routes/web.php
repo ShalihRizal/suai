@@ -24,6 +24,7 @@ Route::prefix('transaksiin')->group(function () {
     Route::get('/delete/{id}', 'TransaksiInController@destroy');
     Route::get('/getdata/{id}', 'TransaksiInController@getdata');
     Route::get('/downloadtemplate', 'TransaksiInController@downloadPDF')->name('downloadtemplate');
+    Route::get('/download-data', 'TransaksiInController@downloadData');
     // Route::get('/filter-transactions', 'TransaksiInController@filterTransactions')->name('filter_transactions');
 
 
