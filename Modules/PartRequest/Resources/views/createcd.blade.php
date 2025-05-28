@@ -90,21 +90,27 @@
 
                                         <td><input type="text" name="side_no[]" placeholder="Side No" class="form-control" value="{{ old('side_no') }}" required></td>
                                         <td>
-                                            <select class="form-control" name="part_id[]" id="part_id" required>
+                                            <select class="form-control select2" name="part_id[]" id="part_id" required>
                                                 <option value="">- Pilih Part -</option>
                                                 @if (sizeof($parts) > 0)
-                                                @foreach ($parts as $part)
-                                                @if ($part->qty_begin + $part->qty_in- $part->qty_out > 0)
-                                                <option value="{{ $part->part_id }}" data-part-name="{{ $part->part_name }}" data-part-asal="{{ $part->asal }}" data-part-number="{{ $part->part_no }}" data-qty-end="{{ $part->qty_end }}" data-created-at="{{ $part->created_at }}">{{ $part->part_no }}
-                                                    -
-                                                    {{ $part->part_name }}
-                                                    (Qty: {{ $part->qty_begin + $part->qty_in- $part->qty_out }}, Dibuat: {{ substr($part->created_at, 0, 10) }})
-                                                </option>
-                                                @endif
-                                                @endforeach
+                                                    @foreach ($parts as $part)
+                                                        @if ($part->qty_begin + $part->qty_in - $part->qty_out > 0)
+                                                            <option value="{{ $part->part_id }}"
+                                                                data-part-name="{{ $part->part_name }}"
+                                                                data-part-asal="{{ $part->asal }}"
+                                                                data-part-number="{{ $part->part_no }}"
+                                                                data-qty-end="{{ $part->qty_end }}"
+                                                                data-created-at="{{ $part->created_at }}">
+                                                                {{ $part->part_no }} - {{ $part->part_name }}
+                                                                (Qty: {{ $part->qty_begin + $part->qty_in - $part->qty_out }},
+                                                                Dibuat: {{ substr($part->created_at, 0, 10) }})
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
                                                 @endif
                                             </select>
                                         </td>
+
                                         <td>
                                             <select class="form-control" name="alasan[]" id="alasan" required>
                                                 <option value="" disabled selected>- Pilih Alasan -</option>
@@ -416,6 +422,16 @@
         });
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "- Pilih Part -",
+            width: '100%' // Ensure it matches your Bootstrap form control styling
+        });
+    });
+</script>
+
 @endsection
 
 <style>
