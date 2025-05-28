@@ -60,7 +60,7 @@
                                                 <option value="">- Pilih Car Model -</option>
                                                 @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
-                                                <option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_carname_id }}">
+                                                <option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_category_id }}">
                                                     {{ $carline->carline_name }}
                                                 </option>
                                                 @endforeach
@@ -195,7 +195,7 @@
         carlineDropdown.html('<option value="">- Pilih Car Model -</option>');
 
         @foreach($carlines as $carline)
-        if ("{{ $carline->carline_carname_id }}" == selectedCarlineCategory) {
+        if ("{{ $carline->carline_category_id }}" == selectedCarlineCategory) {
             carlineDropdown.append(
                 '<option value="{{ $carline->carline_id }}">{{ $carline->carline_name }}</option>');
         }
@@ -243,7 +243,7 @@
             '<option value="">- Pilih Car Model -</option>' +
             '@if (sizeof($carlines) > 0)' +
             '@foreach ($carlines as $carline)' +
-            '<option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_carname_id }}"' + (lastCarModel == "{{ $carline->carline_id }}" ? ' selected' : '') + '>{{ $carline->carline_name }}</option>' +
+            '<option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_category_id }}"' + (lastCarModel == "{{ $carline->carline_id }}" ? ' selected' : '') + '>{{ $carline->carline_name }}</option>' +
             '@endforeach' +
             '@endif' +
             '</select>' +
@@ -387,7 +387,7 @@
         @foreach($carlines as $carline)
         if ({
                 {
-                    $carline - > carline_carname_id
+                    $carline - > carline_category_id
                 }
             } == selectedCarlineCategory) {
             var option = document.createElement("option");
