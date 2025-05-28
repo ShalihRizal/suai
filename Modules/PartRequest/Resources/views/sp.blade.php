@@ -96,6 +96,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this part request?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal Add -->
 <div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="addModal">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -1433,6 +1454,15 @@
         $(this).parent().parent().remove();
     });
 </script>
+
+<script>
+    $(document).on('click', '.btnDelete', function () {
+        var deleteUrl = $(this).data('url');
+        $('#confirmDeleteBtn').attr('href', deleteUrl);
+        $('#deleteConfirmModal').modal('show');
+    });
+</script>
+
 
 <script>
     // JavaScript code to update the "Car Model" dropdown based on the selected "Carline"

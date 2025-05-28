@@ -69,9 +69,15 @@
                                     data-placement="top" title="Ubah">
                                     <i data-feather="edit" width="16" height="16"></i>
                                     </a> --}}
-                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete" data-url="{{ url('partrequest/cd/delete/' . $partrequest->part_req_id) }}" data-toggle="tooltip" data-placement="top" title="Hapus">
+                                    <a href="javascript:void(0);"
+                                        class="btn btn-icon btn-danger text-white btnDelete"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Hapus"
+                                        data-url="{{ url('partrequest/cd/delete/' . $partrequest->part_req_id) }}">
                                         <i data-feather="trash-2" width="16" height="16"></i>
                                     </a>
+
                                     <a href="gambar/{{ $partrequest->part_req_id }}" class="btn btn-icon btn-info text-white" data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top" title="Ubah">
                                         <i data-feather="eye" width="16" height="16"></i>
                                     </a>
@@ -88,6 +94,27 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this part request?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Modal Add -->
 <div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;" id="addModal">
@@ -255,6 +282,19 @@
 @endsection
 
 @section('script')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script>
+    $(document).on('click', '.btnDelete', function () {
+        var deleteUrl = $(this).data('url');
+        $('#confirmDeleteBtn').attr('href', deleteUrl);
+        $('#deleteConfirmModal').modal('show');
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         $('#part_id').select2({
@@ -401,44 +441,44 @@
 
     });
 
-    $('.btnDelete').click(function() {
-        $('.btnDelete').attr('disabled', true)
-        var url = $(this).attr('data-url');
-        Swal.fire({
-            title: 'Apakah anda yakin ingin menghapus data?',
-            text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya. Hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: function(data) {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Terhapus!',
-                                'Data Berhasil Dihapus.',
-                                'success'
-                            ).then(() => {
-                                location.reload()
-                            })
-                        }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        Swal.fire(
-                            'Gagal!',
-                            'Gagal menghapus data.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        })
-    });
+    // $('.btnDelete').click(function() {
+    //     $('.btnDelete').attr('disabled', true)
+    //     var url = $(this).attr('data-url');
+    //     Swal.fire({
+    //         title: 'Apakah anda yakin ingin menghapus data?',
+    //         text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Ya. Hapus'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             $.ajax({
+    //                 type: 'GET',
+    //                 url: url,
+    //                 success: function(data) {
+    //                     if (result.isConfirmed) {
+    //                         Swal.fire(
+    //                             'Terhapus!',
+    //                             'Data Berhasil Dihapus.',
+    //                             'success'
+    //                         ).then(() => {
+    //                             location.reload()
+    //                         })
+    //                     }
+    //                 },
+    //                 error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //                     Swal.fire(
+    //                         'Gagal!',
+    //                         'Gagal menghapus data.',
+    //                         'error'
+    //                     );
+    //                 }
+    //             });
+    //         }
+    //     })
+    // });
 
     $('#detailModal').on('hidden.bs.modal', function(e) {
         localStorage.setItem('car_model', $('#car_model').val());
