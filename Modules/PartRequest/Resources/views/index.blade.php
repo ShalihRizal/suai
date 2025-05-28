@@ -128,7 +128,7 @@
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carlinecategories) > 0)
                                                 @foreach ($carlinecategories as $carlinecategory)
-                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                    <option value="{{ $carlinecategory->carline_carname_id }}">
                                                         {{ $carlinecategory->carline_category_name }}</option>
                                                 @endforeach
                                             @endif
@@ -143,7 +143,7 @@
                                             @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
-                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        data-carline-category="{{ $carline->carline_carname_id }}">
                                                         {{ $carline->carline_name }}</option>
                                                 @endforeach
                                             @endif
@@ -307,7 +307,7 @@
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carlinecategories) > 0)
                                                 @foreach ($carlinecategories as $carlinecategory)
-                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                    <option value="{{ $carlinecategory->carline_carname_id }}">
                                                         {{ $carlinecategory->carline_category_name }}</option>
                                                 @endforeach
                                             @endif
@@ -322,7 +322,7 @@
                                             @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
-                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        data-carline-category="{{ $carline->carline_carname_id }}">
                                                         {{ $carline->carline_name }}</option>
                                                 @endforeach
                                             @endif
@@ -487,7 +487,7 @@
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carlinecategories) > 0)
                                                 @foreach ($carlinecategories as $carlinecategory)
-                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                    <option value="{{ $carlinecategory->carline_carname_id }}">
                                                         {{ $carlinecategory->carline_category_name }}</option>
                                                 @endforeach
                                             @endif
@@ -502,7 +502,7 @@
                                             @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
-                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        data-carline-category="{{ $carline->carline_carname_id }}">
                                                         {{ $carline->carline_name }}</option>
                                                 @endforeach
                                             @endif
@@ -666,7 +666,7 @@
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carlinecategories) > 0)
                                                 @foreach ($carlinecategories as $carlinecategory)
-                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                    <option value="{{ $carlinecategory->carline_carname_id }}">
                                                         {{ $carlinecategory->carline_category_name }}</option>
                                                 @endforeach
                                             @endif
@@ -681,7 +681,7 @@
                                             @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
-                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        data-carline-category="{{ $carline->carline_carname_id }}">
                                                         {{ $carline->carline_name }}</option>
                                                 @endforeach
                                             @endif
@@ -846,7 +846,7 @@
                                             <option value="">- Pilih Carline -</option>
                                             @if (sizeof($carlinecategories) > 0)
                                                 @foreach ($carlinecategories as $carlinecategory)
-                                                    <option value="{{ $carlinecategory->carline_category_id }}">
+                                                    <option value="{{ $carlinecategory->carline_carname_id }}">
                                                         {{ $carlinecategory->carline_category_name }}</option>
                                                 @endforeach
                                             @endif
@@ -861,7 +861,7 @@
                                             @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
                                                     <option value="{{ $carline->carline_id }}"
-                                                        data-carline-category="{{ $carline->carline_category_id }}">
+                                                        data-carline-category="{{ $carline->carline_carname_id }}">
                                                         {{ $carline->carline_name }}</option>
                                                 @endforeach
                                             @endif
@@ -1392,7 +1392,7 @@
 
             // Filter and add options based on the selected "Carline Category"
             @foreach ($carlines as $carline)
-                if ({{ $carline->carline_category_id }} == selectedCarlineCategory) {
+                if ({{ $carline->carline_carname_id }} == selectedCarlineCategory) {
                     var option = document.createElement("option");
                     option.value = {{ $carline->carline_id }};
                     option.textContent = "{{ $carline->carline_name }}";

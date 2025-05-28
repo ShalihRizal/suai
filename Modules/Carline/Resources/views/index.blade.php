@@ -155,7 +155,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Car Model Category <span class="text-danger">*</span>
                                         </label>
-                                        <select class="form-control" name="carline_category_id" id="carline_category_id">
+                                        <select class="form-control" name="carline_carname_id" id="carline_carname_id">
                                             <option value="">- Pilih Car Model Category -</option>
                                             @if (sizeof($carnames) > 0)
                                                 @foreach ($carnames as $carname)
@@ -184,7 +184,7 @@
     <script type="text/javascript">
         $('.btnAdd').click(function() {
             $('#carline_name').val('');
-            $('#carline_category_id').val('');
+            $('#carline_carname_id').val('');
             $('.addModal form').attr('action', "{{ url('carline/store') }}");
             $('.addModal .modal-title').text('Tambah Car Model');
             $('.addModal').modal('show');
@@ -211,7 +211,7 @@
 
                     if (data.status == 1) {
                         $('#carline_name').val(data.result.carline_name);
-                        $('#carline_category_id').val(data.result.carline_category_id);
+                        $('#carline_carname_id').val(data.result.carline_carname_id);
                         $('.addModal .modal-title').text('Ubah Car Model');
                         $('.addModal').modal('show');
                     }

@@ -165,7 +165,7 @@ class CarlineCategoryController extends Controller
             // return redirect('carlinecategory');
             $response['status'] = 0;
             $response['message'] = 'Data tidak ditemukan!';
-        } elseif ($detail->carline_category_id == 1) {
+        } elseif ($detail->carline_carname_id == 1) {
             // return redirect('carlinecategory');
             $response['status'] = 0;
             $response['message'] = 'Data tidak dapat dihapus!';

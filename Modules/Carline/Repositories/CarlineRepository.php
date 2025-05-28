@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class CarlineRepository extends QueryBuilderImplementation
 {
 
-    public $fillable = ['carline_name', 'carline_category_id'];
+    public $fillable = ['carline_name', 'carline_carname_id'];
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class CarlineRepository extends QueryBuilderImplementation
         try {
             return DB::connection($this->db)
                 ->table($this->table)
-                ->join('carname', 'carname.carname_id', '=', 'carline.carline_category_id')
+                ->join('carname', 'carname.carname_id', '=', 'carline.carline_carname_id')
                 ->orderBy('carline_id')
                 ->get();
         } catch (Exception $e) {

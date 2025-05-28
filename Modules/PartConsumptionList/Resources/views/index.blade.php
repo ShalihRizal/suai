@@ -428,7 +428,7 @@
 
             // Filter and add options based on the selected "Carline Category"
             @foreach ($carlines as $carline)
-                if ({{ $carline->carline_category_id }} == selectedCarlineCategory) {
+                if ({{ $carline->carline_carname_id }} == selectedCarlineCategory) {
                     var option = document.createElement("option");
                     option.value = {{ $carline->carline_id }};
                     option.textContent = "{{ $carline->carline_name }}";

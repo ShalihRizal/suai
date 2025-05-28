@@ -215,11 +215,11 @@ class CarlineController extends Controller
     {
         if ($id == '') {
             return [
-                'carline_category_id' => 'required',
+                'carline_carname_id' => 'required',
             ];
         } else {
             return [
-                'carline_category_id' => 'required',
+                'carline_carname_id' => 'required',
             ];
         }
     }
