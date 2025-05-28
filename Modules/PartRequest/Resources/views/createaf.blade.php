@@ -60,7 +60,7 @@
                                                 <option value="">- Pilih Car Model -</option>
                                                 @if (sizeof($carlines) > 0)
                                                 @foreach ($carlines as $carline)
-                                                <option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_category_id }}">
+                                                <option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_carname_id }}">
                                                     {{ $carline->carline_name }}
                                                 </option>
                                                 @endforeach
@@ -167,6 +167,22 @@
         $('select[name="machine_no[]"]').on('select2:open', function(e) {
             $('.select2-search__field').attr('placeholder', 'Cari Machine...');
         });
+          // Ubah konfigurasi select2 untuk field part
+          $('select[name="part_id[]"]').select2({
+            placeholder: "- Pilih Part -",
+            allowClear: true,
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                },
+                searching: function() {
+                    return "Mencari...";
+                }
+            }
+        });
+        $('select[name="part_id[]"]').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Part...');
+        });
     });
 </script>
 <script type="text/javascript">
@@ -179,7 +195,7 @@
         carlineDropdown.html('<option value="">- Pilih Car Model -</option>');
 
         @foreach($carlines as $carline)
-        if ("{{ $carline->carline_category_id }}" == selectedCarlineCategory) {
+        if ("{{ $carline->carline_carname_id }}" == selectedCarlineCategory) {
             carlineDropdown.append(
                 '<option value="{{ $carline->carline_id }}">{{ $carline->carline_name }}</option>');
         }
@@ -227,7 +243,7 @@
             '<option value="">- Pilih Car Model -</option>' +
             '@if (sizeof($carlines) > 0)' +
             '@foreach ($carlines as $carline)' +
-            '<option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_category_id }}"' + (lastCarModel == "{{ $carline->carline_id }}" ? ' selected' : '') + '>{{ $carline->carline_name }}</option>' +
+            '<option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_carname_id }}"' + (lastCarModel == "{{ $carline->carline_id }}" ? ' selected' : '') + '>{{ $carline->carline_name }}</option>' +
             '@endforeach' +
             '@endif' +
             '</select>' +
@@ -371,7 +387,7 @@
         @foreach($carlines as $carline)
         if ({
                 {
-                    $carline - > carline_category_id
+                    $carline - > carline_carname_id
                 }
             } == selectedCarlineCategory) {
             var option = document.createElement("option");
