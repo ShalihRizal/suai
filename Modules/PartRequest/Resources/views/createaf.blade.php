@@ -152,6 +152,14 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function() {
+        $('.carname').select2({
+            placeholder: "- Pilih Carline -",
+            allowClear: true
+        });
+        $('.carname').on('select2:open', function(e) {
+            $('.select2-search__field').attr('placeholder', 'Cari Carline...');
+        });
+
         $('.car_model').select2({
             placeholder: "- Pilih Car Model -",
             allowClear: true
@@ -314,7 +322,7 @@
 
         // Inisialisasi Select2 untuk elemen baru
         var newRow = $('.table-body1').find('tr:last');
-        newRow.find('.car_model, select[name="machine_no[]"], select[name="part_id[]"]').select2({
+        newRow.find('.car_model, select[name="machine_no[]"], select[name="part_id[]"], .carname').select2({
             placeholder: function() {
                 return $(this).data('placeholder');
             },
