@@ -15,6 +15,7 @@ use App\Helpers\DataHelper;
 use App\Helpers\LogHelper;
 use DB;
 use Validator;
+use Carbon\Carbon;
 
 class SupervisorNotificationController extends Controller
 {
@@ -144,6 +145,8 @@ class SupervisorNotificationController extends Controller
 
         $detail = $this->_supervisornotificationRepository->getById($id);
         $part = $this->_partRepository->getById($detail->part_id);
+
+        $nowDate = Carbon::now();
         // dd($part, $detail);
         if ($part) {
             $stock = intval($part->qty_out) + intval($detail->part_qty);
@@ -155,6 +158,7 @@ class SupervisorNotificationController extends Controller
                 $updatePart = [
                     // 'status' => 1,
                     'qty_out' => $stock,
+                    'used_date' => $nowDate,
                     // 'part_no' => $request->part_no,
                     'kategori_inventory' => $request->kategori_inventory,
                 ];
@@ -168,6 +172,7 @@ class SupervisorNotificationController extends Controller
                 ];
                 $updatePart = [
                     // 'status' => 1,
+                    'used_date' => $nowDate,
                     'qty_end' => $stock,
                     // 'part_no' => $request->part_no,
                     'kategori_inventory' => $request->kategori_inventory

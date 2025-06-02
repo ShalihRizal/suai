@@ -350,8 +350,7 @@ class PartRequestController extends Controller
      */
     public function spdestroy($id)
     {
-
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -362,13 +361,43 @@ class PartRequestController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            // Ambil part_qty dari part request yang akan dihapus
+            $part_qty = $detail->part_qty;
+            // dd($part_qty);
+            $part_id = $detail->part_id;
+            // dd($part_id);
 
-        $this->_PartRequestRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+            
+            
+            // Update qty_out pada part
+            $part = $this->_partRepository->getById($part_id);
+            // dd($part);
+            // if ($part) {
+                //     $part->qty_out = $part->qty_out - $part_qty;
+                //     $this->_partRepository->update($part_id, $part.toArray());
+                // }
+                
+                $part_qty_out = $part->qty_out - $part_qty;
 
-        DB::commit();
+                $param = [
+                    'qty_out' =>$part_qty_out
+                ];
 
-        return redirect('partrequest/sp')->with('message', 'PartRequest berhasil dihapus');
+                    $cek = $this->_partRepository->update($param, $part_id);
+                    // dd($cek);
+
+            // Hapus part request
+            $this->_PartRequestRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+
+            DB::commit();
+            return redirect('partrequest/sp')->with('message', 'PartRequest berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error in spdestroy: ' . $e->getMessage());
+            return redirect('partrequest/sp')->with('error', 'Gagal menghapus PartRequest: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -803,7 +832,6 @@ class PartRequestController extends Controller
      */
     public function cddestroy($id)
     {
-
         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
@@ -815,14 +843,43 @@ class PartRequestController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            // Ambil part_qty dari part request yang akan dihapus
+            $part_qty = $detail->part_qty;
+            // dd($part_qty);
+            $part_id = $detail->part_id;
+            // dd($part_id);
 
-        $cek = $this->_PartRequestRepository->delete($id);
-        // dd($cek);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+            
+            
+            // Update qty_out pada part
+            $part = $this->_partRepository->getById($part_id);
+            // dd($part);
+            // if ($part) {
+                //     $part->qty_out = $part->qty_out - $part_qty;
+                //     $this->_partRepository->update($part_id, $part.toArray());
+                // }
+                
+                $part_qty_out = $part->qty_out - $part_qty;
 
-        DB::commit();
+                $param = [
+                    'qty_out' =>$part_qty_out
+                ];
 
-        return redirect('partrequest/cd')->with('message', 'PartRequest berhasil dihapus');
+                    $cek = $this->_partRepository->update($param, $part_id);
+                    // dd($cek);
+
+            // Hapus part request
+            $this->_PartRequestRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+
+            DB::commit();
+            return redirect('partrequest/cd')->with('message', 'PartRequest berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error in cddestroy: ' . $e->getMessage());
+            return redirect('partrequest/cd')->with('error', 'Gagal menghapus PartRequest: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -1120,8 +1177,7 @@ class PartRequestController extends Controller
      */
     public function afdestroy($id)
     {
-
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
@@ -1132,13 +1188,43 @@ class PartRequestController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            // Ambil part_qty dari part request yang akan dihapus
+            $part_qty = $detail->part_qty;
+            // dd($part_qty);
+            $part_id = $detail->part_id;
+            // dd($part_id);
 
-        $this->_PartRequestRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+            
+            
+            // Update qty_out pada part
+            $part = $this->_partRepository->getById($part_id);
+            // dd($part);
+            // if ($part) {
+                //     $part->qty_out = $part->qty_out - $part_qty;
+                //     $this->_partRepository->update($part_id, $part.toArray());
+                // }
+                
+                $part_qty_out = $part->qty_out - $part_qty;
 
-        DB::commit();
+                $param = [
+                    'qty_out' =>$part_qty_out
+                ];
 
-        return redirect('partrequest/af')->with('message', 'PartRequest berhasil dihapus');
+                    $cek = $this->_partRepository->update($param, $part_id);
+                    // dd($cek);
+
+            // Hapus part request
+            $this->_PartRequestRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+
+            DB::commit();
+            return redirect('partrequest/af')->with('message', 'PartRequest berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error in afdestroy: ' . $e->getMessage());
+            return redirect('partrequest/af')->with('error', 'Gagal menghapus PartRequest: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -1433,25 +1519,54 @@ class PartRequestController extends Controller
      */
     public function cfdestroy($id)
     {
-
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
+         // if (Gate::denies(__FUNCTION__, $this->module)) {
         //     return redirect('unauthorize');
         // }
 
         $detail = $this->_PartRequestRepository->getById($id);
 
-        // dd($detail);
         if (!$detail) {
             return redirect('partrequest/cf');
         }
+
         DB::beginTransaction();
+        try {
+            // Ambil part_qty dari part request yang akan dihapus
+            $part_qty = $detail->part_qty;
+            // dd($part_qty);
+            $part_id = $detail->part_id;
+            // dd($part_id);
 
-        $this->_PartRequestRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+            
+            
+            // Update qty_out pada part
+            $part = $this->_partRepository->getById($part_id);
+            // dd($part);
+            // if ($part) {
+                //     $part->qty_out = $part->qty_out - $part_qty;
+                //     $this->_partRepository->update($part_id, $part.toArray());
+                // }
+                
+                $part_qty_out = $part->qty_out - $part_qty;
 
-        DB::commit();
+                $param = [
+                    'qty_out' =>$part_qty_out
+                ];
 
-        return redirect('partrequest/cf')->with('message', 'PartRequest berhasil dihapus');
+                    $cek = $this->_partRepository->update($param, $part_id);
+                    // dd($cek);
+
+            // Hapus part request
+            $this->_PartRequestRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
+
+            DB::commit();
+            return redirect('partrequest/cf')->with('message', 'PartRequest berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error in cfdestroy: ' . $e->getMessage());
+            return redirect('partrequest/cf')->with('error', 'Gagal menghapus PartRequest: ' . $e->getMessage());
+        }
     }
 
     /**

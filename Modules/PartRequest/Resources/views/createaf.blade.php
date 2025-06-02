@@ -10,12 +10,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 class="h3">Part Request - Crimping Dies</h1>
+                        <h1 class="h3">Part Request - Assembly Fixture</h1>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ url('partrequest/cd/store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('partrequest/af/store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
