@@ -281,12 +281,25 @@ class TransaksiInController extends Controller
         // Check detail to db
         $detail = $this->_transaksiinRepository->getById($id);
 
+        
         if (!$detail) {
             return redirect('transaksiin');
         }
-
+        
         DB::beginTransaction();
+        
+        $part_qty = (int)$detail->qty;
+        $part_id = $detail->part_id;    
+        // dd($part_id);
+        $part = $this->_partRepository->getById($part_id);
+        $part_qty_in = $part->qty_in - $part_qty;
 
+        $param = [
+            'qty_in' =>$part_qty_in
+        ];
+    
+            $cek = $this->_partRepository->update($param, $part_id);
+            // dd($cek);
         $this->_transaksiinRepository->delete($id);
         $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
 
