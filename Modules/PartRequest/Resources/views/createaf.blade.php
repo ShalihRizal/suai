@@ -10,12 +10,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 class="h3">Part Request - Assembly Fixture</h1>
+                        <h1 class="h3">Part Request - Crimping Dies</h1>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ url('partrequest/af/store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('partrequest/cd/store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
@@ -152,69 +152,56 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.carname').select2({
-            placeholder: "- Pilih Carline -",
-            allowClear: true
-        });
-        $('.carname').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Carline...');
+        // Inisialisasi Select2 untuk baris pertama
+        initializeSelect2($('.table-body1 tr:first'));
+
+        // Event listener untuk tombol +
+        $(document).on('click', '.addRow', function(e) {
+            e.preventDefault();
+            addRow();
         });
 
-        $('.car_model').select2({
-            placeholder: "- Pilih Car Model -",
-            allowClear: true
+        // Event listener untuk tombol -
+        $(document).on('click', '.remove', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
         });
-        $('.car_model').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Car Model...');
+    });
+
+    function initializeSelect2(row) {
+        row.find('.car_model, select[name="machine_no[]"], select[name="part_id[]"], .carname').select2({
+            placeholder: function() {
+                return $(this).data('placeholder');
+            },
+            allowClear: true
         });
 
-        $('select[name="machine_no[]"]').select2({
-            placeholder: "- Pilih Machine -",
-            allowClear: true
+        // Event listener untuk pencarian
+        row.find('.select2-search__field').on('input', function() {
+            $(this).attr('placeholder', 'Cari...');
         });
-        $('select[name="machine_no[]"]').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Machine...');
+
+        // Event listener untuk part_id
+        row.find('select[name="part_id[]"]').on('change', function() {
+            updateOrder(this);
         });
-          // Ubah konfigurasi select2 untuk field part
-          $('select[name="part_id[]"]').select2({
-            placeholder: "- Pilih Part -",
-            allowClear: true,
-            language: {
-                noResults: function() {
-                    return "Tidak ada hasil yang ditemukan";
-                },
-                searching: function() {
-                    return "Mencari...";
+
+        // Event listener untuk carname
+        row.find('.carname').on('change', function() {
+            var selectedCarlineCategory = $(this).val();
+            var carlineDropdown = $(this).closest('tr').find('.car_model');
+            carlineDropdown.html('<option value="">- Pilih Car Model -</option>');
+
+            var carlines = @json($carlines);
+            carlines.forEach(function(carline) {
+                if (carline.carline_category_id == selectedCarlineCategory) {
+                    carlineDropdown.append(
+                        '<option value="' + carline.carline_id + '">' + carline.carline_name + '</option>'
+                    );
                 }
-            }
+            });
         });
-        $('select[name="part_id[]"]').on('select2:open', function(e) {
-            $('.select2-search__field').attr('placeholder', 'Cari Part...');
-        });
-    });
-</script>
-<script type="text/javascript">
-    $('#addForm').on('submit', function(e) {
-        localStorage.clear();
-    });
-    $(document).on('change', '.carname', function() {
-        var selectedCarlineCategory = $(this).val();
-        var carlineDropdown = $(this).closest('tr').find('.car_model');
-        carlineDropdown.html('<option value="">- Pilih Car Model -</option>');
-
-        @foreach($carlines as $carline)
-        if ("{{ $carline->carline_category_id }}" == selectedCarlineCategory) {
-            carlineDropdown.append(
-                '<option value="{{ $carline->carline_id }}">{{ $carline->carline_name }}</option>');
-        }
-        @endforeach
-    });
-
-    // Function to add new row
-    $('.addRow').on('click', function(event) {
-        event.preventDefault();
-        addRow();
-    });
+    }
 
     function addRow() {
         // Ambil nilai dari baris terakhir
@@ -235,78 +222,88 @@
         var lastCarModel = lastRow.find('select[name="car_model[]"]').val();
         var lastImagePartDisplay = lastRow.find('input[name="image_part_display[]"]').val();
 
+        // Data dari server
+        var carnames = @json($carnames);
+        var carlines = @json($carlines);
+        var machines = @json($machines);
+        var parts = @json($parts);
+
         var tr = '<tr>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control carname" name="carname[]" id="carname" required>' +
-            '<option value="">- Pilih Carline -</option>' +
-            '@if (sizeof($carnames) > 0)' +
-            '@foreach ($carnames as $carname)' +
-            '<option value="{{ $carname->carname_id }}"' + (lastCarname == "{{ $carname->carname_id }}" ? ' selected' : '') + '>{{ $carname->carname_name }}</option>' +
-            '@endforeach' +
-            '@endif' +
-            '</select>' +
-            '</td>' +
+            '<select class="form-control carname" name="carname[]" required>' +
+            '<option value="">- Pilih Carline -</option>';
+
+        carnames.forEach(function(carname) {
+            tr += '<option value="' + carname.carname_id + '"' + 
+                (lastCarname == carname.carname_id ? ' selected' : '') + '>' + 
+                carname.carname_name + '</option>';
+        });
+
+        tr += '</select></td>' +
             '<td style="padding-right: 10px;">' +
-            '<select class="form-control car_model" name="car_model[]" id="car_model" required>' +
-            '<option value="">- Pilih Car Model -</option>' +
-            '@if (sizeof($carlines) > 0)' +
-            '@foreach ($carlines as $carline)' +
-            '<option value="{{ $carline->carline_id }}" data-carline-category="{{ $carline->carline_category_id }}"' + (lastCarModel == "{{ $carline->carline_id }}" ? ' selected' : '') + '>{{ $carline->carline_name }}</option>' +
-            '@endforeach' +
-            '@endif' +
-            '</select>' +
-            '</td>' +
+            '<select class="form-control car_model" name="car_model[]" required>' +
+            '<option value="">- Pilih Car Model -</option>';
+
+        carlines.forEach(function(carline) {
+            tr += '<option value="' + carline.carline_id + '" data-carline-category="' + 
+                carline.carline_category_id + '"' + 
+                (lastCarModel == carline.carline_id ? ' selected' : '') + '>' + 
+                carline.carline_name + '</option>';
+        });
+
+        tr += '</select></td>' +
             '<td>' +
-            '<select class="form-control" name="shift[]" id="shift" required>' +
+            '<select class="form-control" name="shift[]" required>' +
             '<option value="">- Pilih Shift -</option>' +
             '<option value="A"' + (lastShift == 'A' ? ' selected' : '') + '>Shift A</option>' +
             '<option value="B"' + (lastShift == 'B' ? ' selected' : '') + '>Shift B</option>' +
-            '</select>' +
-            '</td>' +
+            '</select></td>' +
             '<td>' +
-            '<select class="form-control" name="machine_no[]" id="machine_no[]" required>' +
-            '<option value="" disabled selected>- Pilih Machine -</option>' +
-            '@if (sizeof($machines) > 0)' +
-            '@foreach ($machines as $machine)' +
-            '<option value="{{ $machine->machine_no }}"' + (lastMachineNo == "{{ $machine->machine_no }}" ? ' selected' : '') + '>{{ $machine->machine_no }}</option>' +
-            '@endforeach' +
-            '@endif' +
-            '</select>' +
-            '</td>' +
-            '<td>' +
-            '<input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="' + lastStroke + '" required></td>' +
+            '<select class="form-control" name="machine_no[]" required>' +
+            '<option value="" disabled selected>- Pilih Machine -</option>';
+
+        machines.forEach(function(machine) {
+            tr += '<option value="' + machine.machine_no + '"' + 
+                (lastMachineNo == machine.machine_no ? ' selected' : '') + '>' + 
+                machine.machine_no + '</option>';
+        });
+
+        tr += '</select></td>' +
+            '<td><input type="text" name="stroke[]" placeholder="stroke" class="form-control" value="' + lastStroke + '" required></td>' +
             '<td><input type="text" name="serial_no[]" placeholder="Serial No" class="form-control" value="' + lastSerialNo + '" required></td>' +
             '<td><input type="text" name="side_no[]" placeholder="Side No" class="form-control" value="' + lastSideNo + '" required></td>' +
             '<td>' +
-            '<select class="form-control" name="part_id[]" id="part_id" required>' +
-            '<option value="">- Pilih Part -</option>' +
-            '@if (sizeof($parts) > 0)' +
-            '@foreach ($parts as $part)' +
-            '@if ($part->qty_begin + $part->qty_in- $part->qty_out > 0)' +
-            '<option value="{{ $part->part_id }}" data-part-name="{{ $part->part_name }}" data-part-asal="{{ $part->asal }}" data-part-number="{{ $part->part_no }}" data-qty-end="{{ $part->qty_end }}" data-created-at="{{ $part->created_at }}">{{ $part->part_no }}' +
-            '-' +
-            '{{ $part->part_name }}' +
-            '(Qty: {{ $part->qty_begin + $part->qty_in- $part->qty_out }}, Dibuat: {{ substr($part->created_at, 0, 10) }})' +
-            '</option>' +
-            '@endif' +
-            '@endforeach' +
-            '@endif' +
-            '</select>' +
-            '</td>' +
+            '<select class="form-control" name="part_id[]" required>' +
+            '<option value="">- Pilih Part -</option>';
+
+        parts.forEach(function(part) {
+            if (part.qty_begin + part.qty_in - part.qty_out > 0) {
+                tr += '<option value="' + part.part_id + '"' +
+                    ' data-part-name="' + part.part_name + '"' +
+                    ' data-part-asal="' + part.asal + '"' +
+                    ' data-part-number="' + part.part_no + '"' +
+                    ' data-qty-end="' + part.qty_end + '"' +
+                    ' data-created-at="' + part.created_at + '"' +
+                    (lastPartId == part.part_id ? ' selected' : '') + '>' +
+                    part.part_no + ' - ' + part.part_name +
+                    ' (Qty: ' + (part.qty_begin + part.qty_in - part.qty_out) + 
+                    ', Dibuat: ' + part.created_at.substring(0, 10) + ')</option>';
+            }
+        });
+
+        tr += '</select></td>' +
             '<td>' +
-            '<select class="form-control" name="alasan[]" id="alasan" required>' +
+            '<select class="form-control" name="alasan[]" required>' +
             '<option value="" disabled' + (lastAlasan == '' ? ' selected' : '') + '>- Pilih Alasan -</option>' +
             '<option value="New Project"' + (lastAlasan == 'New Project' ? ' selected' : '') + '>- New Project -</option>' +
             '<option value="Replacement"' + (lastAlasan == 'Replacement' ? ' selected' : '') + '>- Replacement -</option>' +
-            '</select>' +
-            '</td>' +
+            '</select></td>' +
             '<td>' +
-            '<select class="form-control" name="order[]" id="order" required>' +
+            '<select class="form-control" name="order[]" required>' +
             '<option value="">- Pilih Order -</option>' +
             '<option value="LOKAL"' + (lastOrder === 'LOKAL' ? ' selected' : '') + '> LOKAL </option>' +
             '<option value="IMPORT"' + (lastOrder === 'IMPORT' ? ' selected' : '') + '> IMPORT </option>' +
-            '</select>' +
-            '</td>' +
+            '</select></td>' +
             '<td><input type="number" name="part_qty[]" placeholder="Jumlah" class="form-control" value="' + lastJumlah + '" required></td>' +
             '<td><input type="text" name="pic[]" placeholder="pic" class="form-control" value="' + lastPic + '" required></td>' +
             '<td><input type="text" name="applicator_no[]" placeholder="applicator no" class="form-control" value="' + lastApplicatorNo + '" required></td>' +
@@ -318,26 +315,11 @@
             '<td><a href="#" class="btn btn-danger remove">-</a></td>' +
             '<td><input type="text" hidden name="wear_and_tear_status[]" placeholder="wt status" class="form-control" value="Open" required></td>' +
             '</tr>';
+        
         $('.table-body1').append(tr);
 
-        // Inisialisasi Select2 untuk elemen baru
-        var newRow = $('.table-body1').find('tr:last');
-        newRow.find('.car_model, select[name="machine_no[]"], select[name="part_id[]"], .carname').select2({
-            placeholder: function() {
-                return $(this).data('placeholder');
-            },
-            allowClear: true
-        });
-
-        // Tambahkan event listener untuk pencarian
-        newRow.find('.select2-search__field').on('input', function() {
-            $(this).attr('placeholder', 'Cari...');
-        });
-
-        // Tambahkan event listener untuk part_id pada baris baru
-        newRow.find('select[name="part_id[]"]').on('change', function() {
-            updateOrder(this);
-        });
+        // Inisialisasi Select2 untuk baris baru
+        initializeSelect2($('.table-body1 tr:last'));
     }
 
     // Fungsi untuk memperbarui nilai input readonly ketika file dipilih
@@ -345,33 +327,6 @@
         var fileName = fileInput.files[0] ? fileInput.files[0].name : '';
         $(fileInput).closest('td').find('input[name="image_part_display[]"]').val(fileName);
     }
-
-
-
-    // Inisialisasi Select2 untuk elemen yang sudah ada, kecuali carname
-    $(document).ready(function() {
-        $('.car_model, select[name="machine_no[]"], select[name="part_id[]"]').select2({
-            placeholder: function() {
-                return $(this).data('placeholder');
-            },
-            allowClear: true
-        });
-
-        // Tambahkan event listener untuk pencarian pada elemen yang sudah ada
-        $('.select2-search__field').on('input', function() {
-            $(this).attr('placeholder', 'Cari...');
-        });
-
-        // Event listener untuk perubahan pada semua select part_id[]
-        $(document).on('change', 'select[name="part_id[]"]', function() {
-            updateOrder(this);
-        });
-    });
-
-    $('.table-body1').on('click', '.remove', function(event) {
-        event.preventDefault();
-        $(this).parent().parent().remove();
-    });
 
     // Fungsi untuk mengisi field order berdasarkan part_id yang dipilih
     function updateOrder(selectElement) {

@@ -108,7 +108,7 @@
                                 <td width="5%">{{ $transaksiin->invoice_no }}</td>
                                 <td width="5%">{{ $transaksiin->po_no }}</td>
                                 <td width="5%">{{ $transaksiin->po_date2 }}</td>
-                                <td width="5%">{{ $transaksiin->part_no }}{{ $transaksiin->no_urut }}</td>
+                                <td width="5%">{{ $transaksiin->part_no }}.{{ $transaksiin->no_urut }}</td>
                                 <td width="5%">{{ $transaksiin->part_name }}</td>
                                 <td hidden width="5%">{{ $transaksiin->part_category_name }}</td>
                                 <td width="5%">{{ $transaksiin->molts_no }}</td>
