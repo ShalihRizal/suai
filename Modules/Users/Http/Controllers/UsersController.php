@@ -84,11 +84,17 @@ class UsersController extends Controller
         $request['user_status'] = '1';
 
         DB::beginTransaction();
-        $this->_usersRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->name, 'create');
-        DB::commit();
-
-        return redirect('users')->with('successMessage', 'Pengguna berhasil ditambahkan');
+        try {
+            $this->_usersRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+            $this->_logHelper->store($this->module, $request->name, 'create');
+            DB::commit();
+            
+            return redirect('users')->with('successMessage', 'Pengguna berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error creating user: ' . $e->getMessage());
+            return redirect('users')->with('errorMessage', 'Gagal menambahkan pengguna: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -151,78 +157,90 @@ class UsersController extends Controller
         }
 
         DB::beginTransaction();
-
-        $this->_usersRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->user_username, 'update');
-        DB::commit();
-
-        return redirect('users')->with('successMessage', 'Pengguna berhasil diubah');
+        try {
+            $this->_usersRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logHelper->store($this->module, $request->user_username, 'update');
+            DB::commit();
+            
+            return redirect('users')->with('successMessage', 'Pengguna berhasil diubah');
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error updating user: ' . $e->getMessage());
+            return redirect('users')->with('errorMessage', 'Gagal mengubah pengguna: ' . $e->getMessage());
+        }
     }
 
     public function updateProfile(Request $request, $id)
     {
         DB::beginTransaction();
-
-        $getDetail  = $this->_usersRepository->getById($id);
-        $filePath = DataHelper::getFilePath(false, true);
-        if ($request->user_image <> "") {
-            if ($getDetail->user_image != null) {
-                storage::delete('public/' . $filePath . $getDetail->user_image);
-            }
-
-            // update data
-            $file = $request->user_image;
-            $fileName = DataHelper::getFileName($file);
-            $request->file('user_image')->storeAs($filePath, $fileName, 'public');
-
-            if ($request['user_password'] == null) {
-                $dataUser = [
-                    'user_name' => $request->user_name,
-                    'user_email' => $request->user_email,
-                    'no_hp' => $request->no_hp,
-                    'user_image'    => $fileName,
-                ];
-            } else {
-                if (!Hash::check($request->user_password_check, Auth::user()->user_password)) {
-                    return redirect('profile')->with('errorMessage', 'Password salah!');
+        try {
+            $getDetail  = $this->_usersRepository->getById($id);
+            $filePath = DataHelper::getFilePath(false, true);
+            if ($request->user_image <> "") {
+                if ($getDetail->user_image != null) {
+                    storage::delete('public/' . $filePath . $getDetail->user_image);
                 }
 
-                $dataUser = [
-                    'user_name'     => $request->user_name,
-                    'user_email'    => $request->user_email,
-                    'no_hp'    => $request->no_hp,
-                    'user_image'    => $fileName,
-                    'user_password' => Hash::make($request->user_password),
-                ];
-            }
-            $this->_usersRepository->update(array_merge($dataUser, DataHelper::_signParams(false, true)), $id);
-        } else {
-            if ($request['user_password'] == null) {
-                $dataUser = [
-                    'user_name' => $request->user_name,
-                    'user_email' => $request->user_email,
-                    'no_hp' => $request->no_hp,
-                ];
-            } else {
+                // update data
+                $file = $request->user_image;
+                $fileName = DataHelper::getFileName($file);
+                $request->file('user_image')->storeAs($filePath, $fileName, 'public');
 
-                if (!Hash::check($request->user_password_check, Auth::user()->user_password)) {
-                    return redirect('profile')->with('errorMessage', 'Password salah!');
+                if ($request['user_password'] == null) {
+                    $dataUser = [
+                        'user_name' => $request->user_name,
+                        'user_email' => $request->user_email,
+                        'no_hp' => $request->no_hp,
+                        'user_image'    => $fileName,
+                    ];
+                } else {
+                    if (!Hash::check($request->user_password_check, Auth::user()->user_password)) {
+                        DB::rollback();
+                        return redirect('profile')->with('errorMessage', 'Password salah!');
+                    }
+
+                    $dataUser = [
+                        'user_name'     => $request->user_name,
+                        'user_email'    => $request->user_email,
+                        'no_hp'    => $request->no_hp,
+                        'user_image'    => $fileName,
+                        'user_password' => Hash::make($request->user_password),
+                    ];
                 }
+                $this->_usersRepository->update(array_merge($dataUser, DataHelper::_signParams(false, true)), $id);
+            } else {
+                if ($request['user_password'] == null) {
+                    $dataUser = [
+                        'user_name' => $request->user_name,
+                        'user_email' => $request->user_email,
+                        'no_hp' => $request->no_hp,
+                    ];
+                } else {
 
-                $dataUser = [
-                    'user_name' => $request->user_name,
-                    'user_email' => $request->user_email,
-                    'no_hp' => $request->no_hp,
-                    'user_password' => Hash::make($request->user_password),
-                ];
+                    if (!Hash::check($request->user_password_check, Auth::user()->user_password)) {
+                        DB::rollback();
+                        return redirect('profile')->with('errorMessage', 'Password salah!');
+                    }
+
+                    $dataUser = [
+                        'user_name' => $request->user_name,
+                        'user_email' => $request->user_email,
+                        'no_hp' => $request->no_hp,
+                        'user_password' => Hash::make($request->user_password),
+                    ];
+                }
+                $this->_usersRepository->update(array_merge($dataUser, DataHelper::_signParams(false, true)), $id);
             }
-            $this->_usersRepository->update(array_merge($dataUser, DataHelper::_signParams(false, true)), $id);
+
+            $this->_logHelper->store($this->module, $request->user_name, 'update');
+            DB::commit();
+
+            return redirect('profile')->with('successMessage', 'Profil berhasil diubah');
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error updating profile: ' . $e->getMessage());
+            return redirect('profile')->with('errorMessage', 'Gagal mengubah profil: ' . $e->getMessage());
         }
-
-        $this->_logHelper->store($this->module, $request->user_name, 'update');
-        DB::commit();
-
-        return redirect('profile')->with('successMessage', 'Profil berhasil diubah');
     }
 
     /**
@@ -245,11 +263,17 @@ class UsersController extends Controller
         }
 
         DB::beginTransaction();
-        $this->_usersRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->user_id, 'delete');
-        DB::commit();
+        try {
+            $this->_usersRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->user_id, 'delete');
+            DB::commit();
 
-        return redirect('users')->with('successMessage', 'Pengguna berhasil dihapus');
+            return redirect('users')->with('successMessage', 'Pengguna berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error deleting user: ' . $e->getMessage());
+            return redirect('users')->with('errorMessage', 'Gagal menghapus pengguna: ' . $e->getMessage());
+        }
     }
 
 
@@ -273,19 +297,24 @@ class UsersController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            if (in_array($detail->group_id, [7, 8])) {
+                $request['user_pasword'] = Hash::make('sekolah123');
+            } else {
+                $request['user_pasword'] = Hash::make('user123');
+            }
 
-        if (in_array($detail->group_id, [7, 8])) {
-            $request['user_pasword'] = Hash::make('sekolah123');
-        } else {
-            $request['user_pasword'] = Hash::make('user123');
+            $this->_usersRepository->update(DataHelper::_normalizeParams($request, false, true), $id);
+            $this->_logHelper->store($this->module, $detail->user_username, 'update');
+
+            DB::commit();
+
+            return redirect('users')->with('successMessage', 'Kata sandi pengguna berhasil direset');
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error resetting user password: ' . $e->getMessage());
+            return redirect('users')->with('errorMessage', 'Gagal mereset kata sandi: ' . $e->getMessage());
         }
-
-        $this->_usersRepository->update(DataHelper::_normalizeParams($request, false, true), $id);
-        $this->_logHelper->store($this->module, $detail->user_username, 'update');
-
-        DB::commit();
-
-        return redirect('users')->with('successMessage', 'Kata sandi pengguna berhasil direset');
     }
 
     /**
@@ -308,17 +337,22 @@ class UsersController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            $request['user_status'] = $status;
 
-        $request['user_status'] = $status;
+            $this->_usersRepository->update(DataHelper::_normalizeParams($request, false, true), $id);
+            $this->_logHelper->store($this->module, $detail->user_username, 'update');
 
-        $this->_usersRepository->update(DataHelper::_normalizeParams($request, false, true), $id);
-        $this->_logHelper->store($this->module, $detail->user_username, 'update');
+            DB::commit();
 
-        DB::commit();
+            $display = $status ? 'diaktifkan' : 'dinon-aktifkan';
 
-        $display = $status ? 'diaktifkan' : 'dinon-aktifkan';
-
-        return redirect('users')->with('successMessage', 'Pengguna berhasil ' . $display);
+            return redirect('users')->with('successMessage', 'Pengguna berhasil ' . $display);
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error changing user status: ' . $e->getMessage());
+            return redirect('users')->with('errorMessage', 'Gagal mengubah status pengguna: ' . $e->getMessage());
+        }
     }
 
     /**

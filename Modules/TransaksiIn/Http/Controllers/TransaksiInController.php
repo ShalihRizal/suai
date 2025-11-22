@@ -258,13 +258,18 @@ class TransaksiInController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            $this->_transaksiinRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logHelper->store($this->module, $request->invoice_no, 'update');
 
-        $this->_transaksiinRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->invoice_no, 'update');
+            DB::commit();
 
-        DB::commit();
-
-        return redirect('transaksiin')->with('message', 'Transaksi berhasil diubah');
+            return redirect('transaksiin')->with('message', 'Transaksi berhasil diubah');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Gagal mengubah transaksi: ' . $e->getMessage());
+            return redirect('transaksiin')->with('error', 'Gagal mengubah transaksi: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -287,25 +292,30 @@ class TransaksiInController extends Controller
         }
         
         DB::beginTransaction();
-        
-        $part_qty = (int)$detail->qty;
-        $part_id = $detail->part_id;    
-        // dd($part_id);
-        $part = $this->_partRepository->getById($part_id);
-        $part_qty_in = $part->qty_in - $part_qty;
+        try {
+            $part_qty = (int)$detail->qty;
+            $part_id = $detail->part_id;    
+            // dd($part_id);
+            $part = $this->_partRepository->getById($part_id);
+            $part_qty_in = $part->qty_in - $part_qty;
 
-        $param = [
-            'qty_in' =>$part_qty_in
-        ];
-    
+            $param = [
+                'qty_in' =>$part_qty_in
+            ];
+        
             $cek = $this->_partRepository->update($param, $part_id);
             // dd($cek);
-        $this->_transaksiinRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
+            $this->_transaksiinRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
 
-        DB::commit();
+            DB::commit();
 
-        return redirect('transaksiin')->with('message', 'Transaksi berhasil dihapus');
+            return redirect('transaksiin')->with('message', 'Transaksi berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Gagal menghapus transaksi: ' . $e->getMessage());
+            return redirect('transaksiin')->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
+        }
     }
 
     /**

@@ -204,9 +204,9 @@ class PartRequestController extends Controller
 
         // dd($partRequests);
 
-        foreach ($partRequests as $partreq) {
-            DB::beginTransaction();
-            try {
+        DB::beginTransaction();
+        try {
+            foreach ($partRequests as $partreq) {
                 $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
                 $listofpartreq = [
                     "part_req_id" => $cek,
@@ -214,11 +214,12 @@ class PartRequestController extends Controller
                 ];
                 $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
                 $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-                // Handle exception
             }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error saving part requests: ' . $e->getMessage());
+            return redirect('partrequest/sp')->with('error', 'Gagal menyimpan part request: ' . $e->getMessage());
         }
 
         $targetNumbers = [
@@ -646,9 +647,9 @@ class PartRequestController extends Controller
 
         // dd($partRequests);
 
-        foreach ($partRequests as $partreq) {
-            DB::beginTransaction();
-            try {
+        DB::beginTransaction();
+        try {
+            foreach ($partRequests as $partreq) {
                 $cek = $this->_PartRequestRepository->insertGetId(DataHelper::_normalizeParams($partreq, true));
                 $listofpartreq = [
                     "part_req_id" => $cek,
@@ -656,11 +657,12 @@ class PartRequestController extends Controller
                 ];
                 $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
                 $this->_logHelper->store($this->module, $partreq['part_req_number'], 'create');
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-                // Handle exception
             }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error saving part requests: ' . $e->getMessage());
+            return redirect('partrequest/cd')->with('error', 'Gagal menyimpan part request: ' . $e->getMessage());
         }
 
         $targetNumbers = [
