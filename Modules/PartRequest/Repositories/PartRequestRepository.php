@@ -120,7 +120,4 @@ class PartRequestRepository extends QueryBuilderImplementation
 
         return $ids;
     }
-
-
-
 }

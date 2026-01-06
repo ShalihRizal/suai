@@ -73,4 +73,25 @@ class PartRepository extends QueryBuilderImplementation
             return $e->getMessage();
         }
     }
+    // Di dalam PartRepository.php, tambahkan method berikut:
+    public function getAllByParamsPaginated(array $params, $perPage = 10, $page = null, $startDate = null, $endDate = null)
+    {
+        try {
+            $query = DB::connection($this->db)
+                ->table($this->table)
+                ->join('part_category', 'part.part_category_id', '=', 'part_category.part_category_id')
+                ->leftJoin('transaksi_in', 'part.part_id', '=', 'transaksi_in.part_id')
+                ->select("part.*", 'part_category.*', 'transaksi_in.qty')
+                ->where($params);
+
+            // Tambahkan filter tanggal jika tersedia
+            if ($startDate && $endDate) {
+                $query->whereBetween('part.created_at', [$startDate, $endDate]);
+            }
+
+            return $query->orderBy('part_id')->paginate($perPage, ['*'], 'page', $page);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

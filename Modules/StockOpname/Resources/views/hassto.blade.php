@@ -91,7 +91,7 @@
 
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                            <table id="table-data" class="table card-table table-vcenter text-nowrap ">
                                 <thead>
                                     <tr>
                                         <th width="5%">No</th>
@@ -103,23 +103,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (sizeof($parts) == 0)
+                                    @if ($parts->count() == 0)
                                     <tr>
-                                        <td colspan="4" align="center">Data kosong</td>
+                                        <td colspan="5" align="center">Data kosong</td>
                                     </tr>
                                     @else
-                                    @foreach ($parts as $part)
-                                    <tr style="margin-bottom: 50px;">
-                                        <td width="5%">{{ $loop->iteration }}</td>
+                                    @foreach ($parts as $index => $part)
+                                    <tr>
+                                        <td width="5%">{{ $loop->iteration + (($parts->currentPage() - 1) * $parts->perPage()) }}</td>
                                         <td width="20%">{{ $part->part_name }}</td>
                                         <td width="15%">{{ $part->part_no }}</td>
-                                        <td width="15%">{{ $part->qty_description }}</td> <!-- Menampilkan qty_actual dari log -->
+                                        <td width="15%">{{ $part->qty_description }}</td>
                                         <td width="15%">{{ $part->last_sto }}</td>
                                     </tr>
                                     @endforeach
                                     @endif
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $parts->links('pagination::bootstrap-4') }}
+                            </div>
                         </div>
                     </div>
                 </div>

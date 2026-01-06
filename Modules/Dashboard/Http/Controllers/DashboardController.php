@@ -38,7 +38,7 @@ class DashboardController extends Controller
 
         $partcategories = $this->_partCategoryRepository->getAll();
         $allParts = $this->_partRepository->getAll();
-        $logs = $this->_logRepository->getAll();
+        $logs = $this->_logRepository->paginate(10);
 
 
 
@@ -52,7 +52,7 @@ class DashboardController extends Controller
         $thisMonthParts = $allParts->whereBetween('updated_at', [$thisMonthStart, $thisMonthEnd]);
 
         // Filter parts by created_by for last month
-        $lastMonthParts = $allParts->where('updated_at', '<=' ,$lastMonthEnd);
+        $lastMonthParts = $allParts->where('updated_at', '<=', $lastMonthEnd);
         //    dd($lastMonthParts);
 
 
@@ -119,7 +119,6 @@ class DashboardController extends Controller
         }
 
         return view('dashboard::index', compact('partcategories', 'labels', 'thsqty', 'qty', 'lstqty', 'logs', 'allParts', 'thsamounts', 'lstamounts'));
-
     }
 
     function array_multisum(array $arr): float
@@ -140,7 +139,6 @@ class DashboardController extends Controller
         $partcategories = $this->_partCategoryRepository->getAll();
         $parts = $this->_partRepository->getAll();
         return view('dashboard::tv', compact('partcategories', 'parts'));
-       
     }
 
     /**
@@ -148,11 +146,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
-    {
-
-
-    }
+    public function store(Request $request) {}
 
     /**
      * Show the specified resource.
@@ -184,22 +178,12 @@ class DashboardController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
-    {
-
-    }
+    public function update(Request $request, $id) {}
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
-    {
-
-
-    }
-    
-
-    
+    public function destroy($id) {}
 }

@@ -15,4 +15,17 @@ class LogPartRequestRepository extends QueryBuilderImplementation
         $this->table = 'log_part_request';
         $this->pk = 'id';
     }
+
+    // Di LogPartReqRepository, tambahkan method ini untuk mengambil log berdasarkan part_no saja:
+    public function getLogsByPartNumbers(array $partNumbers)
+    {
+        try {
+            return DB::connection($this->db)
+                ->table($this->table)
+                ->whereIn('part_no', $partNumbers)
+                ->get();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

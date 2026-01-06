@@ -28,4 +28,10 @@ class SysLogRepository extends QueryBuilderImplementation
             return $e->getMessage();
         }
     }
+    public function paginate($limit = 10)
+    {
+        return DB::table($this->table)
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
+    }
 }

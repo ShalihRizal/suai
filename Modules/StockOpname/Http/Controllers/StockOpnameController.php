@@ -439,13 +439,19 @@ class StockOpnameController extends Controller
             'has_sto' => 'yes'
         ];
 
-        $parts = $this->_partRepository->getAllByParams($params);
-        $logs = $this->_logPartReqRepository->getAll();
+        // Gunakan paginate untuk parts (misal 10 data per halaman)
+        $parts = $this->_partRepository->getAllByParamsPaginated($params, 10);
+
+        // Ambil hanya part_no dari parts yang dipaginasi
+        $partNumbers = $parts->pluck('part_no')->toArray();
+
+        // Ambil hanya logs yang relevan dengan parts di halaman ini
+        $logs = $this->_logPartReqRepository->getLogsByPartNumbers($partNumbers);
 
         // Tambahkan qty_actual dari logs ke dalam parts
         foreach ($parts as $part) {
             $log = $logs->where('part_no', $part->part_no)->first();
-            $part->qty_description = $log ? $log->description : null; // Menambahkan qty_actual dari log
+            $part->qty_description = $log ? $log->description : null;
         }
 
         return view('stockopname::hassto', compact('parts', 'logs'));

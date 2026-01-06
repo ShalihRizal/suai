@@ -27,7 +27,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap ">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
@@ -43,15 +43,17 @@
                             @else
                             @foreach ($logs as $log)
                             <tr>
-                                <td width="5%">{{ $loop->iteration }}</td>
+                                <td>{{ $logs->firstItem() + $loop->index }}</td>
                                 <td width="50%">{{ $log->log_description }}</td>
                                 <td width="5%">{{ substr($log->created_at, 0,10) }}</td>
-
                             </tr>
                             @endforeach
                             @endif
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $logs->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,7 +71,7 @@
             </div>
             <div class="card-body" style="height: 650px; width:1000px;">
                 {{-- <div class="container-md"> --}}
-                    <div id="piechart" style="width: 100%; height: 100%;"></div>
+                <div id="piechart" style="width: 100%; height: 100%;"></div>
                 {{-- </div> --}}
             </div>
         </div>
@@ -89,7 +91,7 @@
                 </div>
                 <div class="col-md-12 text-end"></div>
             </div>
-            <div class="card-body" >
+            <div class="card-body">
                 <div class="container-md">
                     <div id="columnchart" style="width: 100%; height: 100%;"></div>
                 </div>
@@ -119,71 +121,114 @@
 
 
 @section('script')
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawCharts);
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            var pieChartData = [['Label', 'Quantity']];
-            var barChartData = [['Label', 'Last Month', { role: 'annotation' }, 'This Month', { role: 'annotation' }]];
-            var columnChartData = [['Label', 'Last Month', { role: 'annotation' }, 'This Month', { role: 'annotation' }]];
+    function drawCharts() {
+        var pieChartData = [
+            ['Label', 'Quantity']
+        ];
+        var barChartData = [
+            ['Label', 'Last Month', {
+                role: 'annotation'
+            }, 'This Month', {
+                role: 'annotation'
+            }]
+        ];
+        var columnChartData = [
+            ['Label', 'Last Month', {
+                role: 'annotation'
+            }, 'This Month', {
+                role: 'annotation'
+            }]
+        ];
 
-            @foreach ($labels as $partCategoryId => $label)
-                pieChartData.push(['{{ $label }}', {{ $qty[$partCategoryId] }}]);
-                barChartData.push([
-                    '{{ $label }}',
-                    {{ $lstamounts[$partCategoryId] }},
-                    '{{ $lstamounts[$partCategoryId] }}',
-                    {{ $thsamounts[$partCategoryId] }},
-                    '{{ $thsamounts[$partCategoryId] }}'
-                ]);
-                columnChartData.push([
-                    '{{ $label }}',
-                    {{ $lstqty[$partCategoryId] }},
-                    '{{ $lstqty[$partCategoryId] }}',
-                    {{ $thsqty[$partCategoryId] }},
-                    '{{ $thsqty[$partCategoryId] }}'
-                ]);
-            @endforeach
+        @foreach($labels as $partCategoryId => $label)
+        pieChartData.push(['{{ $label }}', {
+            {
+                $qty[$partCategoryId]
+            }
+        }]);
+        barChartData.push([
+            '{{ $label }}',
+            {
+                {
+                    $lstamounts[$partCategoryId]
+                }
+            },
+            '{{ $lstamounts[$partCategoryId] }}',
+            {
+                {
+                    $thsamounts[$partCategoryId]
+                }
+            },
+            '{{ $thsamounts[$partCategoryId] }}'
+        ]);
+        columnChartData.push([
+            '{{ $label }}',
+            {
+                {
+                    $lstqty[$partCategoryId]
+                }
+            },
+            '{{ $lstqty[$partCategoryId] }}',
+            {
+                {
+                    $thsqty[$partCategoryId]
+                }
+            },
+            '{{ $thsqty[$partCategoryId] }}'
+        ]);
+        @endforeach
 
-            var pieData = google.visualization.arrayToDataTable(pieChartData);
-            var barData = google.visualization.arrayToDataTable(barChartData);
-            var columnData = google.visualization.arrayToDataTable(columnChartData);
+        var pieData = google.visualization.arrayToDataTable(pieChartData);
+        var barData = google.visualization.arrayToDataTable(barChartData);
+        var columnData = google.visualization.arrayToDataTable(columnChartData);
 
-            var pieOptions = {
-                title: '',
-                legend: { position: 'right' },
-                backgroundColor: 'transparent',
-                pieSliceText: 'percentage', // Show percentage text on slices
-                pieSliceTextStyle: { color: 'black' }, // Color of percentage text
-                sliceVisibilityThreshold: 0,
-                is3D: true,
-                colors: ['#33d4be', '#43e686', '#9fe643', '#dead28', '#a772f2']
-            };
+        var pieOptions = {
+            title: '',
+            legend: {
+                position: 'right'
+            },
+            backgroundColor: 'transparent',
+            pieSliceText: 'percentage', // Show percentage text on slices
+            pieSliceTextStyle: {
+                color: 'black'
+            }, // Color of percentage text
+            sliceVisibilityThreshold: 0,
+            is3D: true,
+            colors: ['#33d4be', '#43e686', '#9fe643', '#dead28', '#a772f2']
+        };
 
-            const columnOptions = {
-                title: '',
-                legend: { position: 'right' },
-                bar: { groupWidth: '95%' },
-                backgroundColor: 'transparent',
-                colors: ['#a772f2', '#33d4be'],
-                annotations: {
-                    textStyle: {
-                        fontSize: 12,
-                        color: 'black',
-                    },
+        const columnOptions = {
+            title: '',
+            legend: {
+                position: 'right'
+            },
+            bar: {
+                groupWidth: '95%'
+            },
+            backgroundColor: 'transparent',
+            colors: ['#a772f2', '#33d4be'],
+            annotations: {
+                textStyle: {
+                    fontSize: 12,
+                    color: 'black',
                 },
-            };
+            },
+        };
 
-            var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
-            var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
-            var columnChart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
+        var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+        var columnChart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
 
-            pieChart.draw(pieData, pieOptions);
-            barChart.draw(barData, columnOptions);
-            columnChart.draw(columnData, columnOptions);
-        }
-    </script>
+        pieChart.draw(pieData, pieOptions);
+        barChart.draw(barData, columnOptions);
+        columnChart.draw(columnData, columnOptions);
+    }
+</script>
 @endsection
-
