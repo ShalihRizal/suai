@@ -88,7 +88,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="table-data" class="table-data table card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap ">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
@@ -101,14 +101,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($crimpingdies) == 0)
+                            @if ($crimpingdies->isEmpty())
                             <tr>
                                 <td colspan="4" align="center">Data kosong</td>
                             </tr>
                             @else
                             @foreach ($crimpingdies as $part)
                             <tr style="margin-bottom: 50px;">
-                                <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="5%"> {{ ($crimpingdies->currentPage() - 1) * $crimpingdies->perPage() + $loop->iteration }}</td>
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->part_no }}</td>
                                 <td width="5%">{{ $part->qty_end }}</td>
@@ -120,45 +120,47 @@
                             @endif
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $crimpingdies->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal -->
-<div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="{{ url('stockopname/update/sp') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-body">
-                        <div class="form-group">
-                            <label class="form-label">Part Name<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="part_name_hidden" name="part_name_hidden" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Part No<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">QTY<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Qty Adjust<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="adjust_hidden" name="adjust_hidden" value="" disabled>
-                        </div>
-                        <div class="form-group" hidden>
-                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
-                        </div>
-                        <div class="form-group" hidden>
-                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
-                        </div>
-                        <!-- <div class="form-group">
+    <!-- Modal -->
+    <div class="modal fade partModal" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url('stockopname/update/sp') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="form-label">Part Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="part_name_hidden" name="part_name_hidden" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Part No<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="part_no_hidden" name="part_no_hidden" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">QTY<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Qty Adjust<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="adjust_hidden" name="adjust_hidden" value="" disabled>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
+                            </div>
+                            <!-- <div class="form-group">
                             <label class="form-label">QTY Actual<span class="text-danger"></span></label>
                             <input type="number" class="form-control" id="adjusting" name="adjusting" value="">
                         </div>
@@ -175,92 +177,92 @@
                         <label class="form-label">QTY<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="qty_no_hidden" name="qty_no_hidden" value="" disabled>
                     </div> -->
-                        <!-- <div class="form-group">
+                            <!-- <div class="form-group">
                             <label class="form-label">QTY End<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_end" name="qty_end" value="" disabled>
                         </div> -->
-                        <div class="form-group" hidden>
-                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
+                            <div class="form-group" hidden>
+                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="has_sto" name="has_sto" value="yes">
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="form-label">Status<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Actual<span class="text-danger"></span></label>
+                                <input type="number" class="form-control" id="adjusting" name="adjust" value="" required>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label class="form-label">Part No<span class="text-danger"></span></label>
+                                <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
+                            </div>
                         </div>
-                        <div class="form-group" hidden>
-                            <label class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="last_sto" name="last_sto" value="{{ date('Y-m-d') }}">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Actual<span class="text-danger"></span></label>
-                            <input type="number" class="form-control" id="adjusting" name="adjust" value="" required>
-                        </div>
-                        <div class="form-group" hidden>
-                            <label class="form-label">Part No<span class="text-danger"></span></label>
-                            <input type="text" class="form-control" id="part_nos" name="part_nos" value="">
+                        <div class="modal-footer">
+                            <button type="submit" class="text-white btn btn-success submitButton">STO</button>
+                            <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="text-white btn btn-success submitButton">STO</button>
-                        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
 
-@section('script')
+    @section('script')
 
-<script type="text/javascript">
-    // Function to show/hide tables based on dropdown selection
-    function showTable(selectedValue) {
-        // Hide all tables
-        $('#table-cd').show();
-        $('#table-af').hide();
-        $('#table-spm').hide();
-        $('#table-cf').hide();
-
-        // Show the selected table based on the dropdown value
-        if (selectedValue === '1') {
+    <script type="text/javascript">
+        // Function to show/hide tables based on dropdown selection
+        function showTable(selectedValue) {
+            // Hide all tables
             $('#table-cd').show();
-        } else if (selectedValue === '4') {
-            $('#table-spm').show();
-        } else if (selectedValue === '5') {
-            $('#table-af').show();
-        } else if (selectedValue === '6') {
-            $('#table-cf').show();
+            $('#table-af').hide();
+            $('#table-spm').hide();
+            $('#table-cf').hide();
+
+            // Show the selected table based on the dropdown value
+            if (selectedValue === '1') {
+                $('#table-cd').show();
+            } else if (selectedValue === '4') {
+                $('#table-spm').show();
+            } else if (selectedValue === '5') {
+                $('#table-af').show();
+            } else if (selectedValue === '6') {
+                $('#table-cf').show();
+            }
         }
-    }
 
-    // Attach an event handler to the dropdown change event
-    $('#part_category').on('change', function() {
-        var selectedValue = $(this).val();
-        showTable(selectedValue);
-    });
+        // Attach an event handler to the dropdown change event
+        $('#part_category').on('change', function() {
+            var selectedValue = $(this).val();
+            showTable(selectedValue);
+        });
 
-    // Call showTable initially to set the initial table visibility
-    showTable($('#part_category').val());
-</script>
+        // Call showTable initially to set the initial table visibility
+        showTable($('#part_category').val());
+    </script>
 
-<script>
-    document.getElementById("filter-select").addEventListener("change", function() {
-        const selectedValue = this.value;
-        const tables = document.querySelectorAll(
-            ".table-data"); // Select all tables with the class "table-data"
+    <script>
+        document.getElementById("filter-select").addEventListener("change", function() {
+            const selectedValue = this.value;
+            const tables = document.querySelectorAll(
+                ".table-data"); // Select all tables with the class "table-data"
 
-        tables.forEach(function(table) {
-            const rows = table.querySelectorAll("tbody tr");
-            rows.forEach(function(row) {
-                const lokasi = row.querySelector("td:nth-child(5)").textContent;
-                if (selectedValue === "" || lokasi === selectedValue) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+            tables.forEach(function(table) {
+                const rows = table.querySelectorAll("tbody tr");
+                rows.forEach(function(row) {
+                    const lokasi = row.querySelector("td:nth-child(5)").textContent;
+                    if (selectedValue === "" || lokasi === selectedValue) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 
-{{-- <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const partNoInput = document.getElementById("part_no");
 
@@ -273,81 +275,81 @@
         });
     </script> --}}
 
-<script>
-    $(document).ready(function() {
-        $('.part_no').on('keyup', function(event) {
-            if (event.key === "Enter") {
-                var partNo = encodeURIComponent($(this).val());
-                var encodedPartNo = encodeURIComponent(partNo); // Encode the part number
-                var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
-                var url2 = "{{ url('stockopname/getdatabypartno') }}/" + encodedPartNo;
+    <script>
+        $(document).ready(function() {
+            $('.part_no').on('keyup', function(event) {
+                if (event.key === "Enter") {
+                    var partNo = encodeURIComponent($(this).val());
+                    var encodedPartNo = encodeURIComponent(partNo); // Encode the part number
+                    var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
+                    var url2 = "{{ url('stockopname/getdatabypartno') }}/" + encodedPartNo;
 
-                console.log('Fetching data for partNo:', partNo);
+                    console.log('Fetching data for partNo:', partNo);
 
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log('Response from first AJAX call:', data);
-                        if (data.status === 1) {
-                            console.log('Result:', data.result); // Log the result object
-                            if (data.result) {
-                                if (data.result[0].part_category_id != 2) {
-                                    alert('Part bukan kategori Sparepart Machine.');
-                                    return; // Exit the function if not category 3
-                                }
-                                $('#part_name_hidden').val(data.result[0].part_name);
-                                $('#adjust_hidden').val(data.result[0].adjust);
-                                $('#part_no_hidden').val(data.result[0].part_no);
-                                $('#has_sto').val('yes');
-                                $('#part_nos').val(data.result[0].part_no);
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log('Response from first AJAX call:', data);
+                            if (data.status === 1) {
+                                console.log('Result:', data.result); // Log the result object
+                                if (data.result) {
+                                    if (data.result[0].part_category_id != 2) {
+                                        alert('Part bukan kategori Sparepart Machine.');
+                                        return; // Exit the function if not category 3
+                                    }
+                                    $('#part_name_hidden').val(data.result[0].part_name);
+                                    $('#adjust_hidden').val(data.result[0].adjust);
+                                    $('#part_no_hidden').val(data.result[0].part_no);
+                                    $('#has_sto').val('yes');
+                                    $('#part_nos').val(data.result[0].part_no);
 
-                                var lastStoInput = document.getElementById("last_sto");
-                                var currentDateTime = new Date();
-                                var formattedDate = currentDateTime.toISOString().split('T')[0];
-                                lastStoInput.value = formattedDate;
+                                    var lastStoInput = document.getElementById("last_sto");
+                                    var currentDateTime = new Date();
+                                    var formattedDate = currentDateTime.toISOString().split('T')[0];
+                                    lastStoInput.value = formattedDate;
 
-                                $('.partModal form').attr('action', "{{ url('stockopname/update/sp') }}/" + data.result[0].part_id);
-                                $('.partModal .modal-title').text('Approve');
-                                $('.partModal').modal('show');
+                                    $('.partModal form').attr('action', "{{ url('stockopname/update/sp') }}/" + data.result[0].part_id);
+                                    $('.partModal .modal-title').text('Approve');
+                                    $('.partModal').modal('show');
 
-                                if (data.result[0].has_sto === 'yes') {
-                                    alert('Part ini telah di STO.');
+                                    if (data.result[0].has_sto === 'yes') {
+                                        alert('Part ini telah di STO.');
+                                    }
+                                } else {
+                                    console.error('Result is undefined');
                                 }
                             } else {
-                                console.error('Result is undefined');
+                                console.log('Data status is not 1');
                             }
-                        } else {
-                            console.log('Data status is not 1');
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error('Error during first AJAX call:', textStatus, errorThrown);
+                            alert('Error: Gagal mengambil data');
                         }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.error('Error during first AJAX call:', textStatus, errorThrown);
-                        alert('Error: Gagal mengambil data');
-                    }
-                });
+                    });
 
-                $.ajax({
-                    type: 'GET',
-                    url: url2,
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log('Response from second AJAX call:', data);
-                        if (data.status === 1) {
-                            $('#qty_no_hidden').val(data.total);
-                            // $('#qty_end').val(data.total);
-                        } else {
-                            console.log('Data status is not 1');
+                    $.ajax({
+                        type: 'GET',
+                        url: url2,
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log('Response from second AJAX call:', data);
+                            if (data.status === 1) {
+                                $('#qty_no_hidden').val(data.total);
+                                // $('#qty_end').val(data.total);
+                            } else {
+                                console.log('Data status is not 1');
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error('Error during second AJAX call:', textStatus, errorThrown);
+                            alert('Error: Gagal mengambil data');
                         }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.error('Error during second AJAX call:', textStatus, errorThrown);
-                        alert('Error: Gagal mengambil data');
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
-    });
-</script>
-@endsection
+    </script>
+    @endsection

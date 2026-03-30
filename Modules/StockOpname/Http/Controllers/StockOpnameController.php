@@ -142,7 +142,7 @@ class StockOpnameController extends Controller
         $parts = $this->_partRepository->getAllByParams($params);
         $racks = $this->_rackRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParams($params);
+        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
         // dd($crimpingdies);
 
@@ -200,7 +200,7 @@ class StockOpnameController extends Controller
         $parts = $this->_partRepository->getAllByParams($params);
         $racks = $this->_rackRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParams($params);
+        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
 
         return view('stockopname::cfindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'racks', 'crimpingdies'));
@@ -255,7 +255,7 @@ class StockOpnameController extends Controller
         $parts = $this->_partRepository->getAllByParams($params);
         $racks = $this->_rackRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParams($params);
+        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
 
         return view('stockopname::spindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));
@@ -312,7 +312,7 @@ class StockOpnameController extends Controller
         $parts = $this->_partRepository->getAllByParams($params);
         $racks = $this->_rackRepository->getAll();
         $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParams($params);
+        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
 
         return view('stockopname::cdindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));

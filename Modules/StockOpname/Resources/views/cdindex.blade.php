@@ -88,7 +88,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="table-data" class="table-data table card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap">
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
@@ -101,14 +101,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($crimpingdies) == 0)
+                            @if ($crimpingdies->isEmpty())
                             <tr>
                                 <td colspan="4" align="center">Data kosong</td>
                             </tr>
                             @else
                             @foreach ($crimpingdies as $part)
                             <tr style="margin-bottom: 50px;">
-                                <td width="5%">{{ $loop->iteration }}</td>
+                                <td width="5%"> {{ ($crimpingdies->currentPage() - 1) * $crimpingdies->perPage() + $loop->iteration }}</td>
                                 <td width="5%">{{ $part->part_name }}</td>
                                 <td width="5%">{{ $part->part_no }}</td>
                                 <td width="5%">{{ $part->qty_end }}</td>
@@ -120,6 +120,9 @@
                             @endif
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $crimpingdies->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
