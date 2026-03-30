@@ -97,6 +97,7 @@ class PartRequestRepository extends QueryBuilderImplementation
             if ($startDate && $endDate) {
                 $query->whereBetween('part_request.created_at', [$startDate, $endDate]);
             }
+            $query->orderBy('part_request.created_at', 'DESC');
 
             return $query->get();
         } catch (Exception $e) {
