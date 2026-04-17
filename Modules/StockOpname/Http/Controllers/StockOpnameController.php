@@ -43,109 +43,44 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
-
-        // Fetch data from your repository
-        $partschart = $this->_partRepository->getAll();
-
-        // Process the data as needed
-        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'NO')->pluck('qty_end')->sum();
-
-        // dd($yesCount, $noCount);
-
-        $partcategories = $this->_partCategoryRepository->getAll();
-
-        $data = [];
-
-        // foreach ($partcategories as $partcategory) {
-        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
-        //     $sum = [];
-        //     foreach ($parts as $part) {
-        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
-        //             $sum[] = intval($part->qty_end);
-        //         }
-        //     }
-        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
-        // }
-
-
-        $labels = [];
-        $qty = [];
-
-        foreach ($data as $partCategoryId => $partCategoryData) {
-            $label = $partCategoryData['label'];
-            $quantity = $partCategoryData['qty'];
-
-            $labels[$partCategoryId] = $label;
-            $qty[$partCategoryId] = $quantity;
-        }
-
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
-        $parts = $this->_partRepository->getAll();
-        $stockopnames = $this->_stockopnameRepository->getAll();
+        // Use direct aggregate queries instead of loading the entire table
+        $yesCount = DB::table('part')->where('has_sto', 'yes')->sum('qty_end');
+        $noCount  = DB::table('part')->where('has_sto', 'no')->sum('qty_end');
 
+        $partcategories = $this->_partCategoryRepository->getAll();
+        $stockopnames   = $this->_stockopnameRepository->getAll();
 
-        return view('stockopname::index', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount'));
+        $data   = [];
+        $labels = [];
+        $qty    = [];
+
+        return view('stockopname::index', compact('stockopnames', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount'));
     }
     public function afindex()
     {
         $params = [
             'part_category_id' => 3,
-            'has_sto' => 'no'
+            'has_sto'          => 'no'
         ];
 
-        // Fetch data from your repository
-        $partschart = $this->_partRepository->getAll();
-
-        // Process the data as needed
-        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
-
-        // dd($yesCount, $noCount);
+        // Use direct aggregate queries instead of loading the entire table
+        $yesCount = DB::table('part')->where('has_sto', 'yes')->sum('qty_end');
+        $noCount  = DB::table('part')->where('has_sto', 'no')->sum('qty_end');
 
         $partcategories = $this->_partCategoryRepository->getAll();
+        $parts          = $this->_partRepository->getAllByParams($params);
+        $racks          = $this->_rackRepository->getAll();
+        $stockopnames   = $this->_stockopnameRepository->getAll();
+        $crimpingdies   = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
-        $data = [];
-
-        // foreach ($partcategories as $partcategory) {
-        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
-        //     $sum = [];
-        //     foreach ($parts as $part) {
-        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
-        //             $sum[] = intval($part->qty_end);
-        //         }
-        //     }
-        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
-        // }
-
-
+        $data   = [];
         $labels = [];
-        $qty = [];
-
-        foreach ($data as $partCategoryId => $partCategoryData) {
-            $label = $partCategoryData['label'];
-            $quantity = $partCategoryData['qty'];
-
-            $labels[$partCategoryId] = $label;
-            $qty[$partCategoryId] = $quantity;
-        }
-
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $parts = $this->_partRepository->getAllByParams($params);
-        $racks = $this->_rackRepository->getAll();
-        $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
-
-        // dd($crimpingdies);
-
+        $qty    = [];
 
         return view('stockopname::afindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'racks', 'crimpingdies'));
     }
@@ -153,55 +88,22 @@ class StockOpnameController extends Controller
     {
         $params = [
             'part_category_id' => 4,
-            'has_sto' => 'no'
+            'has_sto'          => 'no'
         ];
 
-        // Fetch data from your repository
-        $partschart = $this->_partRepository->getAll();
-
-        // Process the data as needed
-        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
-
-        // dd($yesCount, $noCount);
+        // Use direct aggregate queries instead of loading the entire table
+        $yesCount = DB::table('part')->where('has_sto', 'yes')->sum('qty_end');
+        $noCount  = DB::table('part')->where('has_sto', 'no')->sum('qty_end');
 
         $partcategories = $this->_partCategoryRepository->getAll();
+        $parts          = $this->_partRepository->getAllByParams($params);
+        $racks          = $this->_rackRepository->getAll();
+        $stockopnames   = $this->_stockopnameRepository->getAll();
+        $crimpingdies   = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
-        $data = [];
-
-        // foreach ($partcategories as $partcategory) {
-        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
-        //     $sum = [];
-        //     foreach ($parts as $part) {
-        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
-        //             $sum[] = intval($part->qty_end);
-        //         }
-        //     }
-        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
-        // }
-
-
+        $data   = [];
         $labels = [];
-        $qty = [];
-
-        foreach ($data as $partCategoryId => $partCategoryData) {
-            $label = $partCategoryData['label'];
-            $quantity = $partCategoryData['qty'];
-
-            $labels[$partCategoryId] = $label;
-            $qty[$partCategoryId] = $quantity;
-        }
-
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $parts = $this->_partRepository->getAllByParams($params);
-        $racks = $this->_rackRepository->getAll();
-        $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
-
+        $qty    = [];
 
         return view('stockopname::cfindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'racks', 'crimpingdies'));
     }
@@ -209,54 +111,22 @@ class StockOpnameController extends Controller
     {
         $params = [
             'part_category_id' => 2,
-            'has_sto' => 'no'
+            'has_sto'          => 'no'
         ];
 
-        // Fetch data from your repository
-        $partschart = $this->_partRepository->getAll();
-
-        // Process the data as needed
-        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
-
-        // dd($yesCount, $noCount);
+        // Use direct aggregate queries instead of loading the entire table
+        $yesCount = DB::table('part')->where('has_sto', 'yes')->sum('qty_end');
+        $noCount  = DB::table('part')->where('has_sto', 'no')->sum('qty_end');
 
         $partcategories = $this->_partCategoryRepository->getAll();
+        $parts          = $this->_partRepository->getAllByParams($params);
+        $racks          = $this->_rackRepository->getAll();
+        $stockopnames   = $this->_stockopnameRepository->getAll();
+        $crimpingdies   = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
-        $data = [];
-
-        // foreach ($partcategories as $partcategory) {
-        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
-        //     $sum = [];
-        //     foreach ($parts as $part) {
-        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
-        //             $sum[] = intval($part->qty_end);
-        //         }
-        //     }
-        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
-        // }
-
-
+        $data   = [];
         $labels = [];
-        $qty = [];
-
-        foreach ($data as $partCategoryId => $partCategoryData) {
-            $label = $partCategoryData['label'];
-            $quantity = $partCategoryData['qty'];
-
-            $labels[$partCategoryId] = $label;
-            $qty[$partCategoryId] = $quantity;
-        }
-
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        $parts = $this->_partRepository->getAllByParams($params);
-        $racks = $this->_rackRepository->getAll();
-        $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
-
+        $qty    = [];
 
         return view('stockopname::spindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));
     }
@@ -264,56 +134,22 @@ class StockOpnameController extends Controller
     {
         $params = [
             'part_category_id' => 1,
-            'has_sto' => 'no'
+            'has_sto'          => 'no'
         ];
 
-        // Fetch data from your repository
-        $partschart = $this->_partRepository->getAll();
-
-        // Process the data as needed
-        $yesCount = $partschart->where('has_sto', 'yes')->pluck('qty_end')->sum();
-        $noCount = $partschart->where('has_sto', 'no')->pluck('qty_end')->sum();
-
-        // dd($yesCount, $noCount);
+        // Use direct aggregate queries instead of loading the entire table
+        $yesCount = DB::table('part')->where('has_sto', 'yes')->sum('qty_end');
+        $noCount  = DB::table('part')->where('has_sto', 'no')->sum('qty_end');
 
         $partcategories = $this->_partCategoryRepository->getAll();
+        $parts          = $this->_partRepository->getAllByParams($params);
+        $racks          = $this->_rackRepository->getAll();
+        $stockopnames   = $this->_stockopnameRepository->getAll();
+        $crimpingdies   = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
 
-        $data = [];
-
-        // foreach ($partcategories as $partcategory) {
-        //     $data[$partcategory->part_category_id]['label'] = $partcategory->part_category_name;
-        //     $sum = [];
-        //     foreach ($parts as $part) {
-        //         if (intval($part->part_category_id) == intval($partcategory->part_category_id)) {
-        //             $sum[] = intval($part->qty_end);
-        //         }
-        //     }
-        //     $data[$partcategory->part_category_id]['qty'] = $this->array_multisum($sum);
-        // }
-
-
+        $data   = [];
         $labels = [];
-        $qty = [];
-
-        foreach ($data as $partCategoryId => $partCategoryData) {
-            $label = $partCategoryData['label'];
-            $quantity = $partCategoryData['qty'];
-
-            $labels[$partCategoryId] = $label;
-            $qty[$partCategoryId] = $quantity;
-        }
-
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-
-        $parts = $this->_partRepository->getAllByParams($params);
-        $racks = $this->_rackRepository->getAll();
-        $stockopnames = $this->_stockopnameRepository->getAll();
-        $crimpingdies = $this->_partRepository->getAllByParamsPaginatedKategori($params, 10);
-
+        $qty    = [];
 
         return view('stockopname::cdindex', compact('stockopnames', 'parts', 'partcategories', 'data', 'labels', 'qty', 'yesCount', 'noCount', 'crimpingdies', 'racks'));
     }
@@ -475,118 +311,106 @@ class StockOpnameController extends Controller
      */
     public function afupdate(Request $request, $id)
     {
-
-        // dd($request->all());
-        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $qty_end   = $this->getdataByPartNo($request->part_nos)['total'];
         $adjusting = $qty_end - $request->adjust;
-        // dd($adjusting, $request->adjust);
-        // $qtyend2 = $qty_end['total'];
+
         $data = [
-            'part_no' => $request->part_nos,
-            'description' => $request->adjust,
-            'qty_end' => $qty_end,
-            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'part_no'    => $request->part_nos,
+            'description'=> $request->adjust,
+            'qty_end'    => $qty_end,
+            'last_sto'   => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
-        // dd($data, $qty_end);
 
-        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
-        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
-        // dd($data, $cek1, $cek, $request->all());
-
-        // dd($cek);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
+        DB::beginTransaction();
+        try {
+            $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+            $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return Redirect::back();
     }
     public function cfupdate(Request $request, $id)
     {
-
-        // dd($request->all());
-        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $qty_end   = $this->getdataByPartNo($request->part_nos)['total'];
         $adjusting = $qty_end - $request->adjust;
-        // dd($adjusting, $request->adjust);
-        // $qtyend2 = $qty_end['total'];
+
         $data = [
-            'part_no' => $request->part_nos,
-            'description' => $request->adjust,
-            'qty_end' => $qty_end,
-            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'part_no'    => $request->part_nos,
+            'description'=> $request->adjust,
+            'qty_end'    => $qty_end,
+            'last_sto'   => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
-        // dd($data, $qty_end);
 
-        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
-        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
-        // dd($data, $cek1, $cek, $request->all());
-
-        // dd($cek);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
+        DB::beginTransaction();
+        try {
+            $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+            $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return Redirect::back();
     }
 
     public function cdupdate(Request $request, $id)
     {
-
-        // dd($request->all());
-        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $qty_end   = $this->getdataByPartNo($request->part_nos)['total'];
         $adjusting = $qty_end - $request->adjust;
-        // dd($adjusting, $request->adjust);
-        // $qtyend2 = $qty_end['total'];
+
         $data = [
-            'part_no' => $request->part_nos,
-            'description' => $request->adjust,
-            'qty_end' => $qty_end,
-            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'part_no'    => $request->part_nos,
+            'description'=> $request->adjust,
+            'qty_end'    => $qty_end,
+            'last_sto'   => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
-        // dd($data, $qty_end);
 
-        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
-        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
-        // dd($data, $cek1, $cek, $request->all());
-
-        // dd($cek);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
+        DB::beginTransaction();
+        try {
+            $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+            $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return Redirect::back();
     }
     public function spupdate(Request $request, $id)
     {
-
-        // dd($request->all());
-        $qty_end = $this->getdataByPartNo($request->part_nos)['total'];
+        $qty_end   = $this->getdataByPartNo($request->part_nos)['total'];
         $adjusting = $qty_end - $request->adjust;
-        // dd($adjusting, $request->adjust);
-        // $qtyend2 = $qty_end['total'];
+
         $data = [
-            'part_no' => $request->part_nos,
-            'description' => $request->adjust,
-            'qty_end' => $qty_end,
-            'last_sto' => Carbon::now()->format('Y-m-d'),
+            'part_no'    => $request->part_nos,
+            'description'=> $request->adjust,
+            'qty_end'    => $qty_end,
+            'last_sto'   => Carbon::now()->format('Y-m-d'),
             'qty_actual' => $adjusting
         ];
-        // dd($data, $qty_end);
 
-        $cek1 = $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        // $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data), $id);
-        $cek = $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
-        // dd($data, $cek1, $cek, $request->all());
-
-        // dd($cek);
-        $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
-
-        DB::commit();
+        DB::beginTransaction();
+        try {
+            $this->_stockopnameRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logPartReqRepository->insert(DataHelper::_normalizeParams($data, true));
+            $this->_logHelper->store($this->module, $request->stockopname_no, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         return Redirect::back();
     }

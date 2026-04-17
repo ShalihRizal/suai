@@ -44,21 +44,11 @@ class PartController extends Controller
             return redirect('unauthorize');
         }
 
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
-        $parts = $this->_partRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
-
         $subrack = $this->_subRackRepository->getAll();
-        // Filter parts based on the selected category
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
 
-
-
-        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter','subrack'));
+        return view('part::index', compact('partcategories', 'racks', 'subrack'));
     }
     public function download(Request $request)
     {
@@ -132,142 +122,111 @@ class PartController extends Controller
     }
     public function allindex(Request $request)
     {
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
-        $parts = $this->_partRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
-
         $subrack = $this->_subRackRepository->getAll();
-        // Filter parts based on the selected category
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
 
-
-
-        return view('part::index', compact('parts', 'partcategories', 'racks', 'partCategoryFilter','subrack'));
+        return view('part::index', compact('partcategories', 'racks', 'subrack'));
     }
 
     public function afindex(Request $request)
     {
-        // // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $params = [
-            'part_category_id' => 3
-        ];
-
-        $parts = $this->_partRepository->getAllByParams($params);
-
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
-
         $subrack = $this->_subRackRepository->getAll();
 
-        // Filter parts based on the selected category
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
-
-        return view('part::af', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
+        return view('part::af', compact('partcategories', 'racks', 'subrack'));
     }
     public function cfindex(Request $request)
     {
-        // // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $params = [
-            'part_category_id' => 4
-        ];
-
-        $parts = $this->_partRepository->getAllByParams($params);
-
-        $partCategoryFilter = $request->input('part_category'); // Get the selected category from the request
-
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
-
         $subrack = $this->_subRackRepository->getAll();
 
-        // Filter parts based on the selected category
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
-
-        return view('part::cf', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
+        return view('part::cf', compact('partcategories', 'racks', 'subrack'));
     }
     public function cdindex(Request $request)
     {
-        $params = [
-            'part_category_id' => 1
-        ];
-
-        $parts = $this->_partRepository->getAllByParams($params);
-        $partCategoryFilter = $request->input('part_category');
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
         $subrack = $this->_subRackRepository->getAll();
-        // dd($subrack);
 
-        // Mengambil qty berdasarkan part_id dari transaksi_in
-        foreach ($parts as $part) {
-            $transaksi = DB::table('transaksi_in')
-                ->where('part_id', $part->part_id)
-                ->select('qty')
-                ->first();
-
-            // Menambahkan qty ke objek part
-            $part->qty = $transaksi->qty ?? 0; // Jika tidak ada transaksi, set qty ke 0
-        }
-
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
-
-        return view('part::cd', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
+        return view('part::cd', compact('partcategories', 'racks', 'subrack'));
     }
 
     public function spindex(Request $request)
     {
-        $params = [
-            'part_category_id' => 2
-        ];
-
-        $parts = $this->_partRepository->getAllByParams($params);
-        $partCategoryFilter = $request->input('part_category');
         $partcategories = $this->_partCategoryRepository->getAll();
         $racks = $this->_rackRepository->getAll();
-
         $subrack = $this->_subRackRepository->getAll();
 
-        // Mengambil qty berdasarkan part_id dari transaksi_in
-        foreach ($parts as $part) {
-            $transaksi = DB::table('transaksi_in')
-                ->where('part_id', $part->part_id)
-                ->select('qty')
-                ->first();
+        return view('part::sp', compact('partcategories', 'racks', 'subrack'));
+    }
 
-            // Menambahkan qty ke objek part
-            $part->qty = $transaksi->qty ?? 0; // Jika tidak ada transaksi, set qty ke 0
+    /**
+     * Server-side DataTables AJAX endpoint.
+     * Handles all Part category views via ?category= parameter.
+     */
+    public function datatableData(Request $request)
+    {
+        try {
+            $categoryId = $request->input('category', null);
+            $result = $this->_partRepository->getServerSideData($request, $categoryId);
+
+            // Compute qty_end and inventory status for each row
+            foreach ($result['data'] as $part) {
+                $part->qty_end_calc = $part->qty_begin + $part->qty_in - $part->qty_out;
+
+                // Compute inventory status from rcv_date and used_date
+                $part->inventory_status = 'UNKNOWN';
+                if (
+                    is_null($part->rcv_date) || $part->rcv_date === '-' ||
+                    is_null($part->used_date) || $part->used_date === '-'
+                ) {
+                    $part->inventory_status = 'tidak ada receive date';
+                } else {
+                    try {
+                        $recDate = \Carbon\Carbon::parse($part->rcv_date);
+                        $usedDate = \Carbon\Carbon::parse($part->used_date);
+                        $now = \Carbon\Carbon::now();
+                        $recDiff = $recDate->diffInMonths($now);
+                        $usedDiff = $usedDate->diffInMonths($now);
+
+                        if ($recDiff < 6 && $usedDiff < 6) {
+                            $part->inventory_status = 'ACTIVE';
+                        } elseif ($recDiff >= 6 && $recDiff <= 24 && $usedDiff < 6) {
+                            $part->inventory_status = 'ACTIVE';
+                        } elseif ($recDiff > 24 && $usedDiff < 6) {
+                            $part->inventory_status = 'ACTIVE';
+                        } elseif ($recDiff >= 6 && $recDiff <= 24 && $usedDiff >= 6 && $usedDiff <= 24) {
+                            $part->inventory_status = 'SLOW MOVING';
+                        } elseif ($recDiff > 24 && $usedDiff >= 6 && $usedDiff <= 24) {
+                            $part->inventory_status = 'SLOW MOVING';
+                        } elseif ($recDiff < 6 && $usedDiff >= 6 && $usedDiff <= 24) {
+                            $part->inventory_status = 'SLOW MOVING';
+                        } elseif ($recDiff > 24 && $usedDiff > 24) {
+                            $part->inventory_status = 'ABSOLUTE';
+                        } elseif ($recDiff < 6 && $usedDiff > 24) {
+                            $part->inventory_status = 'ABSOLUTE';
+                        } elseif ($recDiff >= 6 && $recDiff <= 24 && $usedDiff > 24) {
+                            $part->inventory_status = 'ABSOLUTE';
+                        }
+                    } catch (\Exception $e) {
+                        $part->inventory_status = 'UNKNOWN';
+                    }
+                }
+            }
+
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json([
+                'draw' => intval($request->input('draw', 1)),
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => [],
+                'error' => $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine()
+            ]);
         }
-
-        if (!empty($partCategoryFilter)) {
-            $parts = $parts->where('part_category_id', $partCategoryFilter);
-        }
-
-        return view('part::sp', compact('parts', 'partcategories', 'racks', 'partCategoryFilter', 'subrack'));
     }
 
     /**

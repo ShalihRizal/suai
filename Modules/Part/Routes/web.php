@@ -27,4 +27,5 @@ Route::prefix('part')->group(function () {
     Route::get('/delete/{id}', 'PartController@destroy');
     Route::get('/getdata/{id}', 'PartController@getdata');
     Route::get('part/download', 'PartController@download')->name('part.download');
+    Route::get('/datatable', 'PartController@datatableData');
 });

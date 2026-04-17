@@ -117,4 +117,84 @@ class PartRepository extends QueryBuilderImplementation
 
         return $query->paginate($perPage);
     }
+
+    /**
+     * Server-side DataTables handler.
+     * Handles search, sort, and pagination at the DB level.
+     */
+    public function getServerSideData($request, $categoryId = null)
+    {
+        $draw    = intval($request->input('draw', 1));
+        $start   = intval($request->input('start', 0));
+        $length  = intval($request->input('length', 25));
+        $search  = $request->input('search.value', '');
+        $orderCol = intval($request->input('order.0.column', 0));
+        $orderDir = $request->input('order.0.dir', 'asc');
+
+        // Define sortable columns mapping
+        $columns = [
+            'part.part_id',
+            'part.part_no',
+            'part.part_name',
+            'part.loc_ppti',
+            'part.lokasi_hib',
+            'part.loc_tapc',
+            'part.qty_begin',
+            'part.qty_in',
+            'part.qty_out',
+            'part.adjust',
+            'part.status',
+            'part.kategori_inventory',
+            'part.ss',
+            'part.rop',
+            'part.forecast',
+            'part.max',
+            'part.used_date',
+            'part.rcv_date',
+        ];
+
+        $sortColumn = isset($columns[$orderCol]) ? $columns[$orderCol] : 'part.part_id';
+
+        // Base query - use DB::table() directly
+        $baseQuery = DB::table($this->table)
+            ->leftJoin('part_category', 'part.part_category_id', '=', 'part_category.part_category_id')
+            ->select("part.*", 'part_category.part_category_name');
+
+        if ($categoryId !== null) {
+            $baseQuery->where('part.part_category_id', $categoryId);
+        }
+
+        // Total records (before search filter)
+        $recordsTotal = (clone $baseQuery)->count();
+
+        // Apply search
+        if (!empty($search)) {
+            $baseQuery->where(function ($q) use ($search) {
+                $q->where('part.part_no', 'LIKE', "%{$search}%")
+                  ->orWhere('part.part_name', 'LIKE', "%{$search}%")
+                  ->orWhere('part.loc_ppti', 'LIKE', "%{$search}%")
+                  ->orWhere('part.lokasi_hib', 'LIKE', "%{$search}%")
+                  ->orWhere('part.loc_tapc', 'LIKE', "%{$search}%")
+                  ->orWhere('part.status', 'LIKE', "%{$search}%")
+                  ->orWhere('part.kategori_inventory', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filtered count
+        $recordsFiltered = (clone $baseQuery)->count();
+
+        // Apply sort and pagination
+        $data = $baseQuery
+            ->orderBy($sortColumn, $orderDir)
+            ->offset($start)
+            ->limit($length)
+            ->get();
+
+        return [
+            'draw'            => $draw,
+            'recordsTotal'    => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data'            => $data,
+        ];
+    }
 }

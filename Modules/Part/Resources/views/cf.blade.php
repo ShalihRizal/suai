@@ -4,20 +4,13 @@
 @section('nav')
 <div class="row align-items-center">
     <div class="col">
-        <!-- Page pre-title -->
-        <div class="page-pretitle">
-            Part
-        </div>
-        <h2 class="page-title">
-            Part
-        </h2>
+        <div class="page-pretitle">Part</div>
+        <h2 class="page-title">Part</h2>
     </div>
-    <!-- Page title actions -->
     <div class="col-auto ms-auto d-print-none">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                <li class="breadcrumb-item"><a href="{{ url('') }}"><i data-feather="home"
-                            class="breadcrumb-item-icon"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ url('') }}"><i data-feather="home" class="breadcrumb-item-icon"></i></a></li>
                 <li class="breadcrumb-item"><a href="#">Part</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Part</li>
             </ol>
@@ -27,12 +20,6 @@
 @endsection
 
 @section('content')
-<!-- Container fluid  -->
-<!-- ============================================================== -->
-<!-- <div class="container-fluid"> -->
-<!-- ============================================================== -->
-<!-- Start Page Content -->
-<!-- ============================================================== -->
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -40,7 +27,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Kategori Part Inventory</h3>
-                        <h3 class="h5">Checker Fixture</h5>
+                        <h3 class="h5">Checker Fixture</h3>
                     </div>
                     <div class="col-md-6"></div>
                 </div>
@@ -56,7 +43,6 @@
                 @if (session('message'))
                 <strong id="msgId" hidden>{{ session('message') }}</strong>
                 @endif
-
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="h3">Part</h3>
@@ -73,71 +59,30 @@
                     </a>
                 </div>
                 <div class="table-responsive">
-                    <table id="table-data" class="table card-table table-vcenter text-nowrap table-data">
+                    <table id="table-data" class="table card-table table-vcenter text-nowrap">
                         <thead>
                             <tr>
-                                <th width="5%">No</th>
-                                <th width="5%">Part No</th>
-                                <th width="5%">Part Name</th>
-                                <th width="5%">Lokasi PPTI</th>
-                                <th width="5%">Lokasi HIB</th>
-                                <th width="5%">Lokasi TAPC</th>
-                                <th width="5%">Begin</th>
-                                <th width="5%">Qty In</th>
-                                <th width="5%">Qty Out</th>
-                                <th width="5%">Qty STO</th>
-                                <th width="5%">Qty End</th>
-                                <th width="5%">Status Part</th>
-                                <th width="5%">Status</th>
-                                <th width="5%">Safety Stock</th>
-                                <th width="5%">ROP</th>
-                                <th width="5%">Forecast</th>
-                                <th width="5%">Max</th>
-                                <th width="5%">Aksi</th>
+                                <th>No</th>
+                                <th>Part No</th>
+                                <th>Part Name</th>
+                                <th>Lokasi PPTI</th>
+                                <th>Lokasi HIB</th>
+                                <th>Lokasi TAPC</th>
+                                <th>Begin</th>
+                                <th>Qty In</th>
+                                <th>Qty Out</th>
+                                <th>Qty STO</th>
+                                <th>Qty End</th>
+                                <th>Status Part</th>
+                                <th>Status</th>
+                                <th>Safety Stock</th>
+                                <th>ROP</th>
+                                <th>Forecast</th>
+                                <th>Max</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($parts) == 0)
-                            <tr>
-                                <td colspan="4" align="center">Data kosong</td>
-                            </tr>
-                            @else
-                            @foreach ($parts as $part)
-                            <tr>
-                                <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="5%">{{ $part->part_no }}</td>
-                                <td width="5%">{{ $part->part_name }}</td>
-                                <td width="5%">{{ $part->loc_ppti }}</td>
-                                <td width="5%">{{ $part->lokasi_hib }}</td>
-                                <td width="5%">{{ $part->loc_tapc }}</td>
-                                <td width="5%">{{ $part->qty_begin }}</td>
-                                <td width="5%">{{ $part->qty_in }}</td>
-                                <td width="5%">{{ $part->qty_out }}</td>
-                                <td width="5%">{{ $part->adjust }}</td>
-                                <td width="5%">{{ $part->qty_begin + $part->qty_in- $part->qty_out }}</td>
-                                <td width="5%">{{ $part->status }}</td>
-                                <td width="5%">{{ $part->kategori_inventory }}</td>
-                                <td width="5%">{{ $part->ss }}</td>
-                                <td width="5%">{{ $part->rop }}</td>
-                                <td width="5%">{{ $part->forecast }}</td>
-                                <td width="5%">{{ $part->max }}</td>
-                                <td width="5%">
-                                    @if ($part->part_id > 0)
-                                    <a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-toggle="modal" data-target=".addModal"
-                                        data-id="{{ $part->part_id }}" data-toggle="tooltip"
-                                        data-placement="top" title="Ubah">
-                                        <i data-feather="edit" width="16" height="16"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete"
-                                        data-url="{{ url('part/delete/' . $part->part_id) }}" data-toggle="tooltip"
-                                        data-placement="top" title="Hapus">
-                                        <i data-feather="trash-2" width="16" height="16"></i>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -145,13 +90,6 @@
         </div>
     </div>
 </div>
-
-<!-- ============================================================== -->
-<!-- End PAge Content -->
-<!-- ============================================================== -->
-<!-- </div> -->
-<!-- ============================================================== -->
-<!-- End Container fluid  -->
 
 <!-- Modal Add -->
 <div class="modal fade addModal" tabindex="-1" role="dialog" style="margin-top: 1%;">
@@ -169,28 +107,23 @@
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Part No<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_no" id="part_no"
-                                        placeholder="Masukan Part No" value="{{ old('part_no') }}">
+                                    <input type="text" class="form-control" name="part_no" id="part_no" placeholder="Masukan Part No" value="{{ old('part_no') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Part Name<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="part_name" id="part_name"
-                                        placeholder="Masukan Part Name" value="{{ old('part_name') }}">
+                                    <input type="text" class="form-control" name="part_name" id="part_name" placeholder="Masukan Part Name" value="{{ old('part_name') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Part Category <span class="text-danger">*</span>
-                                    </label>
+                                    <label class="form-label">Part Category <span class="text-danger">*</span></label>
                                     <select class="form-control" name="part_category_id" id="part_category_id">
                                         <option value="">- Pilih Part Category -</option>
                                         @if (sizeof($partcategories) > 0)
                                         @foreach ($partcategories as $partcategory)
-                                        <option value="{{ $partcategory->part_category_id }}">
-                                            {{ $partcategory->part_category_name }}
-                                        </option>
+                                        <option value="{{ $partcategory->part_category_id }}">{{ $partcategory->part_category_name }}</option>
                                         @endforeach
                                         @endif
                                     </select>
@@ -199,57 +132,43 @@
                             <div class="col-md-6 mb-3" hidden>
                                 <div class="form-group">
                                     <label class="form-label">No Urut<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="no_urut" id="no_urut"
-                                        placeholder="Masukan No Urut" value="{{ old('no_urut') }}" disabled>
+                                    <input type="text" class="form-control" name="no_urut" id="no_urut" placeholder="Masukan No Urut" value="{{ old('no_urut') }}" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3" hidden>
                                 <div class="form-group">
                                     <label class="form-label">No Urut<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="has_sto" id="has_sto"
-                                        placeholder="Masukan No Urut" value="no" disabled>
+                                    <input type="text" class="form-control" name="has_sto" id="has_sto" placeholder="Masukan No Urut" value="no" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">No Applicator<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicator_no"
-                                        id="applicator_no" placeholder="Masukan No Applicator"
-                                        value="{{ old('applicator_no') }}">
+                                    <input type="text" class="form-control" name="applicator_no" id="applicator_no" placeholder="Masukan No Applicator" value="{{ old('applicator_no') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Tipe Applicator<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicator_type"
-                                        id="applicator_type" placeholder="Masukan Tipe Applicator"
-                                        value="{{ old('applicator_type') }}">
+                                    <label class="form-label">Tipe Applicator<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_type" id="applicator_type" placeholder="Masukan Tipe Applicator" value="{{ old('applicator_type') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Molts Number<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="molts_no" id="molts_no"
-                                        placeholder="Masukan Molts Number" value="{{ old('molts_no') }}">
+                                    <input type="text" class="form-control" name="molts_no" id="molts_no" placeholder="Masukan Molts Number" value="{{ old('molts_no') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Kuantitas Applicator<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="applicator_qty"
-                                        id="applicator_qty" placeholder="Masukan Kuantitas Applicator"
-                                        value="{{ old('applicator_qty') }}">
+                                    <label class="form-label">Kuantitas Applicator<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="applicator_qty" id="applicator_qty" placeholder="Masukan Kuantitas Applicator" value="{{ old('applicator_qty') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Kode Tooling BC<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="kode_tooling_bc"
-                                        id="kode_tooling_bc" placeholder="Masukan Kode Tooling BC"
-                                        value="{{ old('kode_tooling_bc') }}">
+                                    <label class="form-label">Kode Tooling BC<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="kode_tooling_bc" id="kode_tooling_bc" placeholder="Masukan Kode Tooling BC" value="{{ old('kode_tooling_bc') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -257,66 +176,45 @@
                                     <label class="form-label">Asal <span class="text-danger">*</span></label>
                                     <select class="form-control" name="asal" id="asal">
                                         <option value="">Pilih Asal</option>
-                                        <option value="Lokal" {{ old('asal', $part->asal) == 'Lokal' ? 'selected' : '' }}>Lokal</option>
-                                        <option value="Import" {{ old('asal', $part->asal) == 'Import' ? 'selected' : '' }}>Import</option>
+                                        <option value="Lokal" {{ old('asal') == 'Lokal' ? 'selected' : '' }}>Lokal</option>
+                                        <option value="Import" {{ old('asal') == 'Import' ? 'selected' : '' }}>Import</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Invoice<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="invoice" id="invoice"
-                                        placeholder="Masukan Invoice" value="{{ old('invoice') }}">
+                                    <input type="text" class="form-control" name="invoice" id="invoice" placeholder="Masukan Invoice" value="{{ old('invoice') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="po" id="po"
-                                        placeholder="Masukan PO" value="{{ old('po') }}">
+                                    <input type="text" class="form-control" name="po" id="po" placeholder="Masukan PO" value="{{ old('po') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">PO Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="po_date" id="po_date"
-                                        placeholder="Masukan PO Date" value="{{ old('po_date') }}">
+                                    <input type="date" class="form-control" name="po_date" id="po_date" placeholder="Masukan PO Date" value="{{ old('po_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Rec Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="rec_date" id="rec_date"
-                                        placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
+                                    <input type="date" class="form-control" name="rec_date" id="rec_date" placeholder="Masukan Rec Date" value="{{ old('rec_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Use Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="used_date" id="used_date"
-                                        placeholder="Masukan Use Date" value="{{ old('used_date') }}">
+                                    <input type="date" class="form-control" name="used_date" id="used_date" placeholder="Masukan Use Date" value="{{ old('used_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label">Rcv Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="rcv_date" id="rcv_date"
-                                        placeholder="Masukan Rcv Date" value="{{ old('rcv_date') }}">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6" hidden>
-                                <div class="form-group">
-                                    <label class="form-label">Loc TAPC <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="loc_tapc" id="loc_tapc">
-                                        <option value="">- Pilih Loc TAPC -</option>
-                                        @if (sizeof($racks) > 0)
-                                        @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
-                                        </option>
-                                        @endforeach
-                                        @endif
-                                    </select>
+                                    <input type="date" class="form-control" name="rcv_date" id="rcv_date" placeholder="Masukan Rcv Date" value="{{ old('rcv_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -340,340 +238,169 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6" hidden>
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Loc Hib <span class="text-danger">*</span> </label>
-                                    <select class="form-control" name="lokasi_hib" id="lokasi_hib">
-                                        <option value="">- Pilih Loc Hib -</option>
-                                        @if (sizeof($racks) > 0)
-                                        @foreach ($racks as $rack)
-                                        <option value="{{ $rack->rack_name }}">{{ $rack->rack_name }}
-                                        </option>
-                                        @endforeach
-                                        @endif
-                                    </select>
+                                    <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_begin" id="qty_begin" placeholder="Masukan Qty Begin" value="{{ old('qty_begin') }}">
                                 </div>
                             </div>
-
-                            {{-- <div class="col-md-6 mb-3"hidden>
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label">Loc PPTI<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="loc_ppti" id="loc_ppti"
-                                        placeholder="Masukan Loc PPTI" value="{{ old('loc_ppti') }}">
+                                    <label class="form-label">Qty in<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_in" id="qty_in" placeholder="Masukan Qty in" value="{{ old('qty_in') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty out<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_out" id="qty_out" placeholder="Masukan Qty out" value="{{ old('qty_out') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Adjust<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="adjust" id="adjust" placeholder="Masukan Adjust" value="{{ old('adjust') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Qty end<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="qty_end" id="qty_end" placeholder="Masukan Qty end" value="{{ old('qty_end') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label">Remarks<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="remarks" id="remarks" placeholder="Masukan Remarks" value="{{ old('remarks') }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3" hidden>
-                        <div class="form-group">
-                            <label class="form-label">Loc Tapc<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="loc_tapc" id="loc_tapc"
-                                placeholder="Masukan Loc Tapc" value="{{ old('loc_tapc') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3" hidden>
-                        <div class="form-group">
-                            <label class="form-label">Loc Hib<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="lokasi_hib" id="lokasi_hib"
-                                placeholder="Masukan Loc Hib" value="{{ old('lokasi_hib') }}">
-                        </div>
-                    </div> --}}
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty Begin<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_begin" id="qty_begin"
-                                placeholder="Masukan Qty Begin" value="{{ old('qty_begin') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty in<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_in" id="qty_in"
-                                placeholder="Masukan Qty in" value="{{ old('qty_in') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty out<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_out" id="qty_out"
-                                placeholder="Masukan Qty out" value="{{ old('qty_out') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Adjust<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="adjust" id="adjust"
-                                placeholder="Masukan Adjust" value="{{ old('adjust') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Qty end<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="qty_end" id="qty_end"
-                                placeholder="Masukan Qty end" value="{{ old('qty_end') }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group">
-                            <label class="form-label">Remarks<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="remarks" id="remarks"
-                                placeholder="Masukan Remarks" value="{{ old('remarks') }}">
-                        </div>
-                    </div>
-
                 </div>
-
+                <div class="modal-footer">
+                    <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="text-white btn btn-success">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="text-white btn btn-danger" data-dismiss="modal">Batal</button>
-        <button type="submit" class="text-white btn btn-success">Simpan</button>
-    </div>
-    </form>
 </div>
-</div>
-</div>
-<!-- Modal Add -->
 @endsection
 
 @section('script')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
+
 <script type="text/javascript">
-    $('.btnAdd').click(function() {
-        $('#part_no').val('');
-        $('#no_urut').val('');
-        $('#applicator_no').val('');
-        $('#applicator_type').val('');
-        $('#applicator_qty').val('');
-        $('#kode_tooling_bc').val('');
-        $('#part_name').val('');
-        $('#molts_no').val('');
-        $('#asal').val('');
-        $('#po').val('');
-        $('#po_date').val('');
-        $('#rec_date').val('');
-        $('#used_date').val('');
-        $('#rcv_date').val('');
-        $('#loc_ppti').val('');
-        $('#loc_tapc').val('');
-        $('#lokasi_hib').val('');
-        $('#qty_begin').val('');
-        $('#qty_in').val('');
-        $('#qty_out').val('');
-        $('#adjust').val('');
-        $('#qty_end').val('');
-        $('#remarks').val('');
-        $('#part_category_id').val('');
-        $('.addModal form').attr('action', "{{ url('part/store') }}");
-        $('.addModal .modal-title').text('Tambah Part');
-        $('.addModal').modal('show');
-    });
-
-    // check error
-    @if(count($errors))
-    $('.addModal').modal('show');
-    @endif
-
-    $('.btnEdit').click(function() {
-
-        var id = $(this).attr('data-id');
-        var url = "{{ url('part/getdata') }}";
-
-        $('.addModal form').attr('action', "{{ url('part/update') }}" + '/' + id);
-
-        $.ajax({
-            type: 'GET',
-            url: url + '/' + id,
-            dataType: 'JSON',
-            success: function(data) {
-                console.log(data);
-
-                if (data.status == 1) {
-                    $('#part_no').val(data.result.part_no);
-                    $('#no_urut').val(data.result.no_urut);
-                    $('#applicator_no').val(data.result.applicator_no);
-                    $('#applicator_type').val(data.result.applicator_type);
-                    $('#applicator_qty').val(data.result.applicator_qty);
-                    $('#kode_tooling_bc').val(data.result.kode_tooling_bc);
-                    $('#part_name').val(data.result.part_name);
-                    $('#molts_no').val(data.result.molts_no);
-                    $('#asal').val(data.result.asal);
-                    $('#po').val(data.result.po);
-                    $('#po_date').val(data.result.po_date);
-                    $('#rec_date').val(data.result.rec_date);
-                    $('#used_date').val(data.result.used_date);
-                    $('#rcv_date').val(data.result.rcv_date);
-                    $('#loc_ppti').val(data.result.loc_ppti);
-                    $('#loc_tapc').val(data.result.loc_tapc);
-                    $('#invoice').val(data.result.invoice);
-                    $('#lokasi_hib').val(data.result.lokasi_hib);
-                    $('#qty_begin').val(data.result.qty_begin);
-                    $('#qty_in').val(data.result.qty_in);
-                    $('#qty_out').val(data.result.qty_out);
-                    $('#adjust').val(data.result.adjust);
-                    $('#qty_end').val(data.result.qty_end);
-                    $('#remarks').val(data.result.remarks);
-                    $('#part_category_id').val(data.result.part_category_id);
-                    $('.addModal .modal-title').text('Ubah Part');
-                    $('.addModal').modal('show');
-                }
-
+    $(document).ready(function() {
+        var table = $('#table-data').DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('part/datatable') }}",
+                data: function(d) { d.category = 4; }
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('Error : Gagal mengambil data');
-            }
-        });
-
-    });
-
-    $('.btnDelete').click(function() {
-        $('.btnDelete').attr('disabled', true)
-        var url = $(this).attr('data-url');
-        Swal.fire({
-            title: 'Apakah anda yakin ingin menghapus data?',
-            text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya. Hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: function(data) {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Terhapus!',
-                                'Data Berhasil Dihapus.',
-                                'success'
-                            ).then(() => {
-                                location.reload()
-                            })
-                        }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        Swal.fire(
-                            'Gagal!',
-                            'Gagal menghapus data.',
-                            'error'
-                        );
+            columns: [
+                { data: null, orderable: false, searchable: false, render: function(data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; } },
+                { data: 'part_no' },
+                { data: 'part_name' },
+                { data: 'loc_ppti', defaultContent: '' },
+                { data: 'lokasi_hib', defaultContent: '' },
+                { data: 'loc_tapc', defaultContent: '' },
+                { data: 'qty_begin', defaultContent: '0' },
+                { data: 'qty_in', defaultContent: '0' },
+                { data: 'qty_out', defaultContent: '0' },
+                { data: 'adjust', defaultContent: '0' },
+                { data: 'qty_end_calc', defaultContent: '0' },
+                { data: 'status', defaultContent: '' },
+                { data: 'kategori_inventory', defaultContent: '' },
+                { data: 'ss', defaultContent: '' },
+                { data: 'rop', defaultContent: '' },
+                { data: 'forecast', defaultContent: '' },
+                { data: 'max', defaultContent: '' },
+                { data: null, orderable: false, searchable: false, render: function(data) {
+                    if (data.part_id > 0) {
+                        return '<a href="javascript:void(0)" class="btn btn-icon btnEdit btn-warning text-white" data-id="' + data.part_id + '" title="Ubah"><i data-feather="edit" width="16" height="16"></i></a> ' +
+                               '<a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete" data-url="{{ url("part/delete") }}/' + data.part_id + '" title="Hapus"><i data-feather="trash-2" width="16" height="16"></i></a>';
                     }
+                    return '';
+                }}
+            ],
+            pageLength: 25,
+            order: [[1, 'asc']],
+            language: {
+                processing: "Memuat data...", lengthMenu: "Tampilkan _MENU_ data", zeroRecords: "Data kosong",
+                info: "Menampilkan _START_ - _END_ dari _TOTAL_ data", infoEmpty: "Menampilkan 0 data",
+                infoFiltered: "(difilter dari _MAX_ total data)", search: "Cari:",
+                paginate: { first: "Pertama", last: "Terakhir", next: "›", previous: "‹" }
+            },
+            drawCallback: function() {
+                if (typeof feather !== 'undefined') feather.replace();
+                $('.btnEdit').off('click').on('click', function() {
+                    var id = $(this).attr('data-id');
+                    $('.addModal form').attr('action', "{{ url('part/update') }}" + '/' + id);
+                    $.ajax({
+                        type: 'GET', url: "{{ url('part/getdata') }}" + '/' + id, dataType: 'JSON',
+                        success: function(data) {
+                            if (data.status == 1) {
+                                var r = data.result;
+                                $('#part_no').val(r.part_no); $('#no_urut').val(r.no_urut);
+                                $('#applicator_no').val(r.applicator_no); $('#applicator_type').val(r.applicator_type);
+                                $('#applicator_qty').val(r.applicator_qty); $('#kode_tooling_bc').val(r.kode_tooling_bc);
+                                $('#part_name').val(r.part_name); $('#molts_no').val(r.molts_no);
+                                $('#asal').val(r.asal); $('#po').val(r.po);
+                                $('#po_date').val(r.po_date); $('#rec_date').val(r.rec_date);
+                                $('#used_date').val(r.used_date); $('#rcv_date').val(r.rcv_date);
+                                $('#loc_ppti').val(r.loc_ppti); $('#loc_tapc').val(r.loc_tapc);
+                                $('#invoice').val(r.invoice); $('#lokasi_hib').val(r.lokasi_hib);
+                                $('#qty_begin').val(r.qty_begin); $('#qty_in').val(r.qty_in);
+                                $('#qty_out').val(r.qty_out); $('#adjust').val(r.adjust);
+                                $('#qty_end').val(r.qty_end); $('#remarks').val(r.remarks);
+                                $('#part_category_id').val(r.part_category_id);
+                                $('.addModal .modal-title').text('Ubah Part');
+                                $('.addModal').modal('show');
+                            }
+                        },
+                        error: function() { alert('Error : Gagal mengambil data'); }
+                    });
+                });
+                $('.btnDelete').off('click').on('click', function() {
+                    var url = $(this).attr('data-url');
+                    Swal.fire({ title: 'Apakah anda yakin ingin menghapus data?', text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Ya. Hapus'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({ type: 'GET', url: url,
+                                success: function() { Swal.fire('Terhapus!', 'Data Berhasil Dihapus.', 'success').then(() => { table.ajax.reload(); }); },
+                                error: function() { Swal.fire('Gagal!', 'Gagal menghapus data.', 'error'); }
+                            });
+                        }
+                    });
                 });
             }
-        })
-    });
-
-    $("#addForm").validate({
-        rules: {
-            part_no: "required",
-            no_urut: "required",
-            applicator_no: "required",
-            applicator_type: "required",
-            applicator_qty: "required",
-            kode_tooling_bc: "required",
-            part_name: "required",
-            asal: "required",
-            invoice: "required",
-            po: "required",
-            po_date: "required",
-            rec_date: "required",
-            used_date: "required",
-            rcv_date: "required",
-            loc_ppti: "required",
-            loc_tapc: "required",
-            lokasi_hib: "required",
-            qty_begin: "required",
-            qty_in: "required",
-            qty_out: "required",
-            adjust: "required",
-            qty_end: "required",
-            remarks: "required",
-
-        },
-        messages: {
-            part_no: "Part No Tidak Boleh Kosong",
-            no_urut: "No Urut Tidak Boleh Kosong",
-            applicator_no: "Nomor Applicator Tidak Boleh Kosong",
-            applicator_type: "Tipe Apllikator Tidak Boleh Kosong",
-            applicator_qty: "Qty Applikator Tidak Boleh Kosong",
-            kode_tooling_bc: "Kode Tooling BC Tidak Boleh Kosong",
-            part_name: "Part Name Tidak Boleh Kosong",
-            asal: "Asal Tidak Boleh Kosong",
-            invoice: "Invoice Tidak Boleh Kosong",
-            po: "PO Tidak Boleh Kosong",
-            po_date: "PO Date Tidak Boleh Kosong",
-            rec_date: "Rec Date Tidak Boleh Kosong",
-            used_date: "Use Date Tidak Boleh Kosong",
-            rcv_date: "Rcv Date Tidak Boleh Kosong",
-            loc_ppti: "Loc PPTI Tidak Boleh Kosong",
-            loc_tapc: "Loc Tapc Tidak Boleh Kosong",
-            lokasi_hib: "Loc Hib Tidak Boleh Kosong",
-            qty_begin: "Qty Begin Tidak Boleh Kosong",
-            qty_in: "Qty In Tidak Boleh Kosong",
-            qty_out: "Qty Out Tidak Boleh Kosong",
-            adjust: "Adjust Tidak Boleh Kosong",
-            qty_end: "Qty End Tidak Boleh Kosong",
-            remarks: "Remarks Tidak Boleh Kosong",
-        },
-        errorElement: "em",
-        errorClass: "invalid-feedback",
-        errorPlacement: function(error, element) {
-            // Add the `help-block` class to the error element
-            $(element).parents('.form-group').append(error);
-        },
-        highlight: function(element, errorClass, validClass) {
-            $(element).addClass("is-invalid").removeClass("is-valid");
-        },
-        unhighlight: function(element, errorClass, validClass) {
-            $(element).addClass("is-valid").removeClass("is-invalid");
-        }
-    });
-    var notyf = new Notyf({
-        duration: 5000,
-        position: {
-            x: 'right',
-            y: 'top'
-        }
-    });
-    var msg = $('#msgId').html()
-    if (msg !== undefined) {
-        notyf.success(msg)
-    }
-</script>
-<script>
-    $(document).ready(function() {
-        // Inisialisasi DataTable
-        var table = $('#table-data').DataTable();
-
-        // Hanya filter berdasarkan Part No (kolom ke-2, indeks 1)
-        $('#table-data_filter input').unbind().bind('keyup', function() {
-            table.column(1).search(this.value).draw();
         });
-    });
-</script>
-<script>
-    // Store the subrack data as a JavaScript object for easier management
-    const subracks = @json($subrack);
 
-    // Event listener to update the Sub Rak dropdown based on the selected Rak
-    document.getElementById("rack").addEventListener("change", function() {
-        const selectedRackId = this.value;
-        const subRackDropdown = document.getElementById("sub_rack");
-
-        // Reset Sub Rak dropdown
-        subRackDropdown.innerHTML = '<option value="">- Pilih Sub Rak -</option>';
-
-        // Filter and append relevant Sub Racks
-        subracks.forEach(subrack => {
-            if (subrack.rack_id == selectedRackId) {
-                const option = document.createElement("option");
-                option.value = subrack.sub_rack_id;
-                option.textContent = `${subrack.rack_name}.${subrack.sub_rack_name}`;
-                subRackDropdown.appendChild(option);
-            }
+        $('.btnAdd').click(function() {
+            $('#addForm')[0].reset(); $('#part_category_id').val('');
+            $('.addModal form').attr('action', "{{ url('part/store') }}");
+            $('.addModal .modal-title').text('Tambah Part');
+            $('.addModal').modal('show');
         });
+
+        const subracks = @json($subrack);
+        $('#rack').on('change', function() {
+            const selectedRackId = this.value;
+            const subRackDropdown = $('#sub_rack');
+            subRackDropdown.empty().append('<option value="">- Pilih Sub Rak -</option>');
+            subracks.forEach(subrack => {
+                if (subrack.rack_id == selectedRackId) {
+                    subRackDropdown.append(new Option(`${subrack.rack_name}.${subrack.sub_rack_name}`, subrack.sub_rack_id));
+                }
+            });
+        });
+
+        @if(count($errors)) $('.addModal').modal('show'); @endif
+        var notyf = new Notyf({ duration: 5000, position: { x: 'right', y: 'top' } });
+        var msg = $('#msgId').html();
+        if (msg !== undefined) { notyf.success(msg); }
     });
 </script>
 @endsection

@@ -280,9 +280,7 @@
             $('.part_no').on('keyup', function(event) {
                 if (event.key === "Enter") {
                     var partNo = encodeURIComponent($(this).val());
-                    var encodedPartNo = encodeURIComponent(partNo); // Encode the part number
                     var url = "{{ url('stockopname/getdatabyparam') }}/" + partNo;
-                    var url2 = "{{ url('stockopname/getdatabypartno') }}/" + encodedPartNo;
 
                     console.log('Fetching data for partNo:', partNo);
 
@@ -291,30 +289,34 @@
                         url: url,
                         dataType: 'JSON',
                         success: function(data) {
-                            console.log('Response from first AJAX call:', data);
+                            console.log('Response from AJAX call:', data);
                             if (data.status === 1) {
-                                console.log('Result:', data.result); // Log the result object
                                 if (data.result) {
                                     if (data.result[0].part_category_id != 2) {
                                         alert('Part bukan kategori Sparepart Machine.');
-                                        return; // Exit the function if not category 3
+                                        return;
                                     }
-                                    $('#part_name_hidden').val(data.result[0].part_name);
-                                    $('#adjust_hidden').val(data.result[0].adjust);
-                                    $('#part_no_hidden').val(data.result[0].part_no);
+                                    // Compute qty_end from existing data — no second call needed
+                                    var part = data.result[0];
+                                    var qty_end = parseFloat(part.qty_begin || 0)
+                                                + parseFloat(part.qty_in    || 0)
+                                                - parseFloat(part.qty_out   || 0);
+
+                                    $('#part_name_hidden').val(part.part_name);
+                                    $('#adjust_hidden').val(part.adjust);
+                                    $('#part_no_hidden').val(part.part_no);
+                                    $('#qty_no_hidden').val(qty_end);
                                     $('#has_sto').val('yes');
-                                    $('#part_nos').val(data.result[0].part_no);
+                                    $('#part_nos').val(part.part_no);
 
                                     var lastStoInput = document.getElementById("last_sto");
-                                    var currentDateTime = new Date();
-                                    var formattedDate = currentDateTime.toISOString().split('T')[0];
-                                    lastStoInput.value = formattedDate;
+                                    lastStoInput.value = new Date().toISOString().split('T')[0];
 
-                                    $('.partModal form').attr('action', "{{ url('stockopname/update/sp') }}/" + data.result[0].part_id);
+                                    $('.partModal form').attr('action', "{{ url('stockopname/update/sp') }}/" + part.part_id);
                                     $('.partModal .modal-title').text('Approve');
                                     $('.partModal').modal('show');
 
-                                    if (data.result[0].has_sto === 'yes') {
+                                    if (part.has_sto === 'yes') {
                                         alert('Part ini telah di STO.');
                                     }
                                 } else {
@@ -325,26 +327,7 @@
                             }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            console.error('Error during first AJAX call:', textStatus, errorThrown);
-                            alert('Error: Gagal mengambil data');
-                        }
-                    });
-
-                    $.ajax({
-                        type: 'GET',
-                        url: url2,
-                        dataType: 'JSON',
-                        success: function(data) {
-                            console.log('Response from second AJAX call:', data);
-                            if (data.status === 1) {
-                                $('#qty_no_hidden').val(data.total);
-                                // $('#qty_end').val(data.total);
-                            } else {
-                                console.log('Data status is not 1');
-                            }
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            console.error('Error during second AJAX call:', textStatus, errorThrown);
+                            console.error('Error during AJAX call:', textStatus, errorThrown);
                             alert('Error: Gagal mengambil data');
                         }
                     });
