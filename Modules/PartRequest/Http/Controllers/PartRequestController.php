@@ -463,66 +463,47 @@ class PartRequestController extends Controller
     }
     public function createcd()
     {
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        $params = ['part_category_id' => 1];
-
-        $partrequests = $this->_PartRequestRepository->getAll();
-        $parts = $this->_partRepository->getAllByParams($params);
-        $carlines = $this->_CarlineRepository->getAll();
-        $machines = $this->_MachineRepository->getAll();
+        $params       = ['part_category_id' => 1];
+        $parts        = $this->_partRepository->getAllByParams($params);
+        $carlines     = $this->_CarlineRepository->getAll();
+        $machines     = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
-        $carnames = $this->_carnameRepository->getAll();
+        $carnames     = $this->_carnameRepository->getAll();
+        // partrequests not needed on the create form
+        $partrequests = collect();
         return view('partrequest::createcd', compact('partrequests', 'parts', 'carlines', 'machines', 'carlinecategories', 'carnames'));
     }
     public function createsp()
     {
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        $params = ['part_category_id' => 2];
-
-        $partrequests = $this->_PartRequestRepository->getAll();
-        $parts = $this->_partRepository->getAllByParams($params);
-        $carlines = $this->_CarlineRepository->getAll();
-        $machines = $this->_MachineRepository->getAll();
+        $params       = ['part_category_id' => 2];
+        $parts        = $this->_partRepository->getAllByParams($params);
+        $carlines     = $this->_CarlineRepository->getAll();
+        $machines     = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
-        $carnames = $this->_carnameRepository->getAll();
+        $carnames     = $this->_carnameRepository->getAll();
+        $partrequests = collect();
         return view('partrequest::createsp', compact('partrequests', 'parts', 'carlines', 'machines', 'carlinecategories', 'carnames'));
     }
     public function createcf()
     {
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        $params = ['part_category_id' => 4];
-
-        $partrequests = $this->_PartRequestRepository->getAll();
-        $parts = $this->_partRepository->getAllByParams($params);
-        $carlines = $this->_CarlineRepository->getAll();
-        $machines = $this->_MachineRepository->getAll();
+        $params       = ['part_category_id' => 4];
+        $parts        = $this->_partRepository->getAllByParams($params);
+        $carlines     = $this->_CarlineRepository->getAll();
+        $machines     = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
-        $carnames = $this->_carnameRepository->getAll();
+        $carnames     = $this->_carnameRepository->getAll();
+        $partrequests = collect();
         return view('partrequest::createcf', compact('partrequests', 'parts', 'carlines', 'machines', 'carlinecategories', 'carnames'));
     }
     public function createaf()
     {
-        // Authorize
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-        $params = ['part_category_id' => 3];
-
-        $partrequests = $this->_PartRequestRepository->getAll();
-        $parts = $this->_partRepository->getAllByParams($params);
-        $carlines = $this->_CarlineRepository->getAll();
-        $machines = $this->_MachineRepository->getAll();
+        $params       = ['part_category_id' => 3];
+        $parts        = $this->_partRepository->getAllByParams($params);
+        $carlines     = $this->_CarlineRepository->getAll();
+        $machines     = $this->_MachineRepository->getAll();
         $carlinecategories = $this->_CarlineCategoryRepository->getAll();
-        $carnames = $this->_carnameRepository->getAll();
+        $carnames     = $this->_carnameRepository->getAll();
+        $partrequests = collect();
         return view('partrequest::createaf', compact('partrequests', 'parts', 'carlines', 'machines', 'carlinecategories', 'carnames'));
     }
 
@@ -774,36 +755,6 @@ class PartRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
-        // Authorize
-        if (Gate::denies(__FUNCTION__, $this->module)) {
-            return redirect('unauthorize');
-        }
-
-        $validator = Validator::make($request->all(), $this->_validationRules($id));
-
-        if ($validator->fails()) {
-            return redirect('partrequest/cd')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // DB::beginTransaction();
-
-        // $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $cek = $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        // $this->_logHelper->store($this->module, $request->part_req_number, 'update');
-
-        dd($cek);
-        DB::commit();
-
-        return redirect('partrequest')->with('message', 'PartRequest berhasil diubah');
-    }
-    public function cdupdate(Request $request, $id)
-    {
-
-
         // Authorize
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
@@ -818,11 +769,41 @@ class PartRequestController extends Controller
         }
 
         DB::beginTransaction();
+        try {
+            $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logHelper->store($this->module, $request->part_req_number, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('partrequest')->with('error', 'Gagal mengubah PartRequest: ' . $e->getMessage());
+        }
 
-        $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->part_req_number, 'update');
+        return redirect('partrequest')->with('message', 'PartRequest berhasil diubah');
+    }
+    public function cdupdate(Request $request, $id)
+    {
+        // Authorize
+        if (Gate::denies(__FUNCTION__, $this->module)) {
+            return redirect('unauthorize');
+        }
 
-        DB::commit();
+        $validator = Validator::make($request->all(), $this->_validationRules($id));
+
+        if ($validator->fails()) {
+            return redirect('partrequest/cd')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        DB::beginTransaction();
+        try {
+            $this->_PartRequestRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logHelper->store($this->module, $request->part_req_number, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('partrequest/cd')->with('error', 'Gagal mengubah PartRequest: ' . $e->getMessage());
+        }
 
         return redirect('partrequest/cd')->with('message', 'PartRequest berhasil diubah');
     }

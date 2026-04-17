@@ -49,14 +49,12 @@ class TransaksiInController extends Controller
             'part_request.status' => 0
         ];
 
-        $transaksiins = $this->_transaksiinRepository->getAll();
+        $transaksiins   = $this->_transaksiinRepository->getAll();
         $partcategories = $this->_partCategoryRepository->getAll();
-        $parts = $this->_partRepository->getAll();
-        $racks = $this->_rackRepository->getAll();
+        // Lean query — only select the columns the dropdown actually needs
+        $parts    = DB::table('part')->select('part_id', 'part_name', 'part_no')->orderBy('part_name')->get();
+        $racks    = $this->_rackRepository->getAll();
         $subracks = $this->_subRackRepository->getAll();
-        // dd($subracks);
-
-        // dd($transaksiins, $partcategories);
 
         return view('transaksiin::index', compact('transaksiins', 'parts', 'racks', 'partcategories', 'subracks'));
     }

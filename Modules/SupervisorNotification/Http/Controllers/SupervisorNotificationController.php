@@ -46,16 +46,14 @@ class SupervisorNotificationController extends Controller
             'part_request.status' => 1
         ];
 
+        // getAllByParams already JOINs part table — no need for a separate getAll() call
         $supervisornotifications = $this->_supervisornotificationRepository->getAllByParams($params);
-        $parts = $this->_partRepository->getAll();
         $users = $this->_userRepository->getAll();
-        // dd($supervisornotifications);
-        // Menyimpan jumlah supervisornotifications ke dalam session
+
+        // Store count in session for badge display
         session(['supervisornotifications_count' => count($supervisornotifications)]);
 
-        // dd($supervisornotifications);
-
-        return view('supervisornotification::index', compact('supervisornotifications', 'parts', 'users'));
+        return view('supervisornotification::index', compact('supervisornotifications', 'users'));
     }
 
     /**
@@ -144,57 +142,46 @@ class SupervisorNotificationController extends Controller
         }
 
         $detail = $this->_supervisornotificationRepository->getById($id);
-        $part = $this->_partRepository->getById($detail->part_id);
+        $part   = $this->_partRepository->getById($detail->part_id);
 
-        $nowDate = Carbon::now();
-        // dd($part, $detail);
         if ($part) {
-            $stock = intval($part->qty_out) + intval($detail->part_qty);
-            // dd($stock);
+            $nowDate = Carbon::now();
+            $stock   = intval($part->qty_out) + intval($detail->part_qty);
+
             if (intval($detail->status) == 0) {
-                $updateStatus = [
-                    // 'status' => 1,
-                ];
                 $updatePart = [
-                    // 'status' => 1,
-                    'qty_out' => $stock,
-                    'used_date' => $nowDate,
-                    // 'part_no' => $request->part_no,
-                    'kategori_inventory' => $request->kategori_inventory,
+                    'qty_out'           => $stock,
+                    'used_date'         => $nowDate,
+                    'kategori_inventory'=> $request->kategori_inventory,
                 ];
                 $updateStatus2 = [
                     'wear_and_tear_status' => 'Closed',
-                    'status' => 2,
+                    'status'               => 2,
                 ];
             } else {
-                $updateStatus = [
-                    // 'status' => 0,
-                ];
                 $updatePart = [
-                    // 'status' => 1,
-                    'used_date' => $nowDate,
-                    'qty_end' => $stock,
-                    // 'part_no' => $request->part_no,
-                    'kategori_inventory' => $request->kategori_inventory
+                    'used_date'         => $nowDate,
+                    'qty_end'           => $stock,
+                    'kategori_inventory'=> $request->kategori_inventory,
                 ];
                 $updateStatus2 = [
                     'wear_and_tear_status' => 'Closed',
-                    'status' => 2,
+                    'status'               => 2,
                 ];
             }
-            // dd($request->all());
-            // dd($updatePart);
 
-            // DB::beginTransaction();
-            $cek = $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
-            $this->_supervisornotificationRepository->update(DataHelper::_normalizeParams($updateStatus, false, true), $id);
-            $this->_partRequestRepository->update(DataHelper::_normalizeParams($updateStatus2, false, true), $id);
-            // dd($cek, $updatePart);
-            $this->_logHelper->store($this->module, $request->supervisornotification_id, 'update');
-
-            DB::commit();
+            DB::beginTransaction();
+            try {
+                $this->_partRepository->update(DataHelper::_normalizeParams($updatePart, false, true), $detail->part_id);
+                $this->_supervisornotificationRepository->update(DataHelper::_normalizeParams([], false, true), $id);
+                $this->_partRequestRepository->update(DataHelper::_normalizeParams($updateStatus2, false, true), $id);
+                $this->_logHelper->store($this->module, $request->supervisornotification_id, 'update');
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return redirect('supervisornotification')->withErrors(['error' => $e->getMessage()]);
+            }
         }
-
 
         return redirect('supervisornotification')->with('message', 'supervisornotification berhasil diubah');
     }

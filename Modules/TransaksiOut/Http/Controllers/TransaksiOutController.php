@@ -40,7 +40,8 @@ class TransaksiOutController extends Controller
         }
 
         $transaksiouts = $this->_transaksioutRepository->getAll();
-        $parts = $this->_partRepository->getAll();
+        // Lean query — only the columns needed for the part dropdown
+        $parts = DB::table('part')->select('part_id', 'part_name', 'part_no')->orderBy('part_name')->get();
 
         return view('transaksiout::index', compact('transaksiouts', 'parts'));
     }
@@ -80,9 +81,14 @@ class TransaksiOutController extends Controller
         }
 
         DB::beginTransaction();
-        $this->_transaksioutRepository->insert(DataHelper::_normalizeParams($request->all(), true));
-        $this->_logHelper->store($this->module, $request->invoice_no, 'create');
-        DB::commit();
+        try {
+            $this->_transaksioutRepository->insert(DataHelper::_normalizeParams($request->all(), true));
+            $this->_logHelper->store($this->module, $request->invoice_no, 'create');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('transaksiout')->with('error', 'Gagal menyimpan transaksi: ' . $e->getMessage());
+        }
 
         return redirect('transaksiout')->with('message', 'Transaksi berhasil ditambahkan');
     }
@@ -139,11 +145,14 @@ class TransaksiOutController extends Controller
         }
 
         DB::beginTransaction();
-
-        $this->_transaksioutRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
-        $this->_logHelper->store($this->module, $request->invoice_no, 'update');
-
-        DB::commit();
+        try {
+            $this->_transaksioutRepository->update(DataHelper::_normalizeParams($request->all(), false, true), $id);
+            $this->_logHelper->store($this->module, $request->invoice_no, 'update');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('transaksiout')->with('error', 'Gagal mengubah transaksi: ' . $e->getMessage());
+        }
 
         return redirect('transaksiout')->with('message', 'Transaksi berhasil diubah');
     }
@@ -167,11 +176,14 @@ class TransaksiOutController extends Controller
         }
 
         DB::beginTransaction();
-
-        $this->_transaksioutRepository->delete($id);
-        $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
-
-        DB::commit();
+        try {
+            $this->_transaksioutRepository->delete($id);
+            $this->_logHelper->store($this->module, $detail->invoice_no, 'delete');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('transaksiout')->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
+        }
 
         return redirect('transaksiout')->with('message', 'Transaksi berhasil dihapus');
     }

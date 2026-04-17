@@ -73,12 +73,29 @@ class PartRequestRepository extends QueryBuilderImplementation
             return DB::connection($this->db)
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
-                // ->join('carline', 'part_request.car_model', '=', 'carline.carline_id')
-                // ->join('machine', 'part_request.machine_no', '=', 'machine.machine_id')
-                ->select("part_request.*", "part.*", "part.created_at as part_created_at", "part_request.created_at as part_request_created_at", "part_request.remarks as part_request_remarks")
-                ->where($this->pk, '=', $id)
+                ->select(
+                    'part_request.part_req_id',
+                    'part_request.part_req_number',
+                    'part_request.part_id',
+                    'part_request.pic',
+                    'part_request.part_qty',
+                    'part_request.part_no',
+                    'part_request.loc_ppti',
+                    'part_request.loc_tapc',
+                    'part_request.lokasi_hib',
+                    'part_request.kategori_inventory',
+                    'part_request.wear_and_tear_status',
+                    'part_request.status',
+                    'part_request.remarks as part_request_remarks',
+                    'part_request.created_at as part_request_created_at',
+                    'part.part_name',
+                    'part.part_no as part_part_no',
+                    'part.qty_out',
+                    'part.qty_end'
+                )
+                ->where('part_request.' . $this->pk, '=', $id)
                 ->first();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
