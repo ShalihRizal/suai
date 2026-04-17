@@ -39,53 +39,37 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
-                        <thead>
+                    <table id="table-data" class="table table-bordered table-striped">
+                        <thead class="thead-light">
                             <tr>
-                                <th width="5%">No</th>
-                                <th width="15%">Part Request Number</th>
-                                <th width="15%">Part Number</th>
-                                <th width="15%">Date</th>
-                                <th width="15%">Aksi</th>
+                                <th>No</th>
+                                <th>Part Request Number</th>
+                                <th>Part Number</th>
+                                <th>Date</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($partrequests) == 0)
-                            <tr>
-                                <td colspan="3" align="center">Data kosong</td>
-                            </tr>
-                            @else
                             @foreach ($partrequests as $partrequest)
-                            <tr class="part-row" data-category="{{ $partrequest->part_req_number }}" data-created-at="{{ $partrequest->created_at }}">
-                                <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="15%">{{ $partrequest->part_req_number }}</td>
-                                <td width="15%">{{ $partrequest->part_no }}</td>
-                                <td width="15%">{{ $partrequest->created_at }}</td>
-                                <td width="15%">
-                                    @if ($partrequest->part_req_id > 0)
-                                    {{-- <a href="javascript:void(0)"
-                                                        class="btn btn-icon btnEdit btn-warning text-white"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
-                                    data-placement="top" title="Ubah">
-                                    <i data-feather="edit" width="16" height="16"></i>
-                                    </a> --}}
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $partrequest->part_req_number }}</td>
+                                <td>{{ $partrequest->part_no }}</td>
+                                <td>{{ $partrequest->created_at }}</td>
+                                <td>
                                     <a href="javascript:void(0);"
-                                        class="btn btn-icon btn-danger text-white btnDelete"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        title="Hapus"
+                                        class="btn btn-danger btn-sm btnDelete"
                                         data-url="{{ url('partrequest/cd/delete/' . $partrequest->part_req_id) }}">
-                                        <i data-feather="trash-2" width="16" height="16"></i>
+                                        <i data-feather="trash-2"></i>
                                     </a>
 
-                                    <a href="gambar/{{ $partrequest->part_req_id }}" class="btn btn-icon btn-info text-white" data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top" title="Ubah">
-                                        <i data-feather="eye" width="16" height="16"></i>
+                                    <a href="gambar/{{ $partrequest->part_req_id }}"
+                                        class="btn btn-info btn-sm">
+                                        <i data-feather="eye"></i>
                                     </a>
-                                    @endif
                                 </td>
                             </tr>
                             @endforeach
-                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -96,23 +80,23 @@
 </div>
 
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this part request?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</a>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this part request?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -285,10 +269,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script>
-    $(document).on('click', '.btnDelete', function () {
+    $(document).on('click', '.btnDelete', function() {
         var deleteUrl = $(this).data('url');
         $('#confirmDeleteBtn').attr('href', deleteUrl);
         $('#deleteConfirmModal').modal('show');
@@ -694,13 +685,23 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#table-data').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
+        $('#table-data').DataTable({
+            processing: true,
+            paging: true,
+            searching: true, // aktifkan search
+            ordering: true,
+            info: true,
+            lengthMenu: [10, 25, 50, 100],
+            pageLength: 10,
+            language: {
+                search: "Search:",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
+                }
+            }
         });
     });
 </script>

@@ -4,6 +4,7 @@ namespace Modules\PartRequest\Repositories;
 
 use App\Implementations\QueryBuilderImplementation;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PartRequestRepository extends QueryBuilderImplementation
 {
@@ -93,10 +94,18 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->select("part_request.*", "part.part_no")
                 ->where($params);
 
-            // Tambahkan filter tanggal jika tersedia
+            // ✅ FILTER TANGGAL YANG BENAR
             if ($startDate && $endDate) {
-                $query->whereBetween('part_request.created_at', [$startDate, $endDate]);
+                $query->whereBetween('part_request.created_at', [
+                    Carbon::parse($startDate)->startOfDay(),
+                    Carbon::parse($endDate)->endOfDay()
+                ]);
+            } elseif ($startDate) {
+                $query->where('part_request.created_at', '>=', Carbon::parse($startDate)->startOfDay());
+            } elseif ($endDate) {
+                $query->where('part_request.created_at', '<=', Carbon::parse($endDate)->endOfDay());
             }
+
             $query->orderBy('part_request.created_at', 'DESC');
 
             return $query->get();
