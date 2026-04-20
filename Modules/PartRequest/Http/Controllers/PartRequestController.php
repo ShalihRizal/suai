@@ -1559,30 +1559,30 @@ class PartRequestController extends Controller
      */
     public function cfgetdata($id)
     {
-
-        $response = array('status' => 0, 'result' => array());
+        $response  = ['status' => 0, 'result' => []];
         $getDetail = $this->_PartRequestRepository->getById($id);
 
-        if ($getDetail) {
+        // getById() returns a string on error — guard against it
+        if ($getDetail && is_object($getDetail)) {
             $response['status'] = 1;
             $response['result'] = $getDetail;
         }
 
-        return $response;
+        return response()->json($response);
     }
 
     public function getdata($id)
     {
-
-        $response = array('status' => 0, 'result' => array());
+        $response  = ['status' => 0, 'result' => []];
         $getDetail = $this->_PartRequestRepository->getById($id);
 
-        if ($getDetail) {
+        // getById() returns a string on error — guard against it
+        if ($getDetail && is_object($getDetail)) {
             $response['status'] = 1;
             $response['result'] = $getDetail;
         }
 
-        return $response;
+        return response()->json($response);
     }
     public function gambar($id)
     {

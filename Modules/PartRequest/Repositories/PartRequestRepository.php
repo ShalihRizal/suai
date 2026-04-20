@@ -74,6 +74,7 @@ class PartRequestRepository extends QueryBuilderImplementation
                 ->table($this->table)
                 ->join('part', 'part_request.part_id', '=', 'part.part_id')
                 ->select(
+                    // part_request fields
                     'part_request.part_req_id',
                     'part_request.part_req_number',
                     'part_request.part_id',
@@ -85,13 +86,33 @@ class PartRequestRepository extends QueryBuilderImplementation
                     'part_request.lokasi_hib',
                     'part_request.kategori_inventory',
                     'part_request.wear_and_tear_status',
+                    'part_request.wear_and_tear_code',
                     'part_request.status',
+                    'part_request.approved_by',
+                    'part_request.carline',
+                    'part_request.car_model',
+                    'part_request.alasan',
+                    'part_request.order',
+                    'part_request.shift',
+                    'part_request.machine_no',
+                    'part_request.serial_no',
+                    'part_request.side_no',
+                    'part_request.stroke',
+                    'part_request.applicator_no',
+                    'part_request.anvil',
+                    'part_request.insulation_crimper',
+                    'part_request.wire_crimper',
+                    'part_request.other',
                     'part_request.remarks as part_request_remarks',
                     'part_request.created_at as part_request_created_at',
+                    'part_request.part_req_pic_filename',
+                    'part_request.part_req_pic_path',
+                    // part fields
                     'part.part_name',
                     'part.part_no as part_part_no',
                     'part.qty_out',
-                    'part.qty_end'
+                    'part.qty_end',
+                    'part.asal'
                 )
                 ->where('part_request.' . $this->pk, '=', $id)
                 ->first();
