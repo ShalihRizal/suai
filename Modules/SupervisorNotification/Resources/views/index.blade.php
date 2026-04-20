@@ -224,8 +224,10 @@
                 console.log(data);
 
                 if (data.status == 1) {
-                    var inputValue = $('#part_no').val();
-                    var expectedValue = data.result.part_no;
+                    var inputValue = $('#part_no').val().trim();
+                    // Compare against part.part_no (the canonical barcode source),
+                    // not part_request.part_no which is a denormalized copy that may be stale
+                    var expectedValue = (data.result.part_part_no || data.result.part_no || '').trim();
 
                     if (inputValue === expectedValue) {
                         $('#kategori_inventory').val(data.result.kategori_inventory);
