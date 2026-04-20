@@ -351,11 +351,9 @@ class PartRequestController extends Controller
      */
     public function spdestroy($id)
     {
-         // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $detail = $this->_PartRequestRepository->getById($id);
+        // Fetch directly from part_request WITHOUT JOIN so it never fails
+        // due to a missing/orphaned part_id foreign key
+        $detail = DB::table('part_request')->where('part_req_id', $id)->first();
 
         if (!$detail) {
             return redirect('partrequest/sp');
@@ -363,32 +361,18 @@ class PartRequestController extends Controller
 
         DB::beginTransaction();
         try {
-            // Ambil part_qty dari part request yang akan dihapus
-            $part_qty = $detail->part_qty;
-            // dd($part_qty);
-            $part_id = $detail->part_id;
-            // dd($part_id);
+            $part_qty = (int) $detail->part_qty;
+            $part_id  = $detail->part_id;
 
-            
-            
-            // Update qty_out pada part
+            // Update qty_out on the linked part (only if the part still exists)
             $part = $this->_partRepository->getById($part_id);
-            // dd($part);
-            // if ($part) {
-                //     $part->qty_out = $part->qty_out - $part_qty;
-                //     $this->_partRepository->update($part_id, $part.toArray());
-                // }
-                
-                $part_qty_out = $part->qty_out - $part_qty;
+            if ($part && is_object($part)) {
+                $this->_partRepository->update(
+                    ['qty_out' => max(0, $part->qty_out - $part_qty)],
+                    $part_id
+                );
+            }
 
-                $param = [
-                    'qty_out' =>$part_qty_out
-                ];
-
-                    $cek = $this->_partRepository->update($param, $part_id);
-                    // dd($cek);
-
-            // Hapus part request
             $this->_PartRequestRepository->delete($id);
             $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
 
@@ -815,11 +799,9 @@ class PartRequestController extends Controller
      */
     public function cddestroy($id)
     {
-        // if (Gate::denies(__FUNCTION__, $this->module)) {
-        //     return redirect('unauthorize');
-        // }
-
-        $detail = $this->_PartRequestRepository->getById($id);
+        // Fetch directly from part_request WITHOUT JOIN so it never fails
+        // due to a missing/orphaned part_id foreign key
+        $detail = DB::table('part_request')->where('part_req_id', $id)->first();
 
         if (!$detail) {
             return redirect('partrequest/cd');
@@ -827,32 +809,18 @@ class PartRequestController extends Controller
 
         DB::beginTransaction();
         try {
-            // Ambil part_qty dari part request yang akan dihapus
-            $part_qty = $detail->part_qty;
-            // dd($part_qty);
-            $part_id = $detail->part_id;
-            // dd($part_id);
+            $part_qty = (int) $detail->part_qty;
+            $part_id  = $detail->part_id;
 
-            
-            
-            // Update qty_out pada part
+            // Update qty_out on the linked part (only if the part still exists)
             $part = $this->_partRepository->getById($part_id);
-            // dd($part);
-            // if ($part) {
-                //     $part->qty_out = $part->qty_out - $part_qty;
-                //     $this->_partRepository->update($part_id, $part.toArray());
-                // }
-                
-                $part_qty_out = $part->qty_out - $part_qty;
+            if ($part && is_object($part)) {
+                $this->_partRepository->update(
+                    ['qty_out' => max(0, $part->qty_out - $part_qty)],
+                    $part_id
+                );
+            }
 
-                $param = [
-                    'qty_out' =>$part_qty_out
-                ];
-
-                    $cek = $this->_partRepository->update($param, $part_id);
-                    // dd($cek);
-
-            // Hapus part request
             $this->_PartRequestRepository->delete($id);
             $this->_logHelper->store($this->module, $detail->part_req_number, 'delete');
 
