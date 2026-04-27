@@ -215,6 +215,7 @@
     function yourCustomFunction() {
         var url = "{{ url('partrequest/getdata') }}";
         var id = $('#id').val();
+        var currentPartNo = $('#part_no').val(); // Simpan value saat ini
 
         $.ajax({
             type: 'GET',
@@ -224,7 +225,7 @@
                 console.log(data);
 
                 if (data.status == 1) {
-                    var inputValue = $('#part_no').val().trim();
+                    var inputValue = currentPartNo.trim();
                     // Compare against part.part_no (the canonical barcode source),
                     // not part_request.part_no which is a denormalized copy that may be stale
                     var expectedValue = (data.result.part_part_no || data.result.part_no || '').trim();
@@ -235,7 +236,7 @@
                         $('#part_req_number').val(data.result.part_req_number);
                         $('#pic').val(data.result.pic);
                         $('#part_name').val(data.result.part_name);
-                        $('#part_no').val(data.result.part_no);
+                        // $('#part_no').val(data.result.part_no);
                         $('#loc_tapc').val(data.result.loc_tapc);
                         $('#lokasi_hib').val(data.result.lokasi_hib);
                         $('#loc_ppti').val(data.result.loc_ppti);
@@ -243,7 +244,7 @@
                         $('.detailModal form').attr('action', "{{ url('supervisornotification/update') }}" + '/' + id);
                         alert('Berhasil');
                     } else {
-                        $('#part_no').val(data.result.part_no);
+                        // $('#part_no').val(data.result.part_no);
                         alert('Part Tidak Sesuai dengan yang di-Request');
                     }
                 } else {
