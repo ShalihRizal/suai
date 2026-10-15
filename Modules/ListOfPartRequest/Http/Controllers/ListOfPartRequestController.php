@@ -39,19 +39,27 @@ class ListOfPartRequestController extends Controller
     public function index()
     {
         // Authorize
-
         if (Gate::denies(__FUNCTION__, $this->module)) {
             return redirect('unauthorize');
         }
 
-        // $params = [
-        //     'part_request.status' => 2
-        // ];
+        return view('listofpartrequest::index');
+    }
 
-        // $listofpartrequests = $this->_ListOfPartRequestRepository->getAll();
-        $partrequests = $this->_ListOfPartRequestRepository->getAll();
-        // dd($partrequests);
-        return view('listofpartrequest::index', compact('partrequests'));
+    public function datatableData(Request $request)
+    {
+        try {
+            $result = $this->_ListOfPartRequestRepository->getServerSideData($request);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json([
+                'draw' => intval($request->input('draw', 1)),
+                'recordsTotal' => 0,
+                'recordsFiltered' => 0,
+                'data' => [],
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
     public function downloadPDF()
     {

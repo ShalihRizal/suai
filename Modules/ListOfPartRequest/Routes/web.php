@@ -13,6 +13,7 @@
 
 Route::prefix('listofpartrequest')->group(function () {
     Route::get('/', 'ListOfPartRequestController@index');
+    Route::get('/datatable', 'ListOfPartRequestController@datatableData');
     Route::get('/create', 'ListOfPartRequestController@create');
     Route::get('/show/{id}', 'ListOfPartRequestController@show');
     Route::get('/edit/{id}', 'ListOfPartRequestController@edit');

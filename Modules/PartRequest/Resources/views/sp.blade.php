@@ -46,47 +46,39 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="table-data" class="table table-stripped card-table table-vcenter text-nowrap">
-                        <thead>
+                    <table id="table-data" class="table table-bordered table-striped">
+                        <thead class="thead-light">
                             <tr>
-                                <th width="5%">No</th>
-                                <th width="15%">Part Request Number</th>
-                                <th width="15%">Part Number</th>
-                                <th width="15%">Date</th>
-                                <th width="15%">Aksi</th>
+                                <th>No</th>
+                                <th>Part Request Number</th>
+                                <th>Part Number</th>
+                                <th>Date</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($partrequests) == 0)
-                            <tr class="part-row">
-                                <td colspan="3" align="center">Data kosong</td>
-                            </tr>
-                            @else
                             @foreach ($partrequests as $partrequest)
-                            <tr class="part-row" data-category="{{ $partrequest->part_req_number }}" data-created-at="{{ $partrequest->created_at }}">
-                                <td width="5%">{{ $loop->iteration }}</td>
-                                <td width="15%">{{ $partrequest->part_req_number }}</td>
-                                <td width="15%">{{ $partrequest->part_no }}</td>
-                                <td width="15%">{{ $partrequest->created_at }}</td>
-                                <td width="15%">
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $partrequest->part_req_number }}</td>
+                                <td>{{ $partrequest->part_no }}</td>
+                                <td>{{ $partrequest->created_at }}</td>
+                                <td>
                                     @if ($partrequest->part_req_id > 0)
-                                    {{-- <a href="javascript:void(0)"
-                                                        class="btn btn-icon btnEdit btn-warning text-white"
-                                                        data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip"
-                                    data-placement="top" title="Ubah">
-                                    <i data-feather="edit" width="16" height="16"></i>
-                                    </a> --}}
-                                    <a href="javascript:void(0)" class="btn btn-icon btn-danger text-white btnDelete" data-url="{{ url('partrequest/sp/delete/' . $partrequest->part_req_id) }}" data-toggle="tooltip" data-placement="top" title="Hapus">
-                                        <i data-feather="trash-2" width="16" height="16"></i>
+                                    <a href="javascript:void(0);"
+                                        class="btn btn-danger btn-sm btnDelete"
+                                        data-url="{{ url('partrequest/sp/delete/' . $partrequest->part_req_id) }}">
+                                        <i data-feather="trash-2"></i>
                                     </a>
-                                    <a href="gambar/{{ $partrequest->part_req_id }}" class="btn btn-icon btn-info text-white" data-id="{{ $partrequest->part_req_id }}" data-toggle="tooltip" data-placement="top" title="Ubah">
-                                        <i data-feather="eye" width="16" height="16"></i>
+
+                                    <a href="gambar/{{ $partrequest->part_req_id }}"
+                                        class="btn btn-info btn-sm">
+                                        <i data-feather="eye"></i>
                                     </a>
                                     @endif
                                 </td>
                             </tr>
                             @endforeach
-                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -1097,6 +1089,14 @@
 @endsection
 
 @section('script')
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#part_id').select2({
@@ -1256,44 +1256,44 @@
 
     });
 
-    $('.btnDelete').click(function() {
-        $('.btnDelete').attr('disabled', true)
-        var url = $(this).attr('data-url');
-        Swal.fire({
-            title: 'Apakah anda yakin ingin menghapus data?',
-            text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya. Hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: function(data) {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Terhapus!',
-                                'Data Berhasil Dihapus.',
-                                'success'
-                            ).then(() => {
-                                location.reload()
-                            })
-                        }
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        Swal.fire(
-                            'Gagal!',
-                            'Gagal menghapus data.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        })
-    });
+    // $('.btnDelete').click(function() {
+    //     $('.btnDelete').attr('disabled', true)
+    //     var url = $(this).attr('data-url');
+    //     Swal.fire({
+    //         title: 'Apakah anda yakin ingin menghapus data?',
+    //         text: "Kamu tidak akan bisa mengembalikan data ini setelah dihapus!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Ya. Hapus'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             $.ajax({
+    //                 type: 'GET',
+    //                 url: url,
+    //                 success: function(data) {
+    //                     if (result.isConfirmed) {
+    //                         Swal.fire(
+    //                             'Terhapus!',
+    //                             'Data Berhasil Dihapus.',
+    //                             'success'
+    //                         ).then(() => {
+    //                             location.reload()
+    //                         })
+    //                     }
+    //                 },
+    //                 error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //                     Swal.fire(
+    //                         'Gagal!',
+    //                         'Gagal menghapus data.',
+    //                         'error'
+    //                     );
+    //                 }
+    //             });
+    //         }
+    //     })
+    // });
 
     $('#detailModal').on('hidden.bs.modal', function(e) {
         // You can save the form values in localStorage
@@ -1556,45 +1556,29 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#table-data').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false, // Disable DataTables search
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
-
-        // Add event listeners to the date range input fields
-        $('#start_date, #end_date').on('change', function() {
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
-
-            // Iterate through each row
-            table.rows().every(function() {
-                var row = this.node();
-                var rowData = this.data();
-
-                // Get the date column value (adjust the index accordingly)
-                var dateValue = rowData[2]; // Assuming the date is in the third column
-
-                // Check if the date is within the selected range
-                if (isDateInRange(dateValue, startDate, endDate)) {
-                    $(row).show(); // Show the row
-                } else {
-                    $(row).hide(); // Hide the row
+        $('#table-data').DataTable({
+            processing: true,
+            paging: true,
+            searching: true, // aktifkan search
+            ordering: true,
+            info: true,
+            lengthMenu: [10, 25, 50, 100],
+            pageLength: 10,
+            language: {
+                search: "Search:",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
                 }
-            });
+            },
+            drawCallback: function() {
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+            }
         });
-
-        // Function to check if a date is within a given range
-        function isDateInRange(dateStr, start, end) {
-            var date = new Date(dateStr);
-            var startDate = new Date(start);
-            var endDate = new Date(end);
-
-            return date >= startDate && date <= endDate;
-        }
     });
 </script>
 <script>

@@ -106,67 +106,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (sizeof($partrequests) == 0)
-                            <tr>
-                                <td colspan="14" align="center">Data kosong</td>
-                            </tr>
-                            @else
-                            @foreach ($partrequests as $partrequest)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $partrequest->part_req_number }}</td>
-                                <td width="20%">{{ Str::substr($partrequest->part_request_created_at, 10, 18) }}</td>
-                                <td>{{ $partrequest->part_request_created_at }}</td>
-                                <td>{{ $partrequest->carname_name }}</td>
-                                <td>{{ $partrequest->carline_name }}</td>
-                                <td>{{ $partrequest->alasan }}</td>
-                                <td>{{ $partrequest->kategori }}</td>
-                                <td>{{ $partrequest->shift }}</td>
-                                <td>{{ $partrequest->machine_no }}</td>
-                                <td>{{ $partrequest->applicator_no }}</td>
-                                <td>{{ $partrequest->applicator_no2 }}</td>
-                                <td>{{ $partrequest->wear_and_tear_code }}</td>
-                                <td>{{ $partrequest->serial_no }}</td>
-                                <td>{{ $partrequest->side_no }}</td>
-                                <td>{{ $partrequest->stroke }}</td>
-                                <td>{{ $partrequest->pic }}</td>
-                                <!-- <td>{{ $partrequest->remarks }}</td> -->
-                                <td>{{ $partrequest->remarks2 }}</td>
-                                <td>{{ $partrequest->part_qty }}</td>
-                                <td>{{ $partrequest->status }}</td>
-                                <td>{{ $partrequest->user_name ? $partrequest->user_name : 'Belum Di Approve' }}</td>
-                                <td>{{ $partrequest->part_no }}</td>
-                                <td>
-                                    @if ($partrequest->wear_and_tear_status == 'Open')
-                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                        data-toggle="tooltip" data-placement="top" title="Ubah">
-                                        <i width="16" height="16" class="open-text">Open</i>
-                                    </a>
-                                    @elseif($partrequest->wear_and_tear_status == 'On Progress')
-                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                        data-toggle="tooltip" data-placement="top" title="On Progress">
-                                        <i width="16" height="16" class="open-text2">On Progress</i>
-                                    </a>
-                                    @elseif($partrequest->wear_and_tear_status == 'Closed')
-                                    <a data-id="{{ $partrequest->wear_and_tear_status }}"
-                                        data-toggle="tooltip" data-placement="top" title="Closed">
-                                        <i width="16" height="16" class="open-text3">Closed</i>
-                                    </a>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($partrequest->partlist_id > 0)
-                                    <a href="javascript:void(0)"
-                                        class="btn btn-icon btnEdit btn-success text-white"
-                                        data-id="{{ $partrequest->partlist_id }}" data-toggle="tooltip"
-                                        data-placement="top" title="Details">
-                                        <i data-feather="list" width="16" height="16">Details</i>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -365,17 +304,145 @@
 
 @section('script')
 <script type="text/javascript">
-    // Inisialisasi DataTable
     $(document).ready(function() {
-        $('#table-data').DataTable({
-            // Opsi tambahan dapat ditambahkan di sini
-            "language": {
-                "emptyTable": "Tidak ada data tersedia",
-                "info": "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
-                "infoEmpty": "Menampilkan 0 hingga 0 dari 0 entri",
-                "lengthMenu": "Tampilkan _MENU_ entri",
-                "search": "Cari:",
-                "zeroRecords": "Tidak ada hasil ditemukan"
+        var table = $('#table-data').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('listofpartrequest/datatable') }}"
+            },
+            columns: [
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { data: 'part_req_number', defaultContent: '' },
+                {
+                    data: 'part_request_created_at',
+                    defaultContent: '',
+                    render: function(data) {
+                        if (data && data.length >= 19) {
+                            return data.substring(10, 19);
+                        }
+                        return data || '';
+                    }
+                },
+                { data: 'part_request_created_at', defaultContent: '' },
+                { data: 'carname_name', defaultContent: '' },
+                { data: 'carline_name', defaultContent: '' },
+                { data: 'alasan', defaultContent: '' },
+                { data: 'kategori', defaultContent: '' },
+                { data: 'shift', defaultContent: '' },
+                { data: 'machine_no', defaultContent: '' },
+                { data: 'applicator_no', defaultContent: '' },
+                { data: 'applicator_no2', defaultContent: '' },
+                { data: 'wear_and_tear_code', defaultContent: '' },
+                { data: 'serial_no', defaultContent: '' },
+                { data: 'side_no', defaultContent: '' },
+                { data: 'stroke', defaultContent: '' },
+                { data: 'pic', defaultContent: '' },
+                { data: 'remarks2', defaultContent: '' },
+                { data: 'part_qty', defaultContent: '' },
+                { data: 'status', defaultContent: '' },
+                {
+                    data: 'user_name',
+                    defaultContent: 'Belum Di Approve',
+                    render: function(data) {
+                        return data ? data : 'Belum Di Approve';
+                    }
+                },
+                { data: 'part_no', defaultContent: '' },
+                {
+                    data: 'wear_and_tear_status',
+                    defaultContent: '',
+                    render: function(data) {
+                        if (data === 'Open') {
+                            return '<a data-id="' + data + '" data-toggle="tooltip" data-placement="top" title="Ubah"><i width="16" height="16" class="open-text">Open</i></a>';
+                        } else if (data === 'On Progress') {
+                            return '<a data-id="' + data + '" data-toggle="tooltip" data-placement="top" title="On Progress"><i width="16" height="16" class="open-text2">On Progress</i></a>';
+                        } else if (data === 'Closed') {
+                            return '<a data-id="' + data + '" data-toggle="tooltip" data-placement="top" title="Closed"><i width="16" height="16" class="open-text3">Closed</i></a>';
+                        }
+                        return data || '';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        if (row.partlist_id > 0) {
+                            return '<a href="javascript:void(0)" class="btn btn-icon btnEdit btn-success text-white" data-id="' + row.partlist_id + '" data-toggle="tooltip" data-placement="top" title="Details"><i data-feather="list" width="16" height="16"></i> Details</a>';
+                        }
+                        return '';
+                    }
+                }
+            ],
+            pageLength: 25,
+            order: [[3, 'desc']],
+            language: {
+                processing: "Memuat data...",
+                emptyTable: "Tidak ada data tersedia",
+                info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
+                infoEmpty: "Menampilkan 0 hingga 0 dari 0 entri",
+                infoFiltered: "(difilter dari _MAX_ total entri)",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                search: "Cari:",
+                zeroRecords: "Tidak ada hasil ditemukan",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "›",
+                    previous: "‹"
+                }
+            },
+            drawCallback: function() {
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+
+                // Rebind click event for .btnEdit
+                $('.btnEdit').off('click').on('click', function() {
+                    var id = $(this).attr('data-id');
+                    var url = "{{ url('listofpartrequest/getdata') }}";
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url + '/' + id,
+                        dataType: 'JSON',
+                        success: function(data) {
+                            if (data.status == 1) {
+                                $('#part_req_number').val(data.result.part_req_number);
+                                $('#carline').val(data.result.carline_name);
+                                $('#carname').val(data.result.carname_part_request);
+                                $('#alasan').val(data.result.alasan);
+                                $('#order').val(data.result.kategori);
+                                $('#shift').val(data.result.shift);
+                                $('#machine_no').val(data.result.machine_no);
+                                $('#applicator_no').val(data.result.applicator_no);
+                                $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
+                                $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
+                                $('#serial_no').val(data.result.serial_no);
+                                $('#side_no').val(data.result.side_no);
+                                $('#stroke').val(data.result.stroke);
+                                $('#pic').val(data.result.pic);
+                                $('#remarks').val(data.result.part_request_remarks);
+                                $('#part_qty').val(data.result.part_qty);
+                                $('#status').val(data.result.status);
+                                $('#approved_by').val(data.result.approved_by);
+                                $('.addModal .modal-title').text('Details');
+                                $('.addModal').modal('show');
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Error : Gagal mengambil data');
+                        }
+                    });
+                });
             }
         });
     });
@@ -385,52 +452,7 @@
     $('.addModal').modal('show');
     @endif
 
-    $('.btnEdit').click(function() {
 
-        var id = $(this).attr('data-id');
-        var url = "{{ url('listofpartrequest/getdata') }}";
-
-        // $('.addModal form').attr('action', "{{ url('listofpartrequest/update') }}" + '/' + id);
-
-        $.ajax({
-            type: 'GET',
-            url: url + '/' + id,
-            dataType: 'JSON',
-            success: function(data) {
-                console.log(data);
-
-                if (data.status == 1) {
-
-                    $('#part_req_number').val(data.result.part_req_number);
-                    $('#carline').val(data.result.carline_name); // car model
-                    $('#carname').val(data.result.carname_part_request);
-                    $('#alasan').val(data.result.alasan);
-                    $('#order').val(data.result.kategori);
-                    $('#shift').val(data.result.shift);
-                    $('#machine_no').val(data.result.machine_no);
-                    $('#applicator_no').val(data.result.applicator_no);
-                    $('#wear_and_tear_code').val(data.result.wear_and_tear_code);
-                    $('#wear_and_tear_status').val(data.result.wear_and_tear_status);
-                    $('#serial_no').val(data.result.serial_no);
-                    $('#side_no').val(data.result.side_no);
-                    $('#stroke').val(data.result.stroke);
-                    $('#pic').val(data.result.pic);
-                    $('#remarks').val(data.result.part_request_remarks);
-                    $('#part_qty').val(data.result.part_qty);
-                    $('#status').val(data.result.status);
-                    $('#approved_by').val(data.result.approved_by);
-                    $('.addModal .modal-title').text('Details');
-                    $('.addModal').modal('show');
-
-                }
-
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('Error : Gagal mengambil data');
-            }
-        });
-
-    });
 
     $('.btnDelete').click(function() {
         $('.btnDelete').attr('disabled', true)

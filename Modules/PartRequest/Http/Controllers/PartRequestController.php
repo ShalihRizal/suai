@@ -673,15 +673,21 @@ class PartRequestController extends Controller
 
                     // Convert date fields to proper format
                     if (!empty($record['created_at'])) {
-                        $record['created_at'] = Carbon::createFromFormat('n/j/Y H:i', $record['created_at'])->format('Y-m-d H:i:s');
-                }
+                        $parsedCreated = $this->_parseDate($record['created_at']);
+                        if ($parsedCreated) {
+                            $record['created_at'] = $parsedCreated;
+                        }
+                    }
                     if (!empty($record['updated_at'])) {
-                        $record['updated_at'] = Carbon::createFromFormat('n/j/Y H:i', $record['updated_at'])->format('Y-m-d H:i:s');
+                        $parsedUpdated = $this->_parseDate($record['updated_at']);
+                        if ($parsedUpdated) {
+                            $record['updated_at'] = $parsedUpdated;
+                        }
                     }
 
                     $dataArray[] = $record;
                 }
-        }
+            }
 
             fclose($handle);
         }
@@ -692,9 +698,15 @@ class PartRequestController extends Controller
         for ($i = 0; $i < count($inserted); $i++) {
             $listofpartreq = [
                 "part_req_id" => $inserted[$i],
-                'created_at' => now(),
             ];
-            $cek = $this->_ListOfPartRequestRepository->insert(DataHelper::_normalizeParams($listofpartreq, true));
+            $params = DataHelper::_normalizeParams($listofpartreq, true);
+            if (!empty($dataArray[$i]['created_at'])) {
+                $params['created_at'] = $dataArray[$i]['created_at'];
+            }
+            if (!empty($dataArray[$i]['updated_at'])) {
+                $params['updated_at'] = $dataArray[$i]['updated_at'];
+            }
+            $cek = $this->_ListOfPartRequestRepository->insert($params);
         }
 
         // dd($cek);
@@ -1580,6 +1592,80 @@ class PartRequestController extends Controller
             return [
                 'part_id' => 'required',
             ];
+        }
+    }
+
+    /**
+     * Parse date string into Y-m-d H:i:s supporting multiple formats
+     * (Indonesian d/m/Y H:i, standard Y-m-d H:i:s, Excel m/d/Y H:i, etc.)
+     *
+     * @param string $value
+     * @return string|null
+     */
+    private function _parseDate($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        $value = trim($value);
+
+        // 1. Check ISO / Year-first formats (unambiguous)
+        $yearFirstFormats = [
+            '!Y-m-d H:i:s',
+            '!Y-m-d H:i',
+            '!Y-m-d',
+            '!Y/m/d H:i:s',
+            '!Y/m/d H:i',
+            '!Y/m/d',
+        ];
+        foreach ($yearFirstFormats as $fmt) {
+            try {
+                $cleanFmt = ltrim($fmt, '!');
+                $d = Carbon::createFromFormat($fmt, $value);
+                if ($d && $d->format($cleanFmt) === $value) {
+                    return $d->format('Y-m-d H:i:s');
+                }
+            } catch (\Exception $e) {
+                // continue to next format
+            }
+        }
+
+        // 2. Day/Month/Year or Month/Day/Year formats (e.g. 05/10/2024 or 25/08/2024)
+        if (preg_match('/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?$/', $value, $m)) {
+            $p1 = intval($m[1]);
+            $p2 = intval($m[2]);
+            $year = intval($m[3]);
+            $hour = isset($m[4]) ? intval($m[4]) : 0;
+            $min = isset($m[5]) ? intval($m[5]) : 0;
+            $sec = isset($m[6]) ? intval($m[6]) : 0;
+
+            if ($p1 > 12) {
+                // Day must be p1, Month must be p2 (e.g., 25/08/2024)
+                $day = $p1;
+                $month = $p2;
+            } elseif ($p2 > 12) {
+                // Month is p1, Day is p2 (e.g., 08/25/2024)
+                $month = $p1;
+                $day = $p2;
+            } else {
+                // Ambiguous (both <= 12, e.g. 05/10/2024). Default to Indonesian convention: Day/Month/Year
+                $day = $p1;
+                $month = $p2;
+            }
+
+            try {
+                return Carbon::create($year, $month, $day, $hour, $min, $sec)->format('Y-m-d H:i:s');
+            } catch (\Exception $e) {
+                // fallback below
+            }
+        }
+
+        // 3. Fallback to Carbon::parse
+        try {
+            return Carbon::parse($value)->format('Y-m-d H:i:s');
+        } catch (\Exception $e) {
+            return null;
         }
     }
 }
